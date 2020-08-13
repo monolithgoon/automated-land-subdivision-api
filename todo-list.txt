@@ -1,0 +1,17 @@
+API Deployment Checklist
+
+
+
+[ ] Create "server" folder
+   [ ] Create server.js
+   [ ] Create app.js <= this calls the "routes"
+      [ ] Load the routes => eg., const PARCELIZED_AGC_ROUTES = require('./routes/parcelized-agc-routes.js');
+      [ ] Mount the router => eg., EXPRESS_APP.use('/api/v1/parcelized-agcs', PARCELIZED_AGC_ROUTES);
+   [ ] Create "routes/routers" folder <= this calls the "controllers"
+   [ ] Create "controllers" folder <= this calls the "models"
+   [ ] Create "models" folder
+
+
+[ ] Install server response (JSON / HTML) compression => npm i compression
+
+[ ] Remove the console.logs

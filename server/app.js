@@ -5,6 +5,8 @@ const Morgan = require('morgan'); // HTTP request logger
 const BodyParser = require('body-parser'); // GET THE CONTENTS OF request.body
 
 const chalk = require('chalk');
+const compression = require('compression'); // server response compression
+
 
 
 
@@ -45,6 +47,13 @@ EXPRESS_APP.use((request, response, next) => {
 
 
 
+
+// ADD SERVER RESPONSE COMPRESSION MIDDLEWARE FOR ALL TEXT SENT TO CLIENTS
+EXPRESS_APP.use(compression())
+
+
+
+
 // REMOVE > 
 // LOAD THE ROUTES
 // const TOURS_ROUTE = require('./routes/tour-routes.js')
@@ -52,6 +61,7 @@ EXPRESS_APP.use((request, response, next) => {
 
 // LOAD THE ROUTES
 const PARCELIZED_AGC_ROUTES = require('./routes/parcelized-agc-routes.js');
+
 
 
 
@@ -64,6 +74,7 @@ const PARCELIZED_AGC_ROUTES = require('./routes/parcelized-agc-routes.js');
 // MOUNTING THE ROUTER
 EXPRESS_APP.use('/', PARCELIZED_AGC_ROUTES);
 EXPRESS_APP.use('/api/v1/parcelized-agcs', PARCELIZED_AGC_ROUTES);
+
 
 
 
