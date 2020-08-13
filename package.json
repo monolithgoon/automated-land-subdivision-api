@@ -1,0 +1,23 @@
+{
+  "name": "pacelized-agcs",
+  "version": "1.0.0",
+  "description": "NIRSAL Parcelized Agcs API",
+  "main": "./server/server.js",
+  "scripts": {
+    "start:dev": "nodemon server.js",
+    "start:prod": "NODE_ENV=production nodemon server.js"
+  },
+  "author": "Nduka Okpue",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.19",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "chalk": "^4.1.0",
+    "nodemon": "^2.0.4"
+  }
+}
