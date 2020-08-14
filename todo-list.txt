@@ -2,7 +2,7 @@ API Deployment Checklist
 
 
 
-[ ] Create "server" folder
+[ ] Create the following in the root dir >
    [ ] Create server.js
    [ ] Create app.js <= this calls the "routes"
       [ ] Load the routes => eg., const PARCELIZED_AGC_ROUTES = require('./routes/parcelized-agc-routes.js');
