@@ -8,7 +8,7 @@ const chalk = require('chalk');
 const error = chalk.bold.red
 const warning = chalk.keyword('orange');
 const allGood = chalk.bold.green;
-const hightlight = chalk.white.bgCyan.bold
+const hightlight = chalk.white.bgBlue.bold
 
 const compression = require('compression'); // server response compression
 
