@@ -2,7 +2,7 @@ API Deployment Checklist
 
 
 
-[ ] Create the following in the root dir >
+[x] Create the following in the root dir >
    [ ] Create server.js
    [ ] Create app.js <= this calls the "routes"
       [ ] Load the routes => eg., const PARCELIZED_AGC_ROUTES = require('./routes/parcelized-agc-routes.js');
@@ -12,24 +12,24 @@ API Deployment Checklist
    [ ] Create "models" folder
 
 
-[ ] Install server response (JSON / HTML) compression => npm i compression
+[x] Install server response (JSON / HTML) compression => npm i compression
 
 [x] Add { "start": "node server.js" } script to package.json in order for Heroku to work
 [x] Add latest node version to "engines" in package.json
 
 [ ] Remove all the console.logs
 
-[..] Deploy to Heroku > 
-   [ ] Create a new Heroku project > RUN: "heroku create"
-   [ ] Create Procfile && add "web: node ./server/server.js" << Heroku app dynos executes the commands of Procfile
-   [ ] Connect to GitHub repo > On Heroku dashboard, select "Deploy" && click on "Connect to GitHub"
-   [ ] Upload files from "master" repository to Heroku > 
-      [ ] RUN: "git push heroku master"
+[x] Deploy to Heroku > 
+   [x] Create a new Heroku project > RUN: "heroku create"
+      [..] To change default name of Heroku app > RUN: heroku apps:rename [newname]
+   [x] Connect to GitHub repo > On Heroku dashboard, select "Deploy" && click on "Connect to GitHub"
+   [x] Upload files from "master" repository to Heroku > 
+      [x] RUN: "git push heroku master"
       [x] Verify this works > RUN: git remote -v
-   [ ] Set environment variables on Heroku (needed b/cos config.eng is excluded from git) > 
-      [ ] RUN: "heroku config:set NODE_ENV=production"
-      [ ] RUN: heroku config:set ATLAS_DB_STRING="mongodb+srv://monkey-paw:<PASSWORD>@monkey-paw-cluster-cwcff.gcp.mongodb.net/nirsal_agcs?retryWrites=true&w=majority"
-      [ ] RUN: heroku config:set ATLAS_DB_PASSOWRD=dooksie
+   [x] Set environment variables on Heroku (needed b/cos config.eng is excluded from git) > 
+      [x] RUN: "heroku config:set NODE_ENV=production"
+      [x] RUN: heroku config:set ATLAS_DB_STRING="mongodb+srv://monkey-paw:<PASSWORD>@monkey-paw-cluster-cwcff.gcp.mongodb.net/nirsal_agcs?retryWrites=true&w=majority"
+      [x] RUN: heroku config:set ATLAS_DB_PASSOWRD=dooksie
 
 [ ] Deploy to Firebase >>
    [x] Install the Firebase CLI >> RUN: npm install -g firebase-tools
