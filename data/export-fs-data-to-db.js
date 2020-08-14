@@ -1,7 +1,7 @@
 const fs = require('fs')
 const Mongoose = require('mongoose') // MongoDB driver that facilitates connection to remote db
 const dotenv = require('dotenv') // read the data from the config file. and use them as env. variables in NODE
-dotenv.config({path: '../../config.env'}) // CONFIGURE ENV. VARIABLES BEFORE CALL THE APP
+dotenv.config({path: '../config.env'}) // CONFIGURE ENV. VARIABLES BEFORE CALL THE APP
 const PARCELIZED_AGC_MODEL = require('../models/parcelized-agc-model.js')
 
 
