@@ -12,9 +12,9 @@ API Deployment Checklist
    [ ] Create "models" folder
 
 
-   [ ] Upload data from file to Atlas DB
-      [ ] Start the local server > RUN: npm run start:dev
-      [ ] Upload to database > RUN: npm run exportdb
+[ ] Upload data from local .geojson file to Atlas DB
+   [ ] Update and save the "parcelized-agcs.geojson" file
+   [ ] Upload the file to database > RUN: npm run exportdb
 
 
 [x] Install server response (JSON / HTML) compression => npm i compression
