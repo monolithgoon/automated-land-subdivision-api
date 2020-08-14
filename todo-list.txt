@@ -23,8 +23,9 @@ API Deployment Checklist
    [ ] Create a new Heroku project > RUN: "heroku create"
    [ ] Create Procfile && add "web: node ./server/server.js" << Heroku app dynos executes the commands of Procfile
    [ ] Connect to GitHub repo > On Heroku dashboard, select "Deploy" && click on "Connect to GitHub"
-   [ ] Upload files from "master" repository to Heroku > RUN: "git push heroku master"
-      [..] Verify this works > RUN: git remote -v
+   [ ] Upload files from "master" repository to Heroku > 
+      [ ] RUN: "git push heroku master"
+      [x] Verify this works > RUN: git remote -v
    [ ] Set environment variables on Heroku (needed b/cos config.eng is excluded from git) > 
       [ ] RUN: "heroku config:set NODE_ENV=production"
       [ ] RUN: heroku config:set ATLAS_DB_STRING="mongodb+srv://monkey-paw:<PASSWORD>@monkey-paw-cluster-cwcff.gcp.mongodb.net/nirsal_agcs?retryWrites=true&w=majority"
