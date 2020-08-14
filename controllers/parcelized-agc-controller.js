@@ -68,7 +68,7 @@ exports.getAllParcelizedAgcs = async (request, response) => {
 
 	try {
 
-		console.log("THAT WAS THE TOURS HOMEPAGE.");
+		console.log("YOU SUCCESSFULLY CALLED THE NIRSAL PARCELIZED AGCs API");
       console.log(request.query);
 
       // FILTER _EXAMPLE 1

@@ -4,6 +4,7 @@ const EXPRESS_APP = Express()
 const Morgan = require('morgan'); // HTTP request logger
 const BodyParser = require('body-parser'); // GET THE CONTENTS OF request.body
 
+// REMOVE > NOT WORKING ON HEROKU 
 // const chalk = require('chalk');
 // const error = chalk.bold.red
 // const warning = chalk.keyword('orange');
