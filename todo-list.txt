@@ -17,7 +17,13 @@ API Deployment Checklist
 [x] Add { "start": "node server.js" } script to package.json in order for Heroku to work
 [x] Add latest node version to "engines" in package.json
 
-[ ] Remove the console.logs
+[ ] Remove all the console.logs
 
-[ ] Create a new Heroku project, run: "heroku create" in terminal
-[x] Deploy to Heroku with: git push heroku master
+[ ] Create a new Heroku project > RUN: "heroku create"
+[x] Deploy to Heroku > RUN: "git push heroku master"
+   [x] Verify this works > RUN: git remote -v
+[ ] Set environment variables on Heroku (needed b/cos config.eng is excluded from git) > 
+   [ ] RUN: "heroku config:set NODE_ENV=production"
+   [ ] RUN: heroku config:set ATLAS_DB_STRING="mongodb+srv://monkey-paw:<PASSWORD>@monkey-paw-cluster-cwcff.gcp.mongodb.net/nirsal_agcs?retryWrites=true&w=majority"
+
+[ ] Open Heroku project > RUN: "heroku open"
