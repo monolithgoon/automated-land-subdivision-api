@@ -108,14 +108,14 @@ exports.getAllParcelizedAgcs = async (request, response) => {
             // GET request: 127.0.0.1:9090/api/v1/tours?difficulty=easy&price[lte]=500
                // { difficulty: 'easy', price: { lte: 500} } // query string obj. from above GET req.
                let queryStr = JSON.stringify(queryObj);
-               let formatedQueryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`) // add the '$' sign to the operator
+               let formattedQueryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`) // add the '$' sign to the operator
                
-               console.log(`formatedQueryStr: ${formatedQueryStr}`);
+               console.log(`formattedQueryStr: ${formattedQueryStr}`);
                
                
          // BUILD THE QUERY
          // PARCELIZED_AGC_MODEL.find() returns a Query obj., and you can chain more Query class mtds. (like .sort()) to it.
-         let dbQuery = PARCELIZED_AGC_MODEL.find(JSON.parse(formatedQueryStr)); 
+         let dbQuery = PARCELIZED_AGC_MODEL.find(JSON.parse(formattedQueryStr)); 
          
          
          // 3. SORTING

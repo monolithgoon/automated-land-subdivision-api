@@ -14,6 +14,10 @@ API Deployment Checklist
 
 [ ] Install server response (JSON / HTML) compression => npm i compression
 
-[ ] Add latest node version to "engines" in package.json
+[x] Add { "start": "node server.js" } script to package.json in order for Heroku to work
+[x] Add latest node version to "engines" in package.json
 
 [ ] Remove the console.logs
+
+[ ] Create a new Heroku project, run: "heroku create" in terminal
+[x] Deploy to Heroku with: git push heroku master

@@ -5,6 +5,11 @@ const Morgan = require('morgan'); // HTTP request logger
 const BodyParser = require('body-parser'); // GET THE CONTENTS OF request.body
 
 const chalk = require('chalk');
+const error = chalk.bold.red
+const warning = chalk.keyword('orange');
+const allGood = chalk.bold.green;
+const hightlight = chalk.white.bgCyan.bold
+
 const compression = require('compression'); // server response compression
 
 
@@ -19,7 +24,7 @@ EXPRESS_APP.use(BodyParser.json())
 // 3RD PARTY MIDDLEWARE > REQ. LOGGING
 // perform logging only while in development mode..
 if (process.env.NODE_ENV === 'development') {
-   console.log(chalk.blue.bgWhite.bold(`Our node environment is currently: ${process.env.NODE_ENV} `))
+   console.log(hightlight(`Our node environment is currently: ${process.env.NODE_ENV} `))
    EXPRESS_APP.use(Morgan('dev'))
 }
 
@@ -31,7 +36,7 @@ if (process.env.NODE_ENV === 'development') {
 // MUST BE DEFINED BEFORE ALL THE ROUTE HANDLERS (OR ROUTERS) BELOW
 // OTHERWISE IT DOESN'T WORK because the routes WOULD terminte the req, res cycle BEFORE MW. RUNS
 EXPRESS_APP.use((request, response, next) => {
-   console.log(chalk.keyword('orange').bgWhite.bold('Hello from the 1st (custom) middleware in app.js..'));
+   console.log(allGood('Hello from the 1st (custom) middleware in app.js..'));
    next();
 })
 

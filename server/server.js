@@ -39,5 +39,5 @@ try {
 // START THE SERVER
 const port = process.env.PORT || 8080
 EXPRESS_APP.listen(port, () => {
-   console.log(`Express is running server.js on ${port}` )
+   console.log(`Express is running server.js on ${port}`)
 })
