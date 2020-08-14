@@ -12,6 +12,11 @@ API Deployment Checklist
    [ ] Create "models" folder
 
 
+   [ ] Upload data from file to Atlas DB
+      [ ] Start the local server > RUN: npm run start:dev
+      [ ] Upload to database > RUN: npm run exportdb
+
+
 [x] Install server response (JSON / HTML) compression => npm i compression
 
 [x] Add { "start": "node server.js" } script to package.json in order for Heroku to work
