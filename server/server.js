@@ -1,6 +1,6 @@
 const Mongoose = require('mongoose') // MongoDB driver that facilitates connection to remote db
 const dotenv = require('dotenv') // read the data from the config file. and use them as env. variables in NODE
-dotenv.config({path: './config.env'}) // IMPORTANT > CONFIGURE ENV. VARIABLES BEFORE U CALL THE APP
+dotenv.config({path: './config.env'}) // IMPORTANT > CONFIGURE ENV. VARIABLES BEFORE U CALL THE APP 
 const EXPRESS_APP = require('./app.js')
 
 
@@ -41,5 +41,3 @@ const port = process.env.PORT || 8080
 EXPRESS_APP.listen(port, () => {
    console.log(`Express is running server.js on ${port}` )
 })
-
-

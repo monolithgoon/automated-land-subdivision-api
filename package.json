@@ -4,6 +4,7 @@
   "description": "NIRSAL Parcelized Agcs API",
   "main": "./server/server.js",
   "scripts": {
+    "start": "node server.js",
     "start:dev": "nodemon server.js",
     "start:prod": "NODE_ENV=production nodemon server.js"
   },

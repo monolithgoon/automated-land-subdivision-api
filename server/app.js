@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === 'development') {
 // MUST BE DEFINED BEFORE ALL THE ROUTE HANDLERS (OR ROUTERS) BELOW
 // OTHERWISE IT DOESN'T WORK because the routes WOULD terminte the req, res cycle BEFORE MW. RUNS
 EXPRESS_APP.use((request, response, next) => {
-   console.log('Hello from the 1st (custom) middleware in app.js..');
+   console.log(chalk.keyword('orange').bgWhite.bold('Hello from the 1st (custom) middleware in app.js..'));
    next();
 })
 
