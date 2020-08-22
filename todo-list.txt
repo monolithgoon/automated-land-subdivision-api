@@ -24,7 +24,7 @@ API Deployment Checklist
 
 [ ] Remove all the console.logs
 
-[x] Deploy to Heroku > 
+[x] Deploy to Heroku >>
    [x] Create a new Heroku project > RUN: "heroku create"
       [..] To change default name of Heroku app > RUN: heroku apps:rename [newname]
    [x] Connect to GitHub repo > On Heroku dashboard, select "Deploy" && click on "Connect to GitHub"
