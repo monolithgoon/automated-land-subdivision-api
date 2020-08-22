@@ -1,8 +1,9 @@
 const Express = require('express')
 const EXPRESS_APP = Express()
-
 const Morgan = require('morgan'); // HTTP request logger
 const BodyParser = require('body-parser'); // GET THE CONTENTS OF request.body
+const compression = require('compression'); // server response compression
+const cors = require('cors'); // this will allow other websites access the api
 
 // REMOVE > NOT WORKING ON HEROKU 
 // const chalk = require('chalk');
@@ -11,13 +12,25 @@ const BodyParser = require('body-parser'); // GET THE CONTENTS OF request.body
 // const allGood = chalk.bold.green;
 // const highlight = chalk.white.bgBlue.bold
 
-const compression = require('compression'); // server response compression
 
 
+
+// 3RD PARTY MIDDLEWARE > IMPLEMENT CORS
+EXPRESS_APP.use(cors());
+// API @ api.natours.com; frontend @ natours.com
+// ENABLE CORS FOR ONLY natours.com >
+   // EXPRESS_APP.use(cors({
+   //    origin: 'https://www.natours.com'
+   // }))
+
+// PRE-FLIGHT "OPTIONS" REQUEST RESPONSE(?)
+EXPRESS_APP.options('*', cors()); // enable cors pre-flight requests for all routes
+// EXPRESS_APP.options('/api/v1/parcelized-agcs/:id', cors()) // enable cors for complex requests (delete, patch, post) only on this specific route
 
 
 // 3RD PARTY MIDDLEWARE
 // EXPRESS_APP.use(Express.static(`${__dirname}/client/public`)) // serve static files
+
 
 // 3RD PARTY MIDDLEWARE
 EXPRESS_APP.use(BodyParser.json())
@@ -54,7 +67,7 @@ EXPRESS_APP.use((request, response, next) => {
 
 
 
-// ADD SERVER RESPONSE COMPRESSION MIDDLEWARE FOR ALL TEXT SENT TO CLIENTS
+// SERVER RESPONSE COMPRESSION MIDDLEWARE FOR ALL TEXT SENT TO CLIENTS
 EXPRESS_APP.use(compression())
 
 
