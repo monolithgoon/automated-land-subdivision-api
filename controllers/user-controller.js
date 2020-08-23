@@ -8,19 +8,25 @@ exports.getAllUsers = async (req, res) => {
    try {
 
       console.log('YOU CALLED THE getAllUsers CONTROLLER');
-      const users = await USER_MODEL.find()
+      console.log(req.query);
+
+      const usersData = await USER_MODEL.find()
 
       res.status(200).json({
          status: "success",
-         requested_at: request.requestTime,
-         num_users: users.length,
+         requested_at: req.requestTime,
+         num_users: usersData.length,
          data: {
-            users: users,
+            users: usersData,
          }
       })
       
-   } catch (error) {
-      
+   } catch (err) { 
+      res.status(400).json({ // 400 => bad request
+         status: 'fail',
+         message: 'That GET request failed.',
+         error_msg: err.message,
+      })
    }
 }
 

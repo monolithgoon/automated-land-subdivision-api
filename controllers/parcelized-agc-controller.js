@@ -68,7 +68,7 @@ exports.getAllParcelizedAgcs = async (request, response) => {
 
 	try {
 
-		console.log("YOU SUCCESSFULLY CALLED THE getAllParcelizedAgcs CONTOLLER");
+		console.log("YOU SUCCESSFULLY CALLED THE getAllParcelizedAgcs CONTROLLER");
       console.log(request.query);
 
       // FILTER _EXAMPLE 1
