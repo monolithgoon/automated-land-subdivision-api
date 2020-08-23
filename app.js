@@ -81,6 +81,7 @@ EXPRESS_APP.use(compression())
 
 // LOAD THE ROUTES
 const PARCELIZED_AGC_ROUTES = require('./routes/parcelized-agc-routes.js');
+const USER_ROUTES = require('./routes/user-routes.js')
 
 
 
@@ -94,6 +95,7 @@ const PARCELIZED_AGC_ROUTES = require('./routes/parcelized-agc-routes.js');
 // MOUNTING THE ROUTER
 EXPRESS_APP.use('/', PARCELIZED_AGC_ROUTES);
 EXPRESS_APP.use('/api/v1/parcelized-agcs', PARCELIZED_AGC_ROUTES);
+EXPRESS_APP.use('/api/v1/users', USER_ROUTES)
 
 
 

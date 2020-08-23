@@ -5,9 +5,14 @@ const { validator } = require("validator")
 
 const userSchema = new mongoose.Schema({
 
-   name: {
+   first_name: {
       type: String,
-      required: [true, "The name of the user is required"]
+      required: [true, "The first name of the user is required"]
+   },
+
+   last_name: {
+      type: String,
+      required: [true, "The last name of the user is required"]
    },
 
    email: {
@@ -26,7 +31,7 @@ const userSchema = new mongoose.Schema({
       minLength: 10,
    },
 
-   passwordConfirm: {
+   password_confirm: {
       type: String,
       required: [true, "The user must confirm their password"],
       minLength: 10

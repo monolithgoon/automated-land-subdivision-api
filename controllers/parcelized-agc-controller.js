@@ -68,7 +68,7 @@ exports.getAllParcelizedAgcs = async (request, response) => {
 
 	try {
 
-		console.log("YOU SUCCESSFULLY CALLED THE NIRSAL PARCELIZED AGCs API");
+		console.log("YOU SUCCESSFULLY CALLED THE getAllParcelizedAgcs CONTOLLER");
       console.log(request.query);
 
       // FILTER _EXAMPLE 1
@@ -165,7 +165,7 @@ exports.getAllParcelizedAgcs = async (request, response) => {
       // SEND RESPONSE
 		response.status(200).json({
 			status: "success",
-			requested_at: request.requestTime, // using our the custom property from our custom middleware in server.js
+			requested_at: request.requestTime, // using the custom property from our custom middleware in server.js
 			num_parcelized_agcs: parceledAgcData.length,
 			data: {
 				parcelized_agcs: parceledAgcData,
