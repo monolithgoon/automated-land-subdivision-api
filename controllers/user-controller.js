@@ -19,7 +19,7 @@ exports.getAllUsers = async (req, res) => {
          data: {
             users: usersData,
          }
-      })
+      });
       
    } catch (err) { 
       res.status(400).json({ // 400 => bad request

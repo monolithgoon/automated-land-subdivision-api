@@ -100,4 +100,4 @@ EXPRESS_APP.use('/api/v1/users', USER_ROUTES)
 
 
 
-module.exports = EXPRESS_APP
+module.exports = EXPRESS_APP;
