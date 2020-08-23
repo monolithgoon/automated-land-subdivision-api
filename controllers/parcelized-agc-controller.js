@@ -232,7 +232,7 @@ exports.insertParcelizedAgc = async (req, res) => {
       res.status(201).json({
          status: 'success',
          data: {
-            tour: newAgc
+            parcelizedAgc: newAgc
          }
       })
       

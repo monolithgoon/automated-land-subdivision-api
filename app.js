@@ -16,9 +16,10 @@ const cors = require('cors'); // this will allow other websites access the api
 
 
 // 3RD PARTY MIDDLEWARE > IMPLEMENT CORS
+// THIS ADDS "Access-cControl-Allow-Oriin *" TO THE RESPONSE HEADER
 EXPRESS_APP.use(cors());
-// API @ api.natours.com; frontend @ natours.com
-// ENABLE CORS FOR ONLY natours.com >
+// IF API IS @ api.natours.com; & FRONTEND IS @ natours.com
+// TO ENABLE CORS FOR ONLY natours.com >
    // EXPRESS_APP.use(cors({
    //    origin: 'https://www.natours.com'
    // }))
