@@ -93,7 +93,8 @@ const featureSchema = new mongoose.Schema({
          // required: [true, "Each farm parcel in the AGC must be assigned to a farmer"],
          required: false, // the chunk could be an unassigned leftover from parcelization process
          unique: true
-      }
+      },
+      coordinates: String
    }
 })
 
