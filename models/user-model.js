@@ -1,6 +1,6 @@
 // MODEL FOR > USERNAME, EMAIL, PHOTO, PASSWORD & PASSWORD CONFIRM
-const { mongoose } = require("mongoose");
-const { validator } = require("validator")
+const mongoose = require("mongoose");
+const validator = require("validator")
 
 
 const userSchema = new mongoose.Schema({
@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema({
 })
 
 
-const USER_MODEL = mongoose.mmodel('users', userSchema)
+const USER_MODEL = mongoose.model('users', userSchema)
 
 
 module.exports = USER_MODEL

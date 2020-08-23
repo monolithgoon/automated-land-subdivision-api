@@ -1,7 +1,7 @@
 const express = require('express');
 const ROUTER = express.Router();
 const USER_CONTROLLER = require('../controllers/user-controller.js')
-const AUTH_CONTROLLER = require('..controllers/auth-controller.js')
+const AUTH_CONTROLLER = require('../controllers/auth-controller.js')
 
 
 // USER AUTHENTICATION FUNCTIONS

@@ -10,6 +10,7 @@ API Deployment Checklist
    [ ] Create "routes/routers" folder <= this calls the "controllers"
    [ ] Create "controllers" folder <= this calls the "models"
    [ ] Create "models" folder
+      [ ] Install npm VALIDATOR package to validate email addresses in user-model.js
 
 
 [ ] Upload data from local .geojson file to Atlas DB
