@@ -74,7 +74,7 @@ const featureSchema = new mongoose.Schema({
       },
    geometry: geometrySchema,
    properties: {
-      chunk_idx: {
+      chunk_index: {
          type: Number,
          required: [true, "Each farm parcel in the AGC must have a parcel index"],
          unique: false
