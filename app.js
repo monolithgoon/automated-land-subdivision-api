@@ -67,7 +67,7 @@ EXPRESS_APP.use((request, response, next) => {
 
 
 // CUSTOM MIDDLEWRE EXAMPLE #2
-// MANIPULATE THE REQUEST OBJ.
+// MANIPULATE THE REQUEST OBJ. >> THIS ADDS A CUSTOM PROPERTY TO THE REQUEST OBJ.
 EXPRESS_APP.use((request, response, next) => {
    request.requestTime = new Date().toISOString(); // add a new custom property to the req. obj.
    next();
@@ -87,23 +87,30 @@ EXPRESS_APP.use(compression())
 // const TOURS_ROUTE = require('./routes/tour-routes.js')
 // const USERS_ROUTE = require('./routes/user-routes.js')
 
-// LOAD THE ROUTES
-const PARCELIZED_AGC_ROUTES = require('./routes/parcelized-agc-routes.js');
-const USER_ROUTES = require('./routes/user-routes.js')
+// LOAD THE ROUTERS/ROUTES
+// const PARCELIZED_AGC_ROUTES = require('./routes/parcelized-agc-routes.js');
+// const USER_ROUTES = require('./routes/user-routes.js')
+const parcelizedAgcsRouter = require('./routes/parcelized-agc-routes.js');
+const userRouter = require('./routes/user-routes.js')
 
 
 
 
 // REMOVE > 
-// MOUNTING THE ROUTER
+// MOUNTING THE ROUTERS
 // EXPRESS_APP.use('/', TOURS_ROUTE)
 // EXPRESS_APP.use('/api/v1/tours', TOURS_ROUTE)
 // EXPRESS_APP.use('/api/v1/users', USERS_ROUTE)
 
-// MOUNTING THE ROUTER
-EXPRESS_APP.use('/', PARCELIZED_AGC_ROUTES);
-EXPRESS_APP.use('/api/v1/parcelized-agcs', PARCELIZED_AGC_ROUTES);
-EXPRESS_APP.use('/api/v1/users', USER_ROUTES)
+// MOUNTING THE ROUTERS
+EXPRESS_APP.use('/', parcelizedAgcsRouter);
+EXPRESS_APP.use('/api/v1/parcelized-agcs', parcelizedAgcsRouter);
+EXPRESS_APP.use('/api/v1/users', userRouter)
+
+// MOUNT THE TEMPLATE ROUTER
+EXPRESS_APP.get('/', (req, res) => {
+   res.status(200).render('base')
+})
 
 
 

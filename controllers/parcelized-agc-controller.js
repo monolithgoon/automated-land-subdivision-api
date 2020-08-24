@@ -165,7 +165,7 @@ exports.getAllParcelizedAgcs = async (request, response) => {
       // SEND RESPONSE
 		response.status(200).json({
 			status: "success",
-			requested_at: request.requestTime, // using the custom property from our custom middleware in server.js
+			requested_at: request.requestTime, // using the custom property from our custom middleware in app.js
 			num_parcelized_agcs: parceledAgcData.length,
 			data: {
 				parcelized_agcs: parceledAgcData,
