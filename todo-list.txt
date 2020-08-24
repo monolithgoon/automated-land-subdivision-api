@@ -11,6 +11,9 @@ API Deployment Checklist
    [ ] Create "controllers" folder <= this calls the "models"
    [ ] Create "models" folder
       [ ] Install npm VALIDATOR package to validate email addresses in user-model.js
+   [ ] Create a "views" folder
+      [ ] Set the express app templating engine to "pug"
+      [ ] Point to the views directory using the path module
 
 
 [ ] Upload data from local .geojson file to Atlas DB
