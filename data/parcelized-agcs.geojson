@@ -4,7 +4,7 @@
     {
       "type": "Feature",
       "properties": {
-        "chunk_idx": 1,
+        "chunk_index": 1,
         "chunk_id": "nirsal-agc-code-xxx-unique-chunk-id-0",
         "chunk_size": "2.5",
         "farmer_id": "unique-farmer-id-0",
@@ -63,7 +63,7 @@
     {
       "type": "Feature",
       "properties": {
-        "chunk_idx": 2,
+        "chunk_index": 2,
         "chunk_id": "nirsal-agc-code-xxx-unique-chunk-id-66736",
         "chunk_size": "3.6",
         "farmer_id": "unique-farmer-id-68097",
@@ -104,7 +104,7 @@
     {
       "type": "Feature",
       "properties": {
-        "chunk_idx": 4,
+        "chunk_index": 4,
         "chunk_id": "nirsal-agc-code-xxx-unique-chunk-id-33689",
         "chunk_size": "4.3",
         "farmer_id": "unique-farmer-id-179753",

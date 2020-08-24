@@ -1,3 +1,4 @@
+const path = require('path');
 const Express = require('express')
 const EXPRESS_APP = Express()
 const Morgan = require('morgan'); // HTTP request logger
@@ -15,6 +16,17 @@ const cors = require('cors'); // this will allow other websites access the api
 
 
 
+// SET THE TEMPLATING ENGINE TO "PUG"
+EXPRESS_APP.set('view engine', 'pug');
+EXPRESS_APP.set('views', path.join(__dirname, 'views'));
+
+
+
+
+// 3RD PARTY MIDDLEWARE
+// EXPRESS_APP.use(express.static(path.join(__dirname, 'public'))); // serve static files
+
+
 // 3RD PARTY MIDDLEWARE > IMPLEMENT CORS
 // THIS ADDS "Access-cControl-Allow-Oriin *" TO THE RESPONSE HEADER
 EXPRESS_APP.use(cors());
@@ -27,10 +39,6 @@ EXPRESS_APP.use(cors());
 // PRE-FLIGHT "OPTIONS" REQUEST RESPONSE(?)
 EXPRESS_APP.options('*', cors()); // enable cors pre-flight requests for all routes
 // EXPRESS_APP.options('/api/v1/parcelized-agcs/:id', cors()) // enable cors for complex requests (delete, patch, post) only on this specific route
-
-
-// 3RD PARTY MIDDLEWARE
-// EXPRESS_APP.use(Express.static(`${__dirname}/client/public`)) // serve static files
 
 
 // 3RD PARTY MIDDLEWARE
