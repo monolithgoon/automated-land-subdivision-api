@@ -13,7 +13,8 @@ API Deployment Checklist
       [ ] Install npm VALIDATOR package to validate email addresses in user-model.js
    [ ] Create a "views" folder
       [ ] Set the express app templating engine to "pug"
-      [ ] Point to the views directory using the path module
+      [ ] Point to the "views" directory > EXPRESS_APP.set('views', path.join(__dirname, 'views'));
+      [ ] Mount the base template router > EXPRESS_APP.get('/', (req, res) => { ... }
 
 
 [ ] Upload data from local .geojson file to Atlas DB

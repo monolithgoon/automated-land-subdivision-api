@@ -1,0 +1,255 @@
+@import url('./map-overlays.css');
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,300i,400&display=swap');
+
+* {
+	font-family: 'Roboto', sans-serif;
+}
+
+body {
+	margin: auto;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+
+.app-container {
+	display: grid;
+	/* grid-template-rows: .8fr 1fr; */
+	grid-template-rows: auto 1fr;
+	grid-gap: 3px;
+	
+	/* background: #535c68; */
+	
+}
+
+#map {
+	height: 60vh;
+	/* REMOVE > THIS IS CAUSING THE MAPBOX LAYERS TO BE OFFSET */
+	/* display: grid;
+	grid-template-columns: 2fr 4fr;
+	grid-template-rows: 6fr 0.3fr;
+	grid-template-areas: 
+					". ."
+					"oranges grapes"; */
+}
+
+.section-2-container {
+	display: grid;
+
+	/* background: white; */
+}
+
+.summaries {
+	padding: 10px 0;
+	border-bottom: none;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	background: white;
+}
+
+.num-farmers,
+.allocated-hectares,
+.grid-cell-size,
+.cells-per-hectare {
+  padding: 0 10px;
+  display: grid;
+  grid-template-rows: .2fr 1fr;
+  border-right: 1px solid #eee
+}
+
+.aggr-data {
+	font-size: 22px;
+}
+
+.user-input-container {
+	margin: 0 10px;
+	margin-bottom: 10px;
+
+}
+
+.chunk-coords-listing {
+	margin: 0;
+	margin-top: 10px;
+	padding: 10px;
+	background: #f5f6fa;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	display: none;
+
+	/* height: 80px; */
+	max-height: 170px;
+	
+	overflow-y: scroll;
+}
+
+.coords-listing-header {
+	font-weight: 900;
+	font-size: 13px;
+}
+
+.chunk:hover{
+	font-weight: 700;
+	cursor: pointer;
+}
+
+select,
+button {
+	width: 100%;
+	height: 35px;
+	outline: none;
+	border: none;
+	font-size: 16px;
+}
+
+select {
+	padding-left: 10px;
+	background-color: #f5f6fd;
+	background-color: rgb(239, 233, 225);
+	font-size: 14px;
+}
+
+select:focus {
+	outline: 1px solid rgb(65, 188, 235);
+}
+
+option {
+	padding: 20px 20px;
+}
+
+button {
+	width: 45%;
+	border: none;
+	background-color: #009432;
+	background-color: #574b90;
+	background-color: #0abde3;
+	background-color: rgb(159, 221, 125);
+	background-color: rgb(117, 207, 240);
+	background-color: rgb(107, 203, 239);
+	background-color: rgb(65, 188, 235);
+	color: white;
+}
+
+button:active {
+	background-color: white;
+	color: black;
+}
+
+button:disabled {
+	background-color: #cccccc;
+	color: white;
+}
+
+.form-control-group {
+	padding: 0 0 15px;
+	display: flex;
+	justify-content: space-evenly;
+	/* display: none; */
+	/* width: 100%; */
+	/* display: grid; */
+	/* grid-template-columns: .5fr .5fr; */
+}
+
+.form-input-group {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	grid-gap: 8px;
+}
+
+input {
+	height: 25px;
+	width: 95%;
+	border: 1px solid grey;
+	text-align: center;
+	font-weight: 900;
+	border-radius: 2px;
+	outline: thick;
+}
+
+input:focus {
+	outline: 2px solid rgb(65, 188, 235);
+}
+
+.farm-detail-map {
+	padding: 0;
+	height: 40vh;
+  overflow: hidden;
+}
+
+
+
+/* ----------- Non-Retina Screens ----------- */
+@media screen 
+  and (min-device-width: 700px) 
+  and (max-device-width: 1600px) {
+  /* and (-webkit-min-device-pixel-ratio: 1) {  */
+
+	body {
+		font-size: 12px;
+		overflow: hidden;
+	}
+
+	.app-container {
+		grid-template-rows: 1fr;
+		grid-template-columns: .8fr 1fr;
+	}
+
+	#map {
+		height: 100vh;
+	}
+
+	.section-2-container {
+		grid-gap: 3px;
+		/* grid-template-rows: .2fr .5fr 1fr; */
+		grid-template-rows: .1fr auto 1fr;
+	}
+
+	.num-farmers,
+	.allocated-hectares,
+	.grid-cell-size,
+	.cells-per-hectare {
+		padding: 0 20px;
+	}
+
+	.aggr-data {
+		font-size: 27px;
+	}
+
+	.user-input-container {
+		margin-bottom: 10px;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		height: auto;
+	}
+
+	.chunk-coords-listing {
+		margin-top: 0;
+		margin-left: 10px;
+		display: block;
+
+	}
+
+	.farm-detail-map {
+		height: auto;
+	}
+
+	.chunk-polygon-label {
+		font-size: 10px;
+		color: black;
+		background: white;
+		border: 2px solid black
+	}
+
+}
+
+/* ----------- Retina Screens ----------- */
+@media screen 
+  and (min-device-width: 1200px) 
+  and (max-device-width: 1600px) 
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (min-resolution: 192dpi) { 
+	 
+	body{
+		margin: 8px;
+	}
+	
+}

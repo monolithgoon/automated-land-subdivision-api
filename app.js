@@ -1,6 +1,6 @@
 const path = require('path');
-const Express = require('express')
-const EXPRESS_APP = Express()
+const express = require('express')
+const EXPRESS_APP = express()
 const Morgan = require('morgan'); // HTTP request logger
 const BodyParser = require('body-parser'); // GET THE CONTENTS OF request.body
 const compression = require('compression'); // server response compression
@@ -17,14 +17,15 @@ const cors = require('cors'); // this will allow other websites access the api
 
 
 // SET THE TEMPLATING ENGINE TO "PUG"
+// PUG IS A WHTESPACE SENSITIVE SYNTAX FOR WRITING HTML
 EXPRESS_APP.set('view engine', 'pug');
 EXPRESS_APP.set('views', path.join(__dirname, 'views'));
 
 
 
 
-// 3RD PARTY MIDDLEWARE
-// EXPRESS_APP.use(express.static(path.join(__dirname, 'public'))); // serve static files
+// 3RD PARTY MIDDLEWARE > SERVE STATIC FILES
+EXPRESS_APP.use(express.static(path.join(__dirname, 'public')));
 
 
 // 3RD PARTY MIDDLEWARE > IMPLEMENT CORS
@@ -103,13 +104,19 @@ const userRouter = require('./routes/user-routes.js')
 // EXPRESS_APP.use('/api/v1/users', USERS_ROUTE)
 
 // MOUNTING THE ROUTERS
-EXPRESS_APP.use('/', parcelizedAgcsRouter);
+// EXPRESS_APP.use('/', parcelizedAgcsRouter);
 EXPRESS_APP.use('/api/v1/parcelized-agcs', parcelizedAgcsRouter);
 EXPRESS_APP.use('/api/v1/users', userRouter)
 
 // MOUNT THE TEMPLATE ROUTER
+// looks in the "views" folder for the "base" template && renders it to the browser
 EXPRESS_APP.get('/', (req, res) => {
-   res.status(200).render('base')
+   res.status(200).render('base', {
+      // THIS DATA IS PASSED TO THE PUG TEMPLATE
+      // THESE VARIABLES ARE CALLED "LOCALS" IN THE PUG FILE
+      title: "Parcelized AGCs: Test Batch 1",
+      user: "Phillip Moss"
+   }) 
 })
 
 
