@@ -61,7 +61,7 @@ body {
 	font-size: 22px;
 }
 
-.user-input-container {
+.user-feedback-container {
 	margin: 0 10px;
 	margin-bottom: 10px;
 
@@ -214,7 +214,7 @@ input:focus {
 		font-size: 27px;
 	}
 
-	.user-input-container {
+	.user-feedback-container {
 		margin-bottom: 10px;
 		display: grid;
 		grid-template-columns: 1fr 1fr;

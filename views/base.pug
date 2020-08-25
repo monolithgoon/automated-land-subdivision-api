@@ -1,83 +1,83 @@
 doctype html
 head
-  meta(charset='UTF-8')
-  meta(name='viewport' content='width=device-width, initial-scale=1.0')
-  title Farmland Parcelization
-  // MAPBOX
-  script(src='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js')
-  link(href='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css' rel='stylesheet')
-  // TURF
-  // <script src='https://unpkg.com/@turf/turf/turf.min.js'></script>
-  script(src='./plugins/turf.min.js')
-  // LEAFLET 1.3.1
-  script(src='https://unpkg.com/leaflet@1.3.1/dist/leaflet.js')
-  link(rel='stylesheet' href='https://unpkg.com/leaflet@1.3.1/dist/leaflet.css')
-  // LEAFLET BING MAPS
-  script(src='./plugins/LeafletBingLayer/bing.js')
-  link(rel='stylesheet' href='./public/css/style.css')
+   meta(charset='UTF-8')
+   meta(name='viewport' content='width=device-width, initial-scale=1.0')
+   title Farmland Parcelization
+   // MAPBOX
+   script(src='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js')
+   link(href='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css' rel='stylesheet')
+   // TURF
+   // <script src='https://unpkg.com/@turf/turf/turf.min.js'></script>
+   script(src='./plugins/turf.min.js')
+   // LEAFLET 1.3.1
+   script(src='https://unpkg.com/leaflet@1.3.1/dist/leaflet.js')
+   link(rel='stylesheet' href='https://unpkg.com/leaflet@1.3.1/dist/leaflet.css')
+   // LEAFLET BING MAPS
+   script(src='./plugins/LeafletBingLayer/bing.js')
+   link(rel='stylesheet' href='./css/style.css')
 .app-container
-  section#map
-    button.close-btn
-      svg.events-none.icon.color-lighten75.color-white-on-hover(role='presentation' focusable='false' style='width: 18px; height: 18px;')
-        use(xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#icon-close')
-  section.section-2-container
-    .summaries
-      .num-farmers
-        div Num. Farmers
-        #num_farmers.aggr-data -
-      .allocated-hectares
-        div Total Allocation
-        #total_allocation.aggr-data -
-      .grid-cell-size
-        div Delineated Area
-        #poly_area.aggr-data -
-      .cells-per-hectare
-        div Unused Land
-        #unused_land.aggr-data -
-    .user-input-container
-      form.allocation-form(action='submit')
-        .form-control-group
-          select#polygon_select_dd.polygon-select-dd(name='Polygon Select Dropdown Menu' disabled='')
-            option(value='Select Shapefile' disabled='' selected='') Select A Shapefile
-            option(value='shfile_1') Ogwashi-Uku-1, Delta State (28 ha.)
-            option(value='shfile_2') Ubulu-Unor-1, Delta State (30 ha.)
-            option(value='shfile_3') Ubulu-Unor-2, Delta State (34 ha.)
-            option(value='shfile_4') Illah, Delta State (50 ha.)
-            option(value='shfile_5') Mashi, Kaduna (16 ha.)
-            option(value='shfile_6') Gora-1, Nasarawa State (20 ha.)
-            option(value='shfile_7') Gora-2, Nasarawa State (270 ha.)
-            option(value='shfile_8') NIRSAL HQ Office Complex (23 ha.)
-            option(value='shfile_9') Ogwashi-Uku-2, Delta State (123 ha.)
-            option(value='shfile_10') Lafia, Nasarawa (175 ha.)
-            option(value='shfile_11') Illah-2, Delta State (113 ha.)
-            option(value='shfile_12') Rigachikum, Kaduna (39.5 ha.)
-            option(value='' disabled='')
-            option(value='' disabled='') Upload a shapefile..
-          button#chunkify_allocation.btn.plain-btn(disabled='') Get Parcels
-        .form-input-group
-          input(type='tel' inputmode='numeric' placeholder='allocation' value='0.9' autofocus='')
-          input(type='tel' inputmode='numeric' placeholder='allocation' value='0.8')
-          input(type='tel' inputmode='numeric' placeholder='allocation' value='0.7')
-          input(type='tel' inputmode='numeric' placeholder='allocation' value='0.6')
-          input(type='tel' inputmode='numeric' placeholder='allocation' value='0.5')
-          input(type='tel' inputmode='numeric' placeholder='allocation' value='0.4')
-          input(type='tel' inputmode='numeric' placeholder='allocation' value='0.3')
-          input(type='tel' inputmode='numeric' placeholder='allocation' value='3')
-          input(type='tel' inputmode='numeric' placeholder='allocation' value='1.5')
-          input(type='tel' inputmode='numeric' placeholder='allocation' value='2')
-          input(type='tel' inputmode='numeric' placeholder='allocation' value='3')
-          input(type='tel' inputmode='numeric' placeholder='allocation' value='4')
-          input(type='tel' inputmode='numeric' placeholder='allocation' value='')
-          input(type='tel' inputmode='numeric' placeholder='allocation' value='')
-          input(type='tel' inputmode='numeric' placeholder='allocation' value='')
-          input(type='tel' inputmode='numeric' placeholder='allocation' value='')
-          input(type='tel' inputmode='numeric' placeholder='allocation' value='')
-          input(type='tel' inputmode='numeric' placeholder='allocation' value='')
-          input(type='tel' inputmode='numeric' placeholder='allocation' value='')
-          input(type='tel' inputmode='numeric' placeholder='allocation' value='')
-      #chunk_coords_listing.chunk-coords-listing
-    section#farm_detail_map.farm-detail-map
-      .leaflet-map-overlay Ogwashi-Uku, Delta State 6.1816&deg; N, 6.5303&deg; E
+   section#map
+      button.close-btn
+         svg.events-none.icon.color-lighten75.color-white-on-hover(role='presentation' focusable='false' style='width: 18px; height: 18px;')
+            use(xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#icon-close')
+   section.section-2-container
+      .summaries
+         .num-farmers
+            div Num. Farmers
+            #num_farmers.aggr-data -
+         .allocated-hectares
+            div Total Allocation
+            #total_allocation.aggr-data -
+         .grid-cell-size
+            div Delineated Area
+            #poly_area.aggr-data -
+         .cells-per-hectare
+            div Unused Land
+            #unused_land.aggr-data -
+      .user-feedback-container
+         form.allocation-form(action='submit')
+            .form-control-group
+               select#polygon_select_dd.polygon-select-dd(name='Polygon Select Dropdown Menu' disabled='')
+                  option(value='Select Shapefile' disabled='' selected='') Select A Shapefile
+                  option(value='shfile_1') Ogwashi-Uku-1, Delta State (28 ha.)
+                  option(value='shfile_2') Ubulu-Unor-1, Delta State (30 ha.)
+                  option(value='shfile_3') Ubulu-Unor-2, Delta State (34 ha.)
+                  option(value='shfile_4') Illah, Delta State (50 ha.)
+                  option(value='shfile_5') Mashi, Kaduna (16 ha.)
+                  option(value='shfile_6') Gora-1, Nasarawa State (20 ha.)
+                  option(value='shfile_7') Gora-2, Nasarawa State (270 ha.)
+                  option(value='shfile_8') NIRSAL HQ Office Complex (23 ha.)
+                  option(value='shfile_9') Ogwashi-Uku-2, Delta State (123 ha.)
+                  option(value='shfile_10') Lafia, Nasarawa (175 ha.)
+                  option(value='shfile_11') Illah-2, Delta State (113 ha.)
+                  option(value='shfile_12') Rigachikum, Kaduna (39.5 ha.)
+                  option(value='' disabled='')
+                  option(value='' disabled='') Upload a shapefile..
+               button#chunkify_allocation.btn.plain-btn(disabled='') Get Parcels
+            .form-input-group
+               input(type='tel' inputmode='numeric' placeholder='allocation' value='0.9' autofocus='')
+               input(type='tel' inputmode='numeric' placeholder='allocation' value='0.8')
+               input(type='tel' inputmode='numeric' placeholder='allocation' value='0.7')
+               input(type='tel' inputmode='numeric' placeholder='allocation' value='0.6')
+               input(type='tel' inputmode='numeric' placeholder='allocation' value='0.5')
+               input(type='tel' inputmode='numeric' placeholder='allocation' value='0.4')
+               input(type='tel' inputmode='numeric' placeholder='allocation' value='0.3')
+               input(type='tel' inputmode='numeric' placeholder='allocation' value='3')
+               input(type='tel' inputmode='numeric' placeholder='allocation' value='1.5')
+               input(type='tel' inputmode='numeric' placeholder='allocation' value='2')
+               input(type='tel' inputmode='numeric' placeholder='allocation' value='3')
+               input(type='tel' inputmode='numeric' placeholder='allocation' value='4')
+               input(type='tel' inputmode='numeric' placeholder='allocation' value='')
+               input(type='tel' inputmode='numeric' placeholder='allocation' value='')
+               input(type='tel' inputmode='numeric' placeholder='allocation' value='')
+               input(type='tel' inputmode='numeric' placeholder='allocation' value='')
+               input(type='tel' inputmode='numeric' placeholder='allocation' value='')
+               input(type='tel' inputmode='numeric' placeholder='allocation' value='')
+               input(type='tel' inputmode='numeric' placeholder='allocation' value='')
+               input(type='tel' inputmode='numeric' placeholder='allocation' value='')
+         #chunk_coords_listing.chunk-coords-listing
+      section#farm_detail_map.farm-detail-map
+         .leaflet-map-overlay Ogwashi-Uku, Delta State 6.1816&deg; N, 6.5303&deg; E
 script(src='./src/js/main.js' type='module')
 // <script src="./src/js/chunkify-voronoi.js" type="module"></script>
 // <script src="jquery-min.js"></script>
