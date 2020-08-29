@@ -11,10 +11,15 @@ API Deployment Checklist
    [ ] Create "controllers" folder <= this calls the "models"
    [ ] Create "models" folder
       [ ] Install npm VALIDATOR package to validate email addresses in user-model.js
-   [ ] Create a "views" folder
-      [ ] Set the express app templating engine to "pug"
+
+   [ ] SERVER SIDE RENDERING
+      [ ] Create a "views" folder
+      [ ] Set the express app templating engine to "pug" 
       [ ] Point to the "views" directory > EXPRESS_APP.set('views', path.join(__dirname, 'views'));
-      [ ] Mount the base template router > EXPRESS_APP.get('/', (req, res) => { ... }
+      [ ] Create middleware to serve static files from "public" folder
+      [ ] Mount the PUG template router > EXPRESS_APP.get('/', (req, res) => { ... }
+      [ ] Set PUG to render 'base' file > res.status(200).render('base', {...})
+      [ ] 
 
 
 [ ] Upload data from local .geojson file to Atlas DB

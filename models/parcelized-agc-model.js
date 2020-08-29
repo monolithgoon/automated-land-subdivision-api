@@ -94,6 +94,14 @@ const featureSchema = new mongoose.Schema({
          required: false, // the chunk could be an unassigned leftover from parcelization process
          unique: true
       },
+      center_lng: {
+         type: Number,
+         required: false
+      },
+      center_lat: {
+         type: Number,
+         required: false
+      },
       coordinates: String
    }
 })
