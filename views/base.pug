@@ -20,26 +20,32 @@ body
 			button.close-btn
 				svg.events-none.icon.color-lighten75.color-white-on-hover(role='presentation' focusable='false' style='width: 18px; height: 18px;')
 					use(xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#icon-close')
+
 		section.section-2-container
-			.summaries
-				.num-farmers
-					div Num. Farmers
-					#num_farmers.aggr-data -
-				.allocated-hectares
-					div Total Allocation
-					#total_allocation.aggr-data -
-				.grid-cell-size
-					div Delineated Area
-					#poly_area.aggr-data -
-				.cells-per-hectare
-					div Unused Land
-					#unused_land.aggr-data -
-			.user-feedback-container
-				block retreived-agc-content
-					div This is a placeholder 'div' for the retreived parcelized AGC
-				#chunk_coords_listing.chunk-coords-listing
+
+			.data-container
+				.summaries
+					.num-farmers
+						div Num. Farmers
+						#num_farmers.aggr-data -
+					.allocated-hectares
+						div Total Allocation
+						#total_allocation.aggr-data -
+					.grid-cell-size
+						div Delineated Area
+						#poly_area.aggr-data -
+					.cells-per-hectare
+						div Unused Land
+						#unused_land.aggr-data -
+				.user-feedback-container
+					#chunk_coords_listing.chunk-coords-listing
+
+			//- DATA RETREIVED FROM THE API
+			block content
+
 			section#farm_detail_map.farm-detail-map
 				#map_location_overlay.leaflet-map-overlay Ogwashi-Uku, Delta State 6.1816&deg;N, 6.5303&deg;E
+
 	// script(src='./src/js/main.js' type='module')
 	// <script src="./src/js/chunkify-voronoi.js" type="module"></script>
 	// <script src="jquery-min.js"></script>

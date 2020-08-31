@@ -117,7 +117,7 @@ EXPRESS_APP.get('/', (req, res) => {
       // THESE VARIABLES ARE CALLED "LOCALS" IN THE PUG FILE
       title: "Parcelized AGCs: Test Batch 1",
       user: "Phillip Moss"
-   }); 
+   });
 })
 
 
