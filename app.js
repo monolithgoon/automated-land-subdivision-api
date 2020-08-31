@@ -108,7 +108,8 @@ const userRouter = require('./routes/user-routes.js')
 EXPRESS_APP.use('/api/v1/parcelized-agcs', parcelizedAgcsRouter);
 EXPRESS_APP.use('/api/v1/users', userRouter)
 
-// MOUNT THE TEMPLATE ROUTER
+
+// MOUNT THE TEMPLATE ROUTER #1
 // looks in the "views" folder for the "base" template && renders it to the browser
 EXPRESS_APP.get('/', (req, res) => {
    res.status(200).render('base', {
@@ -117,6 +118,14 @@ EXPRESS_APP.get('/', (req, res) => {
       title: "Parcelized AGCs: Test Batch 1",
       user: "Phillip Moss"
    }) 
+})
+
+
+// MOUNT THE TEMPLATE ROUTER #2
+EXPRESS_APP.get('/render-agc-plots', (req, res) => {
+   res.status(200).render('agc-render', {
+      title: "Rendered AGC Farm Plots"
+   })
 })
 
 
