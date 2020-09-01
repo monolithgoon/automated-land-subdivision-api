@@ -14,13 +14,15 @@ API Deployment Checklist
 
    [ ] SERVER SIDE RENDERING
       [ ] Create a "views" folder
-      [ ] Set the express app templating engine to "pug" 
-      [ ] Point to the "views" directory > EXPRESS_APP.set('views', path.join(__dirname, 'views'));
-      [ ] Create middleware to serve static files from "public" folder
-      [ ] Mount the PUG template router > EXPRESS_APP.get('/', (req, res) => { ... }
-      [ ] Set PUG to render 'base' file > res.status(200).render('base', {...})
-      [ ] Create view-router.js
-         [ ] Mount the viewRouter on the base url
+      [ ] Set the express app templating engine to "pug" in app.js
+         [ ] Point to the "views" directory > EXPRESS_APP.set('views', path.join(__dirname, 'views'));
+         [ ] Create middleware to serve static files from "public" folder
+      [ ] Create view-controller.js
+         [ ] Create the functions that render the .pug files in the 'views' folder
+      [ ] Create view-routes.js
+         [ ] Import the render functions from view-controller.js
+         [ ] Export the ROUTER as viewsRouter
+         [ ] Mount the viewRouter on the base url in app.js
 
 
 [ ] Upload data from local .geojson file to Atlas DB
