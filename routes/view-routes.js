@@ -1,6 +1,6 @@
 const express = require ("express");
-const viewsController = require('../controllers/view-controller.js')
 const ROUTER = express.Router();
+const viewsController = require('../controllers/view-controller.js')
 
 
 
