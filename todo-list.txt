@@ -19,7 +19,8 @@ API Deployment Checklist
       [ ] Create middleware to serve static files from "public" folder
       [ ] Mount the PUG template router > EXPRESS_APP.get('/', (req, res) => { ... }
       [ ] Set PUG to render 'base' file > res.status(200).render('base', {...})
-      [ ] 
+      [ ] Create view-router.js
+         [ ] Mount the viewRouter on the base url
 
 
 [ ] Upload data from local .geojson file to Atlas DB

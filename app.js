@@ -89,10 +89,9 @@ EXPRESS_APP.use(compression())
 // const USERS_ROUTE = require('./routes/user-routes.js')
 
 // LOAD THE ROUTERS/ROUTES
-// const PARCELIZED_AGC_ROUTES = require('./routes/parcelized-agc-routes.js');
-// const USER_ROUTES = require('./routes/user-routes.js')
 const parcelizedAgcsRouter = require('./routes/parcelized-agc-routes.js');
 const userRouter = require('./routes/user-routes.js')
+const viewRouter = require('./routes/view-routes.js')
 
 
 
@@ -104,30 +103,9 @@ const userRouter = require('./routes/user-routes.js')
 // EXPRESS_APP.use('/api/v1/users', USERS_ROUTE)
 
 // MOUNTING THE ROUTERS
-// EXPRESS_APP.use('/', parcelizedAgcsRouter);
+EXPRESS_APP.use('/', viewRouter);
 EXPRESS_APP.use('/api/v1/parcelized-agcs', parcelizedAgcsRouter);
 EXPRESS_APP.use('/api/v1/users', userRouter)
-
-
-// MOUNT THE TEMPLATE ROUTER #1
-// looks in the "views" folder for the "base" template && renders it to the browser
-EXPRESS_APP.get('/', (req, res) => {
-   res.status(200).render('base', {
-      // THIS DATA IS PASSED TO THE PUG TEMPLATE
-      // THESE VARIABLES ARE CALLED "LOCALS" IN THE PUG FILE
-      // THE PROCESS OF USING THEM IN THE .pug FILE IS CALLED INTERPOLATION
-      title: "Parcelized AGCs: Test Batch 1",
-      user: "Phillip Moss"
-   });
-})
-
-
-// MOUNT THE TEMPLATE ROUTER #2
-EXPRESS_APP.get('/render-agc', (req, res) => {
-   res.status(200).render('agc-render', {
-      title: "Rendered AGC Farm Plots"
-   })
-})
 
 
 
