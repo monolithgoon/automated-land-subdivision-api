@@ -4,7 +4,7 @@ const viewsController = require('../controllers/view-controller.js')
 
 
 
-ROUTER.get('/', viewsController.renderParcelizedAgcs)
+ROUTER.get('/', viewsController.renderAllParcelizedAgcs)
 ROUTER.get('/parcelized-agc', viewsController.renderParcelizedAgc)
 
 

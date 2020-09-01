@@ -15,19 +15,20 @@ head
 	link(rel='stylesheet' href='./css/style.css')
 
 body   
-	.app-container
-		section#map
-			button.close-btn
-				svg.events-none.icon.color-lighten75.color-white-on-hover(role='presentation' focusable='false' style='width: 18px; height: 18px;')
-					use(xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#icon-close')
+	each parcelizedAgc in parcelizedAgcsData
+		.app-container
+			section#map
+				button.close-btn
+					svg.events-none.icon.color-lighten75.color-white-on-hover(role='presentation' focusable='false' style='width: 18px; height: 18px;')
+						use(xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#icon-close')
 
-		section.section-2-container
+			section.section-2-container
 
-			//- DATA RETREIVED FROM THE API
-			block parcelized-agc-content
+				//- DATA RETREIVED FROM THE API
+				block parcelized-agc-content
 
-			section#farm_detail_map.farm-detail-map
-				#map_location_overlay.leaflet-map-overlay Ogwashi-Uku, Delta State 6.1816&deg;N, 6.5303&deg;E
+				section#farm_detail_map.farm-detail-map
+					#map_location_overlay.leaflet-map-overlay Ogwashi-Uku, Delta State 6.1816&deg;N, 6.5303&deg;E
 
 	// script(src='./src/js/main.js' type='module')
 	// <script src="./src/js/chunkify-voronoi.js" type="module"></script>

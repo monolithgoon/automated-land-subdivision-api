@@ -1,20 +1,21 @@
-extends base
+extends overview
 
 block parcelized-agc-content
-   div Data from the retreived parcelized AGC
-   .data-container
-      .summaries
-         .num-farmers
-            div Num. Farmers
-            #num_farmers.aggr-data -
-         .allocated-hectares
-            div Total Allocation
-            #total_allocation.aggr-data -
-         .grid-cell-size
-            div Delineated Area
-            #poly_area.aggr-data -
-         .cells-per-hectare
-            div Unused Land
-            #unused_land.aggr-data -
-      .user-feedback-container
-         #chunk_coords_listing.chunk-coords-listing
+   each parcelizedAgc in parcelizedAgcsData
+      div Data from the retreived parcelized AGC
+      .data-container
+         .summaries
+            .num-farmers
+               div Num. Farmers
+               #num_farmers.aggr-data -
+            .allocated-hectares
+               div Total Allocation
+               #total_allocation.aggr-data -
+            .grid-cell-size
+               div Delineated Area
+               #poly_area.aggr-data -
+            .cells-per-hectare
+               div Unused Land
+               #unused_land.aggr-data -
+         .user-feedback-container
+            #chunk_coords_listing.chunk-coords-listing
