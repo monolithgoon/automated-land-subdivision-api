@@ -122,7 +122,7 @@ EXPRESS_APP.get('/', (req, res) => {
 
 
 // MOUNT THE TEMPLATE ROUTER #2
-EXPRESS_APP.get('/render-agc-plots', (req, res) => {
+EXPRESS_APP.get('/render-agc', (req, res) => {
    res.status(200).render('agc-render', {
       title: "Rendered AGC Farm Plots"
    })
