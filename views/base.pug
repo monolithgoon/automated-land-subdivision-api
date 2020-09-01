@@ -2,7 +2,7 @@ doctype html
 head
 	meta(charset='UTF-8')
 	meta(name='viewport' content='width=device-width, initial-scale=1.0')
-	title AGC Farmland Parcelization
+	title AGC Farmland Parcelization | #{title}
 	// MAPBOX
 	script(src='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js')
 	link(href='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css' rel='stylesheet')
@@ -24,7 +24,7 @@ body
 		section.section-2-container
 
 			//- DATA RETREIVED FROM THE API
-			block content
+			block parcelized-agc-content
 
 			section#farm_detail_map.farm-detail-map
 				#map_location_overlay.leaflet-map-overlay Ogwashi-Uku, Delta State 6.1816&deg;N, 6.5303&deg;E
