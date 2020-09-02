@@ -318,7 +318,7 @@ function drawChunk(polygon, layerID, bufferAmt) {
 
 
 // RENDER CHUNKIFY DATA ON DOM (_V2)
-function RENDER_DATA({allocationTotal, unallocatedLandArea, farmPlotsGeojson}) {      
+function renderDataOnDOM({allocationTotal, unallocatedLandArea, farmPlotsGeojson}) {      
 
    const chunksListing_Div = document.getElementById('chunk_coords_listing');
 
@@ -353,7 +353,7 @@ function RENDER_DATA({allocationTotal, unallocatedLandArea, farmPlotsGeojson}) {
       chunk_Div.className = 'chunk'
 
       // chunk_Div.innerHTML = `Plot #${index + 1} ${JSON.stringify(chunk.properties)} ${JSON.stringify(chunk.geometry.coordinates)} <br><br>`
-      chunk_Div.innerHTML = `Plot #${index + 1} <br> ${JSON.stringify(chunk.geometry.coordinates)} <br><br>`
+      chunk_Div.innerHTML = `Plot #${index + 1} <br> ${chunk.properties.farmer_id.toUpperCase()} <br> ${JSON.stringify(chunk.geometry.coordinates)} <br><br>`
 
       chunksListing_Div.appendChild(chunk_Div);
 
@@ -393,7 +393,7 @@ map.on('load', function () {
    const farmPlotsGeojson = parcelizedAgc.features;
    const allocationTotal = parcelizedAgc.properties.agc_area;
    const unallocatedLandArea = parcelizedAgc.properties.unused_land_area;
-   RENDER_DATA({allocationTotal, unallocatedLandArea, farmPlotsGeojson})
+   renderDataOnDOM({allocationTotal, unallocatedLandArea, farmPlotsGeojson})
 
 
 
