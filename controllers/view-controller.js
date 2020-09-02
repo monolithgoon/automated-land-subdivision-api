@@ -33,7 +33,7 @@ exports.checkID = async (req, res, next, paramValue) => {
 
 
 // this fn. looks in the "views" folder for the "overview" template && renders it to the browser
-exports.renderAllParcelizedAgcs = async (req, res, next) => {
+exports.renderAllParcelizedAgcs = async (req, res) => {
 
    try {
 
@@ -61,16 +61,17 @@ exports.renderAllParcelizedAgcs = async (req, res, next) => {
 
 
 
-exports.renderParcelizedAgc = async (req, res, next, paramValue) => {
+exports.renderParcelizedAgc = async (req, res) => {
 
    try {
       
-      const parcelizedAgc = await PARCELIZED_AGC_MODEL.findById(paramValue);
+      const parcelizedAgc = await PARCELIZED_AGC_MODEL.findById(req.params.id);
       console.log(parcelizedAgc)
 
       res.status(200).render('agc-render', {
          title: "Rendered AGC Farm Plots",
-         parcelizedAgcData: parcelizedAgc
+         // parcelizedAgcData: parcelizedAgc
+         parcelizedAgcData: JSON.stringify(parcelizedAgc.features)
       })
 
    } catch (err) {

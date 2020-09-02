@@ -104,6 +104,7 @@ const viewRouter = require('./routes/view-routes.js')
 
 // MOUNTING THE ROUTERS
 EXPRESS_APP.use('/', viewRouter);
+EXPRESS_APP.use('/parcelized-agc', viewRouter);
 EXPRESS_APP.use('/api/v1/parcelized-agcs', parcelizedAgcsRouter);
 EXPRESS_APP.use('/api/v1/users', userRouter)
 

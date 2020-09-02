@@ -1,9 +1,11 @@
-extends overview
+extends agcs-overview
 
 block parcelized-agc-content
-   each parcelizedAgc in parcelizedAgcData
+
       div Data from the retreived parcelized AGC
+
       .data-container
+         div= parcelizedAgcData
          .summaries
             .num-farmers
                div Num. Farmers
