@@ -5,10 +5,11 @@ block parcelized-agc-content
       div Data from the retreived parcelized AGC
 
       .data-container
-         div= parcelizedAgcData
+         div= JSON.stringify(parcelizedAgcData)
          .summaries
             .num-farmers
                div Num. Farmers
+               div= parcelizedAgcData.features.length
                #num_farmers.aggr-data -
             .allocated-hectares
                div Total Allocation

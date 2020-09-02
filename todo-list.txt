@@ -20,8 +20,7 @@ API Deployment Checklist
       [ ] Create view-controller.js
          [ ] Create the functions that render the .pug files in the 'views' folder
          [ ] Get parcelized-agc data from Atlas DB collection
-         [ ] Build the template
-         [ ] Render the template using the returned parcelized-agc data
+         [ ] Render the returned parcelized-agc data to the 'agc-render.pug' template
       [ ] Create view-routes.js
          [ ] Import the render functions from view-controller.js
          [ ] Export the ROUTER as viewsRouter

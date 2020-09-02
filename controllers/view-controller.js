@@ -70,8 +70,7 @@ exports.renderParcelizedAgc = async (req, res) => {
 
       res.status(200).render('agc-render', {
          title: "Rendered AGC Farm Plots",
-         // parcelizedAgcData: parcelizedAgc
-         parcelizedAgcData: JSON.stringify(parcelizedAgc.features)
+         parcelizedAgcData: parcelizedAgc
       })
 
    } catch (err) {
