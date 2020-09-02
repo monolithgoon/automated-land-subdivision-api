@@ -128,6 +128,7 @@ const parcelizedAgcSchema = new mongoose.Schema({
          // unique: true
       },
       location: String,
+      agc_center_coords: Array,
       num_farmers: {
          type: Number,
          required: [true, 'Each parcelized AGC must have a specified number of farmers']

@@ -318,17 +318,26 @@ function drawChunk(polygon, layerID, bufferAmt) {
 
 
 // RENDER CHUNKIFY DATA ON DOM (_V2)
-function renderDataOnDOM({allocationTotal, unallocatedLandArea, farmPlotsGeojson}) {      
+function renderDataOnDOM({parcelizedAgcGeojson, farmPlotsGeojson}) {      
 
    const chunksListing_Div = document.getElementById('chunk_coords_listing');
+   const mapLocation_Div = document.getElementById('map_location_overlay')
 
    
    // numFarmers_Div.innerText = farmPlotsGeojson.length;
    // unusedLand_Div.innerText = `${(unallocatedLandArea).toFixed(1)} ha.`
    
    // CLEAR THE LISTINGS EACH TIME THIS FN. IS CALLED
-   chunksListing_Div.innerText = "";
    // totalAllocation_Div.innerText = "";
+   chunksListing_Div.innerText = "";
+   mapLocation_Div.innerText = "";
+
+   mapLocation_Div.innerText = `${parcelizedAgcGeojson.properties.location}`
+   const agcLocation = parcelizedAgcGeojson.properties.location;
+   const agcCenterCoords = [6.18, 6.53] // FIXME < update the parcelized AGC properties to include agc_center_coords 
+   // const agcCenterCoords = turf.centerOfMass(parcelizedAgcGeojson)
+   mapLocation_Div.innerText = `${agcLocation || 'Nigeria'} ${agcCenterCoords[0].toFixed(5)}°E ${agcCenterCoords[1].toFixed(5)}°N`
+
 
    const listingHeader_div = document.createElement('div')
    listingHeader_div.innerHTML = `Parcelized Plots' Coordinates <br><br>`
@@ -374,26 +383,26 @@ map.on('load', function () {
 
 
    // GET DATA FROM BACKEND
-   const parcelizedAgc = JSON.parse(GET_API_DATA())
-   console.log(parcelizedAgc);
+   const parcelizedAgcGeojson = JSON.parse(GET_API_DATA())
+   console.log(parcelizedAgcGeojson);
 
 
    // RENDER THE AGC SHAPEFILE
-   RENDER_SHAPEFILE(map, leaflet_map, parcelizedAgc);
+   RENDER_SHAPEFILE(map, leaflet_map, parcelizedAgcGeojson);
    
    
    // RENDER THE PLOTS ON THE MAP
-   parcelizedAgc.features.forEach((farmPlot,idx)=>{
+   parcelizedAgcGeojson.features.forEach((farmPlot,idx)=>{
       drawChunk(farmPlot, idx, -0.005)
       console.log(farmPlot)
    })
 
 
    // RENDER THE PLOTS' COORDINATES IN THE DOM
-   const farmPlotsGeojson = parcelizedAgc.features;
-   const allocationTotal = parcelizedAgc.properties.agc_area;
-   const unallocatedLandArea = parcelizedAgc.properties.unused_land_area;
-   renderDataOnDOM({allocationTotal, unallocatedLandArea, farmPlotsGeojson})
+   const farmPlotsGeojson = parcelizedAgcGeojson.features;
+   const allocationTotal = parcelizedAgcGeojson.properties.agc_area;
+   const unallocatedLandArea = parcelizedAgcGeojson.properties.unused_land_area;
+   renderDataOnDOM({parcelizedAgcGeojson, farmPlotsGeojson})
 
 
 
