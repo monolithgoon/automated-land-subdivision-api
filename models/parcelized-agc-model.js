@@ -123,11 +123,23 @@ const parcelizedAgcSchema = new mongoose.Schema({
       validate: [(entry) => Array.isArray(entry) && entry.length > 0, `The AGC featureCollection must have at least one feature or an array of features`],
    },
    properties: {
-      num_farmers: Number,
-      total_allocation: Number,
-      agc_area: Number,
+      agc_id: {
+         // required: [true, 'Each parcelized AGC must have an ID'],
+         // unique: true
+      },
+      num_farmers: {
+         type: Number,
+         required: [true, 'Each parcelized AGC must have a specified number of farmers']
+      },
+      total_allocation: {
+         type: Number,
+         required: [true, 'Each parcelized AGC must have the total allocation specified']
+      },
+      agc_area: {
+         type: Number,
+         required: [true, 'Each parcelized AGC must have its area specified']
+      },
       unused_land_area: Number
-
    }
 
 })
