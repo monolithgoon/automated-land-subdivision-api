@@ -50,7 +50,7 @@ body {
 .num-farmers,
 .allocated-hectares,
 .shapefile-area,
-.cells-per-hectare {
+.unused-land-area {
   padding: 0 10px;
   display: grid;
   grid-template-rows: .2fr 1fr;
@@ -218,7 +218,7 @@ input:focus {
 	.num-farmers,
 	.allocated-hectares,
 	.shapefile-area,
-	.cells-per-hectare {
+	.unused-land-area {
 		padding: 0 20px;
 	}
 
