@@ -14,6 +14,14 @@ const mapLocation_Div = document.getElementById('map_location_overlay')
 
 
 
+
+export function GET_API_DATA() {
+   const dataStream = document.getElementById('api_data_stream').dataset.parcelizedagc
+   return dataStream
+}
+
+
+
 export function READ_DOM() {
 
    // CONVERT USER IMPUT OF FARM SIZES TO AN NUMBERS ARRAY

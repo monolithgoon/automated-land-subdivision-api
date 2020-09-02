@@ -110,18 +110,26 @@ const featureSchema = new mongoose.Schema({
 
 // PARCELIZED AGC SCHEMA
 const parcelizedAgcSchema = new mongoose.Schema({
-      type: {
-         type: String,
-         enum: ["FeatureCollection"],
-         default: "FeatureCollection",
-         required: true
+   type: {
+      type: String,
+      enum: ["FeatureCollection"],
+      default: "FeatureCollection",
+      required: true
    },
    features: {
       type: [featureSchema],
       required: [true, `The featureCollection must have at least one feature or an array of features`],
       // validate: (entry) => Array.isArray(entry) && entry.length > 0, // RETURNS true or false
       validate: [(entry) => Array.isArray(entry) && entry.length > 0, `The AGC featureCollection must have at least one feature or an array of features`],
+   },
+   properties: {
+      num_farmers: Number,
+      total_allocation: Number,
+      agc_area: Number,
+      unused_land_area: Number
+
    }
+
 })
 
 

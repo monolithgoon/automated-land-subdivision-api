@@ -283,8 +283,9 @@ export function RENDER_SHAPEFILE(map, leaflet_map, shapefile) {
    let marker = new mapboxgl.Marker().setLngLat(center).addTo(map)
 
 
+	// REMOVE > 
    // UPDATE THE POLYGON AREA ON THE DOM
-   REFRESH_DOM(area, location, center)
+   // REFRESH_DOM(area, location, center)
 
 
    // ADD LAYERS TO MAPBOX > IRREGULAR POLYGON OUTLINE

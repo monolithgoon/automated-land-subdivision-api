@@ -1,12 +1,11 @@
 'use strict'
 
-import { RENDER_LAYER, CLEAR_LAYERS } from "./mapbox-render.js"
-import { RENDERED_FEAT_COLL_LAYER_CLICK, OPEN_RANDOM_POPUP, POLYGON_FILL_BEHAVIOR } from './mapbox-render.js'
+import { RENDERED_FEAT_COLL_LAYER_CLICK, OPEN_RANDOM_POPUP } from './mapbox-render.js'
+import { GET_MAPBOX_POLYGON_LAYER, GET_LABEL_LAYER, CLEAR_LAYERS, RENDER_LAYER, RENDER_SIMPLE_SHAPEFILE, POLYGON_FILL_BEHAVIOR } from "./mapbox-render.js"
 import { RENDER_SHAPEFILE, GET_SHAPEFILE_GRID_DATA, GET_SHAPEFILE_AREA } from './irregular-polygon.js'
 import { ASSIGN_KATANAS } from './katana-assignment.js'
 import { CHUNKIFY } from './plot-allocation.js'
-import { READ_DOM, RENDER_DOM_DATA, REFRESH_DOM } from './dom-render.js'
-
+import { GET_API_DATA, READ_DOM, RENDER_DOM_DATA, REFRESH_DOM } from './dom-render.js'
 import { RENDER_MOVING_FRAMES_CHUNKS, GET_RENDERED_LAYERS } from "./chunkify-moving-frames.js";
 
 
@@ -120,11 +119,12 @@ export const leaflet_map = L.map("farm_detail_map", { zoomSnap: 0.01 })
 // UTILITY FUNCTIONS & GLOBAL VARIABLES
 
 let shapefileArea;
+const RENDERED_LAYERS = [];
 
 
 // CLEAR PREVIOUS RENDERED LAYERS
 function clearPreviousLayers() {
-   const lastRenderedLayers = GET_RENDERED_LAYERS()
+   const lastRenderedLayers = RENDERED_LAYERS;
    if (lastRenderedLayers.length > 0) {
       CLEAR_LAYERS(map, lastRenderedLayers)
    }
@@ -266,134 +266,213 @@ let dirComboConfigObj;
 
 
 
+// PLOT/CHUNK RENDER FUNCTION
+function drawChunk(polygon, layerID, bufferAmt) {
+
+   let presentationPolygon;
+
+   
+   if (bufferAmt) {
+      
+      // PREP. FOR PRESENTATION >> THIS REMOVES THE "TAILS"  FROM THE CHUNKS 
+      presentationPolygon = turf.buffer(polygon, bufferAmt, {unit: 'kilometers'}); 
+
+      // SOMETIMES turf.buffer RETURNS "undefined" > DEAL WITH IT
+      presentationPolygon = presentationPolygon ? presentationPolygon : polygon
+
+      
+   } else {
+
+      presentationPolygon = polygon;
+
+   }
+   
+   
+   // GET THE CHUNK POLYGON LAYERS
+   let polygonOutlineLayer = GET_MAPBOX_POLYGON_LAYER(presentationPolygon, {layerID, color: null, thickness: 2, fillOpacity: 0.1}).outlineLayer;
+   let polygonFillLayer = GET_MAPBOX_POLYGON_LAYER(presentationPolygon, {layerID, color: null, thickness: 2, fillOpacity: 0.1}).fillLayer;
+
+
+   // CREATE LABEL LAYER FOR POLYGON
+   let chunkIndex = presentationPolygon.properties.chunk_index;   
+   let chunkMagnitude = presentationPolygon.properties.chunk_size;
+   let labelLayer = GET_LABEL_LAYER(presentationPolygon, chunkIndex, chunkMagnitude);
+   
+   
+   // SAVE THE LAYERS
+   RENDERED_LAYERS.push(polygonOutlineLayer)
+   RENDERED_LAYERS.push(polygonFillLayer)
+   RENDERED_LAYERS.push(labelLayer);
+
+   
+   // RENDER THE LAYERS
+   RENDER_LAYER(map, polygonOutlineLayer)
+   RENDER_LAYER(map, polygonFillLayer)
+   RENDER_LAYER(map, labelLayer)      
+   
+   
+   // ADD CLICKABILITY TO THE FILL LAYER
+   POLYGON_FILL_BEHAVIOR(map, leaflet_map, polygonFillLayer)
+}
+
+
+
+
+
+
+
 // EVENT HANDLERS
 map.on('load', function () {
 
 
-   // ACTIVATE THE DROPDOWN ONLY AFTER THE MAP IS LOADED
-   polygonSelectDD.disabled = false;
+   clearPreviousLayers();
+   
+   
+   // JUMP TO TOP OF THE PAGE
+   window.scrollTo(0, document.body.scrollTop, {behavior: "smooth"});
 
 
-   // DROPDOWN MENU EVENT HANDLER
-   polygonSelectDD.addEventListener('change', (e) => {
-      
-      e.preventDefault();
+   // GET DATA FROM BACKEND
+   const parcelizedAgc = JSON.parse(GET_API_DATA())
+   console.log(parcelizedAgc);
 
 
-      clearPreviousLayers();
-
-
-      // ACTIVATE THE 2nd DD. ONLY AFTER A SHAPEFILE SELECTION IS MADE
-      movingFramesDirOptionsDD.disabled = false;
-      
-
-      // SAVE THE SELECTED SHAPEFILE TO A VARIABLE
-      const shapefile_selection = e.target.value
-
-
-      // JUMP TO TOP OF THE PAGE
-      window.scrollTo(0, document.body.scrollTop, {behavior: "smooth"});
-
-
-      // SAVE THE SELECTED SHAPEFILE
-      selectedShapefile = shapefiles[shapefile_selection]
-
-      
-      // RENDER THE SHAPEFILE < FROM irregular-polygon.js MODULE
-      RENDER_SHAPEFILE(map, leaflet_map, selectedShapefile);
-
-      // RETURN THE AREA VARIABLE FOR COMPARISON WITH TOTAL ALLOCATION ON CHUNKIFY BUTTON CLICK
-      shapefileArea = GET_SHAPEFILE_AREA()
-
-
-      // SHOW THE MASKING GRID
-      // preRenderGrid(selectedShapefile);
-
-   });
-
-
-   // DIRECTION OPTIONS DROPDOWN MENU EVENT HANDLER
-   movingFramesDirOptionsDD.addEventListener('change', (e) => {
-
-      e.preventDefault();
-
-      clearPreviousLayers();
-
-      // ACTIVATE THE CHUNKIFY BTN. ONLY AFTER A SELECTION IS MADE
-      chunkifyBtn.disabled = false;
-
-      // SAVE THE SELECTED DIR. OPTIONS TO A VARIABLE
-      const dirComboSelection = e.target.value
-
-      // GET THE OPTIONS CONFIG. FROM THE MAP
-      dirComboConfigObj = dirOptionsMap[dirComboSelection]
-
+   // RENDER THE AGC SHAPEFILE
+   RENDER_SHAPEFILE(map, leaflet_map, parcelizedAgc);
+   
+   
+   // RENDER THE PLOTS ON THE MAP
+   parcelizedAgc.features.forEach((farmPlot,idx)=>{
+      drawChunk(farmPlot, idx, -0.005)
+      console.log(farmPlot)
    })
 
 
-   // COMMENCE PARCELIZATION..
-   chunkifyBtn.addEventListener('click', (e) => {
-
-      e.preventDefault();
-
-
-      clearPreviousLayers();
+   // REMOVE
+   // ACTIVATE THE DROPDOWN ONLY AFTER THE MAP IS LOADED
+   // polygonSelectDD.disabled = false;
 
 
-      // GET USER INPUT
-      const farmAllocations = READ_DOM().ALLOCATIONS
-      const totalAllocation = READ_DOM().TOTAL_ALLOCATION         
+   // // DROPDOWN MENU EVENT HANDLER
+   // polygonSelectDD.addEventListener('change', (e) => {
+      
+   //    e.preventDefault();
+
+   
+   //    clearPreviousLayers();
+
+
+   //    // ACTIVATE THE 2nd DD. ONLY AFTER A SHAPEFILE SELECTION IS MADE
+   //    movingFramesDirOptionsDD.disabled = false;
+      
+
+   //    // SAVE THE SELECTED SHAPEFILE TO A VARIABLE
+   //    const shapefile_selection = e.target.value
+
+
+   //    // JUMP TO TOP OF THE PAGE
+   //    window.scrollTo(0, document.body.scrollTop, {behavior: "smooth"});
+
+
+   //    // SAVE THE SELECTED SHAPEFILE
+   //    selectedShapefile = shapefiles[shapefile_selection]
 
       
-      // PERFORM BASIC CHECK
-      // if(totalAllocation <= gridArea) {
-      if (totalAllocation <= shapefileArea) {
+   //    // RENDER THE SHAPEFILE < FROM irregular-polygon.js MODULE
+   //    RENDER_SHAPEFILE(map, leaflet_map, selectedShapefile);
+
+   //    // RETURN THE AREA VARIABLE FOR COMPARISON WITH TOTAL ALLOCATION ON CHUNKIFY BUTTON CLICK
+   //    shapefileArea = GET_SHAPEFILE_AREA()
 
 
-         chunkifyBtn.disabled = true;
-         chunkifyBtn.innerText = "Chunking.."
+   //    // SHOW THE MASKING GRID
+   //    // preRenderGrid(selectedShapefile);
+
+   // });
+
+
+   // // DIRECTION OPTIONS DROPDOWN MENU EVENT HANDLER
+   // movingFramesDirOptionsDD.addEventListener('change', (e) => {
+
+   //    e.preventDefault();
+
+   //    clearPreviousLayers();
+
+   //    // ACTIVATE THE CHUNKIFY BTN. ONLY AFTER A SELECTION IS MADE
+   //    chunkifyBtn.disabled = false;
+
+   //    // SAVE THE SELECTED DIR. OPTIONS TO A VARIABLE
+   //    const dirComboSelection = e.target.value
+
+   //    // GET THE OPTIONS CONFIG. FROM THE MAP
+   //    dirComboConfigObj = dirOptionsMap[dirComboSelection]
+
+   // })
+
+
+   // // COMMENCE PARCELIZATION..
+   // chunkifyBtn.addEventListener('click', (e) => {
+
+   //    e.preventDefault();
+
+
+   //    clearPreviousLayers();
+
+
+   //    // GET USER INPUT
+   //    const farmAllocations = READ_DOM().ALLOCATIONS
+   //    const totalAllocation = READ_DOM().TOTAL_ALLOCATION         
+
+      
+   //    // PERFORM BASIC CHECK
+   //    // if(totalAllocation <= gridArea) {
+   //    if (totalAllocation <= shapefileArea) {
+
+
+   //       chunkifyBtn.disabled = true;
+   //       chunkifyBtn.innerText = "Chunking.."
 
          
-         // CREATES A BUFFER BETWEEN BTN. CLICK AND CODE EXECUTION
-         function delayExecution() {
+   //       // CREATES A BUFFER BETWEEN BTN. CLICK AND CODE EXECUTION
+   //       function delayExecution() {
             
-            // TODO > CLEAR ALL RENDERED MAPBOX LAYER POLYGONS
-            // TODO > CLEAR ANY RENDERED POLYGONS ON THE LEAFLET MAP
+   //          // TODO > CLEAR ALL RENDERED MAPBOX LAYER POLYGONS
+   //          // TODO > CLEAR ANY RENDERED POLYGONS ON THE LEAFLET MAP
    
       
    
-            // THIS SHOULD BE IN THE PLOT-ALLOCATION ('CHUNKIFY-V1') MODULE
-            // GET THE COMPUTATIONAL GRID FROM irregular-polygon.js
-            const shapefileGrid = GET_SHAPEFILE_GRID_DATA(selectedShapefile)
-            const primodialGrid = shapefileGrid.TRIMMED_GRID;
-            const gridArea = shapefileGrid.GRID_AREA;
+   //          // THIS SHOULD BE IN THE PLOT-ALLOCATION ('CHUNKIFY-V1') MODULE
+   //          // GET THE COMPUTATIONAL GRID FROM irregular-polygon.js
+   //          const shapefileGrid = GET_SHAPEFILE_GRID_DATA(selectedShapefile)
+   //          const primodialGrid = shapefileGrid.TRIMMED_GRID;
+   //          const gridArea = shapefileGrid.GRID_AREA;
                   
    
-            // RETURN DATA FROM plot-allocation.js MODULE
-            // getV1ChunkifyData(primodialGrid, farmAllocations);
-            // RENDER_GRID_CHUNKS(primodialGrid, farmAllocations);
+   //          // RETURN DATA FROM plot-allocation.js MODULE
+   //          // getV1ChunkifyData(primodialGrid, farmAllocations);
+   //          // RENDER_GRID_CHUNKS(primodialGrid, farmAllocations);
                         
             
-            // RENDER LAYERS FROM THE MOVING FRAMES MODULE
-            RENDER_MOVING_FRAMES_CHUNKS(selectedShapefile, farmAllocations, dirComboConfigObj)
+   //          // RENDER LAYERS FROM THE MOVING FRAMES MODULE
+   //          RENDER_MOVING_FRAMES_CHUNKS(selectedShapefile, farmAllocations, dirComboConfigObj)
                         
             
-            // SANDBOX > 
-            // returnKatanaPolygons(shapefileGrid, farmAllocations);
+   //          // SANDBOX > 
+   //          // returnKatanaPolygons(shapefileGrid, farmAllocations);
 
             
-            // RESET THE BTN.
-            chunkifyBtn.disabled = false;
-            chunkifyBtn.innerText = "Get Parcels";
-         }
+   //          // RESET THE BTN.
+   //          chunkifyBtn.disabled = false;
+   //          chunkifyBtn.innerText = "Get Parcels";
+   //       }
 
          
-         setTimeout(delayExecution, 2000);
+   //       setTimeout(delayExecution, 2000);
 
          
-      } else {
-         alert(`Your allocations exceed the available land area. Reduce by ${(totalAllocation - shapefileArea).toFixed(2)} hectares.`)   
-      };
-   });
+   //    } else {
+   //       alert(`Your allocations exceed the available land area. Reduce by ${(totalAllocation - shapefileArea).toFixed(2)} hectares.`)   
+   //    };
+   // });
 
 });
