@@ -5,7 +5,8 @@ block parcelized-agc-content
       div Data from the retreived parcelized AGC
 
       .data-container
-         div= JSON.stringify(parcelizedAgcData)
+         div#api_data_stream(data-parcelizedAgc=`${JSON.stringify(parcelizedAgcData.features)}`)
+         div= JSON.stringify(parcelizedAgcData.features[0].properties)
          .summaries
             .num-farmers
                div Num. Farmers
@@ -30,6 +31,6 @@ block parcelized-agc-content
                   if parcelizedAgcData.properties.unused_land_area
                      #unused_land.aggr-data= parcelizedAgcData.properties.unused_land_area
                else 
-                  #shapefile_area.aggr-data fuck
+                  #shapefile_area.aggr-data -
          .user-feedback-container
             #chunk_coords_listing.chunk-coords-listing
