@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "exportdb": "cd ./data && node export-fs-data-to-db.js --export",
-    "push": "git push && git push heroku master && heroku open",
+    "deploy": "git push && git push heroku master && heroku open",
     "start": "node server.js",
     "start:dev": "nodemon server.js",
     "start:prod": "NODE_ENV=production nodemon server.js"
