@@ -33,12 +33,12 @@ exports.checkID = async (req, res, next, paramValue) => {
 
 
 // this fn. looks in the "views" folder for the "overview" template && renders it to the browser
-exports.renderAllParcelizedAgcs = async (req, res, next, paramValue) => {
+exports.renderAllParcelizedAgcs = async (req, res, next) => {
 
    try {
 
       // 1. GET ALL THE PARCELIZED AGCS DATA FROM THE ATLAS DB
-      const parcelizedAgcs = await PARCELIZED_AGC_MODEL.findById(paramValue);
+      const parcelizedAgcs = await PARCELIZED_AGC_MODEL.find();
 
       // 2 BUILD TEMPLATE
 
@@ -61,11 +61,18 @@ exports.renderAllParcelizedAgcs = async (req, res, next, paramValue) => {
 
 
 
-exports.renderParcelizedAgc = async (req, res) => {
-   const parcelizedAgcs = await PARCELIZED_AGC_MODEL.find();
-   console.log(parcelizedAgcs)
-   res.status(200).render('agc-render', {
-      title: "Rendered AGC Farm Plots",
-      parcelizedAgcsData: parcelizedAgcs
-   })
+exports.renderParcelizedAgc = async (req, res, next, paramValue) => {
+   try {
+      
+      const parcelizedAgc = await PARCELIZED_AGC_MODEL.findById(paramValue);
+      console.log(parcelizedAgc)
+
+      res.status(200).render('agc-render', {
+         title: "Rendered AGC Farm Plots",
+         parcelizedAgcData: parcelizedAgc
+      })
+
+   } catch (err) {
+      console.error(err.message)
+   }
 }
