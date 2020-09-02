@@ -9,16 +9,27 @@ block parcelized-agc-content
          .summaries
             .num-farmers
                div Num. Farmers
-               div= parcelizedAgcData.features.length
-               #num_farmers.aggr-data -
+               #num_farmers.aggr-data= parcelizedAgcData.features.length
             .allocated-hectares
                div Total Allocation
-               #total_allocation.aggr-data -
+               if parcelizedAgcData.properties
+                  if parcelizedAgcData.properties.total_allocation
+                     #total_allocation.aggr-data= parcelizedAgcData.properties.total_allocation
+               else 
+                  #total_allocation.aggr-data -
             .grid-cell-size
                div Delineated Area
-               #poly_area.aggr-data -
+               if parcelizedAgcData.properties
+                  if parcelizedAgcData.properties.agc_area
+                     #shapefile_area.aggr-data= parcelizedAgcData.properties.agc_area
+               else 
+                  #shapefile_area.aggr-data -
             .cells-per-hectare
                div Unused Land
-               #unused_land.aggr-data -
+               if parcelizedAgcData.properties
+                  if parcelizedAgcData.properties.unused_land_area
+                     #unused_land.aggr-data= parcelizedAgcData.properties.unused_land_area
+               else 
+                  #shapefile_area.aggr-data fuck
          .user-feedback-container
             #chunk_coords_listing.chunk-coords-listing
