@@ -14,7 +14,7 @@ const mapLocation_Div = document.getElementById('map_location_overlay')
 
 
 
-
+// GET DATA FROM BACKEND VIA HTML DATASET ATTRIBUTE
 export function GET_API_DATA() {
    const dataStream = document.getElementById('api_data_stream').dataset.parcelizedagc
    return dataStream
@@ -139,5 +139,5 @@ export function RENDER_DATA({allocationTotal, unallocatedLandArea, PROCESSED_CHU
 
       chunksListing_Div.appendChild(chunk_Div);
 
-});
+   });
 }

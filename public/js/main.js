@@ -317,7 +317,48 @@ function drawChunk(polygon, layerID, bufferAmt) {
 
 
 
+// RENDER CHUNKIFY DATA ON DOM (_V2)
+function RENDER_DATA({allocationTotal, unallocatedLandArea, farmPlotsGeojson}) {      
 
+   const chunksListing_Div = document.getElementById('chunk_coords_listing');
+
+   
+   // numFarmers_Div.innerText = farmPlotsGeojson.length;
+   // unusedLand_Div.innerText = `${(unallocatedLandArea).toFixed(1)} ha.`
+   
+   // CLEAR THE LISTINGS EACH TIME THIS FN. IS CALLED
+   chunksListing_Div.innerText = "";
+   // totalAllocation_Div.innerText = "";
+
+   const listingHeader_div = document.createElement('div')
+   listingHeader_div.innerHTML = `Parcelized Plots' Coordinates <br><br>`
+   listingHeader_div.className = "coords-listing-header"
+   chunksListing_Div.appendChild(listingHeader_div);
+
+   // APPLY STYLING
+   chunksListing_Div.style.display = "block";
+   chunksListing_Div.style.background = "#f5f6fa";
+   chunksListing_Div.style.border = "grey 1px solid";
+
+   
+   // RENDER TOTAL NUM. OF ALLOCATIONS
+   // totalAllocation_Div.innerText = `${allocationTotal.toFixed(1)} ha.`;
+   
+   // LIST COORDINATES
+   farmPlotsGeojson.forEach((chunk, index) => {
+
+      chunk = turf.truncate(chunk, {precision: 3, coordinates: 2})
+
+      const chunk_Div = document.createElement('div');
+      chunk_Div.className = 'chunk'
+
+      // chunk_Div.innerHTML = `Plot #${index + 1} ${JSON.stringify(chunk.properties)} ${JSON.stringify(chunk.geometry.coordinates)} <br><br>`
+      chunk_Div.innerHTML = `Plot #${index + 1} <br> ${JSON.stringify(chunk.geometry.coordinates)} <br><br>`
+
+      chunksListing_Div.appendChild(chunk_Div);
+
+   });
+}
 
 
 
@@ -346,6 +387,14 @@ map.on('load', function () {
       drawChunk(farmPlot, idx, -0.005)
       console.log(farmPlot)
    })
+
+
+   // RENDER THE PLOTS' COORDINATES IN THE DOM
+   const farmPlotsGeojson = parcelizedAgc.features;
+   const allocationTotal = parcelizedAgc.properties.agc_area;
+   const unallocatedLandArea = parcelizedAgc.properties.unused_land_area;
+   RENDER_DATA({allocationTotal, unallocatedLandArea, farmPlotsGeojson})
+
 
 
    // REMOVE
