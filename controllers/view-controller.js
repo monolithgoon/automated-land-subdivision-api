@@ -9,7 +9,7 @@ exports.checkID = async (req, res, next, paramValue) => {
 
    try {
 
-      // console.log(`The AGC ID you are trying to validate is: ${req.params.id}`);
+      console.log(`The AGC ID you are trying to validate is: ${req.params.id}`);
       // console.log(`The AGC ID you are trying to validate is: ${paramValue}`);
 
       const databaseQuery = await PARCELIZED_AGC_MODEL.findById(paramValue)
@@ -44,7 +44,7 @@ exports.renderAllParcelizedAgcs = async (req, res, next) => {
 
       // 3. RENDER THAT TEMPLATE USING DATA FROM 1.)
       console.log(parcelizedAgcs);
-      res.status(200).render('overview', {
+      res.status(200).render('agcs-overview', {
          // THIS DATA IS PASSED TO THE .pug TEMPLATE
          // THESE VARIABLES ARE CALLED "LOCALS" WHEN USED IN THE .pug FILE
          // THE PROCESS OF USING THEM IN THE .pug FILE IS CALLED INTERPOLATION
@@ -62,6 +62,7 @@ exports.renderAllParcelizedAgcs = async (req, res, next) => {
 
 
 exports.renderParcelizedAgc = async (req, res, next, paramValue) => {
+
    try {
       
       const parcelizedAgc = await PARCELIZED_AGC_MODEL.findById(paramValue);
@@ -73,6 +74,6 @@ exports.renderParcelizedAgc = async (req, res, next, paramValue) => {
       })
 
    } catch (err) {
-      console.error(err.message)
+      console.error(err.message);
    }
 }
