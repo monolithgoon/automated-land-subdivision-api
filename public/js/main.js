@@ -360,7 +360,7 @@ function renderDataOnDOM({parcelizedAgcGeojson, farmPlotsGeojson}) {
    // COORDINATES LISTING
    farmPlotsGeojson.forEach((chunk, index) => {
 
-      chunk = turf.truncate(chunk, {precision: 3, coordinates: 2})
+      chunk = turf.truncate(chunk, {precision: 5, coordinates: 2})
 
       const chunk_Div = document.createElement('div');
       chunk_Div.className = 'chunk'
