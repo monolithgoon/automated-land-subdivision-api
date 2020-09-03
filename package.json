@@ -21,10 +21,10 @@
     "mongoose": "^5.9.19",
     "morgan": "^1.10.0",
     "pug": "^3.0.0",
+    "chalk": "^4.1.0",
     "validator": "^13.1.1"
   },
   "devDependencies": {
-    "chalk": "^4.1.0",
     "nodemon": "^2.0.4"
   },
   "engines": {
