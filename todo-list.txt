@@ -40,6 +40,7 @@ API Deployment Checklist
 [ ] Remove all the console.logs
 
 [x] Deploy to Heroku >>
+   [ ] Crete a 'start' script in packgage.json > "start": "node server.js"
    [x] Create a new Heroku project > RUN: "heroku create"
       [..] To change default name of Heroku app > RUN: heroku apps:rename [newname]
    [x] Connect to GitHub repo > On Heroku dashboard, select "Deploy" && click on "Connect to GitHub"
