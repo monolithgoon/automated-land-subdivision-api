@@ -65,11 +65,13 @@ exports.renderParcelizedAgc = async (req, res) => {
 
    try {
       
+      // DB QUERY
       const parcelizedAgc = await PARCELIZED_AGC_MODEL.findById(req.params.id);
-      console.log(parcelizedAgc)
+
+      const pageTitle = parcelizedAgc.properties.location ? parcelizedAgc.properties.location : 'Parcelized AGC'
 
       res.status(200).render('agc-render', {
-         title: parcelizedAgc.properties.location,
+         title: pageTitle,
          parcelizedAgcData: parcelizedAgc
       })
 
