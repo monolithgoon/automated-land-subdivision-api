@@ -320,22 +320,28 @@ function drawChunk(polygon, layerID, bufferAmt) {
 // RENDER CHUNKIFY DATA ON DOM (_V2)
 function renderDataOnDOM({parcelizedAgcGeojson, farmPlotsGeojson}) {      
 
+
+   // GET DOM ELEMENTS
    const chunksListing_Div = document.getElementById('chunk_coords_listing');
    const mapLocation_Div = document.getElementById('map_location_overlay')
 
+
+   // VARIABLES
+   const agcLocation = parcelizedAgcGeojson.properties.location;
+   const agcCenterCoords = [6.18, 6.53] // FIXME < update the parcelized AGC properties to include agc_center_coords 
    
-   // numFarmers_Div.innerText = farmPlotsGeojson.length;
-   // unusedLand_Div.innerText = `${(unallocatedLandArea).toFixed(1)} ha.`
    
    // CLEAR THE LISTINGS EACH TIME THIS FN. IS CALLED
    // totalAllocation_Div.innerText = "";
    chunksListing_Div.innerText = "";
    mapLocation_Div.innerText = "";
-
-   mapLocation_Div.innerText = `${parcelizedAgcGeojson.properties.location}`
-   const agcLocation = parcelizedAgcGeojson.properties.location;
-   const agcCenterCoords = [6.18, 6.53] // FIXME < update the parcelized AGC properties to include agc_center_coords 
-   // const agcCenterCoords = turf.centerOfMass(parcelizedAgcGeojson)
+   
+   
+   // POPULALTE THE DOM ELEMENTS
+   // numFarmers_Div.innerText = farmPlotsGeojson.length;
+   // totalAllocation_Div.innerText = `${allocationTotal.toFixed(1)} ha.`;
+   // unusedLand_Div.innerText = `${(unallocatedLandArea).toFixed(1)} ha.`
+   mapLocation_Div.innerText = agcLocation
    mapLocation_Div.innerText = `${agcLocation || 'Nigeria'} ${agcCenterCoords[0].toFixed(5)}°E ${agcCenterCoords[1].toFixed(5)}°N`
 
 
@@ -344,16 +350,14 @@ function renderDataOnDOM({parcelizedAgcGeojson, farmPlotsGeojson}) {
    listingHeader_div.className = "coords-listing-header"
    chunksListing_Div.appendChild(listingHeader_div);
 
+
    // APPLY STYLING
    chunksListing_Div.style.display = "block";
    chunksListing_Div.style.background = "#f5f6fa";
    chunksListing_Div.style.border = "grey 1px solid";
 
-   
-   // RENDER TOTAL NUM. OF ALLOCATIONS
-   // totalAllocation_Div.innerText = `${allocationTotal.toFixed(1)} ha.`;
-   
-   // LIST COORDINATES
+      
+   // COORDINATES LISTING
    farmPlotsGeojson.forEach((chunk, index) => {
 
       chunk = turf.truncate(chunk, {precision: 3, coordinates: 2})

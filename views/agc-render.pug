@@ -15,21 +15,21 @@ block parcelized-agc-content
                div Total Allocation
                if parcelizedAgcData.properties
                   if parcelizedAgcData.properties.total_allocation
-                     #total_allocation.aggr-data= parcelizedAgcData.properties.total_allocation.toFixed(1)
+                     #total_allocation.aggr-data= `${parcelizedAgcData.properties.total_allocation.toFixed(1)} ha.`
                else 
                   #total_allocation.aggr-data -
             .shapefile-area
                div Delineated Area
                if parcelizedAgcData.properties
                   if parcelizedAgcData.properties.agc_area
-                     #shapefile_area.aggr-data= parcelizedAgcData.properties.agc_area.toFixed(1)
+                     #shapefile_area.aggr-data= `${parcelizedAgcData.properties.agc_area.toFixed(1)} ha.`
                else 
                   #shapefile_area.aggr-data -
             .unused-land-area
                div Unused Land
                if parcelizedAgcData.properties
                   if parcelizedAgcData.properties.unused_land_area
-                     #unused_land.aggr-data= parcelizedAgcData.properties.unused_land_area.toFixed(1)
+                     #unused_land.aggr-data= `${parcelizedAgcData.properties.unused_land_area.toFixed(1)} ha.`
                else 
                   #shapefile_area.aggr-data -
          .user-feedback-container
