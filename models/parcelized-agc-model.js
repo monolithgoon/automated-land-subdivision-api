@@ -124,8 +124,9 @@ const parcelizedAgcSchema = new mongoose.Schema({
    },
    properties: {
       agc_id: {
-         // required: [true, 'Each parcelized AGC must have an ID'],
-         // unique: true
+         type: String,
+         required: [true, 'Each parcelized AGC must have an ID'],
+         unique: true
       },
       location: String,
       agc_center_coords: Array,
