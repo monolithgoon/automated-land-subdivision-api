@@ -69,7 +69,7 @@ exports.renderParcelizedAgc = async (req, res) => {
       const parcelizedAgc = await PARCELIZED_AGC_MODEL.findById(req.params.id);
 
       // SET DEFAULT TITLE IF AGC DOES NOT HAVE A LOCATION
-      const pageTitle = parcelizedAgc.properties.location ? `AGC | ${parcelizedAgc.properties.location}` : 'Parcelized AGC'
+      const pageTitle = parcelizedAgc.properties.location ? `AGC Plots | ${parcelizedAgc.properties.location}` : 'Parcelized AGC'
 
       res.status(200).render('agc-render', {
          title: pageTitle,

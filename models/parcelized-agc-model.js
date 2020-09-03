@@ -82,7 +82,7 @@ const featureSchema = new mongoose.Schema({
       chunk_id: {
          type: String,
          required: [true, "Each farm parcel in the AGC must have a unique ID"],
-         unique: true
+         // unique: true
       },
       chunk_size: {
          type: Number,
@@ -143,7 +143,6 @@ const parcelizedAgcSchema = new mongoose.Schema({
       },
       unused_land_area: Number
    }
-
 })
 
 

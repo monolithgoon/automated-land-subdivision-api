@@ -57,6 +57,10 @@ body {
   border-right: 1px solid #eee
 }
 
+.num-farmers {
+	text-align: center;
+}
+
 .aggr-data {
 	font-size: 22px;
 }
@@ -101,10 +105,6 @@ button {
 	font-size: 16px;
 }
 
-button {
-	font-size: 12px;
-}
-
 select {
 	padding-left: 10px;
 	background-color: #f5f6fd;
@@ -129,6 +129,7 @@ option {
 }
 
 button {
+	font-size: 16px;
 	width: 45%;
 	border: none;
 	background-color: #009432;
@@ -213,6 +214,10 @@ input:focus {
 		grid-gap: 3px;
 		/* grid-template-rows: .2fr .5fr 1fr; */
 		grid-template-rows: .1fr auto 1fr;
+	}
+
+	button {
+		font-size: 12px;
 	}
 
 	.num-farmers,

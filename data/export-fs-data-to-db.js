@@ -4,6 +4,12 @@ const dotenv = require('dotenv') // read the data from the config file. and use 
 dotenv.config({path: '../config.env'}) // CONFIGURE ENV. VARIABLES BEFORE CALL THE APP
 const PARCELIZED_AGC_MODEL = require('../models/parcelized-agc-model.js')
 
+const chalk = require('chalk')
+const allGood = chalk.white.bgGreen.bold
+const highlight = chalk.white.bgYellow.bold
+const error = chalk.white.bgRed.bold
+
+
 
 
 // CONNECT TO THE REMOTE ATLAS DB
@@ -61,7 +67,7 @@ const deleteData = async () => {
                if (name === 'parcelized_agcs') {
                   await dbConnect();
                   await PARCELIZED_AGC_MODEL.deleteMany();
-                  console.log('The parcelized AGCs collection was successfully wiped from the ATLAS database');
+                  console.log(highlight('The parcelized AGCs collection was successfully wiped from the ATLAS database'));
                   endInteraction();
                } else {
                   endInteraction();
@@ -85,9 +91,9 @@ const exportData = async () => {
    try {
       await dbConnect();
       await PARCELIZED_AGC_MODEL.create(parcelizedAgcs)
-      console.log('The parcelized AGC data was successfully written to the ATLAS database');
+      console.log(allGood('The parcelized AGC data was successfully written to the ATLAS database'));
    } catch(err) {
-      console.error(err.message);
+      console.error(error(err.message));
    }
    process.exit() // end the NODE process
 }
