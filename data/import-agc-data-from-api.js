@@ -1,7 +1,7 @@
 const chalk = require('chalk');
 const chalkError = chalk.white.bgRed.bold
 const chalkSuccess = chalk.white.bgGreen.bold
-const chalkWarning = chalk.white.bgYellowBright.bold
+const chalkWarning = chalk.white.bgYellow.bold
 
 const fs = require("fs");
 const axios = require("axios");
@@ -55,7 +55,7 @@ const request = require("request");
 
 
 
-// AXIOS REQUEST
+// AXIOS REQUEST LOGIC
 async function getAgcData() {
 
    try {
@@ -86,7 +86,7 @@ async function getAgcData() {
 
 
       // WRITE RESULT TO NEW FILE
-      fs.writeFileSync('./agc-data.geojson', apiResponse, (err, Data) => {
+      fs.writeFileSync(`./agc-data-${Math.random()*99999}.geojson`, apiResponse, (err, Data) => {
 
          if(err) {
             console.log(chalkError(err.message))
@@ -104,10 +104,12 @@ async function getAgcData() {
          if(err) {
             console.log(chalkError(err.message))
          } else {
-            console.log(chalkWarking('The the API call error was saved to the log file..'))
+            console.log(chalkWarning('The the API call error was saved to the log file..'))
          }
       });
    }
 }
 
+
+// PEREFORM THE AXIOS REQUEST
 getAgcData();
