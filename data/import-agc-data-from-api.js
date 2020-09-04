@@ -86,7 +86,7 @@ async function getAgcData() {
 
 
       // WRITE RESULT TO NEW FILE
-      fs.writeFileSync(`./agc-data-${Math.random()*99999}.geojson`, apiResponse, (err, Data) => {
+      fs.writeFileSync(`./agcs/agc-${Math.random()*99999}.geojson`, apiResponse, (err, Data) => {
 
          if(err) {
             console.log(chalkError(err.message))
@@ -99,12 +99,12 @@ async function getAgcData() {
       
       console.log(chalkError(apiReqErr.message));  
 
-      fs.writeFile('./api-call-error-log.txt', apiReqErr, (err, Data) => {
+      fs.writeFile('./agcs/api-call-error-log.txt', apiReqErr, (err, data) => {
 
          if(err) {
             console.log(chalkError(err.message))
          } else {
-            console.log(chalkWarning('The the API call error was saved to the log file..'))
+            console.log(chalkWarning('The error from the API call was saved to the log file..'))
          }
       });
    }
