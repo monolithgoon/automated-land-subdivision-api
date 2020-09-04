@@ -234,7 +234,7 @@ input:focus {
 	.user-feedback-container {
 		margin-bottom: 10px;
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 0fr 1fr;
 		height: auto;
 	}
 

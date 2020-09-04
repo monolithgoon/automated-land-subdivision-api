@@ -1,7 +1,11 @@
+const chalk = require('chalk');
+const allGood = chalk.white.bgCyan.bold
+
 const Mongoose = require('mongoose') // MongoDB driver that facilitates connection to remote db
 const dotenv = require('dotenv') // read the data from the config file. and use them as env. variables in NODE
 dotenv.config({path: './config.env'}) // IMPORTANT > CONFIGURE ENV. VARIABLES BEFORE U CALL THE APP 
 const EXPRESS_APP = require('./app.js')
+
 
 
 
@@ -26,7 +30,7 @@ try {
 })
    .then(connectionObject => {
       // console.log((connectionObject))
-      console.log('YOU CONNECTED TO THE REMOTE ATLAS DATABASE SUCCESSFULLY.');
+      console.log(allGood('YOU CONNECTED TO THE REMOTE ATLAS DATABASE SUCCESSFULLY  '));
    })
 
 } catch(err) {

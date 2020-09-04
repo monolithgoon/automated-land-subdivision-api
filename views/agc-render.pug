@@ -4,33 +4,37 @@ block parcelized-agc-content
 
       //- div Data from the retreived parcelized AGC
 
-      .data-container
-         div#api_data_stream(data-parcelizedagc=`${JSON.stringify(parcelizedAgcData)}`)
-         //- div= JSON.stringify(parcelizedAgcData.features[0].properties)
-         .summaries
-            .num-farmers
-               div Num. Farmers
-               #num_farmers.aggr-data= parcelizedAgcData.properties.num_farmers
-            .allocated-hectares
-               div Total Allocation
-               if parcelizedAgcData.properties
-                  if parcelizedAgcData.properties.total_allocation
-                     #total_allocation.aggr-data= `${parcelizedAgcData.properties.total_allocation.toFixed(1)} ha.`
-               else 
-                  #total_allocation.aggr-data -
-            .shapefile-area
-               div Delineated Area
-               if parcelizedAgcData.properties
-                  if parcelizedAgcData.properties.agc_area
-                     #shapefile_area.aggr-data= `${parcelizedAgcData.properties.agc_area.toFixed(1)} ha.`
-               else 
-                  #shapefile_area.aggr-data -
-            .unused-land-area
-               div Unused Land
-               if parcelizedAgcData.properties
-                  if parcelizedAgcData.properties.unused_land_area
-                     #unused_land.aggr-data= `${parcelizedAgcData.properties.unused_land_area.toFixed(1)} ha.`
-               else 
-                  #shapefile_area.aggr-data -
-         .user-feedback-container
-            #chunk_coords_listing.chunk-coords-listing
+      .summaries
+         .num-farmers
+            div Num. Farmers
+            #num_farmers.aggr-data= parcelizedAgcData.properties.num_farmers
+         .allocated-hectares
+            div Total Allocation
+            if parcelizedAgcData.properties
+               if parcelizedAgcData.properties.total_allocation
+                  #total_allocation.aggr-data= `${parcelizedAgcData.properties.total_allocation.toFixed(1)} ha.`
+            else 
+               #total_allocation.aggr-data -
+         .shapefile-area
+            div Delineated Area
+            if parcelizedAgcData.properties
+               if parcelizedAgcData.properties.agc_area
+                  #shapefile_area.aggr-data= `${parcelizedAgcData.properties.agc_area.toFixed(1)} ha.`
+            else 
+               #shapefile_area.aggr-data -
+         .unused-land-area
+            div Unused Land
+            if parcelizedAgcData.properties
+               if parcelizedAgcData.properties.unused_land_area
+                  #unused_land.aggr-data= `${parcelizedAgcData.properties.unused_land_area.toFixed(1)} ha.`
+            else 
+               #shapefile_area.aggr-data -
+               
+      .user-feedback-container
+      
+         //- DOESN'T REALLY BELONG HERE..
+         .data-container
+            div#api_data_stream(data-parcelizedagc=`${JSON.stringify(parcelizedAgcData)}`)
+            //- div= JSON.stringify(parcelizedAgcData.features[0].properties)
+
+         #chunk_coords_listing.chunk-coords-listing
