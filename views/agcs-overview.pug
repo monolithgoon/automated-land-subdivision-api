@@ -7,4 +7,18 @@ block parcelized-agcs
 	each parcelizedAgc in parcelizedAgcsData
 
 		section.cards-container
-			div AGC cards will be shown here..
+			//- div AGC cards will be shown here..
+			//- div= parcelizedAgc
+			div= parcelizedAgc.properties.agc_id
+			div= parcelizedAgc.properties.num_farmers
+			div= parcelizedAgc.properties.agc_area
+			//- div= parcelizedAgc.properties.agc_center_coords
+			div= parcelizedAgc.properties.total_allocation
+			div= parcelizedAgc.properties.unused_land_area
+
+			each feature in parcelizedAgc.features	
+				div= feature.properties.farmer_id
+				div= feature.properties.plot_id
+				div= `Lng ${feature.properties.center_lng}° E, Lat ${feature.properties.center_lat}° N`
+
+			br
