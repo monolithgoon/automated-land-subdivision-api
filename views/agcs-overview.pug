@@ -3,22 +3,42 @@ extends index
 block parcelized-agcs
 
 
-	//- IF YOU WANTED TOO LOOP THRU ALL THE AGCS, RUN >
+	div Parcelized AGCs
+	br
+	div To go the map preview of a particular AGC, enter the following in the browser address bar:
+	div agcfarmlands.herokuapp.com/?[agcID]
+
+	//- LOOP THRU ALL THE AGCS
 	each parcelizedAgc in parcelizedAgcsData
 
-		section.cards-container
-			//- div AGC cards will be shown here..
-			//- div= parcelizedAgc
-			div= parcelizedAgc.properties.agc_id
-			div= parcelizedAgc.properties.num_farmers
-			div= parcelizedAgc.properties.agc_area
-			//- div= parcelizedAgc.properties.agc_center_coords
-			div= parcelizedAgc.properties.total_allocation
-			div= parcelizedAgc.properties.unused_land_area
+		section.agc-cards-container
 
-			each feature in parcelizedAgc.features	
-				div= feature.properties.farmer_id
-				div= feature.properties.plot_id
-				div= `Lng ${feature.properties.center_lng}° E, Lat ${feature.properties.center_lat}° N`
+			main.agc-card
 
-			br
+				div= `${parcelizedAgc.properties.location || 'Nigeria'}`
+
+				br
+
+				div.agc-card-summary
+					div.agc-id AGC ID
+						div= `${parcelizedAgc.properties.agc_id}`
+					div.agc-area AGC Area
+						div= parcelizedAgc.properties.agc_area.toFixed(1)
+					//- div.center-coords
+						//- div= parcelizedAgc.properties.agc_center_coords
+					div.total-allocation Total Allocation
+						div= parcelizedAgc.properties.total_allocation
+					div.unused-land-area Unallocated Land
+						div= parcelizedAgc.properties.unused_land_area.toFixed(1)
+
+				br
+
+				div.agc-features-container
+
+					each feature in parcelizedAgc.features	
+						div.agc-feature
+							div= feature.properties.farmer_id
+							div= feature.properties.plot_id
+							div= `Lng ${feature.properties.center_lng.toFixed(5)}° E, Lat ${feature.properties.center_lat.toFixed(5)}° N`
+
+				//- br
