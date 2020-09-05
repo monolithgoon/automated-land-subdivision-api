@@ -20,6 +20,11 @@ body {
 	background: #f9f9f9;
 }
 
+h2.subtitle {
+	padding-left: 15px;
+	font-size: large;
+}
+
 .agc-cards-container {
 	/* background: #f9f9f9;
 	color: #4a4a4a; */
@@ -34,6 +39,11 @@ body {
 	box-shadow: 0 3px 6px 0 rgba(0,0,0,.12);
 }
 
+.agc-card-header {
+	font-size: medium;
+	font-weight: 700;
+}
+
 .agc-card-summary {
 	/* padding: 5px 0; */
 	border-bottom: none;
@@ -43,15 +53,29 @@ body {
 	background: #f5f6fa;
 }
 
+.agc-id, .agc-area, .total-allocation, .unused-land-area {
+	font-weight: 700;
+}
+
+.agc-card-features-header {
+	font-weight: 700;
+}
+
 .agc-features-container {
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
 }
 
 .agc-feature {
+	padding: 5px;
 	margin-bottom: 10px;
 	background: pink;
 	background: #f5f6fa;
+	background: #EFE9DD;
+}
+
+.plot-farmer-id {
+	font-weight: 700
 }
 
 .app-container {

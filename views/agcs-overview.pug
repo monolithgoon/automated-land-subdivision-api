@@ -2,10 +2,8 @@ extends index
 
 block parcelized-agcs
 
-
 	br
-	div= `Parcelized AGCs (${parcelizedAgcsData.length} AGCs)`
-	br
+	h2.subtitle= `Parcelized AGCs (${parcelizedAgcsData.length} AGCs)`
 
 	//- LOOP THRU ALL THE AGCS
 	each parcelizedAgc in parcelizedAgcsData
@@ -14,7 +12,7 @@ block parcelized-agcs
 
 			main.agc-card
 
-				div= `${parcelizedAgc.properties.location || 'Nigeria'}`
+				div.agc-card-header= `${parcelizedAgc.properties.location || 'Nigeria'}`
 
 				br
 
@@ -33,7 +31,7 @@ block parcelized-agcs
 
 				br
 
-				div Farmers
+				div.agc-card-features-header Farmers
 
 				br
 
@@ -41,7 +39,7 @@ block parcelized-agcs
 
 					each feature in parcelizedAgc.features	
 						div.agc-feature
-							div= feature.properties.farmer_id
+							div.plot-farmer-id= feature.properties.farmer_id
 							//- div= feature.properties.plot_id
 							div= `${feature.properties.chunk_size} hectares`
 							div= `Lng ${feature.properties.center_lng.toFixed(5)}°E, Lat ${feature.properties.center_lat.toFixed(5)}°N`
