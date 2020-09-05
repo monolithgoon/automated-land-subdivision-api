@@ -48,8 +48,8 @@ h2.subtitle {
 	/* padding: 5px 0; */
 	border-bottom: none;
 	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	/* grid-template-columns: 1fr auto 1fr 1fr; */
+	/* grid-template-columns: repeat(4, 1fr); */
+	grid-template-columns: 1fr auto 1fr 1fr;
 	background: #f5f6fa;
 }
 
@@ -69,8 +69,6 @@ h2.subtitle {
 .agc-feature {
 	padding: 5px;
 	margin-bottom: 10px;
-	background: pink;
-	background: #f5f6fa;
 	background: #EFE9DD;
 }
 
