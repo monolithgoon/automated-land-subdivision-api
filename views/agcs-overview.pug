@@ -1,31 +1,10 @@
-doctype html
-head
-	meta(charset='UTF-8')
-	meta(name='viewport' content='width=device-width, initial-scale=1.0')
-	//- title Parcelized AGC Farmlands | #{title}
-	title #{title}
-	//- MAPBOX
-	script(src='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js')
-	link(href='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css' rel='stylesheet')
-	script(src='/plugins/turf.min.js')
-	//- LEAFLET 1.3.1
-	script(src='https://unpkg.com/leaflet@1.3.1/dist/leaflet.js')
-	link(rel='stylesheet' href='https://unpkg.com/leaflet@1.3.1/dist/leaflet.css')
-	//- LEAFLET BING MAPS
-	script(src='/plugins/LeafletBingLayer/bing.js')
-	link(rel='stylesheet' href='/css/style.css')
+extends index
 
-body
+block parcelized-agcs
+
 
 	//- IF YOU WANTED TOO LOOP THRU ALL THE AGCS, RUN >
-	//- each parcelizedAgc in parcelizedAgcsData
-	.app-container
+	each parcelizedAgc in parcelizedAgcsData
 
 		section.cards-container
 			div AGC cards will be shown here..
-
-		//- ... POPULATED WITH DATA RETREIVED FROM THE API
-		block parcelized-agc-content
-
-	//- script(src='/js/main.js' type='module')
-	//- script(src='/jquery-min.js' type='module')

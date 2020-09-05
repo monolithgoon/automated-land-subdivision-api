@@ -7,7 +7,7 @@ const chalkError = chalk.white.bgRed.bold
 
 
 // PARAM. MIDDLEWARE > VALIDATES THE ID FROM parcelized-agc-routes.js
-exports.checkID = async (req, res, next, paramValue) => {
+exports.checkDatabaseID = async (req, res, next, paramValue) => {
 
    try {
 
@@ -80,13 +80,13 @@ exports.renderParcelizedAgc = async (req, res) => {
       const queryObjKey = Object.keys(queryObj);
 
 
-      const formattedAgcID = queryObjKey[0].toUpperCase();
-      
+      // const formattedAgcID = queryObjKey[0].toUpperCase();
+
       
       // RE-BUILD THE QUERY OBJ.
       queryObj = {
-         // "properties.agc_id" : queryObjKey[0]
-         "properties.agc_id" : formattedAgcID
+         "properties.agc_id" : queryObjKey[0]
+         // "properties.agc_id" : formattedAgcID
       }
       
 

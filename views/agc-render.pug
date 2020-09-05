@@ -1,57 +1,58 @@
-extends agcs-overview
+extends index
 
 block parcelized-agc-content
 
    //- div Data from the retreived parcelized AGC
+   .app-container
 
-   section#map
-      button.close-btn
-         svg.events-none.icon.color-lighten75.color-white-on-hover(role='presentation' focusable='false' style='width: 18px; height: 18px;')
-            use(xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#icon-close')
+      section#map
+         button.close-btn
+            svg.events-none.icon.color-lighten75.color-white-on-hover(role='presentation' focusable='false' style='width: 18px; height: 18px;')
+               use(xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#icon-close')
 
 
-   section.section-2-container
+      section.section-2-container
 
-      //- SUMMARIZED AGC INFO.
-      .summaries
-         .num-farmers
-            div Num. Farmers
-            #num_farmers.aggr-data= parcelizedAgcData.properties.num_farmers
-         .allocated-hectares
-            div Total Allocation
-            if parcelizedAgcData.properties
-               if parcelizedAgcData.properties.total_allocation
-                  #total_allocation.aggr-data= `${parcelizedAgcData.properties.total_allocation.toFixed(1)} ha.`
-            else 
-               #total_allocation.aggr-data -
-         .shapefile-area
-            div Delineated Area
-            if parcelizedAgcData.properties
-               if parcelizedAgcData.properties.agc_area
-                  #shapefile_area.aggr-data= `${parcelizedAgcData.properties.agc_area.toFixed(1)} ha.`
-            else 
-               #shapefile_area.aggr-data -
-         .unused-land-area
-            div Unused Land
-            if parcelizedAgcData.properties
-               if parcelizedAgcData.properties.unused_land_area
-                  #unused_land.aggr-data= `${parcelizedAgcData.properties.unused_land_area.toFixed(1)} ha.`
-            else 
-               #shapefile_area.aggr-data -
+         //- SUMMARIZED AGC INFO.
+         .summaries
+            .num-farmers
+               div Num. Farmers
+               #num_farmers.aggr-data= parcelizedAgcData.properties.num_farmers
+            .allocated-hectares
+               div Total Allocation
+               if parcelizedAgcData.properties
+                  if parcelizedAgcData.properties.total_allocation
+                     #total_allocation.aggr-data= `${parcelizedAgcData.properties.total_allocation.toFixed(1)} ha.`
+               else 
+                  #total_allocation.aggr-data -
+            .shapefile-area
+               div Delineated Area
+               if parcelizedAgcData.properties
+                  if parcelizedAgcData.properties.agc_area
+                     #shapefile_area.aggr-data= `${parcelizedAgcData.properties.agc_area.toFixed(1)} ha.`
+               else 
+                  #shapefile_area.aggr-data -
+            .unused-land-area
+               div Unused Land
+               if parcelizedAgcData.properties
+                  if parcelizedAgcData.properties.unused_land_area
+                     #unused_land.aggr-data= `${parcelizedAgcData.properties.unused_land_area.toFixed(1)} ha.`
+               else 
+                  #shapefile_area.aggr-data -
 
-      //- DATA ATTRIBUTE STORE && CHUNK COORDS. LISTING
-      .user-feedback-container
+         //- DATA ATTRIBUTE STORE && CHUNK COORDS. LISTING
+         .user-feedback-container
 
-         //- RECEIVE DATA FROM THE API
-         .data-container
-            div#api_data_stream(data-parcelizedagc=`${JSON.stringify(parcelizedAgcData)}`)
-            //- div= JSON.stringify(parcelizedAgcData.features[0].properties)
+            //- RECEIVE DATA FROM THE API
+            .data-container
+               div#api_data_stream(data-parcelizedagc=`${JSON.stringify(parcelizedAgcData)}`)
+               //- div= JSON.stringify(parcelizedAgcData.features[0].properties)
 
-         #chunk_coords_listing.chunk-coords-listing
+            #chunk_coords_listing.chunk-coords-listing
 
-      //- SATTELITE MAP
-      section#farm_detail_map.farm-detail-map
-         #map_location_overlay.leaflet-map-overlay Nigeria 6.1816&deg;N, 6.5303&deg;E
+         //- SATTELITE MAP
+         section#farm_detail_map.farm-detail-map
+            #map_location_overlay.leaflet-map-overlay Nigeria 6.1816&deg;N, 6.5303&deg;E
 
-      script(src='/js/main.js' type='module')
-      //- script(src='/jquery-min.js' type='module')
+         script(src='/js/main.js' type='module')
+         //- script(src='/jquery-min.js' type='module')
