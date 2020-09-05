@@ -2,50 +2,58 @@ extends index
 
 block parcelized-agcs
 
-	.api-guide-container
-		//- img(src="/images/parcelized-agc-data-struc.png", alt="alt")
+	include _header
 
-		div Your API Token - ADSS=23232AD=ASDIO293-MLK23290-23AD
+	.agcs-overview-container
 
-	br
-	h2.subtitle= `Parcelized AGCs (${parcelizedAgcsData.length} AGCs)`
+		.api-guide-container
+			//- img(src="/images/parcelized-agc-data-struc.png", alt="alt")
 
-	//- LOOP THRU ALL THE AGCS
-	each parcelizedAgc in parcelizedAgcsData
-
-		section.agc-cards-container
-
-			main.agc-card
-
-				div.agc-card-header= `${parcelizedAgc.properties.location || 'Nigeria'}`
-
+			.credentials-container
+				div Your API Token 
 				br
+				div.token-code ADSS=23232AD=ASDIO293-MLK23290-23AD
 
-				div.agc-card-summary
-					div.agc-id AGC ID
-						div
-						a(href=`parcelized-agc/?${parcelizedAgc.properties.agc_id}`)= `${parcelizedAgc.properties.agc_id}`
-					div.agc-area AGC Area
-						div= `${parcelizedAgc.properties.agc_area.toFixed(1)} ha.`
-					//- div.center-coords
-						//- div= parcelizedAgc.properties.agc_center_coords
-					div.total-allocation Allocations
-						div= `${parcelizedAgc.properties.total_allocation.toFixed(1)} ha.`
-					div.unused-land Unallocated
-						div= `${parcelizedAgc.properties.unused_land_area.toFixed(1)} ha.`
+		br
+		h2.subtitle= `Parcelized AGCs (${parcelizedAgcsData.length} AGCs)`
+		br
 
-				br
+		//- LOOP THRU ALL THE AGCS
+		each parcelizedAgc in parcelizedAgcsData
 
-				div.agc-card-features-header Farmers
+			section.agc-cards-container
 
-				br
+				main.agc-card
 
-				div.agc-features-container
+					div.agc-card-header= `${parcelizedAgc.properties.location || 'Nigeria'}`
 
-					each feature in parcelizedAgc.features	
-						div.agc-feature
-							div.plot-farmer-id= feature.properties.farmer_id
-							//- div= feature.properties.plot_id
-							div= `${feature.properties.chunk_size} hectares`
-							div= `Lng ${feature.properties.center_lng.toFixed(5)}°E Lat ${feature.properties.center_lat.toFixed(5)}°N`
-				//- br
+					br
+
+					div.agc-card-summary
+						div.agc-id AGC ID
+							div
+							a(href=`parcelized-agc/?${parcelizedAgc.properties.agc_id}`)= `${parcelizedAgc.properties.agc_id}`
+						div.agc-area AGC Area
+							div= `${parcelizedAgc.properties.agc_area.toFixed(1)} ha.`
+						//- div.center-coords
+							//- div= parcelizedAgc.properties.agc_center_coords
+						div.total-allocation Allocations
+							div= `${parcelizedAgc.properties.total_allocation.toFixed(1)} ha.`
+						div.unused-land Unallocated
+							div= `${parcelizedAgc.properties.unused_land_area.toFixed(1)} ha.`
+
+					br
+
+					div.agc-card-features-header Farmers
+
+					br
+
+					div.agc-features-container
+
+						each feature in parcelizedAgc.features	
+							div.agc-feature
+								div.plot-farmer-id= feature.properties.farmer_id
+								//- div= feature.properties.plot_id
+								div= `${feature.properties.chunk_size} hectares`
+								div= `Lng ${feature.properties.center_lng.toFixed(5)}°E Lat ${feature.properties.center_lat.toFixed(5)}°N`
+					//- br
