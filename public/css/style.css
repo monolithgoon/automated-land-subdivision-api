@@ -26,9 +26,9 @@ body {
 }
 
 .agc-card {
-	margin: 24px;
-	padding: 24px;
-	padding-bottom: 14px;
+	margin: 20px;
+	padding: 18px;
+	padding-bottom: 8px;
 	background: #fff;
 	color: #4a4a4a;
 	box-shadow: 0 3px 6px 0 rgba(0,0,0,.12);
