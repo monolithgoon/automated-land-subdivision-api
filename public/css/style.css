@@ -45,12 +45,13 @@ h2.subtitle {
 }
 
 .agc-card-summary {
-	/* padding: 5px 0; */
+	padding: 8px;
 	border-bottom: none;
 	display: grid;
 	/* grid-template-columns: repeat(4, 1fr); */
 	grid-template-columns: 1fr auto 1fr 1fr;
 	background: #f5f6fa;
+	border-radius: 3px;
 }
 
 .agc-id, .agc-area, .total-allocation, .unused-land-area {
@@ -70,6 +71,7 @@ h2.subtitle {
 	padding: 5px;
 	margin-bottom: 10px;
 	background: #EFE9DD;
+	border-radius: 3px;
 }
 
 .plot-farmer-id {
