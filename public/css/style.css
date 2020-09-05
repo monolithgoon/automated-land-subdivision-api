@@ -20,14 +20,17 @@ body {
 	background: #f9f9f9;
 }
 
+.api-guide-container {
+	margin: 15px;
+	padding: 15px;
+	background: white;
+	font-size: medium;
+	font-weight: 700;
+}
+
 h2.subtitle {
 	padding-left: 15px;
 	font-size: large;
-}
-
-.agc-cards-container {
-	/* background: #f9f9f9;
-	color: #4a4a4a; */
 }
 
 .agc-card {
