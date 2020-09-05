@@ -21,13 +21,13 @@ block parcelized-agcs
 						div
 						a(href=`parcelized-agc/?${parcelizedAgc.properties.agc_id}`)= `${parcelizedAgc.properties.agc_id}`
 					div.agc-area AGC Area
-						div= parcelizedAgc.properties.agc_area.toFixed(1)
+						div= `${parcelizedAgc.properties.agc_area.toFixed(1)} ha.`
 					//- div.center-coords
 						//- div= parcelizedAgc.properties.agc_center_coords
-					div.total-allocation Total Allocation
-						div= parcelizedAgc.properties.total_allocation.toFixed(1)
-					div.unused-land-area Unallocated Land
-						div= parcelizedAgc.properties.unused_land_area.toFixed(1)
+					div.total-allocation Allocations
+						div= `${parcelizedAgc.properties.total_allocation.toFixed(1)} ha.`
+					div.unused-land-area Unallocated
+						div= `${parcelizedAgc.properties.unused_land_area.toFixed(1)} ha.`
 
 				br
 
