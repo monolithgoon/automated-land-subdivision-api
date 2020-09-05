@@ -48,7 +48,7 @@ h2.subtitle {
 	padding: 8px;
 	border-bottom: none;
 	display: grid;
-	grid-template-columns: 1fr repeat(3, 0.7fr);
+	grid-template-columns: 1fr repeat(3, 0.6fr);
 	/* grid-template-columns: 1fr auto 1fr 1fr; */
 	background: #f5f6fa;
 	border-radius: 3px;
