@@ -26,16 +26,16 @@ body {
 }
 
 .agc-card {
-	margin: 20px;
-	padding: 18px;
-	padding-bottom: 8px;
+	margin: 15px;
+	padding: 15px;
+	padding-bottom: 5px;
 	background: #fff;
 	color: #4a4a4a;
 	box-shadow: 0 3px 6px 0 rgba(0,0,0,.12);
 }
 
 .agc-card-summary {
-	padding: 5px 0;
+	/* padding: 5px 0; */
 	border-bottom: none;
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
