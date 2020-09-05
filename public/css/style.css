@@ -54,7 +54,7 @@ h2.subtitle {
 	border-radius: 3px;
 }
 
-.agc-id, .agc-area, .total-allocation, .unused-land-area {
+.agc-id, .agc-area, .total-allocation, .unused-land {
 	font-weight: 700;
 }
 
