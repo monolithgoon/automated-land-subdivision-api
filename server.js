@@ -1,5 +1,5 @@
 const chalk = require('chalk');
-const allGood = chalk.white.bgCyan.bold
+const allGood = chalk.white.bgBlue.bold
 
 const Mongoose = require('mongoose') // MongoDB driver that facilitates connection to remote db
 const dotenv = require('dotenv') // read the data from the config file. and use them as env. variables in NODE

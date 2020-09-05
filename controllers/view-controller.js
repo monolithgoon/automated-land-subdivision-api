@@ -76,16 +76,21 @@ exports.renderParcelizedAgc = async (req, res) => {
       // http://127.0.0.1:9090/parcelized-agc?properties.agc_id=AGC-UNIQUE-AGC-ID-XXX-XXX-XXX
       // THE QUERY OBJ. IS NOW IN THE FORM { UNIQUE-AGC-ID-XXX-XXX-XXX: " " }
       
-      // EXTRACT THE agc_id
-      const queryObjKey = Object.keys(queryObj)
+      // EXTRACT THE agc_id FROM THE QUERY OBJ.
+      const queryObjKey = Object.keys(queryObj);
+
+
+      const formattedAgcID = queryObjKey[0].toUpperCase();
+      
       
       // RE-BUILD THE QUERY OBJ.
       queryObj = {
-         "properties.agc_id" : queryObjKey[0]
+         // "properties.agc_id" : queryObjKey[0]
+         "properties.agc_id" : formattedAgcID
       }
       
 
-      let queryStr = JSON.stringify(queryObj)
+      // let queryStr = JSON.stringify(queryObj)
       // const formattedQueryStr = queryStr.replace()
 
 
