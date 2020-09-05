@@ -3,7 +3,8 @@ extends index
 block parcelized-agcs
 
 
-	div Parcelized AGCs
+	br
+	div= `Parcelized AGCs (${parcelizedAgcsData.length} AGCs)`
 	br
 
 	//- LOOP THRU ALL THE AGCS
@@ -41,6 +42,7 @@ block parcelized-agcs
 					each feature in parcelizedAgc.features	
 						div.agc-feature
 							div= feature.properties.farmer_id
-							div= feature.properties.plot_id
-							div= `Lng ${feature.properties.center_lng.toFixed(5)}° E, Lat ${feature.properties.center_lat.toFixed(5)}° N`
+							//- div= feature.properties.plot_id
+							div= `${feature.properties.chunk_size} hectares`
+							div= `Lng ${feature.properties.center_lng.toFixed(5)}°E, Lat ${feature.properties.center_lat.toFixed(5)}°N`
 				//- br
