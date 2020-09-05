@@ -2,8 +2,17 @@ extends agcs-overview
 
 block parcelized-agc-content
 
-      //- div Data from the retreived parcelized AGC
+   //- div Data from the retreived parcelized AGC
 
+   section#map
+      button.close-btn
+         svg.events-none.icon.color-lighten75.color-white-on-hover(role='presentation' focusable='false' style='width: 18px; height: 18px;')
+            use(xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#icon-close')
+
+
+   section.section-2-container
+
+      //- SUMMARIZED AGC INFO.
       .summaries
          .num-farmers
             div Num. Farmers
@@ -29,12 +38,20 @@ block parcelized-agc-content
                   #unused_land.aggr-data= `${parcelizedAgcData.properties.unused_land_area.toFixed(1)} ha.`
             else 
                #shapefile_area.aggr-data -
-               
+
+      //- DATA ATTRIBUTE STORE && CHUNK COORDS. LISTING
       .user-feedback-container
-      
-         //- DOESN'T REALLY BELONG HERE..
+
+         //- RECEIVE DATA FROM THE API
          .data-container
             div#api_data_stream(data-parcelizedagc=`${JSON.stringify(parcelizedAgcData)}`)
             //- div= JSON.stringify(parcelizedAgcData.features[0].properties)
 
          #chunk_coords_listing.chunk-coords-listing
+
+      //- SATTELITE MAP
+      section#farm_detail_map.farm-detail-map
+         #map_location_overlay.leaflet-map-overlay Nigeria 6.1816&deg;N, 6.5303&deg;E
+
+      script(src='/js/main.js' type='module')
+      //- script(src='/jquery-min.js' type='module')
