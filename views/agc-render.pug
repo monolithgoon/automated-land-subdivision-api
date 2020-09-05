@@ -1,5 +1,16 @@
 extends index
 
+//- APPEND THE MAP SCRIPTS TO THE HEAD OF index.pug
+block append head-map-scripts
+   //- MAPBOX
+   script(src='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js')
+   link(href='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css' rel='stylesheet')
+   //- LEAFLET 1.3.1
+   script(src='https://unpkg.com/leaflet@1.3.1/dist/leaflet.js')
+   link(rel='stylesheet' href='https://unpkg.com/leaflet@1.3.1/dist/leaflet.css')
+   //- LEAFLET BING MAPS
+   script(src='/plugins/LeafletBingLayer/bing.js')
+
 block parcelized-agc-content
 
    //- div Data from the retreived parcelized AGC
