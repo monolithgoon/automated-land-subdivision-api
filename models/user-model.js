@@ -37,12 +37,16 @@ const userSchema = new mongoose.Schema({
       validate: {
          // IMPORTANT > This validator only works by calling USER_MODEL.save() OR USER_MODEL.create() & NOT WITH .findOne() && .updateOne() 
          validator: function(el) {
-            return el === this.password;
+            return el === this.password; // the 'this' keyword refers to the current document..
          },
          message: "The passwords are not the same"
       }
    }
 })
+
+
+// THIS PRE-SAVE MIDDDLEWARE RUNS BETWEEN GETTING THE DATA && SAVING IT TO THE DB
+userSchema.pre('save', function(next))
 
 
 const USER_MODEL = mongoose.model('users', userSchema)
