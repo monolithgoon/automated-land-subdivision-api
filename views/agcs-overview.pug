@@ -5,40 +5,40 @@ block parcelized-agcs
 	//- PAGE HEADER
 	//- include _header
 
-	.agcs-overview-container
+	.api-guide-container
 
-		.api-guide-container
+		//- img(src="/images/parcelized-agc-data-struc.png" alt="alt")
 
-			//- img(src="/images/parcelized-agc-data-struc.png" alt="alt")
+		.embedded-code-snippet
+			h3 Using the Parcelized AGCs API
+			p This documentation demonstrates how to call the Parcelized AGCs API using an asynchronous Fetch API call. It is written in JavaScript, and uses object-oriented programming concepts. It returns all the parcelized AGCs from the database.
+			pre
+				code.language-javascript.
+					// Set up the API call function
+					async function getParcelizedAgc(agcID) {
+						try {
+							const apiResponse = await fetch(`https://agc-parcels.herokuapp.com/api/v1/parcelized-agcs/${agcID}`);
+							const data = await apiResponse.json();
+							return data;
+						} 
+						catch (error) {
+							console.error(error.message);
+						}
+					}
 
-			.embedded-code-snippet
-				h3 Using the Parcelized AGCs API
-				p This documentation demonstrates how to call the Parcelized AGCs API using an asynchronous Fetch API call. It is written in JavaScript, and uses object-oriented programming concepts. It returns all the parcelized AGCs from the database.
-				pre
-					code.language-javascript.
-						// Set up the API call function
-						async function getParcelizedAgc(agcID) {
-							try {
-								const apiResponse = await fetch(`https://agc-parcels.herokuapp.com/api/v1/parcelized-agcs/${agcID}`);
-								const data = await apiResponse.json();
-								return data;
-							} 
-							catch (error) {
-								console.error(error.message);
-							}
+					// Execute the API call
+					getParcelizedAgc('5f42a0d13c83b328e48cee9a')
+						.then(function(data) {
+							console.log(JSON.stringify(data)));
 						}
 
-						// Execute the API call
-						getParcelizedAgc('5f42a0d13c83b328e48cee9a')
-							.then(function(data) {
-								console.log(JSON.stringify(data)));
-							}
+		.credentials-container
+			div.token-subtitle Your API Key 
+			br
+			div.token-code ADSS=23232AD=ASDIO293-MLK23290-23AD.235DS554S5_4409IODSO
 
 
-			.credentials-container
-				div.token-subtitle Your API Key 
-				br
-				div.token-code ADSS=23232AD=ASDIO293-MLK23290-23AD.235DS554S5_4409IODSO
+	.agcs-overview-container
 
 		br
 		h2.subtitle= `Parcelized AGCs (${parcelizedAgcsData.length} AGCs)`

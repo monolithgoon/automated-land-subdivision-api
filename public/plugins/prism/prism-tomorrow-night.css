@@ -39,7 +39,7 @@ pre[class*="language-"] {
 pre[class*="language-"] {
 	padding: 1em;
 	/* HACK */
-	padding: 15px; 
+	padding: 35px; 
 	margin: .5em 0;
 	overflow: auto;
 }

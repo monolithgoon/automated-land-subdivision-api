@@ -22,24 +22,23 @@ body {
 }
 
 h3 {
-	padding: 5px 15px;
+	padding: 5px 35px;
 }
 
 p {
-	padding: 5px 15px;
-	font-size: 15px;
+	padding: 5px 35px;
+	font-size: 14.5px;
 	line-height: 1.4; 
+}
+
+.api-guide-container {
+	font-family: Roboto, sans-serif;
+	background: white;
+	overflow-x: hidden;
 }
 
 .agcs-overview-container {
 	font-family: Roboto, sans-serif;
-}
-
-.api-guide-container {
-	margin: 15px;
-	/* padding: 15px; */
-	background: white;
-	overflow-x: hidden;
 }
 
 .embedded-code-snippet {
@@ -47,7 +46,7 @@ p {
 }
 
 .credentials-container {
-	padding: 15px;
+	padding: 35px;
 	background: white;
 	font-weight: 700;
 }
@@ -302,6 +301,11 @@ input:focus {
 	body {
 		font-size: 12px;
 		overflow: auto;
+	}
+
+	.api-guide-container {
+		margin:auto;
+		width: 60vw;
 	}
 
 	.agcs-overview-container {
