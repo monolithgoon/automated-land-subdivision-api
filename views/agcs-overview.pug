@@ -3,18 +3,18 @@ extends index
 block parcelized-agcs
 
 	//- PAGE HEADER
-	include _header
+	//- include _header
 
 	.agcs-overview-container
 
 		.api-guide-container
-		
+
 			//- img(src="/images/parcelized-agc-data-struc.png" alt="alt")
 
 			.embedded-code-snippet
+				p Read the Parcelized AGCs API
 				pre
-					code.language-js.
-						// READ THE PARCELIZED AGCs API
+					code.language-javascript.
 						async function getParcelizedAgc(agcID) {
 							try {
 								let apiResponse = await fetch(`https://agc-parcels.herokuapp.com/api/v1/parcelized-agcs/${agcID}`);
@@ -31,7 +31,7 @@ block parcelized-agcs
 
 
 			.credentials-container
-				div Your API Token 
+				div.token-subtitle Your API Token 
 				br
 				div.token-code ADSS=23232AD=ASDIO293-MLK23290-23AD.235DS554S5_4409IODSO
 

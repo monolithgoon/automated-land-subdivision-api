@@ -3,7 +3,7 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,300i,400&display=swap');
 
 * {
-	font-family: 'Roboto', sans-serif;
+	/* font-family: 'Roboto', sans-serif; */
 }
 
 html {
@@ -12,18 +12,26 @@ html {
 
 body {
 	margin: auto;
-	font-family: Arial, Helvetica, sans-serif;
-	font-family: Roboto, sans-serif;
 	font-size: 13px;
 	font-weight: 400;
 	line-height: 1;	
 	background: #f9f9f9;
+	background: rgba(128,134,139,.2);
 	color: #4a4a4a;
+}
+
+p {
+	padding: 15px;
+}
+
+.agcs-overview-container {
+	font-family: Roboto, sans-serif;
 }
 
 .api-guide-container {
 	margin: 15px;
-	padding: 15px;
+	/* padding: 15px; */
+	background: white;
 	overflow-x: hidden;
 }
 
@@ -37,9 +45,15 @@ body {
 	font-weight: 700;
 }
 
+.token-subtitle {
+	color: #01579B;
+	/* background: #E1F5FE; */
+}
+
 .token-code {
 	font-size: medium;
 	color: #3E94B6;
+	color: #4285f4;
 }
 
 h2.subtitle {
@@ -56,7 +70,7 @@ h2.subtitle {
 }
 
 .agc-card-header {
-	color: #3E94B6;
+	color: #4285f4;
 	font-size: medium;
 	font-weight: 700;
 }
