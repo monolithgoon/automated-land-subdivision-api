@@ -9,14 +9,16 @@ ROUTER.post('/signup', AUTH_CONTROLLER.signup)
 
 
 // USER ADMINISTRATION FUNCTIONS
-ROUTER.route('/')
-   .get(USER_CONTROLLER.getAllUsers)
-   .post(USER_CONTROLLER.createUser);
+ROUTER
+   .route('/')
+      .get(USER_CONTROLLER.getAllUsers)
+      .post(USER_CONTROLLER.createUser);
 
-ROUTER.route('/:id')
+ROUTER
+   .route('/:id')
    .get(USER_CONTROLLER.getUser)
-   .patch(USER_CONTROLLER.updateUser)
-   .delete(USER_CONTROLLER.deleteUser)
+      .patch(USER_CONTROLLER.updateUser)
+      .delete(USER_CONTROLLER.deleteUser)
 
 
 module.exports = ROUTER
