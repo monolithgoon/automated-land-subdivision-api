@@ -24,6 +24,15 @@ body {
 .api-guide-container {
 	margin: 15px;
 	padding: 15px;
+	overflow-x: hidden;
+}
+
+.embedded-code-snippet {
+	overflow-x: auto;
+}
+
+.credentials-container {
+	padding: 15px;
 	background: white;
 	font-weight: 700;
 }

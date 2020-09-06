@@ -2,12 +2,33 @@ extends index
 
 block parcelized-agcs
 
+	//- PAGE HEADER
 	include _header
 
 	.agcs-overview-container
 
 		.api-guide-container
-			//- img(src="/images/parcelized-agc-data-struc.png", alt="alt")
+		
+			//- img(src="/images/parcelized-agc-data-struc.png" alt="alt")
+
+			.embedded-code-snippet
+				pre
+					code.language-js.
+						// READ THE PARCELIZED AGCs API
+						async function getParcelizedAgc(agcID) {
+							try {
+								let apiResponse = await fetch(`https://agc-parcels.herokuapp.com/api/v1/parcelized-agcs/${agcID}`);
+								let data = await apiResponse.json();
+								return data;
+							} 
+							catch (error) {
+								console.error(error.message);
+							}
+						}
+
+						getParcelizedAgc('5f42a0d13c83b328e48cee9a')
+							.then(data => console.log(JSON.stringify(data)));
+
 
 			.credentials-container
 				div Your API Token 
@@ -36,7 +57,7 @@ block parcelized-agcs
 						div.agc-area AGC Area
 							div= `${parcelizedAgc.properties.agc_area.toFixed(1)} ha.`
 						//- div.center-coords
-							//- div= parcelizedAgc.properties.agc_center_coords
+						//- div= parcelizedAgc.properties.agc_center_coords
 						div.total-allocation Allocations
 							div= `${parcelizedAgc.properties.total_allocation.toFixed(1)} ha.`
 						div.unused-land Unallocated
