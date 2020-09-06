@@ -46,7 +46,14 @@ const userSchema = new mongoose.Schema({
 
 
 // THIS PRE-SAVE MIDDDLEWARE RUNS BETWEEN GETTING THE DATA && SAVING IT TO THE DB
-userSchema.pre('save', function(next))
+userSchema.pre('save', function(next) {
+
+   // RETURN THE NEXT M.WARE IF THE P.WORD HAS NOT BEEN MODIFIED OR NEWLY CREATED
+   if (!this.isModified('passowrd')) return next();
+
+   // HASH / ENCRYPT THE PASSWORD
+   
+});
 
 
 const USER_MODEL = mongoose.model('users', userSchema)

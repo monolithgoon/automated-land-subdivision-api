@@ -111,7 +111,7 @@ h2.subtitle {
 	padding-left: 10px;
 	margin-bottom: 10px;
 	background: #EFE9DD;
-	border-radius: 3px;
+	/* border-radius: 3px; */
 }
 
 .plot-farmer-id {
