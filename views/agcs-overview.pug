@@ -16,10 +16,11 @@ block parcelized-agcs
 				p This documentation is designed for people familiar with JavaScript programming and object-oriented programming concepts. 
 				pre
 					code.language-javascript.
+						// Set up the API call function
 						async function getParcelizedAgc(agcID) {
 							try {
-								let apiResponse = await fetch(`https://agc-parcels.herokuapp.com/api/v1/parcelized-agcs/${agcID}`);
-								let data = await apiResponse.json();
+								const apiResponse = await fetch(`https://agc-parcels.herokuapp.com/api/v1/parcelized-agcs/${agcID}`);
+								const data = await apiResponse.json();
 								return data;
 							} 
 							catch (error) {
@@ -27,12 +28,15 @@ block parcelized-agcs
 							}
 						}
 
+						// Execute the API call
 						getParcelizedAgc('5f42a0d13c83b328e48cee9a')
-							.then(data => console.log(JSON.stringify(data)));
+							.then(function(data) {
+								console.log(JSON.stringify(data)));
+							}
 
 
 			.credentials-container
-				div.token-subtitle Your API Token 
+				div.token-subtitle Your API Key 
 				br
 				div.token-code ADSS=23232AD=ASDIO293-MLK23290-23AD.235DS554S5_4409IODSO
 
