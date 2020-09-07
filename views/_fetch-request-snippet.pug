@@ -12,7 +12,7 @@ code.language-javascript.
       try {
          await fetch(URL, {
             method: "POST",
-            BODY: agcJSONData
+            body: JSON.stringify(agcJSONData)
          });
       }
       catch(error) {
