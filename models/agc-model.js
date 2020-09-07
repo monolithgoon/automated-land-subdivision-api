@@ -91,11 +91,6 @@ const agcSchema = new mongoose.Schema({
       required: [true, `The featureCollection must have at least one feature or an array of features`],
       validate: [(entry) => Array.isArray(entry) && entry.length > 0, `The AGC featureCollection must have at least one feature or an array of features`],
    },
-   agc_id: {
-      type: String,
-      required: [true, 'Each AGC must have an ID'],
-      unique: [true, 'Each agc_id must be unique']
-   },
    properties: {
       agc_id: {
          type: String,
@@ -103,7 +98,16 @@ const agcSchema = new mongoose.Schema({
          unique: [true, 'Each agc_id must be unique']
          // unique: true
       },
-      location: String,
+      extended_name: {
+         type: String,
+         required: [true, 'The name of the AGC must be specified']
+      },
+      // governance_structure: agcGovSchema,
+      governance_structure: {},
+      location: {
+         type: String,
+         required: [true, 'The location of the AGC must be specified']
+      },
       farmers: Array
    }
 });
