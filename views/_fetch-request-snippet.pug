@@ -7,7 +7,7 @@ code.language-javascript.
    const agcJSONData = {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[7.475653141736985,10.627761368604803],[7.478830888867378,10.629113406009933],[7.480225302278996,10.628697217702442],[7.481489293277264,10.62825697355466],[7.481489293277264,10.626841004353153],[7.481274716556071,10.625009164779053],[7.481152340769768,10.623202028950532],[7.481164410710335,10.621990675170915],[7.4790434539318085,10.6220631719958],[7.477033138275147,10.621500003026645],[7.47676357626915,10.624850332335757],[7.475653141736985,10.627761368604803]]]}}],"properties":{"agc_id":"NIRSALAGCAD0001","short_name":"Gora AGC","extended_name":"Nasarawa Hybrid Maize Growers AGC","location":"Gora, Nasarawa State","agc_president":"farmer_id","agc_details":{"category":["Row Crops","Plantation","Aquaculture","Poultry","Beef","Mixed"],"primary_crop":"maize","other_details":"has_irrigation, has_processing, flood_prone, road_access, has_power, etc.."},"farmers":[{"farmer_id":"NIRSALAGCAD0001-001","first_name":"Mohammed","last_name":"Sadiq","allocation":2.3},{"farmer_id":"NIRSALAGCAD0001-002","first_name":"Emmanuel","last_name":"James","allocation":2.7}]}}
 
    // Set up the API call function
-   async function postAgcData() {
+   async function sendAgcData() {
       try {
          await fetch(URL, {
             method: "post",
@@ -20,7 +20,7 @@ code.language-javascript.
    };
 
    // Execute the API call
-   postAgcData()
+   sendAgcData()
       .then(function(apiResponse) {
             // Do whatever with the API response
             return apiResponse.json();
