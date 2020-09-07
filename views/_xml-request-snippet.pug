@@ -1,0 +1,18 @@
+code.language-javascript.
+
+   function sendAgcData() {
+
+      // SEE SAMPLE AGC DATA BELOW
+      const agcJSONData = { ... }
+
+      const http = new XMLHttpRequest()
+
+      http.open('POST', 'http://agcs.herokuapp.com/api/v1/agcs/')
+      http.setRequestHeader('Content-type', 'application/json')
+      http.send(agcJSONData) // Make sure to stringify
+
+      http.onload = function() {
+         // Do whatever with the API response
+         console.log(http.responseText)
+      }
+   }

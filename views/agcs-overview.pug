@@ -28,7 +28,7 @@ block parcelized-agcs
 					// Set up the API call function
 					async function getParcelizedAgc(agcID) {
 						try {
-							const apiResponse = await fetch(`https://agc-parcels.herokuapp.com/api/v1/parcelized-agcs/${agcID}`);
+							const apiResponse = await fetch(`https://agcfarmlands.herokuapp.com/api/v1/parcelized-agcs/${agcID}`);
 							const data = await apiResponse.json();
 							return data;
 						} 
@@ -38,17 +38,26 @@ block parcelized-agcs
 					};
 
 					// Execute the API call
-					getParcelizedAgc('5f42a0d13c83b328e48cee9a')
+					getParcelizedAgc('5f540c5d72c03314fcc79fc9')
 						.then(function(data) {
-							console.log(JSON.stringify(data)));
-						};
+								console.log(JSON.stringify(data));
+							}
+						)
 
 			br
-			h3 Performing a POST Request
-			p This code snippet below shows how to persist AGC data to the API using an asynchronous Fetch API call.
+			h3 Sending a POST Request (using an XML HTTP Request)
+			p This code snippet below shows how to persist AGC JSON data to the API database using XMLHttpRequest()
 
 			pre
-				include _post-request-snippet
+				include _xml-request-snippet
+				br
+
+			br
+			h3 Sending a POST Request (using the Fetch API)
+			p This code snippet below shows how to persist AGC JSON data to the API database using an asynchronous Fetch API call.
+
+			pre
+				include _fetch-request-snippet
 				br
 			
 			h3 Sample AGC JSON Structure

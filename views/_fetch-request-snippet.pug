@@ -1,0 +1,29 @@
+code.language-javascript.
+
+   // The API url
+   const URL = "https://agcsfarmlands.herokuapp.com/api/v1/agcs";
+
+   // SEE SAMPLE AGC DATA BELOW
+   const agcJSONData = { ... } 
+
+   //- // Perform the POST request
+   // Set up the API call function
+   async function saveAgcData() {
+      try {
+         await fetch(URL, {
+            method: "POST",
+            BODY: agcJSONData
+         });
+      }
+      catch(error) {
+         console.log(error.message);
+      };
+   };
+
+   // Execute the API call
+   saveAgcData()
+      .then(function(apiResponse) {
+            // Do whatever with the API response
+            console.log(apiResponse);
+         }
+      );

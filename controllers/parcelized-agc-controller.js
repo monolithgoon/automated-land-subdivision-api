@@ -1,4 +1,4 @@
-// CONTAINS THE ROUTE HANDLING FUNCTIONS USED BY farm-parcels-routes.js
+// CONTAINS THE ROUTE HANDLING FUNCTIONS USED BY parcelized-agc-routes.js
 
 
 
@@ -34,7 +34,7 @@ exports.checkID = async (req, res, next, paramValue) => {
 
 
 
-// REMOVE > REQUEST BODY VALIDATION MIDDLEWARE
+// REMOVE > REQUEST BODY VALIDATION MIDDLEWARE < VALIDATION CURRENTLY HAPPENING IN THE MODEL .. 
 exports.checkBody = (req, res, next) => {
 
    // console.table(req.body)
@@ -226,13 +226,13 @@ exports.insertParcelizedAgc = async (req, res) => {
       // const newAgc = new TOUR_MODEL(req.body)
       // newAgc.save // returns a promise
       
-      // CREATE A NEW TOUR DOCUMENT _MTD 2
-      const newAgc = await PARCELIZED_AGC_MODEL.create(req.body) // "model.create" returns a promise
+      // CREATE A NEW PARCELIZED AGC DOCUMENT _MTD 2
+      const newParcelizedAgc = await PARCELIZED_AGC_MODEL.create(req.body) // "model.create" returns a promise
 
       res.status(201).json({
          status: 'success',
          data: {
-            parcelizedAgc: newAgc
+            parcelizedAgc: newParcelizedAgc
          }
       })
       
