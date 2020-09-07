@@ -10,9 +10,20 @@ block parcelized-agcs
 		//- img(src="/images/parcelized-agc-data-struc.png" alt="alt")
 
 		.embedded-code-snippet
+
+			br
 			h2 Using the Parcelized AGCs API
-			p This code snippet below shows how to call the Parcelized AGCs API using an asynchronous Fetch API call. It is written in JavaScript, and uses object-oriented programming concepts. It returns all the parcelized AGCs from the database.
-			pre
+			br
+
+			.credentials-container
+				div.token-subtitle Public API Key 
+				br
+				div.token-code ADSS=23232AD=ASDIO293-MLK23290-23AD.235DS554S5_4409IODSO
+
+			h3 Performing a GET Request
+			p This code snippet below shows how to get data from the Parcelized AGCs API using an asynchronous Fetch API call. It uses modern JavaScript (ES6/ES2017), and object-oriented programming concepts. It returns all the parcelized AGCs from the database in a promise.
+
+			pre.get-request-snippet
 				code.language-javascript.
 					// Set up the API call function
 					async function getParcelizedAgc(agcID) {
@@ -23,19 +34,26 @@ block parcelized-agcs
 						} 
 						catch (error) {
 							console.error(error.message);
-						}
-					}
+						};
+					};
 
 					// Execute the API call
 					getParcelizedAgc('5f42a0d13c83b328e48cee9a')
 						.then(function(data) {
 							console.log(JSON.stringify(data)));
-						}
+						};
 
-		.credentials-container
-			div.token-subtitle Public API Key 
 			br
-			div.token-code ADSS=23232AD=ASDIO293-MLK23290-23AD.235DS554S5_4409IODSO
+			h3 Performing a POST Request
+			p This code snippet below shows how to persist AGC data to the API using an asynchronous Fetch API call.
+
+			pre
+				include _post-request-snippet
+				br
+			
+			h3 Sample AGC JSON Structure
+			pre.agc-json-data-ex
+				include _agc-json-data-example
 
 
 	.agcs-overview-container

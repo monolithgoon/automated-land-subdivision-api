@@ -1,0 +1,20 @@
+code.language-javascript.
+
+   // The API url
+   const URL = "http://agcs.herokuapp.com/api/v1/agcs";
+
+   // SEE SAMPLE AGC DATA BELOW
+   const agcData = { ... } 
+
+   // Perform he POST request
+   fetch(URL, {
+
+      method : "POST",
+      body : agcData
+
+   })
+      .then(
+         function(response) {
+            return response.text();
+         };
+      );

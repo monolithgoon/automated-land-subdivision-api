@@ -49,16 +49,22 @@ p {
 	overflow-x: auto;
 }
 
+.agc-json-data-ex {
+	font-size: 10px !important;
+	height: 600px;
+	overflow-y: auto;
+}
+
 .credentials-container {
 	padding: 35px;
 	background: white;
+	background: #E1F5FE;
 	font-weight: 700;
 }
 
 .token-subtitle {
 	font-size: 15px;
 	color: #01579B;
-	/* background: #E1F5FE; */
 }
 
 .token-code {
@@ -302,6 +308,22 @@ input:focus {
   and (min-device-width: 700px) 
   and (max-device-width: 1600px) {
   /* and (-webkit-min-device-pixel-ratio: 1) {  */
+
+	::-webkit-scrollbar {
+      width: 12px;
+      border-left: 0;
+      background: rgba(0, 0, 0, 0.1);
+   }
+
+   ::-webkit-scrollbar-track {
+      background: none;
+   }
+
+   ::-webkit-scrollbar-thumb {
+      background: #2d2d2d ;
+      height: auto;
+      border-radius: 0;
+   }
 
 	body {
 		font-size: 12px;
