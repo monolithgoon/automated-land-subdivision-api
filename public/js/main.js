@@ -366,7 +366,7 @@ function renderDataOnDOM({parcelizedAgcGeojson, farmPlotsGeojson}) {
       chunk_Div.className = 'chunk'
 
       // chunk_Div.innerHTML = `Plot #${index + 1} ${JSON.stringify(chunk.properties)} ${JSON.stringify(chunk.geometry.coordinates)} <br><br>`
-      chunk_Div.innerHTML = `Plot #${index + 1} <br> ${chunk.properties.farmer_id.toUpperCase()} <br> ${JSON.stringify(chunk.geometry.coordinates)} <br><br>`
+      chunk_Div.innerHTML = `Plot #${index + 1} <br> ${chunk.properties.farmer_id} <br> ${JSON.stringify(chunk.geometry.coordinates)} <br><br>`
 
       chunksListing_Div.appendChild(chunk_Div);
 

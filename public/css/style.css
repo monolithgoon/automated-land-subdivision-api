@@ -31,7 +31,7 @@ h3 {
 
 p {
 	padding: 5px 35px;
-	font-size: 14.5px;
+	font-size: 15px;
 	line-height: 1.4; 
 }
 
@@ -123,6 +123,7 @@ h2.subtitle {
 }
 
 .app-container {
+	font-family: Roboto, sans-serif;
 	display: grid;
 	grid-template-rows: auto 1fr;
 	grid-gap: 3px;	
