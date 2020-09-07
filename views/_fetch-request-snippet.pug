@@ -10,7 +10,12 @@ code.language-javascript.
    async function sendAgcData() {
       try {
          await fetch(URL, {
-            method: "post",
+            method: "POST",
+            headers: {
+               'Accept': 'application/json, text/plain, */*',
+               'Content-Type': 'application/json'
+            },
+            // credentials: [ YOUR_API_KEY ], // *** NOT YET IMPLEMENTED   
             body: JSON.stringify(agcJSONData)
          });
       }
@@ -27,4 +32,4 @@ code.language-javascript.
          }
       ).then(function(data) {
          console.log(data)
-      })
+      });
