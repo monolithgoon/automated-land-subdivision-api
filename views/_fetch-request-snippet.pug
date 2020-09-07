@@ -11,8 +11,8 @@ code.language-javascript.
    async function sendAgcData() {
       try {
          await fetch(URL, {
-            method: "POST",
-            body: agcJSONData
+            method: "post",
+            body: JSON.stringify(agcJSONData)
          });
       }
       catch(error) {
@@ -24,6 +24,8 @@ code.language-javascript.
    sendAgcData()
       .then(function(apiResponse) {
             // Do whatever with the API response
-            console.log(apiResponse);
+            return apiResponse.json();
          }
-      );
+      ).then(function(data) {
+         console.log(data)
+      })

@@ -44,7 +44,6 @@ const featureSchema = new mongoose.Schema({
       },
    geometry: geometrySchema,
    properties: {
-
       agc_id: {
          type: String,
          required: [true, 'Each AGC must have an ID'],
