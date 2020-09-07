@@ -8,7 +8,7 @@ code.language-javascript.
 
    //- // Perform the POST request
    // Set up the API call function
-   async function saveAgcData() {
+   async function sendAgcData() {
       try {
          await fetch(URL, {
             method: "POST",
@@ -21,7 +21,7 @@ code.language-javascript.
    };
 
    // Execute the API call
-   saveAgcData()
+   sendAgcData()
       .then(function(apiResponse) {
             // Do whatever with the API response
             console.log(apiResponse);

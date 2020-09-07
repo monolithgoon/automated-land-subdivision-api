@@ -44,6 +44,15 @@ const featureSchema = new mongoose.Schema({
       },
    geometry: geometrySchema,
    properties: {
+      
+      agc_id: {
+         type: String,
+         required: [true, 'Each AGC must have an ID'],
+         unique: [true, 'Each AGC must have a unique ID']
+      },
+      location: String,
+      farmers: Array
+
       // chunk_index: {
       //    type: Number,
       //    required: [true, "Each farm parcel in the AGC must have a parcel index"],
@@ -92,13 +101,13 @@ const agcSchema = new mongoose.Schema({
       validate: [(entry) => Array.isArray(entry) && entry.length > 0, `The AGC featureCollection must have at least one feature or an array of features`],
    },
    properties: {
-      agc_id: {
-         type: String,
-         required: [true, 'Each AGC must have an ID'],
-         unique: [true, 'Each AGC must have a unique ID']
-      },
-      location: String,
-      farmers: Array
+      // agc_id: {
+      //    type: String,
+      //    required: [true, 'Each AGC must have an ID'],
+      //    unique: [true, 'Each AGC must have a unique ID']
+      // },
+      // location: String,
+      // farmers: Array
    }
 })
 
