@@ -10,7 +10,7 @@ code[class*="language-"],
 pre[class*="language-"] {
 	color: #ccc;
 	background: none;
-	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
 	/* HACK */
 	font-family: "Roboto Mono", monospace;
 	font-size: 1em;
@@ -22,7 +22,7 @@ pre[class*="language-"] {
 	word-break: normal;
 	word-wrap: normal;
 	/* HACK */
-	line-height: 1.2; 
+	line-height: 1.2;
 
 	-moz-tab-size: 2;
 	-o-tab-size: 2;
@@ -32,15 +32,14 @@ pre[class*="language-"] {
 	-moz-hyphens: none;
 	-ms-hyphens: none;
 	hyphens: none;
-
 }
 
 /* Code blocks */
 pre[class*="language-"] {
 	padding: 1em;
 	/* HACK */
-	padding: 25px 35px; 
-	margin: .5em 0;
+	padding: 25px 35px;
+	margin: 0.5em 0;
 	overflow: auto;
 }
 
@@ -53,8 +52,8 @@ pre[class*="language-"] {
 
 /* Inline code */
 :not(pre) > code[class*="language-"] {
-	padding: .1em;
-	border-radius: .3em;
+	padding: 0.1em;
+	border-radius: 0.3em;
 	white-space: normal;
 }
 
@@ -132,3 +131,15 @@ pre[class*="language-"] {
 	color: green;
 }
 
+
+
+/* HACK */
+/* ----------- Non-Retina Screens ----------- */
+@media screen and (min-device-width: 700px) and (max-device-width: 1600px) {
+	/* and (-webkit-min-device-pixel-ratio: 1) {  */
+
+	pre[class*="language-"] {
+		padding: 1em;
+		padding: 35px;
+	}
+}
