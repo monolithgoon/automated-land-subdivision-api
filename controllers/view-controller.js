@@ -64,7 +64,7 @@ exports.renderAllParcelizedAgcs = async (req, res) => {
 
 
 // DB QUERY USING QUERY OBJECT
-// http://127.0.0.1:9090/parcelized-agc?AGC-UNIQUE-AGC-ID-XXX-XXX-XXX
+// http://127.0.0.1:9090/parcelized-agc?UNIQUE-AGC-ID-XXX-XXX-XXX
 exports.renderParcelizedAgc = async (req, res) => {
 
    try {
@@ -73,7 +73,7 @@ exports.renderParcelizedAgc = async (req, res) => {
       let queryObj = { ...req.query }
       
       // IDEALLY, THE QUERY OBJECT IS SUPPOSED TO BE:
-      // http://127.0.0.1:9090/parcelized-agc?properties.agc_id=AGC-UNIQUE-AGC-ID-XXX-XXX-XXX
+      // http://127.0.0.1:9090/parcelized-agc?properties.agc_id=UNIQUE-AGC-ID-XXX-XXX-XXX
       // THE QUERY OBJ. IS NOW IN THE FORM { UNIQUE-AGC-ID-XXX-XXX-XXX: " " }
       
       // EXTRACT THE agc_id FROM THE QUERY OBJ.

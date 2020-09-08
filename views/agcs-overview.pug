@@ -28,7 +28,7 @@ block parcelized-agcs
 					// Set up the API call function
 					async function getParcelizedAgc(agcID) {
 						try {
-							const apiResponse = await fetch(`https://agcfarmlands.herokuapp.com/api/v1/parcelized-agcs/${agcID}`);
+							const apiResponse = await fetch(`https://agcfarmlands.herokuapp.com/api/v1/parcelized-agcs/parcelized-agc/?${agcID}`);
 							const data = await apiResponse.json();
 							return data;
 						} 

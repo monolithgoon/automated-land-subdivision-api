@@ -5,7 +5,7 @@
 
 const express = require("express");
 const ROUTER = express.Router();
-const AGC_CONTROLLER = require('../controllers/parcelized-agc-controller.js')
+const PARCELIZED_AGC_CONTROLLER = require('../controllers/parcelized-agc-controller.js')
 
 // IMPORING THE ROUTE HANDLING FUNCTIONS USING DESTRUCTURING
 // const {getAllTours, createTour, getTour, updateTour, deleteTour} = require('./../controllers/tour-controller.js')
@@ -41,8 +41,8 @@ const AGC_CONTROLLER = require('../controllers/parcelized-agc-controller.js')
 // 	.post(TOUR_CONTROLLER.checkBody, TOUR_CONTROLLER.createTour);
 
 ROUTER.route('/')
-   .get(AGC_CONTROLLER.getAllParcelizedAgcs)
-   .post(AGC_CONTROLLER.checkBody, AGC_CONTROLLER.insertParcelizedAgc);
+   .get(PARCELIZED_AGC_CONTROLLER.getAllParcelizedAgcs)
+   .post(PARCELIZED_AGC_CONTROLLER.checkBody, PARCELIZED_AGC_CONTROLLER.insertParcelizedAgc);
 
 
 
@@ -52,8 +52,13 @@ ROUTER.route('/')
    // 	.patch(TOUR_CONTROLLER.checkID, TOUR_CONTROLLER.updateTour);
    // 	.delete(TOUR_CONTROLLER.checkID, TOUR_CONTROLLER.deleteTour);
    
-   ROUTER.route("/:id")
-      .get(AGC_CONTROLLER.checkID, AGC_CONTROLLER.getParcelizedAgc)
+   ROUTER.route("/parcelized-agc/:id")
+      .get(PARCELIZED_AGC_CONTROLLER.checkID, PARCELIZED_AGC_CONTROLLER.renderParcelizedAgcByID)
+      
+
+      
+   ROUTER.route('/parcelized-agc/')
+      .get(PARCELIZED_AGC_CONTROLLER.getParcelizedAgc)
 
 
 

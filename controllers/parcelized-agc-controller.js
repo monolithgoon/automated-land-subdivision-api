@@ -187,22 +187,22 @@ exports.getAllParcelizedAgcs = async (request, response) => {
 
 // GET A SINGLE FARM PARCEL - ROUTE HANDLER FN.
 // GET request: 127.0.0.1:9090/api/v1/parcelized-agcs/5ef5d303f3aea23050903c56
-exports.getParcelizedAgc = async (request, response) => {
+exports.renderParcelizedAgcByID = async (request, response) => {
 
    try {
 
-      console.log(`Tihs is the request parameter: ${request.params.id}`);
+      console.log(`This is the request parameter: ${request.params.id}`);
 
       // search the agcs collection for agc with id === req.params.id
-      const searchedFarmParcel = await PARCELIZED_AGC_MODEL.findById(request.params.id) // findById is a mongoose shorthand
-      // const searchedFarmParcel = await PARCELIZED_AGC_MODEL.findOne({ _id: req.params.id }) // same as above
+      const retreivedAgc = await PARCELIZED_AGC_MODEL.findById(request.params.id) // findById is a mongoose shorthand
+      // const retreivedAgc = await PARCELIZED_AGC_MODEL.findOne({ _id: req.params.id }) // same as above
 
 
       response.status(200).json({
          status: 'success',
-         // data: searchedFarmParcel
+         // data: retreivedAgc
          data: {
-            agc: searchedFarmParcel
+            agc: retreivedAgc
          }
       })
 
@@ -212,6 +212,60 @@ exports.getParcelizedAgc = async (request, response) => {
          message: 'That GET request failed.',
          error_msg: err
       })
+   }
+}
+
+
+
+// DB QUERY USING QUERY OBJECT
+// http://127.0.0.1:9090/parcelized-agcs/parcelized-agc?UNIQUE-AGC-ID-XXX-XXX
+exports.getParcelizedAgc = async (req, res) => {
+
+   try {
+      
+      // DB QUERY OBJECT
+      let queryObj = { ...req.query }
+      
+      // IDEALLY, THE QUERY OBJECT IS SUPPOSED TO BE:
+      // http://127.0.0.1:9090/parcelized-agc?properties.agc_id=UNIQUE-AGC-ID-XXX-XXX
+      // THE QUERY OBJ. IS NOW IN THE FORM { UNIQUE-AGC-ID-XXX-XXX: " " }
+      
+      // EXTRACT THE agc_id FROM THE QUERY OBJ.
+      const queryObjKey = Object.keys(queryObj);
+
+
+      // const formattedAgcID = queryObjKey[0].toUpperCase();
+
+      
+      // RE-BUILD THE QUERY OBJ.
+      queryObj = {
+         "properties.agc_id" : queryObjKey[0]
+         // "properties.agc_id" : formattedAgcID
+      }
+      
+
+      // let queryStr = JSON.stringify(queryObj)
+      // const formattedQueryStr = queryStr.replace()
+
+
+      // CONDUCT DB QUERY
+      // let dbQuery = PARCELIZED_AGC_MODEL.find(JSON.parse(formattedQueryStr))
+      let dbQuery = PARCELIZED_AGC_MODEL.find(queryObj)
+
+
+      const parcelizedAgc = await dbQuery
+      console.log(parcelizedAgc);
+
+
+      
+      res.status(200).json({
+         status: 'success',
+         // The query using 'agc_id' returns an array with only one element; deal with it..
+         parcelizedAgcData: parcelizedAgc[0]
+      })
+
+   } catch (err) {
+      console.error(chalkError(err.message));
    }
 }
 
