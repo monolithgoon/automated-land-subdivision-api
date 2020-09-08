@@ -36,9 +36,11 @@ p {
 }
 
 p.important-note {
+	/* margin-bottom: 0;
+	padding-bottom: 0; */
+	font-weight: bold;
 	color: #BF360C;
 	background: #FEEFE3;
-	font-weight: bold;
 }
 
 .api-guide-container {
