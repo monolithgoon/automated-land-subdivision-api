@@ -50,7 +50,7 @@ exports.renderAllParcelizedAgcs = async (req, res) => {
          // THIS DATA IS PASSED TO THE .pug TEMPLATE
          // THESE VARIABLES ARE CALLED "LOCALS" WHEN USED IN THE .pug FILE
          // THE PROCESS OF USING THEM IN THE .pug FILE IS CALLED INTERPOLATION
-         title: "Parcelized AGCs: Test Batch 1",
+         title: "Parcelized AGCs API Guide",
          user: "Phillip Moss",
          parcelizedAgcsData: parcelizedAgcs
       });
