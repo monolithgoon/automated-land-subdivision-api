@@ -158,9 +158,11 @@ exports.insertAgc = async (req, res) => {
 
       res.status(201).json({
          status: 'success',
-         agcData: {
-            agc: newAgc
-         }
+         inserted_at: req.requestTime,
+         data: newAgc
+         // agcData: {
+         //    agc: newAgc
+         // }
       })
       
    } catch (err) { 
