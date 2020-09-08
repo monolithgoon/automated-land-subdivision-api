@@ -151,24 +151,24 @@ exports.getAllParcelizedAgcs = async (request, response) => {
 
          // DONT SKIP IF ...
          if (request.query.page) {
-            const numParceledAgcs = await PARCELIZED_AGC_MODEL.countDocuments();
-            if( skippedResults >= numParceledAgcs) {
+            const numParcelizedAgcs = await PARCELIZED_AGC_MODEL.countDocuments();
+            if( skippedResults >= numParcelizedAgcs) {
                throw new Error('That number of pages does not exist..')
             }
          }
 
 
       // EXECUTE THE QUERY
-      const parceledAgcData = await dbQuery
+      const returnedAgcData = await dbQuery
 
 
       // SEND RESPONSE
 		response.status(200).json({
 			status: "success",
 			requested_at: request.requestTime, // using the custom property from our custom middleware in app.js
-			num_parcelized_agcs: parceledAgcData.length,
+			num_parcelized_agcs: returnedAgcData.length,
 			data: {
-				parcelized_agcs: parceledAgcData,
+				parcelized_agcs: returnedAgcData,
 			},
       })
       
@@ -186,7 +186,7 @@ exports.getAllParcelizedAgcs = async (request, response) => {
 
 
 // GET A SINGLE FARM PARCEL - ROUTE HANDLER FN.
-// GET request: 127.0.0.1:9090/api/v1/parceled-agcs/5ef5d303f3aea23050903c56
+// GET request: 127.0.0.1:9090/api/v1/parcelized-agcs/5ef5d303f3aea23050903c56
 exports.getParcelizedAgc = async (request, response) => {
 
    try {

@@ -10,6 +10,7 @@ const agcController = require('../controllers/agc-controller.js')
 
 
 ROUTER.route('/')
+   .get(agcController.getAllAgcs)
    .post(agcController.checkBody, agcController.insertAgc);
 
 
