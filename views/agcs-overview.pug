@@ -20,8 +20,8 @@ block parcelized-agcs
 				br
 				div.token-code ADSS=23232AD=ASDIO293-MLK23290-23AD.235DS554S5_4409IODSO
 
-			h3 Performing a GET Request
-			p The code snippet below shows how to retreive data from the Parcelized AGCs API using an asynchronous Fetch API GET request. It is implemented in modern JavaScript (ES6/ES2017), and uses object-oriented programming concepts. By passing the "agc_id" as an argument, it returns a single parcelized AGC from the database in a promise. 
+			h3 Retreive A Single Parcelized AGC
+			p The code snippet below shows how to retreive data from the API using an asynchronous Fetch API GET request. It is implemented in modern JavaScript (ES6/ES2017), and uses object-oriented programming concepts. By passing the "agc_id" as an argument, it returns a single parcelized AGC from the database in a promise. 
 
 			pre.get-request-snippet
 				code.language-javascript.
@@ -42,10 +42,34 @@ block parcelized-agcs
 						.then(function(data) {
 							console.log(JSON.stringify(data));
 							}
-						)
+						);
+
+			h3 Retreive All the Parcelzied AGCs
+			//- p The code snippet below shows how to retreive data from the API using an asynchronous Fetch API GET request. It is implemented in modern JavaScript (ES6/ES2017), and uses object-oriented programming concepts. By passing the "agc_id" as an argument, it returns a single parcelized AGC from the database in a promise. 
+
+			pre.get-request-snippet
+				code.language-javascript.
+					// Set up the API call function
+					async function getAllParcelizedAgcs() {
+						try {
+							const apiResponse = await fetch(`https://agcfarmlands.herokuapp.com/api/v1/parcelized-agcs/`);
+							const data = await apiResponse.json();
+							return data;
+						} 
+						catch (error) {
+							console.error(error.message);
+						};
+					};
+
+					// Execute the API call
+					getAllParcelizedAgcs()
+						.then(function(data) {
+							console.log(JSON.stringify(data));
+							}
+						);
 
 			br
-			h3 Sending a POST Request (using an XML HTTP Request)
+			h3 Sending AGC data in a POST Request (using an XML HTTP Request)
 			p The snippet below shows how to persist AGC JSON data to the API database using XMLHttpRequest().
 
 			pre
@@ -53,7 +77,7 @@ block parcelized-agcs
 				br
 
 			br
-			h3 Sending a POST Request (using the Fetch API)
+			h3 Sending AGC data in a POST Request (using the Fetch API)
 			p The snippet below shows an alternate method to persist AGC JSON data to the API database using an asynchronous Fetch API call.
 
 			pre
