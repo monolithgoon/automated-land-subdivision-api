@@ -21,7 +21,7 @@ block parcelized-agcs
 				div.token-code ADSS=23232AD=ASDIO293-MLK23290-23AD.235DS554S5_4409IODSO
 
 			h3 Retreive A Single Parcelized AGC
-			p The code snippet below shows how to retreive data from the API using an asynchronous Fetch API GET request. It is implemented in modern JavaScript (ES6/ES2017), and uses object-oriented programming concepts. By passing the "agc_id" as an argument, it returns a single parcelized AGC from the database in a promise. 
+			p The code snippet below shows how to retreive data from the API using an asynchronous fetch API GET request. It is implemented in modern JavaScript (ES6/ES2017), and uses object-oriented programming concepts. By passing the "agc_id" as an argument, it returns a single parcelized AGC from the database in a promise. 
 
 			pre.get-request-snippet
 				code.language-javascript.
@@ -45,7 +45,6 @@ block parcelized-agcs
 						);
 
 			h3 Retreive All the Parcelzied AGCs
-			//- p The code snippet below shows how to retreive data from the API using an asynchronous Fetch API GET request. It is implemented in modern JavaScript (ES6/ES2017), and uses object-oriented programming concepts. By passing the "agc_id" as an argument, it returns a single parcelized AGC from the database in a promise. 
 
 			pre.get-request-snippet
 				code.language-javascript.
@@ -69,16 +68,8 @@ block parcelized-agcs
 						);
 
 			br
-			h3 Sending AGC data in a POST Request (using an XML HTTP Request)
-			p The snippet below shows how to persist AGC JSON data to the API database using XMLHttpRequest().
-
-			pre
-				include _xml-request-snippet
-				br
-
-			br
-			h3 Sending AGC data in a POST Request (using the Fetch API)
-			p The snippet below shows an alternate method to persist AGC JSON data to the API database using an asynchronous Fetch API call.
+			h3 Sending AGC data to the Database (using the Fetch API)
+			p The snippet below shows how to persist AGC JSON data (using the GEOJSON standard) to the database using an asynchronous fetch API POST request.
 
 			pre
 				//- .devsite-code-buttons-container
@@ -89,7 +80,18 @@ block parcelized-agcs
 				include _fetch-request-snippet
 				br
 
+			br
+			h3 Sending AGC data to the Database (using an XML HTTP Request)
+			p The snippet below shows an alternate method to persist AGC JSON data to the database using XMLHttpRequest().
+
+			pre
+				include _xml-request-snippet
+				br
+
+
+			br
 			h3 Sample AGC JSON Data Structure
+			p.important-note The insertion will fail if the agc_id field is missing from the JSON, or if an AGC with the same agc_id and/or coordinates already exists in the database.
 			pre.agc-json-data-ex
 				include _agc-json-data-example
 

@@ -25,7 +25,7 @@ const geometrySchema = new mongoose.Schema({
    coordinates: {
       type: [Array],
       required: true,
-      unique: false
+      unique: true
    }
 })
 
@@ -43,37 +43,7 @@ const featureSchema = new mongoose.Schema({
          required: true
       },
    geometry: geometrySchema,
-   properties: {
-      // chunk_index: {
-      //    type: Number,
-      //    required: [true, "Each farm parcel in the AGC must have a parcel index"],
-      //    unique: false
-      // },
-      // plot_id: {
-      //    type: String,
-      //    required: [true, "Each farm parcel in the AGC must have a unique ID"],
-      //    // unique: true
-      // },
-      // chunk_size: {
-      //    type: Number,
-      //    required: [true, "Each farm parcel in the AGC must have an allocated size"],
-      // },
-      // farmer_id: {
-      //    type: String,
-      //    // required: [true, "Each farm parcel in the AGC must be assigned to a farmer"],
-      //    required: false, // the chunk could be an unassigned leftover from parcelization process
-      //    unique: true
-      // },
-      // center_lng: {
-      //    type: Number,
-      //    required: false
-      // },
-      // center_lat: {
-      //    type: Number,
-      //    required: false
-      // },
-      // coordinates: String
-   }
+   properties: { }
 })
 
 
@@ -96,7 +66,6 @@ const agcSchema = new mongoose.Schema({
          type: String,
          required: [true, 'Each AGC must have an ID'],
          unique: [true, 'Each agc_id must be unique']
-         // unique: true
       },
       extended_name: {
          type: String,

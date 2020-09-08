@@ -35,6 +35,12 @@ p {
 	line-height: 1.4; 
 }
 
+p.important-note {
+	color: #BF360C;
+	background: #FEEFE3;
+	font-weight: 500;
+}
+
 .api-guide-container {
 	font-family: Roboto, sans-serif;
 	background: white;
