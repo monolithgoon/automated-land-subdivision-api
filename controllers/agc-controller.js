@@ -150,7 +150,7 @@ exports.insertAgc = async (req, res) => {
    try {
       
       // CREATE A NEW AGC DOCUMENT _MTD 1
-      // const newAgc = new TOUR_MODEL(req.body)
+      // const newAgc = new AGC_MODEL(req.body)
       // newAgc.save // returns a promise
       
       // CREATE A NEW AGC DOCUMENT _MTD 2
@@ -166,7 +166,7 @@ exports.insertAgc = async (req, res) => {
    } catch (err) { 
       res.status(400).json({ // 400 => bad request
          status: 'fail',
-         message: 'That POST request failed.',
+         message: 'That POST request failed. Check your JSON data structure.',
          error_msg: err.message,
       })
    }

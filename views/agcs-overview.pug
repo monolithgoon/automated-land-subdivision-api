@@ -69,7 +69,7 @@ block parcelized-agcs
 						);
 
 			br
-			h3 Sending AGC data to the Database (using the Fetch API)
+			h3 Sending AGC data to the DB (using the Fetch API)
 			p The snippet below shows how to persist AGC JSON data (using the GEOJSON standard) to the database using an asynchronous Fetch API POST request.
 
 			pre
@@ -92,7 +92,8 @@ block parcelized-agcs
 
 			br
 			h3 Sample AGC JSON Data Structure
-			p.important-note The insertion will fail if the agc_id field is missing from the JSON, or if an AGC with the same agc_id and/or coordinates already exists in the database.
+			//- div IMPORTANT
+			p.important-note The insertion will fail if the extended_name and/or agc_id fields are missing from the JSON, or if an AGC with the same agc_id and/or coordinates already exists in the database.
 			pre.agc-json-data-ex
 				include _agc-json-data-example
 
