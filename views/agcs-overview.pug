@@ -93,7 +93,7 @@ block parcelized-agcs
 			br
 			h3 Sample AGC JSON Data Structure
 			//- div IMPORTANT
-			p.important-note The insertion will fail if the extended_name and/or agc_id fields are missing from the JSON, or if an AGC with the same agc_id and/or coordinates already exists in the database.
+			p.important-note The insertion will fail if the 'agc_id', 'extended_name' and/or 'location' fields are missing from the JSON payload, or if an AGC with the same 'agc_id' and/or coordinates already exists in the database. Those 3 fields are REQUIRED.
 			pre.agc-json-data-ex
 				include _agc-json-data-example
 
