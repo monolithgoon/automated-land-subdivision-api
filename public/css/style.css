@@ -38,7 +38,7 @@ p {
 p.important-note {
 	color: #BF360C;
 	background: #FEEFE3;
-	font-weight: 500;
+	font-weight: bold;
 }
 
 .api-guide-container {
