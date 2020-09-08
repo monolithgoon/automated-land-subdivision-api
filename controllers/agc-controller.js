@@ -166,7 +166,7 @@ exports.insertAgc = async (req, res) => {
    } catch (err) { 
       res.status(400).json({ // 400 => bad request
          status: 'fail',
-         message: 'That POST request failed. Check your JSON data structure.',
+         message: 'That POST request failed. Check your JSON data payload.',
          error_msg: err.message,
       })
    }
