@@ -3,7 +3,6 @@ const Mongoose = require('mongoose') // MongoDB driver that facilitates connecti
 const dotenv = require('dotenv') // read the data from the config file. and use them as env. variables in NODE
 dotenv.config({path: '../config.env'}) // CONFIGURE ENV. VARIABLES BEFORE CALL THE APP
 
-const AGC_MODEL = require('../models/agc-model.js')
 const PARCELIZED_AGC_MODEL = require('../models/parcelized-agc-model.js')
 
 const chalk = require('chalk')
@@ -38,11 +37,6 @@ async function dbConnect() {
       console.log(err.message);
    }
 }
-
-
-
-// READ THE JSON FILE
-const parcelizedAgcs = JSON.parse(fs.readFileSync('./parcelized-agcs.geojson', 'utf-8'));
 
 
 
@@ -89,17 +83,32 @@ const deleteData = async () => {
 
 
 
-// EXPORT DATA INTO THE REMOTE DB
-const exportData = async () => {
-   try {
-      await dbConnect();
-      await PARCELIZED_AGC_MODEL.create(parcelizedAgcs)
-      console.log(success('The parcelized AGC data was successfully written to the ATLAS database'));
-   } catch(err) {
-      console.error(error(err.message));
-   }
-   process.exit() // end the NODE process
-}
+// READ THE JSON FILE
+const exportData = async (agcFileName) => {
+   
+   const parcelizedAgcs = JSON.parse(fs.readFileSync('./parcelized-agcs.geojson', 'utf-8'));
+   // const parcelizedAgcs = JSON.parse(fs.readFileSync(`./${agcFileName}.geojson', 'utf-8`));
+
+   await dbConnect();
+
+   parcelizedAgcs.forEach(async (agc) => {
+         
+      try {
+            
+         await PARCELIZED_AGC_MODEL.create(parcelizedAgcs)
+         console.log(success('The parcelized AGC data was successfully written to the ATLAS database'));
+
+      } catch(err) {
+         
+         console.error(error(err.message));
+      }
+   });
+
+   // (async function() {
+   //    await process.exit() // end the NODE process
+   // })();
+   
+};
 
 
 
@@ -121,8 +130,9 @@ const exploreData = async () => {
 // EXECUTE IT BY TYPING: node export-fs-data-to-db.js --export/delete
 // console.log(process.argv);
 
+   // if (process.argv[2] === '--export') {
    if (process.argv[2] === '--export') {
-      exportData()
+      exportData(process.argv[3])
    
    } else if (process.argv[2] === '--explore') {
       exploreData();

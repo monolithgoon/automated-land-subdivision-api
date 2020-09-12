@@ -1,7 +1,9 @@
 const chalk = require('chalk');
 const chalkError = chalk.white.bgRed.bold
+const allGood = chalk.blue.bgGrey.bold
 const chalkSuccess = chalk.white.bgGreen.bold
 const chalkWarning = chalk.white.bgYellow.bold
+const chalkData = chalk.grey.bold
 
 const fs = require("fs");
 const axios = require("axios");
@@ -9,107 +11,106 @@ const request = require("request");
 
 
 
+// RETURN & SAVE ALL THE AGCS FROM THE DATABASE
+async function returnAllAgcs() {
 
-// // REQUEST HEADERS
-// const headers = {
-// 	"Accept": "*/*",
-// 	"Content-Type": "application/json",
-// };
-
-// // REQUEST PARAMS.
-// const params = '{ "page": 0, "size": 10, "token": "5bf36b8c3f89b4fcf0936ef49c1427ac22a7ca4766b5aaec7e21bb0e0165cfda46ce01a94968c3162aca0af3cffbf6"}';
-
-// // FULL REQUEST
-// const options = {
-// 	url: "http://pagewallets.com:8080/cabsol-uploader/v1/geoonboarding/v1/parcelized",
-// 	method: "POST",
-// 	headers: headers,
-// 	body: params,
-// };
-
-// // REQUEST HANDLER
-// function callback(error, response, responseBody) {
-
-// 	if (!error && response.statusCode === 200) {
-
-//       console.log(responseBody);
+	try {
       
-//       // WRITE RESULT TO NEW FILE
-//       fs.writeFileSync('/agc-data.geojson', responseBody, (err, Data) => {
-
-//          if(err) {
-//             console.log(chalkError(err.message))
-//          }
-
-//          console.log(chalkSuccess('The returned AGC data was saved to file..'))
-//       });
-
-// 	} else {
-//       console.log(chalkError(error))
-//    }
-// }
-
-// // PERFORM REQUEST 
-// request(options, callback);
-
-
-
-
-// AXIOS REQUEST LOGIC
-async function getAgcData() {
-
-   try {
-
       const axiosRequest = axios({
-         method: 'post',
-         url: `http://pagewallets.com:8080/cabsol-uploader/v1/geoonboarding/v1/parcelized`,
+         method: 'get',
+         // url: `https://agcfarmlands.herokuapp.com/api/v1/agcs/`,
+         url: `http://127.0.0.1:9090/api/v1/agcs`,
          crossDomain: true,
-         responseType: "application/json",
+         responseType: 'application/json',
          headers: {
-            // 'Accept': "application/json",
-            "Accept": "*/*",
-            "Content-Type": "application/json",
-            'Authorization': "5bf36b8c3f89b4fcf0936ef49c1427ac22a7ca4766b5aaec7e21bb0e0165cfda46ce01a94968c3162aca0af3cffbf6",
+            'Accept': '*/*',
+            'Content-Type': 'application/json',
+            // 'Authorization': ''
          },
          data: {
-            page: 0,
-            size: 10,
-         },
-         // timeout: 5000,
-      })
-      
+
+         }
+      });
+
+
       // GET RESPONSE FROM API CALL
-      const apiResponse = await axiosRequest;
+      const apiResponse = await axiosRequest
+      const agcsData = JSON.stringify(apiResponse.data)
+
+
+      // CREATE A TIME STAMP STRING TO APPEND TO THE FILE NAME
+      let requestTimeStr = new Date( Date.parse(apiResponse.data.requested_at)).toISOString();
+      requestTimeStr = requestTimeStr.replace(/:/g, "-");
+      requestTimeStr = requestTimeStr.replace(/T/g, "-T");
 
       
-      // console.log(apiResponse);
+      // WRITE RESULT TO NEW FILE
+      fs.writeFile(`./agcs/agcs-${requestTimeStr}.geojson`, agcsData, (err, data) => {
+
+         if(err) {
+            console.log(chalkError(err.message))
+         } else {
+            console.log(allGood('All the returned AGCs were saved to file.. '))
+         }
+      });      
+	}
+	catch (error) {
+		console.error(error.message);
+	};
+};
+
+
+
+// RETURN & SAVE ONE AGC FROM THE DATABASE
+async function returnAgc(agc_id) {
+
+	try {
+      
+      const axiosRequest = axios({
+         method: 'get',
+         // url: `https://agcfarmlands.herokuapp.com/api/v1/agcs/?${agc_id}`,
+         url: `http://127.0.0.1:9090/api/v1/agcs/agc/?${agc_id}`,
+         crossDomain: true,
+         responseType: 'application/json',
+         headers: {
+            'Accept': '*/*',
+            'Content-Type': 'application/json',
+            // 'Authorization': ''
+         },
+         data: {
+
+         }
+      });
+
+
+      // GET RESPONSE FROM API CALL
+      const apiResponse = await axiosRequest
+      const agcData = JSON.stringify(apiResponse.data.agcData)
 
 
       // WRITE RESULT TO NEW FILE
-      fs.writeFileSync(`./agcs/agc-${Math.random()*99999}.geojson`, apiResponse, (err, Data) => {
+      fs.writeFile(`./agcs/${agc_id.toLowerCase()}.geojson`, agcData, (err, data) => {
 
          if(err) {
             console.log(chalkError(err.message))
          } else {
-            console.log(chalkSuccess('The returned AGC data was saved to file..'))
+            console.log(allGood('The returned AGC data was saved to file.. '))
          }
-      });
-      
-   } catch (apiReqErr) {
-      
-      console.log(chalkError(apiReqErr.message));  
+      });      
+	}
+	catch (error) {
+		console.error(error.message);
+	};
+};
 
-      fs.writeFile('./agcs/api-call-error-log.txt', apiReqErr, (err, data) => {
 
-         if(err) {
-            console.log(chalkError(err.message))
-         } else {
-            console.log(chalkWarning('The error from the API call was saved to the log file..'))
-         }
-      });
-   }
+
+// A SIMPLE COMMAND LINE SCRIPT USING process.argv TO SELECTIVELY EXECUTE FUNCTIONS IN THIS FILE
+// EXECUTE IT BY TYPING: node export-fs-data-to-db.js --export/delete
+
+if (process.argv[2] === '--all') {
+   returnAllAgcs()
+
+} else if (process.argv[2] === '--one') {
+   returnAgc('NIRSALAGCAD0001');
 }
-
-
-// PEREFORM THE AXIOS REQUEST
-getAgcData();

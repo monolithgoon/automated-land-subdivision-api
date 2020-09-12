@@ -227,8 +227,8 @@ exports.getParcelizedAgc = async (req, res) => {
       let queryObj = { ...req.query }
       
       // IDEALLY, THE QUERY OBJECT IS SUPPOSED TO BE:
-      // http://127.0.0.1:9090/parcelized-agc?properties.agc_id=UNIQUE-AGC-ID-XXX-XXX
-      // THE QUERY OBJ. IS NOW IN THE FORM { UNIQUE-AGC-ID-XXX-XXX: " " }
+      // http://127.0.0.1:9090/parcelized-agcs/parcelized-agc?properties.agc_id=UNIQUE-AGC-ID-XXX-XXX
+      // BUT NOW, THE QUERY OBJ. IS NOW IN THE FORM { UNIQUE-AGC-ID-XXX-XXX: " " }
       
       // EXTRACT THE agc_id FROM THE QUERY OBJ.
       const queryObjKey = Object.keys(queryObj);
@@ -248,7 +248,7 @@ exports.getParcelizedAgc = async (req, res) => {
       // const formattedQueryStr = queryStr.replace()
 
 
-      // CONDUCT DB QUERY
+      // CONDUCT THE DB QUERY
       // let dbQuery = PARCELIZED_AGC_MODEL.find(JSON.parse(formattedQueryStr))
       let dbQuery = PARCELIZED_AGC_MODEL.find(queryObj)
 

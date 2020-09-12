@@ -2,32 +2,69 @@
 
 
 
+const chalk = require('chalk');
+const chalkError = chalk.white.bgRed.bold
+const allGood = chalk.blue.bgGrey.bold
+const chalkSuccess = chalk.white.bgGreen.bold
+const chalkWarning = chalk.white.bgYellow.bold
+
+
+
 const AGC_MODEL = require('../models/agc-model.js')
 
 
 
-// REMOVE > REQUEST BODY VALIDATION MIDDLEWARE < VALIDATION CURRENTLY HAPPENING IN THE MODEL .. 
-exports.checkBody = (req, res, next) => {
+// CHECK THAT THE agc_id IS VALID BEFORE RUNNING getAgc()
+// FIXME < COMPLETE THIS FN. 
+exports.checkID = async (req, res, next) => {
 
-   // console.table(req.body)
-   
-   // if (!req.body.name || !req.body.price) {
-   //    return res.status(400).json({
-   //       status: 'failed',
-   //       message: 'Missing tour name and/or price.'
-   //    })
-   // }
-   next(); // move on to the next middleware, ie., createTour
+   next();
 }
 
 
 
-// GET ALL FARM PARCELS ROUTE HANDLER FN.
+// GET A SINGLE AGC
+exports.getAgc = async (req, res) => {
+
+   try {
+
+		console.log(allGood("YOU SUCCESSFULLY CALLED THE getAgc CONTROLLER FN. "));
+
+      // EXTRACT THE agc_id FROM THE QUERY OBJ.
+      let queryObj = { ...req.query }
+      const queryObjKey = Object.keys(queryObj);
+
+      // RE-BUILD THE QUERY OBJ.
+      queryObj = {
+         "properties.agc_id" : queryObjKey[0]
+      }
+
+      // CONDUCT THE DB QUERY
+      console.log(queryObj);
+      const dbQuery = AGC_MODEL.find(queryObj)
+
+      const agc = await dbQuery
+      console.log(agc);
+      
+      res.status(200).json({
+         status: 'success',
+         // The query using 'agc_id' returns an array with only one element; deal with it..
+         agcData: agc[0]
+      })
+      
+   } catch (err) {
+      console.log(chankError(err));
+   }
+}
+
+
+
+// GET ALL AGCS ROUTE HANDLER FN.
 exports.getAllAgcs = async (request, response) => {
 
 	try {
 
-		console.log("YOU SUCCESSFULLY CALLED THE getAllAgcs CONTROLLER");
+		console.log(allGood("YOU SUCCESSFULLY CALLED THE getAllAgcs CONTROLLER FN. "));
       console.log(request.query);
 
       // FILTER _EXAMPLE 1
@@ -126,9 +163,7 @@ exports.getAllAgcs = async (request, response) => {
 			status: "success",
 			requested_at: request.requestTime, // using the custom property from our custom middleware in app.js
 			num_agcs: returnedAgcData.length,
-			data: {
-				agcs: returnedAgcData,
-			},
+		   agcs: returnedAgcData,
       })
       
 	} catch (err) {

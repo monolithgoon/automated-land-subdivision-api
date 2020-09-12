@@ -2,6 +2,7 @@ const PARCELIZED_AGC_MODEL = require('../models/parcelized-agc-model.js')
 const catchAsync = require('../utils/catch-async.js') // TODO < 
 const chalk = require('chalk')
 const chalkError = chalk.white.bgRed.bold
+const allGood = chalk.white.bgCyan.bold
 
 
 
@@ -19,7 +20,7 @@ exports.checkDatabaseID = async (req, res, next, paramValue) => {
       if (!databaseQuery) {
          return res.status(404).json({
             status: 'failed',
-            message: 'That was an invalid ID, you absolute cuck.'
+            message: 'That was an invalid MongoDB ID, you absolute novice!'
          })
       }
       
@@ -45,7 +46,7 @@ exports.renderAllParcelizedAgcs = async (req, res) => {
       // 2 BUILD TEMPLATE
 
       // 3. RENDER THAT TEMPLATE USING DATA FROM 1.)
-      console.log(parcelizedAgcs);
+      console.log(allGood('VIEW CONTROLLER renderAllParcelizedAgcs WORKING OK '));
       res.status(200).render('agcs-overview', {
          // THIS DATA IS PASSED TO THE .pug TEMPLATE
          // THESE VARIABLES ARE CALLED "LOCALS" WHEN USED IN THE .pug FILE
