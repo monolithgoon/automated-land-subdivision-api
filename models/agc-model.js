@@ -5,21 +5,8 @@ const mongoose = require("mongoose");
 const geometrySchema = new mongoose.Schema({
    type: {
       type: String,
-      enum: [ 'Point', 'MultiPoint', 'LineString', 'MultiLineString', 'Polygon', 'MultiPolygon'],
+      enum: [ 'Polygon', 'MultiPolygon'],
       default: 'Polygon',
-      // FIXME > CUSTOM VALIDATION DOES NOT SEEM TO BE WORKING 
-      // vallidate: {
-      //    validateFn: function(geometryType) {
-      //       console.log(`VALIDATING ...`);
-      //       // if (geometryType === 'Point') { 
-      //       //    return pointSchema
-      //       // }
-      //       let schema;
-      //       schema = geometryType === "Point" ? pointSchema : polygonSchema
-      //       schema = geometryType === "Polygon" ? polygonSchema : polygonSchema;
-      //       return schema;
-      //    }
-      // },
       required: [true, `A geometry type needs to be specified`],
    },
    coordinates: {
@@ -27,24 +14,7 @@ const geometrySchema = new mongoose.Schema({
       required: true,
       unique: true
    }
-})
-
-
-
-const featureSchema = new mongoose.Schema({
-   _id: {
-      type: String
-      // type: Mongoose.isValidObjectId,
-   },
-   type: {
-         type: String,
-         enum: ["Feature"],
-         default: "Feature",
-         required: true
-      },
-   geometry: geometrySchema,
-   properties: { }
-})
+});
 
 
 
@@ -52,15 +22,11 @@ const featureSchema = new mongoose.Schema({
 const agcSchema = new mongoose.Schema({
    type: {
       type: String,
-      enum: ["FeatureCollection"],
-      default: "FeatureCollection",
-      required: true
+      enum: ['Feature'],
+      default: 'Feature',
+      required: [true, 'The geojson type must be specified']
    },
-   features: {
-      type: [featureSchema],
-      required: [true, `The featureCollection must have at least one feature or an array of features`],
-      validate: [(entry) => Array.isArray(entry) && entry.length > 0, `The AGC featureCollection must have at least one feature or an array of features`],
-   },
+   geometry: geometrySchema,
    properties: {
       agc_id: {
          type: String,
