@@ -10,7 +10,7 @@ const chalkWarning = chalk.white.bgYellow.bold
 
 
 
-const AGC_MODEL = require('../models/__agc-model.js')
+const AGC_MODEL = require('../models/agc-model.js')
 
 
 

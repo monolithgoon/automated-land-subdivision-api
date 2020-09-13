@@ -3,7 +3,7 @@ const Mongoose = require('mongoose') // MongoDB driver that facilitates connecti
 const dotenv = require('dotenv') // read the data from the config file. and use them as env. variables in NODE
 dotenv.config({path: '../config.env'}) // CONFIGURE ENV. VARIABLES BEFORE CALL THE APP
 
-const AGC_MODEL = require('../models/agc-model.js')
+const AGC_MODEL = require('../models/__agc-model.js')
 
 const chalk = require('chalk')
 const success = chalk.white.bgGreen.bold

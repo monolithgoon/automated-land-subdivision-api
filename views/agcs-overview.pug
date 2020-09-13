@@ -92,7 +92,7 @@ block parcelized-agcs
 
 			br
 			h3 Sample AGC JSON Data Structure
-			p Each AGC payload is a simple GEOJSON Feature, and not a FeatureCollection.
+			p Each AGC payload is a simple GEOJSON #[em #[strong Feature]], and not a #[em FeatureCollection].
 			//- div IMPORTANT
 			p.important-note The insertion will fail if the 'agc_id', 'extended_name' and/or 'location' fields are missing from the JSON payload, or if an AGC with the same 'agc_id' and/or coordinates already exists in the database. Those first 3 fields in 'properties'are REQUIRED.
 			pre.agc-json-data-ex
