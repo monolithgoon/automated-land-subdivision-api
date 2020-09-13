@@ -120,7 +120,8 @@ block parcelized-agcs
 					div.agc-card-summary
 						div.agc-id AGC ID
 							div
-							a(href=`parcelized-agc/?${parcelizedAgc.properties.agc_id}`)= `${parcelizedAgc.properties.agc_id}`
+							//- a(href=`/parcelized-agc/?${parcelizedAgc.properties.agc_id}`)= `${parcelizedAgc.properties.agc_id}`
+							a(href=`/api/demo/parcelized-agc/?${parcelizedAgc.properties.agc_id}`)= `${parcelizedAgc.properties.agc_id}`
 						div.agc-area AGC Area
 							div= `${parcelizedAgc.properties.agc_area.toFixed(1)} ha.`
 						//- div.center-coords
