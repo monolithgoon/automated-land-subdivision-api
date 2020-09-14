@@ -35,6 +35,10 @@ p {
 	line-height: 1.4; 
 }
 
+p.last-update {
+	color: grey;
+}
+
 p.important-note {
 	/* margin-bottom: 0;
 	padding-bottom: 0; */

@@ -19,11 +19,14 @@ head
    //- MAIN STYLESHEET
    link(rel='stylesheet' href='/css/style.css')
    //- script(src='/jquery-min.js' type='module')
-   
+
    //- MAP SCRIPTS FROM agc-render.pug WILL APPEND HERE
    block head-map-scripts
 
 body
+
+   //- PAGE HEADER
+   //- include _header.pug
 
    //- POPULATED WITH DATA RETREIVED FOR ALL THE AGCS
    block parcelized-agcs
