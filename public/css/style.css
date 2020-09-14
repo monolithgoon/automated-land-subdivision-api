@@ -37,6 +37,7 @@ p {
 
 p.last-update {
 	color: grey;
+	font-weight: 200;
 }
 
 p.important-note {
