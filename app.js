@@ -78,7 +78,7 @@ EXPRESS_APP.use((request, response, next) => {
 
 
 // SERVER RESPONSE COMPRESSION MIDDLEWARE FOR ALL TEXT SENT TO CLIENTS
-EXPRESS_APP.use(compression())
+EXPRESS_APP.use(compression());
 
 
 
