@@ -18,8 +18,8 @@ async function returnAllAgcs() {
       
       const axiosRequest = axios({
          method: 'get',
-         // url: `https://agcfarmlands.herokuapp.com/api/v1/agcs/`,
-         url: `http://127.0.0.1:9090/api/v1/agcs`,
+         url: `https://agcfarmlands.herokuapp.com/api/v1/agcs/`,
+         // url: `http://127.0.0.1:9090/api/v1/agcs`,
          crossDomain: true,
          responseType: 'application/json',
          headers: {
@@ -40,7 +40,7 @@ async function returnAllAgcs() {
 
       // CREATE A TIME STAMP STRING TO APPEND TO THE FILE NAME
       let requestTimeStr = new Date( Date.parse(apiResponse.data.requested_at)).toISOString();
-      requestTimeStr = requestTimeStr.replace(/:/g, "-");
+      requestTimeStr = requestTimeStr.replace(/:/g, ".");
       requestTimeStr = requestTimeStr.replace(/T/g, "-T");
 
       

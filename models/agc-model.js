@@ -88,9 +88,9 @@ const agcSchema = new mongoose.Schema({
    },
    features: {
       type: [featureSchema],
-      required: [true, `The featureCollection must have at least one feature or an array of features`],
+      required: [true, `The featureCollection must have at least one feature, or an array of features`],
       // validate: (entry) => Array.isArray(entry) && entry.length > 0, // RETURNS true or false
-      validate: [(entry) => Array.isArray(entry) && entry.length > 0, `The AGC featureCollection must have at least one feature or an array of features`],
+      validate: [(entry) => Array.isArray(entry) && entry.length > 0, `The AGC featureCollection must have at least one feature, or an array of features`],
    },
    properties: {
       agc_id: {
@@ -100,7 +100,8 @@ const agcSchema = new mongoose.Schema({
       },
       extended_name: {
          type: String,
-         required: [true, 'The name of the AGC must be specified']
+         required: [true, 'The name of the AGC must be specified'],
+         unique: [true, `The AGC name must be unique`]
       },
       location: {
          type: String,
@@ -114,7 +115,11 @@ const agcSchema = new mongoose.Schema({
       agc_details: {
          
       },
-      farmers: Array
+      farmers: {
+         type: Array,
+         required: [true, `The AGC must have at least one farmer, or an array of farmers`],
+         validate: [(entry) => Array.isArray(entry) && entry.length > 0, `The AGC must have at least one farmer, or an array of farmers`]
+      }
    }
 })
 
