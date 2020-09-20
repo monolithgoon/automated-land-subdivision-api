@@ -5,7 +5,7 @@ import { GET_MAPBOX_POLYGON_LAYER, GET_LABEL_LAYER, CLEAR_LAYERS, RENDER_LAYER, 
 import { RENDER_SHAPEFILE, GET_SHAPEFILE_GRID_DATA, GET_SHAPEFILE_AREA } from './irregular-polygon.js'
 import { ASSIGN_KATANAS } from './katana-assignment.js'
 import { CHUNKIFY } from './plot-allocation.js'
-import { GET_API_DATA, READ_DOM, RENDER_DOM_DATA, REFRESH_DOM } from './dom-render.js'
+import { GET_PARCELIZED_AGC_API_DATA, READ_DOM, RENDER_DOM_DATA, REFRESH_DOM } from './dom-render.js'
 import { RENDER_MOVING_FRAMES_CHUNKS, GET_RENDERED_LAYERS } from "./chunkify-moving-frames.js";
 
 
@@ -317,7 +317,7 @@ function drawChunk(polygon, layerID, bufferAmt) {
 
 
 
-// RENDER CHUNKIFY DATA ON DOM (_V2)
+// RENDER PARCELIZED AGC DATA ON DOM
 function renderDataOnDOM({parcelizedAgcGeojson, farmPlotsGeojson}) {      
 
 
@@ -375,7 +375,7 @@ function renderDataOnDOM({parcelizedAgcGeojson, farmPlotsGeojson}) {
 
 
 
-// EVENT HANDLERS
+// RENDERS THE DETAILS OF A SINGLE PARCELIZED AGC ON THE PAGE
 map.on('load', function () {
 
 
@@ -387,7 +387,7 @@ map.on('load', function () {
 
 
    // GET DATA FROM BACKEND
-   const parcelizedAgcGeojson = JSON.parse(GET_API_DATA())
+   const parcelizedAgcGeojson = JSON.parse(GET_PARCELIZED_AGC_API_DATA());
    console.log(parcelizedAgcGeojson);
 
 

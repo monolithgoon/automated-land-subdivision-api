@@ -16,7 +16,7 @@ const mapLocation_Div = document.getElementById('map_location_overlay')
 
 // IMPORTANT 
 // GET DATA FROM BACKEND VIA HTML DATASET ATTRIBUTE
-export function GET_API_DATA() {
+export function GET_PARCELIZED_AGC_API_DATA() {
    const dataStream = document.getElementById('api_data_stream').dataset.parcelizedagc
    return dataStream
 }
