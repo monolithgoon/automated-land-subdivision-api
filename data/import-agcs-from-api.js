@@ -49,10 +49,12 @@ async function returnAllAgcs() {
 
          if(err) {
             console.log(chalkError(err.message))
+            process.exit();
          } else {
-            console.log(allGood('All the returned AGCs were saved to file.. '))
+            console.log(allGood('All the returned AGCs were saved to file.. '));
+            process.exit();
          }
-      });      
+      });
 	}
 	catch (error) {
 		console.error(error.message);
@@ -93,8 +95,10 @@ async function returnAgc(agc_id) {
 
          if(err) {
             console.log(chalkError(err.message))
+            process.exit();
          } else {
             console.log(allGood('The returned AGC data was saved to file.. '))
+            process.exit();
          }
       });      
 	}
@@ -109,7 +113,7 @@ async function returnAgc(agc_id) {
 // EXECUTE IT BY TYPING: node export-fs-data-to-db.js --export/delete
 
 if (process.argv[2] === '--all') {
-   returnAllAgcs()
+   returnAllAgcs();
 
 } else if (process.argv[2] === '--one') {
    returnAgc('NIRSALAGCAD0001');
