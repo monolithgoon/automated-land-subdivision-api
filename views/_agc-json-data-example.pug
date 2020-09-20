@@ -1,58 +1,53 @@
 code.language-javascript.
 
 	{
-		"type": "Feature",
-		"properties": {
-			"agc_id": "NIRSALAGCAD0001",
-			"extended_name": "Nasarawa Maize Growers AGC",
-			"location": "Gora, Nasarawa State",
-			"agc_president": "farmer_id",
-			"governance_structure": {
-				"president": "farmer_id",
-				"vice_president": "farmer_id",
-				"secretary": "farmer_id"
+		{
+			"type": "FeatureCollection",
+			"properties": {
+				"agc_id": "AGCABJ002B",
+				"extended_name": "The newest maize growers AGC",
+				"location": "Kubwa, FCT Abuja",
+				"farmers": [
+					{
+						"farmer_name": "Farmer one",
+						"farmer_id": "AGCFCT000019000041",
+						"allocation": 3.9
+					},
+					{
+						"farmer_name": "Farmer Two",
+						"farmer_id": "AGCFCT000019000042",
+						"allocation": 3
+					},
+					{
+						"farmer_name": "Farmer Three",
+						"farmer_id": "AGCFCT000019000043",
+						"allocation": 2.3
+					}
+				]
 			},
-			"agc_details": {
-				"primary_crop": "maize",
-				"has_irrigation": true,
-				"has_power": false,
-				"is_flood_prone": false,
-				"has_processing": true,
-				"has_road_access": true
-			},
-			"farmers": [
+			"features": [
 				{
-					"farmer_id": "NIRSALAGCAD0001-001",
-					"first_name": "Mohammed",
-					"last_name": "Sadiq",
-					"allocation": 2.3
-				},
-				{
-					"farmer_id": "NIRSALAGCAD0001-002",
-					"first_name": "Emmanuel",
-					"last_name": "James",
-					"allocation": 2.7
+					"type": "Feature",
+					"properties": {
+						"shape": "Rectangle",
+						"name": "Unnamed Layer",
+						"category": "default"
+					},
+					"geometry": {
+						"type": "Polygon",
+						"coordinates": [
+							[
+								[-74.009534, 40.715192],
+								[-74.007089, 40.715192],
+								[-74.007089, 40.716753],
+								[-74.009534, 40.716753],
+								[-74.009534, 40.715192]
+							]
+						]
+					},
+					"id": "1dc64de0-3678-4c07-acfd-9388beeb0080"
 				}
 			]
-		},
-		"geometry": {
-			"type": "Polygon",
-			"coordinates": 
-			[
-				[
-					[7.47565314173, 10.62776136860],
-					[7.47883088886, 10.62911340600],
-					[7.48022530227, 10.62869721770],
-					[7.48148929327, 10.62825697355],
-					[7.48148929327, 10.62684100435],
-					[7.48127471655, 10.62500916477],
-					[7.48115234076, 10.62320202895],
-					[7.48116441071, 10.62199067517],
-					[7.479043453931, 10.6220631719],
-					[7.47703313827, 10.62150000302],
-					[7.4767635762, 10.624850332335],
-					[7.47565314173, 10.62776136860]
-				]
-			]
 		}
+
 	}
