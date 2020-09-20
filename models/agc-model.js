@@ -98,10 +98,23 @@ const agcSchema = new mongoose.Schema({
          required: [true, 'Each AGC must have an ID'],
          unique: [true, 'Each AGC must have a unique ID']
       },
+      extended_name: {
+         type: String,
+         required: [true, 'The name of the AGC must be specified']
+      },
       location: {
          type: String,
          required: [true, 'The location of the AGC must be specified']
-      }
+      },
+      // governance_structure: agcGovSchema,
+      governance_structure: {
+         
+      },
+      // agc_details: agcDetailsSchema,
+      agc_details: {
+         
+      },
+      farmers: Array
    }
 })
 
