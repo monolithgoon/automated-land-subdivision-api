@@ -158,11 +158,8 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
       
       // CREATE & APPEND CUSTOM PROPERTIES
       CHUNKS_COLLECTION['properties'] = {
-         // 'agc_id': `unique-agc-id-${(Math.random()*999999999).toFixed(0)}`, // FIXME < agc_id 
-         // 'agc_id': SELECTED_SHAPEFILE.properties.agc_id, 
          'agc_id': shapefileID, 
          'agc_center_coords': turf.centerOfMass(SELECTED_SHAPEFILE),
-         // 'location': SELECTED_SHAPEFILE.features[0].properties.location,
          'location': shapefileLocation,
          'num_farmers': CHUNKS_COLLECTION.features.length,
          'agc_area' : _calcArea(SELECTED_SHAPEFILE),

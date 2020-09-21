@@ -115,6 +115,7 @@ async function returnAgc(agc_id) {
 if (process.argv[2] === '--all') {
    returnAllAgcs();
 
-} else if (process.argv[2] === '--one') {
-   returnAgc('NIRSALAGCAD0001');
+} else if (process.argv[2] === '--one' && process.argv[3]) {
+   // returnAgc('NIRSALAGCAD0001');
+   returnAgc(process.argv[3]);
 }

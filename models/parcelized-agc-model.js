@@ -76,13 +76,13 @@ const featureSchema = new mongoose.Schema({
    properties: {
       chunk_index: {
          type: Number,
-         required: [true, "Each farm parcel in the AGC must have a parcel index"],
+         required: [true, "Each parcelized plot/chunk in the AGC must have an index"],
          unique: false
       },
-      plot_id: {
+      chunk_id: {
          type: String,
-         required: [true, "Each farm parcel in the AGC must have a unique ID"],
-         // unique: true
+         required: [true, "Each parcelized plot/chunk in the AGC must have an ID"],
+         // unique: [true, `Each parcelized plot/chunk in the AGC must have a unique ID`]
       },
       chunk_size: {
          type: Number,

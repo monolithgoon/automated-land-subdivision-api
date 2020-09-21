@@ -8,7 +8,7 @@ const Mongoose = require('mongoose') // MongoDB driver that facilitates connecti
 const dotenv = require('dotenv') // read the data from the config file. and use them as env. variables in NODE
 dotenv.config({path: '../config.env'}) // CONFIGURE ENV. VARIABLES BEFORE CALL THE APP
 
-const AGC_MODEL = require('../models/agc-model.js')
+const AGC_MODEL = require('../../models/agc-model.js')
 
 
 
@@ -40,7 +40,7 @@ async function dbConnect() {
 
 
 // EXPORT DATA INTO THE REMOTE DB
-const exportData = async (agcFileName) => {
+const exportAgcs = async (agcFileName) => {
 
    // READ THE JSON FILE
    const agcs = JSON.parse(fs.readFileSync('./kuje-fct-agcs.geojson', 'utf-8'));
@@ -61,13 +61,12 @@ const exportData = async (agcFileName) => {
 // A SIMPLE COMMAND LINE SCRIPT USING process.argv TO SELECTIVELY EXECUTE FUNCTIONS IN THIS FILE
 // EXECUTE IT BY TYPING: node export-fs-data-to-db.js --export/delete
 
-   // if (process.argv[2] === '--export') {
    if (process.argv[2] === '--export') {
-      exportData(process.argv[3])
+      exportAgcs();
    
    } else if (process.argv[2] === '--explore') {
-      exploreData();
+      exploreAgcs();
    
    } else if (process.argv[2] === '--wipe') {
-      deleteData()
+      deleteAgc()
    }

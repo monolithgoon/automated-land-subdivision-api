@@ -84,10 +84,9 @@ const deleteData = async () => {
 
 
 // READ THE JSON FILE
-const exportAgcs = async (agcFileName) => {
+const exportAgcs = async () => {
    
-   const parcelizedAgcs = JSON.parse(fs.readFileSync('./parcelized-agcs.geojson', 'utf-8'));
-   // const parcelizedAgcs = JSON.parse(fs.readFileSync(`./${agcFileName}.geojson', 'utf-8`));
+   const parcelizedAgcs = JSON.parse(fs.readFileSync('./data/parcelized-agcs.geojson', 'utf-8'));
 
    await dbConnect();
 
@@ -107,9 +106,14 @@ const exportAgcs = async (agcFileName) => {
 
    // (async function() {
    //    await process.exit() // end the NODE process
-   // })();
-   
+   // })(); 
 };
+
+
+
+const exportAgc = async (agcFileName) => {
+   // const parcelizedAgc = JSON.parse(fs.readFileSync(`./${agcFileName}.geojson', 'utf-8`));
+}
 
 
 
@@ -136,7 +140,7 @@ const exploreData = async () => {
       exportAgcs()
    
    } else if (process.argv[2] === '--export' && process.argv[3]) {
-      exportAgcs(process.argv[3])
+      exportAgc(process.argv[3])
       
    } else if (process.argv[2] === '--explore') {
       exploreData();

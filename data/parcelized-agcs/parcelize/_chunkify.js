@@ -238,9 +238,9 @@ exports._chunkify = function({
    // ADD CUSTOM PROPERTIES
    if (chunkPolygon) {
       chunkPolygon.properties['chunk_index'] = idx + 1;
-      chunkPolygon.properties['chunk_id'] = `nirsal-agc-code-xxx-unique-chunk-id-${(Math.random()*99999*idx).toFixed(0)}`;
+      chunkPolygon.properties['chunk_id'] = `nirsal-agc-code-xxx-unique-chunk-id-${(Math.random()*99999*(idx+1)).toFixed(0)}`;
       chunkPolygon.properties['chunk_size'] = allocArea.toFixed(1);
-      chunkPolygon.properties['farmer_id'] = `unique-farmer-id-${(Math.random()*99999*idx).toFixed(0)}` 
+      chunkPolygon.properties['farmer_id'] = `unique-farmer-id-${(Math.random()*99999*(idx+1)).toFixed(0)}` 
       chunkPolygon.properties['center_lng'] = turf.centerOfMass(chunkPolygon).geometry.coordinates[0];
       chunkPolygon.properties['center_lat'] = turf.centerOfMass(chunkPolygon).geometry.coordinates[1];
    }
