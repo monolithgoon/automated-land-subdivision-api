@@ -1,3 +1,7 @@
+const turf = require('@turf/turf')
+
+
+
 function _getProps(geojson) {
 
    if(geojson) {

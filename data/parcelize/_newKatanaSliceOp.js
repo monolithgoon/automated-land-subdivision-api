@@ -1,7 +1,7 @@
 const { _getKatanaSlice } = require('./_getKatanaSlice.js');
 
 
-function _newKatanaSliceOperation(percentIngress, kSliceDir, reunitedSf) {
+exports._newKatanaSliceOperation = function (percentIngress, kSliceDir, reunitedSf) {
 
    let mutatedSf, unslicedSf, newPercentIngress
 
@@ -27,12 +27,6 @@ function _newKatanaSliceOperation(percentIngress, kSliceDir, reunitedSf) {
       // newKatanaSlice = katanaData.annexedPolygon; // TODO <
 
 
-      // SANDBOX > 
-      // mutatedSf = turf.intersect(getProps(startingKatanaSlice)._geometry, movingBboxPolygon)   
-      // chunkSlicePolygon = turf.difference(getProps(startingKatanaSlice)._geometry, getProps(mutatedSf)._geometry)
-      // intersectSliceArea = startShapefileArea - calcArea(mutatedSf);
-
-
       // KEEP TRACK OF THE LEFTOVER SHAPEFILE FROM THE NEW SLICE OPERATION
       unslicedSf = katanaData.leftoverPolygon
    }
@@ -43,6 +37,3 @@ function _newKatanaSliceOperation(percentIngress, kSliceDir, reunitedSf) {
       newPercentIngress,
    }  
 }
-
-
-module.exports = _newKatanaSliceOperation;

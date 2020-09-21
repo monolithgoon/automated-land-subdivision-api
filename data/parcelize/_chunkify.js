@@ -1,8 +1,10 @@
+const turf = require('@turf/turf');
 const { _getProps, _calcArea, _moveBboxPolygon, _toggleChunkifyDir } = require("./_utils.js")
 const { _newKatanaSliceOperation } = require("./_newKatanaSliceOp.js")
 
 
-function _chunkify({
+
+exports._chunkify = function({
    initChunkifyDir, 
    newChunkifyDir, 
    katanaSliceDir, 
@@ -257,6 +259,3 @@ function _chunkify({
       discardedKatanaChunkArea,      
    };
 }
-
-
-module.exports = _chunkify

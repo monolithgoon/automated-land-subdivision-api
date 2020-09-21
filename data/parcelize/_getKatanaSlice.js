@@ -1,7 +1,9 @@
 const { _getProps, _calcArea, _moveBboxPolygon } = require("./_utils.js");
+const turf = require('@turf/turf')
 
 
-function _getKatanaSlice(direction, percentage, shapefile) {
+
+exports._getKatanaSlice = function(direction, percentage, shapefile) {
 
    const shapefileArea = _calcArea(shapefile);
    let areaToAnnex = shapefileArea * percentage
@@ -108,6 +110,3 @@ function _getKatanaSlice(direction, percentage, shapefile) {
       leftoverPolygon
    };
 }
-
-
-module.exports = _getKatanaSlice

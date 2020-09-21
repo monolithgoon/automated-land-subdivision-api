@@ -1,8 +1,8 @@
 // POLYGON CHUNKING v3.0 > BOUNDING BOX DECAY ALGORITHM
-
 const { _getProps, _calcArea } = require('./_utils.js');
 const { _getKatanaSlice } = require('./_getKatanaSlice.js');
 const { _chunkify } = require('./_chunkify.js')
+const turf = require('@turf/turf')
 
 
 
