@@ -7,9 +7,9 @@ const error = chalk.white.bgRed.bold
 const fs = require('fs')
 const Mongoose = require('mongoose') // MongoDB driver that facilitates connection to remote db
 const dotenv = require('dotenv') // read the data from the config file. and use them as env. variables in NODE
-dotenv.config({path: '../config.env'}) // CONFIGURE ENV. VARIABLES BEFORE CALL THE APP
+dotenv.config({path: '../../config.env'}) // CONFIGURE ENV. VARIABLES BEFORE CALL THE APP
 
-const PARCELIZED_AGC_MODEL = require('../models/parcelized-agc-model.js')
+const PARCELIZED_AGC_MODEL = require('../../models/parcelized-agc-model.js')
 
 
 
@@ -84,18 +84,19 @@ const deleteData = async () => {
 
 
 // READ THE JSON FILE
-const exportData = async (agcFileName) => {
+const exportAgcs = async (agcFileName) => {
    
    const parcelizedAgcs = JSON.parse(fs.readFileSync('./parcelized-agcs.geojson', 'utf-8'));
    // const parcelizedAgcs = JSON.parse(fs.readFileSync(`./${agcFileName}.geojson', 'utf-8`));
 
    await dbConnect();
 
+   // SAVE EACH PARCELIZED AGC TO DB
    parcelizedAgcs.forEach(async (agc) => {
          
       try {
             
-         await PARCELIZED_AGC_MODEL.create(parcelizedAgcs)
+         await PARCELIZED_AGC_MODEL.create(agc)
          console.log(success('The parcelized AGC data was successfully written to the ATLAS database'));
 
       } catch(err) {
@@ -132,8 +133,11 @@ const exploreData = async () => {
 
    // if (process.argv[2] === '--export') {
    if (process.argv[2] === '--export') {
-      exportData(process.argv[3])
+      exportAgcs()
    
+   } else if (process.argv[2] === '--export' && process.argv[3]) {
+      exportAgcs(process.argv[3])
+      
    } else if (process.argv[2] === '--explore') {
       exploreData();
    

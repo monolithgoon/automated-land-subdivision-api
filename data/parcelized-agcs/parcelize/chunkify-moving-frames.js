@@ -1,20 +1,15 @@
 // POLYGON CHUNKING v3.0 > BOUNDING BOX DECAY ALGORITHM
+const turf = require('@turf/turf')
 const { _getProps, _calcArea } = require('./_utils.js');
 const { _getKatanaSlice } = require('./_getKatanaSlice.js');
 const { _chunkify } = require('./_chunkify.js')
-const turf = require('@turf/turf')
-
-
-
-
-const RENDERED_LAYERS = []
 
 
 
 // DEAL WITH ANY LEFTOVER LAND
 function calcUnallocatedLandArea(unusedKatanaSlice, unusedShapefile, discardedChunksAreas) {
 
-   console.log(discardedChunksAreas);
+   // console.log(discardedChunksAreas);
    let totalDiscardedArea = discardedChunksAreas.reduce((sum, discardedArea) => sum + discardedArea, 0)
 
    totalDiscardedArea = totalDiscardedArea === 0 ? 0 : totalDiscardedArea;
@@ -24,24 +19,18 @@ function calcUnallocatedLandArea(unusedKatanaSlice, unusedShapefile, discardedCh
    if (unusedKatanaSlice && !unusedShapefile) {
    
       unallocatedLandArea = _calcArea(unusedKatanaSlice) + totalDiscardedArea
-      console.log(unallocatedLandArea.toFixed(1));
+      // console.log(unallocatedLandArea.toFixed(1));
 
    } else if (!unusedKatanaSlice && unusedShapefile) {
 
       unallocatedLandArea = _calcArea(unusedShapefile) + totalDiscardedArea
-      console.log(unallocatedLandArea.toFixed(1));
+      // console.log(unallocatedLandArea.toFixed(1));
 
    } else if (unusedKatanaSlice && unusedShapefile) {
 
       unallocatedLandArea = _calcArea(unusedKatanaSlice) + _calcArea(unusedShapefile) + totalDiscardedArea
 
-      // REMOVE > 
-      // RENDER_SIMPLE_SHAPEFILE(unusedKatanaSlice, {layerID: "fuckChioma1985", color: "white", thickness: 5, fillOpacity: .05})
-      // RENDER_SIMPLE_SHAPEFILE(unusedShapefile, {layerID: Math.random()*9998, color: "pink", thickness: 5, fillOpacity: 0.05});
-      // RENDER_SIMPLE_SHAPEFILE(unallocatedLand, {layerID: 9998, color: "white", thickness: 5, fillOpacity: 0.05});
-      // RENDER_SIMPLE_SHAPEFILE(unallocatedLand, {layerID: Math.random()*64450, color: "white", thickness: 5, fillOpacity: 0.05});
-
-      console.log(unallocatedLandArea.toFixed(1));
+      // console.log(unallocatedLandArea.toFixed(1));
    };
 
    return unallocatedLandArea;
@@ -49,7 +38,8 @@ function calcUnallocatedLandArea(unusedKatanaSlice, unusedShapefile, discardedCh
 
 
 
-exports.PARCELIZE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHAPEFILE, FARM_ALLOCATIONS, {katanaSliceDirection, chunkifyDirection}) {
+// ALGORITHM STARTING POINT
+exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHAPEFILE, FARM_ALLOCATIONS, shapefileID, shapefileLocation, {katanaSliceDirection, chunkifyDirection}) {
 
 
    // SAVE THE PROCESSED GEOJSON CHUNKS FROM "CHUNKIFY"
@@ -125,7 +115,7 @@ exports.PARCELIZE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHAPEFILE, FA
             if( chunkifyData.failedAllocIdx !== undefined) {
 
                FARM_ALLOCATIONS.push(failedAlloc)
-               console.log(failedAlloc);
+               // console.log(failedAlloc);
             }
          } 
 
@@ -149,7 +139,7 @@ exports.PARCELIZE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHAPEFILE, FA
          // CHANGE THE CHUNKIFY DIRECTION WITH EACH NEW KATANA SLICE
          // THIS COND. ONLY OCCURS WHEN THE "else if()" BLOCK IN _chunkify.js IS REACHED
          newChunkifyDir = chunkifyData.newChunkifyDir
-         console.log(newChunkifyDir);
+         // console.log(newChunkifyDir);
 
 
          // KEEP TRACK OF THE INGRESS B.COS _chunkify ALSO CALLS _getKatanaSlice
@@ -161,10 +151,29 @@ exports.PARCELIZE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHAPEFILE, FA
       // DEAL WITH ANY LEFTOVER LAND
       let unallocatedLandArea = calcUnallocatedLandArea(workingShapefile, pendingShapefile, DISCARDED_KATANA_CHUNKS_AREAS);
 
+
+      // CREATE A FEATURE COLLECTION OF ALL THE CHUNKS
+      const CHUNKS_COLLECTION = turf.featureCollection(PROCESSED_CHUNKS);
+
       
-      let CHUNKS_COLLECTION = turf.featureCollection(PROCESSED_CHUNKS)
+      // CREATE & APPEND CUSTOM PROPERTIES
+      CHUNKS_COLLECTION['properties'] = {
+         // 'agc_id': `unique-agc-id-${(Math.random()*999999999).toFixed(0)}`, // FIXME < agc_id 
+         // 'agc_id': SELECTED_SHAPEFILE.properties.agc_id, 
+         'agc_id': shapefileID, 
+         'agc_center_coords': turf.centerOfMass(SELECTED_SHAPEFILE),
+         // 'location': SELECTED_SHAPEFILE.features[0].properties.location,
+         'location': shapefileLocation,
+         'num_farmers': CHUNKS_COLLECTION.features.length,
+         'agc_area' : _calcArea(SELECTED_SHAPEFILE),
+         'total_allocation' : allocationTotal,
+         'unused_land_area' : unallocatedLandArea,
+      }
       console.log(CHUNKS_COLLECTION);
 
+
+      // RETURN THE PARCELIZATION RESULT
+      return CHUNKS_COLLECTION
    
    } catch(err) {
       console.error(err);

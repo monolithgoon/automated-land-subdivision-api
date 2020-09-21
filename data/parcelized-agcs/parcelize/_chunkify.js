@@ -42,7 +42,7 @@ exports._chunkify = function({
    let discardedKatanaChunkArea;
 
    
-   console.log(`Starting katana slice area: ${startShapefileArea}`); 
+   // console.log(`Starting katana slice area: ${startShapefileArea}`); 
 
    
    while (intersectSliceArea.toFixed(1) <= allocArea) {
@@ -67,7 +67,7 @@ exports._chunkify = function({
       // SANDBOX > 
       // if (mutatedShapefile) {
       //    if (turf.getType(mutatedShapefile) === "GeometryCollection") {
-      //       console.log(mutatedShapefile);
+            // console.log(mutatedShapefile);
       //    };
       // };
       
@@ -83,7 +83,7 @@ exports._chunkify = function({
          // HOWEVER, IF THERE WASN'T MUTATION IN THE FIRST PLACE (ie., workingShapefile WAS TOO SMALL TO INTERSECT),
          // THIS if BLOCK WILL FAIL, AND chunkSlicePolygon WILL REMAIN undefined
          
-         console.log(turf.getType(mutatedShapefile));
+         // console.log(turf.getType(mutatedShapefile));
          
          // console.log(mutatedShapefile);
          chunkSlicePolygon = turf.difference(_getProps(workingShapefile)._geometry, _getProps(mutatedShapefile)._geometry)
@@ -94,10 +94,10 @@ exports._chunkify = function({
 
 
          // THE MOVING BBOX POLYGON HAS MOVED PAST THE SHAPEFILE & CAN NO LONGER MUTATE IT
-         console.log('CHUKIFY >> the moving bbox poly. has moved "out of bounds.."');
+         // console.log('CHUKIFY >> the moving bbox poly. has moved "out of bounds.."');
 
 
-         console.log(chunkSlicePolygon);
+         // console.log(chunkSlicePolygon);
          // SLIGHTLY INCREASE THE SIZE OF THE TOO SMALL SLICE IN ORDER TO SUCCESSFULLY UNITE IT WITH ...
          // let tooSmallKatanaSlice = chunkSlicePolygon;
          let tooSmallKatanaSlice = turf.buffer(chunkSlicePolygon, 0.005, {unit: 'kilometers'}); // **
@@ -125,8 +125,8 @@ exports._chunkify = function({
             
             
                // SANDBOX > 
-            console.log(tooSmallKatanaSlice.geometry);
-            console.log(pendingShapefile.geometry);
+            // console.log(tooSmallKatanaSlice.geometry);
+            // console.log(pendingShapefile.geometry);
             
             // GET A NEW KATANA SLICE TO CHUNKIFY FROM THE UNION OF THE LEFTFOVER SHAPEFILE & THE "TOO SMALL" SLICE
             // ANALYZE THE TURF UNION, IF THE RESULT WILL BE A MULTIPOLYGON, DISCARD THE tooSmallKatanaSlice 
@@ -149,7 +149,7 @@ exports._chunkify = function({
 
             
             // SANDBOX > 
-            console.log(reunitedShapefile);                        
+            // console.log(reunitedShapefile);                        
 
             // CONDUCT A NEW K. SLICE OPERATION..
             let newKSliceData = _newKatanaSliceOperation(percentIngress, katanaSliceDir, reunitedShapefile);
@@ -167,7 +167,7 @@ exports._chunkify = function({
             
             
             // TRACK THE FAILED ALLOC.
-            console.log(idx + 1);
+            // console.log(idx + 1);
             failedAllocIdx = idx;
 
                         // FIXME > ZERO OUT THE SLICE POLY.
@@ -192,12 +192,12 @@ exports._chunkify = function({
       } else {
 
          // THE MOVING BBOX POLYGON HAS NOT MOVED PAST THE K. SLICE, BUT THE REMAINING SLICE IS TOO SMALL TO BE MUTATED..
-         console.log(chunkSlicePolygon);
-         console.log(reunitedShapefile);
-         console.log(percentIngress);
-         console.log(pendingShapefile);
-         console.log('***The remaining katana slice is too tiny even for the moving frames..');
-         console.log(`***Try reducing this allocation [[ ${idx+1} ]] a little bit`);
+         // console.log(chunkSlicePolygon);
+         // console.log(reunitedShapefile);
+         // console.log(percentIngress);
+         // console.log(pendingShapefile);
+         // console.log('***The remaining katana slice is too tiny even for the moving frames..');
+         // console.log(`***Try reducing this allocation [[ ${idx+1} ]] a little bit`);
 
 
          // CONDUCT A NEW K. SLICE OPERATION
