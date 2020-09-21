@@ -1,22 +1,13 @@
 // POLYGON CHUNKING v3.0 > BOUNDING BOX DECAY ALGORITHM
 
-import { map, leaflet_map } from "./main.js"
-import { GET_MAPBOX_POLYGON_LAYER, GET_LABEL_LAYER, CLEAR_LAYERS, RENDER_LAYER, RENDER_SIMPLE_SHAPEFILE, POLYGON_FILL_BEHAVIOR } from "./mapbox-render.js"
-import { RENDER_DATA } from "./dom-render.js";
-import { _getProps, _calcArea } from "./_utils.js";
-import { _getKatanaSlice } from "./_getKatanaSlice.js"
-import { _chunkify } from "./_chunkify.js"
+const { _getProps, _calcArea } = require('./_utils.js');
+const { _getKatanaSlice } = require('./_getKatanaSlice.js');
+const { _chunkify } = require('./_chunkify.js')
+
 
 
 
 const RENDERED_LAYERS = []
-
-
-
-
-export function GET_RENDERED_LAYERS() {
-   return RENDERED_LAYERS;
-}
 
 
 
@@ -44,7 +35,8 @@ function calcUnallocatedLandArea(unusedKatanaSlice, unusedShapefile, discardedCh
 
       unallocatedLandArea = _calcArea(unusedKatanaSlice) + _calcArea(unusedShapefile) + totalDiscardedArea
 
-      RENDER_SIMPLE_SHAPEFILE(unusedKatanaSlice, {layerID: "fuckChioma1985", color: "white", thickness: 5, fillOpacity: .05})
+      // REMOVE > 
+      // RENDER_SIMPLE_SHAPEFILE(unusedKatanaSlice, {layerID: "fuckChioma1985", color: "white", thickness: 5, fillOpacity: .05})
       // RENDER_SIMPLE_SHAPEFILE(unusedShapefile, {layerID: Math.random()*9998, color: "pink", thickness: 5, fillOpacity: 0.05});
       // RENDER_SIMPLE_SHAPEFILE(unallocatedLand, {layerID: 9998, color: "white", thickness: 5, fillOpacity: 0.05});
       // RENDER_SIMPLE_SHAPEFILE(unallocatedLand, {layerID: Math.random()*64450, color: "white", thickness: 5, fillOpacity: 0.05});
@@ -57,66 +49,8 @@ function calcUnallocatedLandArea(unusedKatanaSlice, unusedShapefile, discardedCh
 
 
 
+exports.PARCELIZE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHAPEFILE, FARM_ALLOCATIONS, {katanaSliceDirection, chunkifyDirection}) {
 
-function drawChunk(polygon, layerID, bufferAmt) {
-
-   let presentationPolygon;
-
-   
-   if (bufferAmt) {
-      
-      // PREP. FOR PRESENTATION >> THIS REMOVES THE "TAILS"  FROM THE CHUNKS 
-      presentationPolygon = turf.buffer(polygon, bufferAmt, {unit: 'kilometers'}); 
-
-      // SOMETIMES turf.buffer RETURNS "undefined" > DEAL WITH IT
-      presentationPolygon = presentationPolygon ? presentationPolygon : polygon
-
-      
-   } else {
-
-      presentationPolygon = polygon;
-
-   }
-   
-   
-   // GET THE CHUNK POLYGON LAYERS
-   let polygonOutlineLayer = GET_MAPBOX_POLYGON_LAYER(presentationPolygon, {layerID, color: null, thickness: 2, fillOpacity: 0.1}).outlineLayer;
-   let polygonFillLayer = GET_MAPBOX_POLYGON_LAYER(presentationPolygon, {layerID, color: null, thickness: 2, fillOpacity: 0.1}).fillLayer;
-
-
-   // CREATE LABEL LAYER FOR POLYGON
-   let chunkIndex = presentationPolygon.properties.chunk_index;   
-   let chunkMagnitude = presentationPolygon.properties.chunk_size;
-   let labelLayer = GET_LABEL_LAYER(presentationPolygon, chunkIndex, chunkMagnitude);
-   
-   
-   // SAVE THE LAYERS
-   RENDERED_LAYERS.push(polygonOutlineLayer)
-   RENDERED_LAYERS.push(polygonFillLayer)
-   RENDERED_LAYERS.push(labelLayer);
-
-   
-   // RENDER THE LAYERS
-   RENDER_LAYER(map, polygonOutlineLayer)
-   RENDER_LAYER(map, polygonFillLayer)
-   RENDER_LAYER(map, labelLayer)      
-   
-   
-   // ADD CLICKABILITY TO THE FILL LAYER
-   POLYGON_FILL_BEHAVIOR(map, leaflet_map, polygonFillLayer)
-}
-
-
-
-
-export function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHAPEFILE, FARM_ALLOCATIONS, {katanaSliceDirection, chunkifyDirection}) {
-
-
-   // CLEAR PREVIOUS RENDERED LAYERS
-   if (RENDERED_LAYERS.length > 0) {
-      const renderedLayers = RENDERED_LAYERS;
-      CLEAR_LAYERS({map, renderedLayers})
-   }
 
    // SAVE THE PROCESSED GEOJSON CHUNKS FROM "CHUNKIFY"
    const PROCESSED_CHUNKS = [];
@@ -200,14 +134,9 @@ export function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHAPEFILE, FARM_ALLOCATION
          let processedChunk = chunkifyData.chunkPolygon;
          
 
-         // SAVE && RENDER THE CHUNK
+         // SAVE THE CHUNK
          if (processedChunk) {
 
-            // DRAW THE CHUNK ON THE MAP
-            drawChunk(processedChunk, idx, -0.005)
-            // drawChunk(processedChunk, idx)
-
-            // SAVE FOR RENDERING ON DOM
             PROCESSED_CHUNKS.push(processedChunk)
          }
 
@@ -232,28 +161,9 @@ export function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHAPEFILE, FARM_ALLOCATION
       // DEAL WITH ANY LEFTOVER LAND
       let unallocatedLandArea = calcUnallocatedLandArea(workingShapefile, pendingShapefile, DISCARDED_KATANA_CHUNKS_AREAS);
 
-
-      // RENDER THE CHUNKS DATA IN THE DOM
-      RENDER_DATA({allocationTotal, unallocatedLandArea, PROCESSED_CHUNKS})
       
       let CHUNKS_COLLECTION = turf.featureCollection(PROCESSED_CHUNKS)
       console.log(CHUNKS_COLLECTION);
-
-
-      // DRAW THE CHUNKS ON THE MAP
-      {      
-         // PROCESSED_CHUNKS.forEach((chunkPolygon, index) => {
-         //             console.log('fuck chioma iloanusi!');
-
-         //       setTimeout(drawChunk(chunkPolygon, index), 2000 * (index + 1));
-         //       // (function delayedDraw(chunkPolygon) {
-         //       //    setTimeout( ()=> {
-                     
-         //             // drawChunk(chunkPolygon, index);
-         //       //    }, 2000)
-         //       // }(index));
-         //    });
-      }
 
    
    } catch(err) {

@@ -1,15 +1,7 @@
-import { _getProps, _calcArea, _moveBboxPolygon } from "./_utils.js";
-import { _newKatanaSliceOperation } from "./_newKatanaSliceOp.js";
+const { _getProps, _calcArea, _moveBboxPolygon } = require("./_utils.js");
 
 
-import { map } from "./main.js"
-import { GET_MAPBOX_POLYGON_LAYER, RENDER_LAYER } from "./mapbox-render.js";
-
-
-const RENDERED_LAYERS = [];
-
-
-export function _getKatanaSlice(direction, percentage, shapefile) {
+function _getKatanaSlice(direction, percentage, shapefile) {
 
    const shapefileArea = _calcArea(shapefile);
    let areaToAnnex = shapefileArea * percentage
@@ -106,16 +98,9 @@ export function _getKatanaSlice(direction, percentage, shapefile) {
    let leftoverPolygon = turf.buffer(intersectModulusPoly, -0.00005, {unit: 'kilometers'});
    
    
-   // ADD CUSTOM PROPERTIES
+   // ADD CUSTOM PROPERTIES TO LEFTOVER
    // leftoverPolygon.properties['chunk_index'] = idx + 1;
    // leftoverPolygon.properties['chunk_size'] = area.toFixed(1);
-
-
-   // SANDBOX > RENDER GUIDE LINES 
-   let layerID = `katanaMovingBboxPolygon_${Math.random()*1985}`
-   let movingBboxPolygonOutline = GET_MAPBOX_POLYGON_LAYER(movingBboxPolygon, {layerID, color: "red", thickness: 0.5, fillOpacity: .1}).outlineLayer;
-   RENDERED_LAYERS.push(movingBboxPolygonOutline);
-   // RENDER_LAYER(map, movingBboxPolygonOutline);
    
    
    return {
@@ -123,3 +108,6 @@ export function _getKatanaSlice(direction, percentage, shapefile) {
       leftoverPolygon
    };
 }
+
+
+module.exports = _getKatanaSlice

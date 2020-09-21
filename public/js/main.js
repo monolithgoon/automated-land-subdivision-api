@@ -329,6 +329,9 @@ function renderDataOnDOM({parcelizedAgcGeojson, farmPlotsGeojson}) {
    // VARIABLES
    const agcLocation = parcelizedAgcGeojson.properties.location;
    const agcCenterCoords = [6.18, 6.53] // FIXME < update the parcelized AGC properties to include agc_center_coords 
+   const allocationTotal = parcelizedAgcGeojson.properties.agc_area;
+   const unallocatedLandArea = parcelizedAgcGeojson.properties.unused_land_area;
+
    
    
    // CLEAR THE LISTINGS EACH TIME THIS FN. IS CALLED
@@ -404,9 +407,7 @@ map.on('load', function () {
 
    // RENDER THE PLOTS' COORDINATES IN THE DOM
    const farmPlotsGeojson = parcelizedAgcGeojson.features;
-   const allocationTotal = parcelizedAgcGeojson.properties.agc_area;
-   const unallocatedLandArea = parcelizedAgcGeojson.properties.unused_land_area;
-   renderDataOnDOM({parcelizedAgcGeojson, farmPlotsGeojson})
+   renderDataOnDOM({parcelizedAgcGeojson, farmPlotsGeojson});
 
 
 
