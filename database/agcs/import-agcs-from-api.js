@@ -1,9 +1,9 @@
 const chalk = require('chalk');
 const chalkError = chalk.white.bgRed.bold
-const allGood = chalk.blue.bgGrey.bold
-const chalkSuccess = chalk.white.bgGreen.bold
+const processWorking = chalk.blue.bgGrey.bold
+const processSuccess = chalk.white.bgGreen.bold
+const goodConnection = chalk.white.bgBlue.bold
 const chalkWarning = chalk.white.bgYellow.bold
-const chalkData = chalk.grey.bold
 
 const fs = require("fs");
 const axios = require("axios");
@@ -36,6 +36,7 @@ async function returnAllAgcs() {
       // GET RESPONSE FROM API CALL
       const apiResponse = await axiosRequest
       const agcsData = JSON.stringify(apiResponse.data)
+      const numAgcs = apiResponse.data.num_agcs
 
 
       // CREATE A TIME STAMP STRING TO APPEND TO THE FILE NAME
@@ -45,13 +46,13 @@ async function returnAllAgcs() {
 
       
       // WRITE RESULT TO NEW FILE
-      fs.writeFile(`./agcs/agcs-${requestTimeStr}.geojson`, agcsData, (err, data) => {
+      fs.writeFile(`./data/agcs-${requestTimeStr}.geojson`, agcsData, (err, data) => {
 
          if(err) {
             console.log(chalkError(err.message))
             process.exit();
          } else {
-            console.log(allGood('All the returned AGCs were saved to file.. '));
+            console.log(processSuccess(`All the returned AGCs (${numAgcs}) were saved to file.. `));
             process.exit();
          }
       });
@@ -97,7 +98,7 @@ async function returnAgc(agc_id) {
             console.log(chalkError(err.message))
             process.exit();
          } else {
-            console.log(allGood('The returned AGC data was saved to file.. '))
+            console.log(processSuccess('The returned AGC data was saved to file.. '))
             process.exit();
          }
       });      

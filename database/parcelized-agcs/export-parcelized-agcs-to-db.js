@@ -1,8 +1,11 @@
 const chalk = require('chalk')
-const success = chalk.white.bgGreen.bold
-const allGood = chalk.white.bgBlue.bold;
 const highlight = chalk.white.bgYellow.bold
-const error = chalk.white.bgRed.bold
+const processWorking = chalk.blue.bgGrey.bold
+const processSuccess = chalk.white.bgGreen.bold
+const goodConnection = chalk.white.bgBlue.bold
+const chalkError = chalk.white.bgRed.bold
+const chalkWarning = chalk.white.bgYellow.bold
+
 
 const fs = require('fs')
 const Mongoose = require('mongoose') // MongoDB driver that facilitates connection to remote db
@@ -17,7 +20,7 @@ const PARCELIZED_AGC_MODEL = require('../../models/parcelized-agc-model.js')
 // CONNECT TO THE REMOTE ATLAS DB
 async function dbConnect() {
    try {
-      console.log('Connecting to the remote Atlas DB...');
+      console.log(processWorking('Connecting to the remote Atlas DB...'));
 
       const database = process.env.ATLAS_DB_STRING.replace('<PASSWORD>', process.env.ATLAS_DB_PASSOWRD) // REPLACE THE PLACEHOLDER TEXT IN THE CONNECTION STRING
    
@@ -30,7 +33,7 @@ async function dbConnect() {
    })
       .then(connectionObject => {
          // console.log((connectionObject))
-         console.log(allGood('YOU CONNECTED TO THE ATLAS DATABASE SUCCESSFULLY '));
+         console.log(goodConnection('YOU CONNECTED TO THE ATLAS DATABASE SUCCESSFULLY '));
       })
    
    } catch(err) {
@@ -85,28 +88,34 @@ const deleteData = async () => {
 
 // READ THE JSON FILE
 const exportAgcs = async () => {
+
+   try {
+
+      const parcelizedAgcs = JSON.parse(fs.readFileSync('./data/parcelized-agcs.geojson', 'utf-8'));
    
-   const parcelizedAgcs = JSON.parse(fs.readFileSync('./data/parcelized-agcs.geojson', 'utf-8'));
-
-   await dbConnect();
-
-   // SAVE EACH PARCELIZED AGC TO DB
-   parcelizedAgcs.forEach(async (agc) => {
-         
-      try {
+      await dbConnect();
+   
+      // SAVE EACH PARCELIZED AGC TO DB
+      parcelizedAgcs.forEach(async (agc) => {
             
-         await PARCELIZED_AGC_MODEL.create(agc)
-         console.log(success('The parcelized AGC data was successfully written to the ATLAS database'));
+         try {
+               
+            await PARCELIZED_AGC_MODEL.create(agc)
+            console.log(processSuccess('The parcelized AGC data was successfully written to the ATLAS database'));
+   
+         } catch(err) {
+            
+            console.error(chalkError(err.message));
+         }
+      });
+   
+      // (async function() {
+      //    await process.exit() // end the NODE process
+      // })(); 
 
-      } catch(err) {
-         
-         console.error(error(err.message));
-      }
-   });
-
-   // (async function() {
-   //    await process.exit() // end the NODE process
-   // })(); 
+   } catch (err) {
+      console.error(chalkError(err.message));
+   }
 };
 
 

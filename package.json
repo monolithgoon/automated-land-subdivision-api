@@ -1,10 +1,11 @@
 {
-  "name": "pacelized-agcs",
+  "name": "parcelized-agcs-api",
   "version": "1.0.0",
   "description": "NIRSAL Parcelized Agcs API",
   "main": "app.js",
   "scripts": {
-    "exportdb": "cd ./data && node export-fs-data-to-db.js --export",
+    "exportdb": "cd ./database && node export-fs-data-to-db.js --export",
+    "import:parcelize-agcs": "cd ./database/agcs && node import-agcs-from-api --all && cd ./parcelize && node parcelize-agc.js",
     "deploy": "git push && git push heroku master && heroku open",
     "deploy:default": "git add --all && git commit -m 'Housekeeping' && git push && git push heroku master && heroku open",
     "start": "node server.js",
