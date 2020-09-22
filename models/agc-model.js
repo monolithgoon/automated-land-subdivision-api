@@ -74,8 +74,30 @@ const featureSchema = new mongoose.Schema({
       },
    geometry: geometrySchema,
    properties: {}
-})
+});
 
+
+
+// FARMER SCHEMA
+const farmerSchema = new mongoose.Schema({
+   farmer_id: {
+      type: String,
+      required: [true, `The farmer must have a global ID`],
+      unique: [true, `The farmer's global ID must be unique`]
+   },
+   first_name: {
+      type: String,
+      required: [true, `The farmer's first name must be specified`]
+   },
+   last_name: {
+      type: String,
+      required: [true, `The farmer's last name must be specified`]
+   },
+   allocation: {
+      type: Number,
+      required: [true, `Each farmer's land allocation must be specified`]
+   }
+})
 
 
 // AGC SCHEMA
@@ -116,7 +138,7 @@ const agcSchema = new mongoose.Schema({
          
       },
       farmers: {
-         type: Array,
+         type: [farmerSchema],
          required: [true, `The AGC must have at least one farmer, or an array of farmers`],
          validate: [(entry) => Array.isArray(entry) && entry.length > 0, `The AGC must have at least one farmer, or an array of farmers`]
       }

@@ -17,6 +17,7 @@ const { PARCELIZE_SHAPEFILE } = require('./chunkify-moving-frames.js')
 
 
 // IMPORT THE AGCS
+const PENDING_AGCS = []
 
 
 
@@ -37,7 +38,7 @@ const dirOptionsMap = {
 
 
 // GET CHUNKIFY DIRECTIONS
-const dirComboConfigObj = dirOptionsMap.ws;
+const dirComboConfigObj = dirOptionsMap.wn;
 
 
 
@@ -66,11 +67,11 @@ const parcelizedAgcGeojson = PARCELIZE_SHAPEFILE(selectedShapefile, farmAllocati
 // SAVE TO FILE
 async function fileParcelizedAgc(featureCollection, agcID) {
 
-   console.log(JSON.stringify(featureCollection));
+   // console.log(JSON.stringify(featureCollection));
 
    // SAVE TO FILE
    // GET THE agc_id TO APPEND TO THE FILE NAME
-   fs.writeFile(`../${agcID.toLowerCase()}.geojson`, JSON.stringify(featureCollection), (err, data) => {
+   fs.writeFile(`../data/${agcID.toLowerCase()}.geojson`, JSON.stringify(featureCollection), (err, data) => {
 
       if(err) {
          console.log(chalkError(err.message))
