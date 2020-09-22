@@ -149,14 +149,12 @@ async function fileParcelizedAgc(featureCollection, agcID) {
    // console.log(JSON.stringify(featureCollection));
 
    // SAVE TO FILE > APPEND agc_id TO FILE NAME
-   fs.writeFile(`../data/${agcID.toLowerCase()}.geojson`, JSON.stringify(featureCollection), (err, data) => {
+   fs.writeFile(`../../parcelized-agcs/data/${agcID.toLowerCase()}.geojson`, JSON.stringify(featureCollection), (err, data) => {
 
       if(err) {
          console.log(chalk.fail(err.message))
-         // process.exit();
       } else {
          console.log(chalk.success('The AGC was parcelized and saved to file.. '));
-         // process.exit();
       }
    });
 };
@@ -175,13 +173,13 @@ const exportParcelizedAgc = async (parcelizedAgc) => {
          await PARCELIZED_AGC_MODEL.create(parcelizedAgc)
          console.log(chalk.success('The parcelized AGC data was successfully written to the database '));
 
-         // process.exit() // end the NODE process
+         process.exit() // end the NODE process
 
       } catch(err) {
          
          console.error(chalk.fail(err.message));
 
-         // process.exit() // end the NODE process
+         process.exit() // end the NODE process
       }
 
 };
@@ -198,7 +196,7 @@ async function runProgram() {
       const parcelizedAgcs = await parcelizeAgcs(unprocessedAgcs[0]);
    
       console.log(parcelizedAgcs);
-      // await exportParcelizedAgc(parcelizedAgcs);
+      await exportParcelizedAgc(parcelizedAgcs);
 
    } catch (err) {
       console.log(chalk.fail(err.message));
