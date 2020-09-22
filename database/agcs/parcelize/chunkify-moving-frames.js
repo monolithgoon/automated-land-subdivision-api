@@ -1,4 +1,5 @@
 // POLYGON CHUNKING v3.0 > BOUNDING BOX DECAY ALGORITHM
+const chalk = require('../../../utils/chalk-messages');
 const turf = require('@turf/turf')
 const { _getProps, _calcArea } = require('./_utils.js');
 const { _getKatanaSlice } = require('./_getKatanaSlice.js');
@@ -40,43 +41,42 @@ function calcUnallocatedLandArea(unusedKatanaSlice, unusedShapefile, discardedCh
 
 // ALGORITHM STARTING POINT
 exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHAPEFILE, FARM_ALLOCATIONS, shapefileID, shapefileLocation, {katanaSliceDirection, chunkifyDirection}) {
-
-
-   // SAVE THE PROCESSED GEOJSON CHUNKS FROM "CHUNKIFY"
-   const PROCESSED_CHUNKS = [];
-
-
-   // GET THE TOTAL ALLOC. HECTARES
-   const allocationTotal = FARM_ALLOCATIONS.reduce((allocation, sum) => sum + allocation);
-
-
-   // VAR. TO KEEP TRACK OF DISCARDED CHUNKIFY POLYGONS
-   const DISCARDED_KATANA_CHUNKS = [];
-   const DISCARDED_KATANA_CHUNKS_AREAS = [];
-
-
-   // SLICE THE MAIN SHAPEFILE INTO "LARGE" SECTIONS >>
-   // ANNEX A 20% SECTION OF THE ORIGINAL SHAPEFILE && USE THAT FOR CHUNKING
-   let percentIngress = 0.80;
-   // let percentIngress = 0.5;
-
-
-   // SET THE DIR. TO CUT WORKING SHAPEFILES
-   const katanaSliceDir = katanaSliceDirection
-
-
-   // GET THE WORKING SHAPEFILE
-   let katanaData = _getKatanaSlice(katanaSliceDir, percentIngress, SELECTED_SHAPEFILE)
-   let pendingShapefile = katanaData.leftoverPolygon
-   let workingShapefile = katanaData.annexedPolygon; // IMPORTANT
-   // let workingShapefile = SELECTED_SHAPEFILE;
-
-
-   // IMPORTANT
-   let newChunkifyDir;
-
-
+   
    try {
+
+      // SAVE THE PROCESSED GEOJSON CHUNKS FROM "CHUNKIFY"
+      const PROCESSED_CHUNKS = [];
+
+
+      // GET THE TOTAL ALLOC. HECTARES
+      const allocationTotal = FARM_ALLOCATIONS.reduce((allocation, sum) => sum + allocation);
+
+
+      // VAR. TO KEEP TRACK OF DISCARDED CHUNKIFY POLYGONS
+      const DISCARDED_KATANA_CHUNKS = [];
+      const DISCARDED_KATANA_CHUNKS_AREAS = [];
+
+
+      // SLICE THE MAIN SHAPEFILE INTO "LARGE" SECTIONS >>
+      // ANNEX A 20% SECTION OF THE ORIGINAL SHAPEFILE && USE THAT FOR CHUNKING
+      let percentIngress = 0.80;
+      // let percentIngress = 0.5;
+
+
+      // SET THE DIR. TO CUT WORKING SHAPEFILES
+      const katanaSliceDir = katanaSliceDirection
+
+
+      // GET THE WORKING SHAPEFILE
+      let katanaData = _getKatanaSlice(katanaSliceDir, percentIngress, SELECTED_SHAPEFILE)
+      let pendingShapefile = katanaData.leftoverPolygon
+      let workingShapefile = katanaData.annexedPolygon; // IMPORTANT
+      // let workingShapefile = SELECTED_SHAPEFILE;
+
+
+      // IMPORTANT
+      let newChunkifyDir;
+
 
       for (let idx = 0; idx < FARM_ALLOCATIONS.length; idx++) {
 
@@ -173,6 +173,6 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
       return CHUNKS_COLLECTION
    
    } catch(err) {
-      console.error(err);
+      console.error(chalk.warning(err.message));
    }
 }

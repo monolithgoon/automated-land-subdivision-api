@@ -1,10 +1,10 @@
 const chalk = require('chalk')
-const highlight = chalk.white.bgYellow.bold
+const highlight = chalk.blue.bgYellowBright.bold
 const working = chalk.blue.bgGrey.bold
 const success = chalk.white.bgGreen.bold
 const connected = chalk.white.bgBlue.bold
-const warning = chalk.white.bgYellow.bold
 const fail = chalk.white.bgRed.bold
+const warning  = chalk.redBright.bgYellow.bold
 
 module.exports = {
    highlight,

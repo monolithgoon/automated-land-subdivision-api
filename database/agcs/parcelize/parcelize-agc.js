@@ -19,14 +19,12 @@ const importAgcData = async () => {
       // GET AGCS 
       const agcs = await AGC_MODEL.find()
       const parcelizedAgcs = await PARCELIZED_AGC_MODEL.find()
-      // console.log(agcs);
-      // console.log(parcelizedAgcs);
 
       // COMPARE AGCS WITH PARCELIZED AGCS
-      const pendingAgcs = await compareAgcs(agcs, parcelizedAgcs)
+      const unprocessedAgcs = await compareAgcs(agcs, parcelizedAgcs)
 
       // RETURN AGCS THAT HAVE NOT BEEN PARCELIZED
-      return pendingAgcs;
+      return unprocessedAgcs;
 
    } catch(err) {
       console.log(chalk.fail(err.message));
@@ -125,6 +123,7 @@ const parcelizeAgcs = async (agcs) => {
          }
    
          // PARCELIZE
+         console.log(selectedShapefile);
          const parcelizedAgcGeojson = await PARCELIZE_SHAPEFILE(selectedShapefile, farmAllocations, agcID, agcLocation, dirComboConfigObj)
    
          // SAVE TO FILE
@@ -140,8 +139,7 @@ const parcelizeAgcs = async (agcs) => {
       
    } catch (err) {
       console.log(chalk.fail(err.message));
-   }
-   
+   }   
 }
 
 
@@ -192,14 +190,19 @@ const exportParcelizedAgc = async (parcelizedAgc) => {
 
 async function runProgram() {
 
-   // await importAgcData();
+   try {
+          
+      const unprocessedAgcs = await importAgcData();
    
-   const pendingAgcs = await importAgcData();
+      // await parcelizeAgcs(unprocessedAgcs);
+      const parcelizedAgcs = await parcelizeAgcs(unprocessedAgcs[0]);
+   
+      console.log(parcelizedAgcs);
+      // await exportParcelizedAgc(parcelizedAgcs);
 
-   // await parcelizeAgcs(pendingAgcs);
-   const parcelizedAgcs = await parcelizeAgcs(pendingAgcs)
-
-   await exportParcelizedAgc(parcelizedAgcs);
+   } catch (err) {
+      console.log(chalk.fail(err.message));
+   }
 }
 
 runProgram();
