@@ -5,7 +5,6 @@
   "main": "app.js",
   "scripts": {
     "exportdb": "cd ./database && node export-fs-data-to-db.js --export",
-    "import:parcelize-agcs": "cd ./database/agcs && node import-agcs-from-api --all && cd ./parcelize && node parcelize-agc.js",
     "deploy": "git push && git push heroku master && heroku open",
     "deploy:default": "git add --all && git commit -m 'Housekeeping' && git push && git push heroku master && heroku open",
     "start": "node server.js",

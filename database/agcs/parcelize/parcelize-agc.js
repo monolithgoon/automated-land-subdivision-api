@@ -89,22 +89,7 @@ const parcelizeAgcs = async (agcs) => {
             // GET THE FARM HA. ALLOCATIONS
             const farmerAllocations = [];
             agc.properties.farmers.forEach(farmer=>farmerAllocations.push(farmer.allocation));
-      
-            // FOR agc_id && location, CHECK WHETHER FEAT. OR FEAT. COLL.
-            let agcID, agcLocation
-            if (selectedShapefile.type === 'FeatureCollection' && selectedShapefile.properties) {
-               agcID = selectedShapefile.properties.agc_id
-               agcLocation = selectedShapefile.properties.location
-            }
-            else if (selectedShapefile.type === "FeatureCollection") {
-               agcID = selectedShapefile.features[0].properties.agc_id
-               agcLocation = selectedShapefile.features[0].properties.location
-            }
-            else if (selectedShapefile.type === "Feature") {
-               agcID = selectedShapefile.properties.agc_id
-               agcLocation = selectedShapefile.properties.location
-            }
-   
+         
             const dirOptionsMap = {
                se: { katanaSliceDirection: "south", chunkifyDirection: "east" },
                sw: { katanaSliceDirection: "south", chunkifyDirection: "west" },
@@ -135,11 +120,12 @@ const parcelizeAgcs = async (agcs) => {
       
             // GET CHUNKIFY DIRECTIONS
             // const dirComboConfigObj = dirOptionsMap.wn;
-            const dirComboConfigObj = dirOptionsMap.ne;
+            const dirComboConfigObj = dirOptionsMap.ws;
+            // const dirComboConfigObj = dirOptionsMap.ne;
             // const dirComboConfigObj = dirOptionsMap.es;
       
             // PARCELIZE
-            const parcelizedAgcGeojson = await PARCELIZE_SHAPEFILE(selectedShapefile, farmerAllocations, agcID, agcLocation, dirComboConfigObj)
+            const parcelizedAgcGeojson = await PARCELIZE_SHAPEFILE(selectedShapefile, farmerAllocations, dirComboConfigObj)
       
             // CHECK IF PARCELIZATION SUCCEEDED
             if (!parcelizedAgcGeojson) {
@@ -148,7 +134,7 @@ const parcelizeAgcs = async (agcs) => {
             } else {
                
                // SAVE TO FILE
-               await fileParcelizedAgc(parcelizedAgcGeojson, agcID);
+               await fileParcelizedAgc(parcelizedAgcGeojson);
 
                // SAVE TO ARRAY FOR DB.
                parcelizedAgcs.push(parcelizedAgcGeojson);
@@ -170,7 +156,9 @@ const parcelizeAgcs = async (agcs) => {
 
 
 // SAVE TO FILE
-async function fileParcelizedAgc(featureCollection, agcID, directions) {
+async function fileParcelizedAgc(featureCollection, directions) {
+
+   const agcID = featureCollection.properties.agc_id;
 
    if (directions) {
 

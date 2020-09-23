@@ -77,9 +77,39 @@ function _toggleChunkifyDir(direction) {
 }
 
 
+
+// CHECK WHETHER FEAT. OR FEAT. COLL.
+function _analyzeShapefile(shapefile) {
+   
+   let sfID, sfLocation;
+   const randomSfID = `unique-agc-id-${(Math.random()*999999999).toFixed(0)}`
+   const baseLocation = `Nigeria`
+
+   if (shapefile.type === 'FeatureCollection' && shapefile.properties) {
+      sfID = shapefile.properties.agc_id || randomSfID
+      sfLocation = shapefile.properties.location || baseLocation
+   }
+   else if (shapefile.type === "FeatureCollection" && shapefile.features[0].properties) {
+      sfID = shapefile.features[0].properties.agc_id || randomSfID
+      sfLocation = shapefile.features[0].properties.location || baseLocation
+   }
+   else if (shapefile.type === "Feature") {
+      sfID = shapefile.properties.agc_id || randomSfID
+      sfLocation = shapefile.properties.location || baseLocation
+   } 
+
+   return {
+      sfID,
+      sfLocation
+   }
+}
+
+
+
 module.exports = {
    _getProps,
    _calcArea,
    _moveBboxPolygon,
    _toggleChunkifyDir,
+   _analyzeShapefile
 }

@@ -1,7 +1,7 @@
 // POLYGON CHUNKING v3.0 > BOUNDING BOX DECAY ALGORITHM
 const chalk = require('../../../utils/chalk-messages');
 const turf = require('@turf/turf')
-const { _getProps, _calcArea } = require('./_utils.js');
+const { _getProps, _calcArea, _analyzeShapefile } = require('./_utils.js');
 const { _getKatanaSlice } = require('./_getKatanaSlice.js');
 const { _chunkify } = require('./_chunkify.js')
 
@@ -40,7 +40,7 @@ function calcUnallocatedLandArea(unusedKatanaSlice, unusedShapefile, discardedCh
 
 
 // ALGORITHM STARTING POINT
-exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHAPEFILE, FARM_ALLOCATIONS, shapefileID, shapefileLocation, {katanaSliceDirection, chunkifyDirection}) {
+exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHAPEFILE, FARM_ALLOCATIONS, {katanaSliceDirection, chunkifyDirection}) {
    
    try {
 
@@ -154,6 +154,12 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
 
       // CREATE A FEATURE COLLECTION OF ALL THE CHUNKS
       const CHUNKS_COLLECTION = turf.featureCollection(PROCESSED_CHUNKS);
+
+
+      // GET SHAPEFILE METADATA
+      const shapefileMetadata = _analyzeShapefile(SELECTED_SHAPEFILE)
+      const shapefileID = shapefileMetadata.sfID
+      const shapefileLocation = shapefileMetadata.sfLocation
 
       
       // CREATE & APPEND CUSTOM PROPERTIES
