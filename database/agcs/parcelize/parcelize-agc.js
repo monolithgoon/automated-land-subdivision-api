@@ -134,17 +134,26 @@ const parcelizeAgcs = async (agcs) => {
             // }
       
             // GET CHUNKIFY DIRECTIONS
-            const dirComboConfigObj = dirOptionsMap.wn;
+            // const dirComboConfigObj = dirOptionsMap.wn;
+            const dirComboConfigObj = dirOptionsMap.ne;
             // const dirComboConfigObj = dirOptionsMap.es;
       
             // PARCELIZE
             const parcelizedAgcGeojson = await PARCELIZE_SHAPEFILE(selectedShapefile, farmerAllocations, agcID, agcLocation, dirComboConfigObj)
       
-            // SAVE TO FILE
-            await fileParcelizedAgc(parcelizedAgcGeojson, agcID);
+            // CHECK IF PARCELIZATION SUCCEEDED
+            if (!parcelizedAgcGeojson) {
+
+               console.log(chalk.warning(`Parcelization of ${agc.properties.agc_id} failed. Try different direction combo. `));
+            } else {
+               
+               // SAVE TO FILE
+               await fileParcelizedAgc(parcelizedAgcGeojson, agcID);
+
+               // SAVE TO ARRAY FOR DB.
+               parcelizedAgcs.push(parcelizedAgcGeojson);
+            }
       
-            // SAVE TO ARRAY
-            parcelizedAgcs.push(parcelizedAgcGeojson);
             
          } catch (err) {
             console.log(chalk.fail(err.message));
@@ -199,7 +208,10 @@ const exportParcelizedAgc = async (parcelizedAgc) => {
    // SAVE TO DB
       try {
             
+         // const agc = await PARCELIZED_AGC_MODEL.findOne({agc_id:parcelizedAgc.properties.agc_id}, (err, queryObj) => queryObj)
+         // console.log(agc);
          await PARCELIZED_AGC_MODEL.create(parcelizedAgc)
+         // await PARCELIZED_AGC_MODEL.update(parcelizedAgc)
          console.log(chalk.success('The parcelized AGC data was successfully written to the database '));
 
          process.exit() // end the NODE process
