@@ -6,6 +6,7 @@ const fs = require('fs')
 const AGC_MODEL = require('../../../models/agc-model.js')
 const PARCELIZED_AGC_MODEL = require('../../../models/parcelized-agc-model.js')
 
+// IMPORT MAIN PARCELIZATION SCRIPT
 const { PARCELIZE_SHAPEFILE } = require('./chunkify-moving-frames.js')
 
 
@@ -79,59 +80,75 @@ const parcelizeAgcs = async (agcs) => {
       
       // PARCELIZE
       agcs.forEach(async (agc) => {
+
+         try {
+
+            // INIT. PARCELIZATION VARIABLES
+            const selectedShapefile = agc
+
+            // GET THE FARM HA. ALLOCATIONS
+            const farmerAllocations = [];
+            agc.properties.farmers.forEach(farmer=>farmerAllocations.push(farmer.allocation));
+      
+            // FOR agc_id && location, CHECK WHETHER FEAT. OR FEAT. COLL.
+            let agcID, agcLocation
+            if (selectedShapefile.type === 'FeatureCollection' && selectedShapefile.properties) {
+               agcID = selectedShapefile.properties.agc_id
+               agcLocation = selectedShapefile.properties.location
+            }
+            else if (selectedShapefile.type === "FeatureCollection") {
+               agcID = selectedShapefile.features[0].properties.agc_id
+               agcLocation = selectedShapefile.features[0].properties.location
+            }
+            else if (selectedShapefile.type === "Feature") {
+               agcID = selectedShapefile.properties.agc_id
+               agcLocation = selectedShapefile.properties.location
+            }
    
-         // INIT. PARCELIZATION VARIABLES
-         const selectedShapefile = agc
-         const farmAllocations = [ 1.5, 1.5, 2, 2, 3, 3, 2.1, 3, 3.1 ];
-         const dirOptionsMap = {
-            se: { katanaSliceDirection: "south", chunkifyDirection: "east" },
-            sw: { katanaSliceDirection: "south", chunkifyDirection: "west" },
-            ne: { katanaSliceDirection: "north", chunkifyDirection: "east" },
-            nw: { katanaSliceDirection: "north", chunkifyDirection: "west" },
-            es: { katanaSliceDirection: "east", chunkifyDirection: "south" },
-            en: { katanaSliceDirection: "east", chunkifyDirection: "north" },
-            ws: { katanaSliceDirection: "west", chunkifyDirection: "south" },
-            wn: { katanaSliceDirection: "west", chunkifyDirection: "north" },
+            const dirOptionsMap = {
+               se: { katanaSliceDirection: "south", chunkifyDirection: "east" },
+               sw: { katanaSliceDirection: "south", chunkifyDirection: "west" },
+               ne: { katanaSliceDirection: "north", chunkifyDirection: "east" },
+               nw: { katanaSliceDirection: "north", chunkifyDirection: "west" },
+               es: { katanaSliceDirection: "east", chunkifyDirection: "south" },
+               en: { katanaSliceDirection: "east", chunkifyDirection: "north" },
+               ws: { katanaSliceDirection: "west", chunkifyDirection: "south" },
+               wn: { katanaSliceDirection: "west", chunkifyDirection: "north" },
+            }
+            const dirOptionsArray = [
+               { katanaSliceDirection: "south", chunkifyDirection: "east" },
+               { katanaSliceDirection: "south", chunkifyDirection: "west" },
+               { katanaSliceDirection: "north", chunkifyDirection: "east" },
+               { katanaSliceDirection: "north", chunkifyDirection: "west" },
+               { katanaSliceDirection: "east", chunkifyDirection: "south" },
+               { katanaSliceDirection: "east", chunkifyDirection: "north" },
+               { katanaSliceDirection: "west", chunkifyDirection: "south" },
+               { katanaSliceDirection: "west", chunkifyDirection: "north" },
+            ]
+            // for (let idx = 0; idx < dirOptionsArray.length; idx++) {
+            //    const directionsObj = dirOptionsArray[idx];
+            //    const parcelizedAgcGeojson = await PARCELIZE_SHAPEFILE(selectedShapefile, farmerAllocations, agcID, agcLocation, directionsObj)
+            //    if (parcelizedAgcGeojson) {
+            //       await fileParcelizedAgc(parcelizedAgcGeojson, agcID, idx);
+            //    }
+            // }
+      
+            // GET CHUNKIFY DIRECTIONS
+            const dirComboConfigObj = dirOptionsMap.wn;
+            // const dirComboConfigObj = dirOptionsMap.es;
+      
+            // PARCELIZE
+            const parcelizedAgcGeojson = await PARCELIZE_SHAPEFILE(selectedShapefile, farmerAllocations, agcID, agcLocation, dirComboConfigObj)
+      
+            // SAVE TO FILE
+            await fileParcelizedAgc(parcelizedAgcGeojson, agcID);
+      
+            // SAVE TO ARRAY
+            parcelizedAgcs.push(parcelizedAgcGeojson);
+            
+         } catch (err) {
+            console.log(chalk.fail(err.message));
          }
-         const dirOptionsArray = [
-            { katanaSliceDirection: "south", chunkifyDirection: "east" },
-            { katanaSliceDirection: "south", chunkifyDirection: "west" },
-            { katanaSliceDirection: "north", chunkifyDirection: "east" },
-            { katanaSliceDirection: "north", chunkifyDirection: "west" },
-            { katanaSliceDirection: "east", chunkifyDirection: "south" },
-            { katanaSliceDirection: "east", chunkifyDirection: "north" },
-            { katanaSliceDirection: "west", chunkifyDirection: "south" },
-            { katanaSliceDirection: "west", chunkifyDirection: "north" },
-         ]
-   
-         // GET CHUNKIFY DIRECTIONS
-         const dirComboConfigObj = dirOptionsMap.wn;
-   
-         // FOR agc_id && location, CHECK WHETHER FEAT. OR FEAT. COLL.
-         let agcID, agcLocation
-         if (selectedShapefile.type === 'FeatureCollection' && selectedShapefile.properties) {
-            agcID = selectedShapefile.properties.agc_id
-            agcLocation = selectedShapefile.properties.location
-         }
-         else if (selectedShapefile.type === "FeatureCollection") {
-            agcID = selectedShapefile.features[0].properties.agc_id
-            agcLocation = selectedShapefile.features[0].properties.location
-         }
-         else if (selectedShapefile.type === "Feature") {
-            agcID = selectedShapefile.properties.agc_id
-            agcLocation = selectedShapefile.properties.location
-         }
-   
-         // PARCELIZE
-         console.log(selectedShapefile);
-         const parcelizedAgcGeojson = await PARCELIZE_SHAPEFILE(selectedShapefile, farmAllocations, agcID, agcLocation, dirComboConfigObj)
-   
-         // SAVE TO FILE
-         await fileParcelizedAgc(parcelizedAgcGeojson, agcID);
-   
-         // SAVE TO ARRAY
-         parcelizedAgcs.push(parcelizedAgcGeojson);
-   
       });
    
       // RETURN ARRAY TO SAVE TO DB
@@ -144,19 +161,31 @@ const parcelizeAgcs = async (agcs) => {
 
 
 // SAVE TO FILE
-async function fileParcelizedAgc(featureCollection, agcID) {
+async function fileParcelizedAgc(featureCollection, agcID, directions) {
 
-   // console.log(JSON.stringify(featureCollection));
+   if (directions) {
 
-   // SAVE TO FILE > APPEND agc_id TO FILE NAME
-   fs.writeFile(`../../parcelized-agcs/data/${agcID.toLowerCase()}.geojson`, JSON.stringify(featureCollection), (err, data) => {
+      // SAVE TO FILE > APPEND agc_id && directionsCombo TO FILE NAME
+      fs.writeFile(`../../parcelized-agcs/data/${agcID.toLowerCase()}-${directions}.geojson`, JSON.stringify(featureCollection), (err, data) => {
+         if(err) {
+            console.log(chalk.fail(err.message))
+         } else {
+            console.log(chalk.success('The AGC was parcelized and saved to file.. '));
+         }
+      });
 
-      if(err) {
-         console.log(chalk.fail(err.message))
-      } else {
-         console.log(chalk.success('The AGC was parcelized and saved to file.. '));
-      }
-   });
+   } else {
+
+      // SAVE TO FILE > APPEND agc_id TO FILE NAME
+      fs.writeFile(`../../parcelized-agcs/data/${agcID.toLowerCase()}.geojson`, JSON.stringify(featureCollection), (err, data) => {
+
+         if(err) {
+            console.log(chalk.fail(err.message))
+         } else {
+            console.log(chalk.success('The AGC was parcelized and saved to file.. '));
+         }
+      });
+   }
 };
 
 

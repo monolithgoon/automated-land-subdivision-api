@@ -173,6 +173,6 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
       return CHUNKS_COLLECTION
    
    } catch(err) {
-      console.error(chalk.warning(err.message));
+      console.error(chalk.fail(err.message));
    }
 }
