@@ -1,3 +1,5 @@
+const chalk = require('../utils/chalk-messages')
+const turf = require('@turf/turf')
 const mongoose = require("mongoose");
 
 
@@ -142,6 +144,21 @@ const agcSchema = new mongoose.Schema({
          required: [true, `The AGC must have at least one farmer, or an array of farmers`],
          validate: [(entry) => Array.isArray(entry) && entry.length > 0, `The AGC must have at least one farmer, or an array of farmers`]
       }
+   }
+})
+
+
+
+// PRE-SAVE M-WARE TO ENSURE ALLOCATIONS DON'T EXCEED SHAPEFILE AREA
+agcSchema.pre('save', function(next) {
+   const agcArea = turf.area(this) / 10000;
+   const allocations = [];
+   this.properties.farmers.forEach(farmer=>allocations.push(farmer.allocation));
+   const totalAllocation = allocations.reduce((alloc, sum) => alloc + sum)
+   if (agcArea >= totalAllocation) {
+      return next();
+   } else {
+      return next(new Error(`The total allocations exceed the land area. Reduce allocations by ${(totalAllocation - agcArea).toFixed(2)} ha.`))   
    }
 })
 

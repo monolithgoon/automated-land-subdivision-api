@@ -1,10 +1,10 @@
 const chalk = require('./chalk-messages.js')
 const Mongoose = require('mongoose') // MongoDB driver that facilitates connection to remote db
 const dotenv = require('dotenv') // read the data from the config file. and use them as env. variables in NODE
-// dotenv.config({path: __dirname + `\config.env`}) // CONFIGURE ENV. VARIABLES
-// dotenv.config({path: '../config.env'}) // CONFIGURE ENV. VARIABLES
 dotenv.config({path: `C:/Users/Mummy Okpue/OneDrive/Documents/Web Development Projects/Mapping/agc-parcelization-api/config.env`}) // CONFIGURE ENV. VARIABLES
-console.log(`${__dirname}/config.env`)
+// dotenv.config({path: '../config.env'}) // CONFIGURE ENV. VARIABLES
+// console.log(`${__dirname}config.env`)
+// console.log(dotenv.config({path: `./config.env`}))
 
 
 
