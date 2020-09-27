@@ -133,14 +133,12 @@ h2.subtitle {
 	padding-left: 10px;
 	margin-bottom: 10px;
 	background: #EFE9DD;
-	/* border-radius: 3px; */
 	display: grid;
-	grid-template-columns: 4fr 1fr;
+	grid-template-columns: 1fr;
 }
 
 .feature-owner-media-container {
-	/* border: 1px dashed grey */
-	opacity: 0.8;
+	display: none;
 }
 
 .plot-owner-name {
@@ -363,6 +361,16 @@ input:focus {
 	.agcs-overview-container {
 		margin: auto;
 		width: 45vw;
+	}
+
+	.agc-feature {
+		display: grid;
+		grid-template-columns: 4fr 1fr;
+	}
+
+	.feature-owner-media-container {
+		display: block;
+		opacity: 0.8;
 	}
 
 	.app-container {
