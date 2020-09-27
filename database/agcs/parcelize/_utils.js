@@ -81,26 +81,31 @@ function _toggleChunkifyDir(direction) {
 // CHECK WHETHER FEAT. OR FEAT. COLL.
 function _analyzeShapefile(shapefile) {
    
-   let sfID, sfLocation;
+   let sfID, sfLocation, sfName;
    const randomSfID = `unique-agc-id-${(Math.random()*999999999).toFixed(0)}`
+   const genericName = `AGC`
    const baseLocation = `Nigeria`
 
    if (shapefile.type === 'FeatureCollection' && shapefile.properties) {
       sfID = shapefile.properties.agc_id || randomSfID
+      sfName = shapefile.properties.extended_name || genericName
       sfLocation = shapefile.properties.location || baseLocation
    }
    else if (shapefile.type === "FeatureCollection" && shapefile.features[0].properties) {
       sfID = shapefile.features[0].properties.agc_id || randomSfID
+      sfName = shapefile.features[0].properties.extended_name || genericName
       sfLocation = shapefile.features[0].properties.location || baseLocation
    }
    else if (shapefile.type === "Feature") {
       sfID = shapefile.properties.agc_id || randomSfID
+      sfName = shapefile.properties.extended_name || genericName
       sfLocation = shapefile.properties.location || baseLocation
    } 
 
    return {
       sfID,
-      sfLocation
+      sfName,
+      sfLocation,
    }
 }
 

@@ -47,6 +47,7 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
       // GET SHAPEFILE METADATA
       const shapefileMetadata = _analyzeShapefile(SELECTED_SHAPEFILE)
       const shapefileID = shapefileMetadata.sfID
+      const shapefileName = shapefileMetadata.sfName
       const shapefileLocation = shapefileMetadata.sfLocation
 
 
@@ -176,9 +177,10 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
       
       // CREATE & APPEND CUSTOM PROPERTIES
       CHUNKS_COLLECTION['properties'] = {
-         'agc_id': shapefileID, 
+         'agc_id': shapefileID,
+         'agc_extended_name': shapefileName,
          'agc_center_coords': turf.centerOfMass(SELECTED_SHAPEFILE),
-         'location': shapefileLocation,
+         'agc_location': shapefileLocation,
          'num_farmers': CHUNKS_COLLECTION.features.length,
          'agc_area' : _calcArea(SELECTED_SHAPEFILE),
          'total_allocation' : allocationTotal,

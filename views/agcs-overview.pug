@@ -110,7 +110,9 @@ block parcelized-agcs
 
 				main.agc-card
 
-					div.agc-card-header= `${parcelizedAgc.properties.location || 'Nigeria'}`
+					div.agc-card-header
+						div= `${parcelizedAgc.properties.agc_extended_name}`
+						div= `${parcelizedAgc.properties.agc_location}`
 
 					br
 

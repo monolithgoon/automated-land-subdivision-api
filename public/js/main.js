@@ -159,12 +159,12 @@ function renderDataOnDOM({parcelizedAgcGeojson, farmPlotsGeojson}) {
 
 
    // GET DOM ELEMENTS
-   const chunksListing_Div = document.getElementById('chunk_coords_listing');
+   const chunksListing_Div = document.getElementById('chunks_coords_listing_container');
    const mapLocation_Div = document.getElementById('map_location_overlay')
 
 
    // VARIABLES
-   const agcLocation = parcelizedAgcGeojson.properties.location;
+   const agcLocation = parcelizedAgcGeojson.properties.agc_location;
    const agcCenterCoords = [6.18, 6.53] // FIXME < update the parcelized AGC properties to include agc_center_coords 
    const allocationTotal = parcelizedAgcGeojson.properties.agc_area;
    const unallocatedLandArea = parcelizedAgcGeojson.properties.unused_land_area;
@@ -187,7 +187,7 @@ function renderDataOnDOM({parcelizedAgcGeojson, farmPlotsGeojson}) {
 
    const listingHeader_div = document.createElement('div')
    listingHeader_div.innerHTML = `Parcelized Plots' Coordinates <br><br>`
-   listingHeader_div.className = "coords-listing-header"
+   listingHeader_div.className = "coords-listing-container-header"
    chunksListing_Div.appendChild(listingHeader_div);
 
 
@@ -203,19 +203,21 @@ function renderDataOnDOM({parcelizedAgcGeojson, farmPlotsGeojson}) {
       chunk = turf.truncate(chunk, {precision: 5, coordinates: 2})
 
       const chunk_Div = document.createElement('div');
-      chunk_Div.className = 'chunk-listing'
+      chunk_Div.className = 'chunk'
 
       const chunkDivHeader = document.createElement('div');
-      chunkDivHeader.className = 'chunk-listing-header'
+      chunkDivHeader.className = 'chunk-coords-header'
       const chunkDivBody = document.createElement('div');
-      chunkDivBody.className = 'chunk-listing-body'
+      chunkDivBody.className = 'chunk-coords-body'
 
       chunkDivHeader.innerHTML = `
                                  Plot #${index + 1} <br> 
                                  ${chunk.properties.owner_name} - ${chunk.properties.owner_id} <br> 
                                  VARS_ID ${chunk.properties.chunk_id} <br>`
 
-      chunkDivBody.innerHTML = ` ${JSON.stringify(chunk.geometry.coordinates)}<br><br>`
+      chunkDivBody.setAttribute("data-longstring", JSON.stringify(chunk.geometry.coordinates))
+      chunkDivBody.innerHTML = `<br><br>`
+      // chunkDivBody.innerHTML = `${JSON.stringify(chunk.geometry.coordinates)}<br><br>`
       // chunkDivBody.innerHTML = `<pre class='embedded-code-snippet'><code class='javascript'>"geometry": { "type": "Polygon", "coordinates": ${JSON.stringify(chunk.geometry.coordinates)} }</code></pre><br><br>`
       
       chunk_Div.appendChild(chunkDivHeader)

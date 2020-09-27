@@ -100,9 +100,12 @@ h2.subtitle {
 }
 
 .agc-card-header {
+	padding-right: 3px;
 	color: #4285f4;
 	font-size: medium;
 	font-weight: 700;
+	display: flex;
+	justify-content: space-between;
 }
 
 .agc-card-summary {
@@ -207,7 +210,7 @@ h2.subtitle {
 
 }
 
-.chunk-coords-listing {
+.chunks-coords-listing-container {
 	margin: 0;
 	margin-top: 10px;
 	padding: 10px;
@@ -216,29 +219,47 @@ h2.subtitle {
 	grid-template-columns: repeat(2, 1fr);
 	display: none;
 
-	/* height: 80px; */
 	max-height: 170px;
-	
 	overflow-y: scroll;
 }
 
-.coords-listing-header {
+.coords-listing-container-header {
 	font-weight: 900;
 	font-size: 14px;
 }
 
-.chunk-listing-body {
-	font-family: monospace;
+.chunk-coords-header {
+	font-weight: 700;
+	font-size: 13px;
 }
 
-.chunk-listing:hover{
+.chunk-coords-body {
+	font-family: monospace;
+
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 70vw;
+ }
+ 
+ .chunk-coords-body:before{
+	content: attr(data-longstring);
+ }
+ 
+ .chunk-coords-body:hover::before {
+	content: attr(data-longstring);
+	width: auto;
+	height: auto;
+	overflow: initial;
+	text-overflow: initial;
+	white-space: initial;
+	/* background-color: white; */
+	display: inline-block;
+ }
+
+.chunk:hover{
 	/* font-weight: 700; */
 	cursor: pointer;
-}
-
-.chunk-listing-header {
-	font-size: 14px;
-	font-weight: 700;
 }
 
 select,
@@ -419,7 +440,7 @@ input:focus {
 		height: auto;
 	}
 
-	.chunk-coords-listing {
+	.chunks-coords-listing-container {
 		margin-top: 0;
 		display: block;
 
