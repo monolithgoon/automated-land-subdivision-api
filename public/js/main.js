@@ -203,13 +203,25 @@ function renderDataOnDOM({parcelizedAgcGeojson, farmPlotsGeojson}) {
       chunk = turf.truncate(chunk, {precision: 5, coordinates: 2})
 
       const chunk_Div = document.createElement('div');
-      chunk_Div.className = 'chunk'
+      chunk_Div.className = 'chunk-listing'
 
-      // chunk_Div.innerHTML = `Plot #${index + 1} ${JSON.stringify(chunk.properties)} ${JSON.stringify(chunk.geometry.coordinates)} <br><br>`
-      chunk_Div.innerHTML = `Plot #${index + 1} <br> ${chunk.properties.owner_name} - ${chunk.properties.owner_id} <br> VARS_ID ${chunk.properties.chunk_id} <br> ${JSON.stringify(chunk.geometry.coordinates)} <br><br>`
+      const chunkDivHeader = document.createElement('div');
+      chunkDivHeader.className = 'chunk-listing-header'
+      const chunkDivBody = document.createElement('div');
+      chunkDivBody.className = 'chunk-listing-body'
+
+      chunkDivHeader.innerHTML = `
+                                 Plot #${index + 1} <br> 
+                                 ${chunk.properties.owner_name} - ${chunk.properties.owner_id} <br> 
+                                 VARS_ID ${chunk.properties.chunk_id} <br>`
+
+      chunkDivBody.innerHTML = ` ${JSON.stringify(chunk.geometry.coordinates)}<br><br>`
+      // chunkDivBody.innerHTML = `<pre class='embedded-code-snippet'><code class='javascript'>"geometry": { "type": "Polygon", "coordinates": ${JSON.stringify(chunk.geometry.coordinates)} }</code></pre><br><br>`
+      
+      chunk_Div.appendChild(chunkDivHeader)
+      chunk_Div.appendChild(chunkDivBody)
 
       chunksListing_Div.appendChild(chunk_Div);
-
    });
 }
 

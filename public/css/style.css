@@ -21,7 +21,7 @@ body {
 	color: #4a4a4a;
 }
 
-.embedded-code-snippet h2 {
+.api-guide-container h2 {
 	padding: 5px 35px;
 }
 
@@ -59,7 +59,7 @@ p.important-note {
 }
 
 .embedded-code-snippet {
-	overflow-x: auto;
+	/* overflow-x: hidden; */
 }
 
 .agc-json-data-ex {
@@ -224,12 +224,21 @@ h2.subtitle {
 
 .coords-listing-header {
 	font-weight: 900;
-	font-size: 13px;
+	font-size: 14px;
 }
 
-.chunk:hover{
-	font-weight: 700;
+.chunk-listing-body {
+	font-family: monospace;
+}
+
+.chunk-listing:hover{
+	/* font-weight: 700; */
 	cursor: pointer;
+}
+
+.chunk-listing-header {
+	font-size: 14px;
+	font-weight: 700;
 }
 
 select,

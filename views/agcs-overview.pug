@@ -6,96 +6,94 @@ block parcelized-agcs
 
 		//- img(src="/images/parcelized-agc-data-struc.png" alt="alt")
 
-		.embedded-code-snippet
+		br
+		h2 Using the Parcelized AGCs API
+		p.last-update Updated 24 September 2020
+		br
 
+		.credentials-container
+			div.token-subtitle Public API Key 
 			br
-			h2 Using the Parcelized AGCs API
-			p.last-update Updated 24 September 2020
-			br
+			div.token-code ADSS=23232AD=ASDIO293-MLK23290-23AD.235DS554S5_4409IODSO
 
-			.credentials-container
-				div.token-subtitle Public API Key 
-				br
-				div.token-code ADSS=23232AD=ASDIO293-MLK23290-23AD.235DS554S5_4409IODSO
+		br
+		h3 Retreive A Single Parcelized AGC
+		p The code snippet below shows how to retreive parcelized AGC data from the database using an asynchronous Fetch API GET request. It is implemented in ES6/ES2017 JavaScript, and uses object-oriented programming concepts. By passing the "agc_id" as an argument, it returns a single parcelized AGC from the database in a promise. 
 
-			br
-			h3 Retreive A Single Parcelized AGC
-			p The code snippet below shows how to retreive parcelized AGC data from the database using an asynchronous Fetch API GET request. It is implemented in ES6/ES2017 JavaScript, and uses object-oriented programming concepts. By passing the "agc_id" as an argument, it returns a single parcelized AGC from the database in a promise. 
-
-			pre.get-request-snippet
-				code.language-javascript.
-					// Set up the API call function
-					async function getParcelizedAgc(agcID) {
-						try {
-							const apiResponse = await fetch(`https://agcfarmlands.herokuapp.com/api/v1/parcelized-agcs/parcelized-agc/?${agcID}`);
-							const data = await apiResponse.json();
-							return data;
-						} 
-						catch (error) {
-							console.error(error.message);
-						};
+		pre.embedded-code-snippet
+			code.language-javascript.
+				// Set up the API call function
+				async function getParcelizedAgc(agcID) {
+					try {
+						const apiResponse = await fetch(`https://agcfarmlands.herokuapp.com/api/v1/parcelized-agcs/parcelized-agc/?${agcID}`);
+						const data = await apiResponse.json();
+						return data;
+					} 
+					catch (error) {
+						console.error(error.message);
 					};
+				};
 
-					// Execute the API call
-					getParcelizedAgc('unique-agc-id-6880561')
-						.then(function(data) {
-							console.log(JSON.stringify(data));
-							}
-						);
+				// Execute the API call
+				getParcelizedAgc('unique-agc-id-6880561')
+					.then(function(data) {
+						console.log(JSON.stringify(data));
+						}
+					);
 
-			h3 Retreive All the Parcelzied AGCs
+		h3 Retreive All the Parcelzied AGCs
 
-			pre.get-request-snippet
-				code.language-javascript.
-					// Set up the API call function
-					async function getAllParcelizedAgcs() {
-						try {
-							const apiResponse = await fetch(`https://agcfarmlands.herokuapp.com/api/v1/parcelized-agcs/`);
-							const data = await apiResponse.json();
-							return data;
-						} 
-						catch (error) {
-							console.error(error.message);
-						};
+		pre.embedded-code-snippet
+			code.language-javascript.
+				// Set up the API call function
+				async function getAllParcelizedAgcs() {
+					try {
+						const apiResponse = await fetch(`https://agcfarmlands.herokuapp.com/api/v1/parcelized-agcs/`);
+						const data = await apiResponse.json();
+						return data;
+					} 
+					catch (error) {
+						console.error(error.message);
 					};
+				};
 
-					// Execute the API call
-					getAllParcelizedAgcs()
-						.then(function(data) {
-							console.log(JSON.stringify(data));
-							}
-						);
+				// Execute the API call
+				getAllParcelizedAgcs()
+					.then(function(data) {
+						console.log(JSON.stringify(data));
+						}
+					);
 
+		br
+		h3 Sending AGC data to the DB (using the Fetch API)
+		p The snippet below shows how to persist AGC JSON data (using the GEOJSON standard) to the database using an asynchronous Fetch API POST request.
+
+		pre
+			//- .devsite-code-buttons-container
+			//- 	button.gc-analytics-event.material-icons.devsite-icon-code-dark.devsite-toggle-dark(type='button' data-category='Site-Wide Custom Events' data-label='Dark Code Toggle' track-type='exampleCode' track-name='darkCodeToggle' aria-label='Dark code theme' data-title='Dark code theme')
+			//- 	button.gc-analytics-event.material-icons.devsite-icon-code-light.devsite-toggle-light(type='button' data-category='Site-Wide Custom Events' data-label='Light Code Toggle' track-type='exampleCode' track-name='lightCodeToggle' aria-label='Light code theme' data-title='Light code theme')
+			//- 	button.gc-analytics-event.material-icons.devsite-icon-copy(type='button' data-category='Site-Wide Custom Events' data-label='Click To Copy' track-type='exampleCode' track-name='clickToCopy' aria-label='Copy code sample to clipboard' data-title='Copy code sample to clipboard')
+
+			include _fetch-request-snippet
 			br
-			h3 Sending AGC data to the DB (using the Fetch API)
-			p The snippet below shows how to persist AGC JSON data (using the GEOJSON standard) to the database using an asynchronous Fetch API POST request.
 
-			pre
-				//- .devsite-code-buttons-container
-				//- 	button.gc-analytics-event.material-icons.devsite-icon-code-dark.devsite-toggle-dark(type='button' data-category='Site-Wide Custom Events' data-label='Dark Code Toggle' track-type='exampleCode' track-name='darkCodeToggle' aria-label='Dark code theme' data-title='Dark code theme')
-				//- 	button.gc-analytics-event.material-icons.devsite-icon-code-light.devsite-toggle-light(type='button' data-category='Site-Wide Custom Events' data-label='Light Code Toggle' track-type='exampleCode' track-name='lightCodeToggle' aria-label='Light code theme' data-title='Light code theme')
-				//- 	button.gc-analytics-event.material-icons.devsite-icon-copy(type='button' data-category='Site-Wide Custom Events' data-label='Click To Copy' track-type='exampleCode' track-name='clickToCopy' aria-label='Copy code sample to clipboard' data-title='Copy code sample to clipboard')
+		br
+		h3 Sending AGC data to the Database (using an XML HTTP Request)
+		p The snippet below shows an alternate method to persist AGC JSON data to the database using XMLHttpRequest().
 
-				include _fetch-request-snippet
-				br
-
+		pre
+			include _xml-request-snippet
 			br
-			h3 Sending AGC data to the Database (using an XML HTTP Request)
-			p The snippet below shows an alternate method to persist AGC JSON data to the database using XMLHttpRequest().
-
-			pre
-				include _xml-request-snippet
-				br
 
 
-			br
-			h3 Sample AGC JSON Data Structure
-			p Each AGC payload is a GEOJSON #[em #[strong FeatureCollection]], that contains just ONE #[em Feature].
-			//- div IMPORTANT
-			p.important-note The DB insertion will fail if the 'agc_id', 'extended_name', 'location', and/or 'farmers' fields are missing from the JSON payload, or if an AGC with the same 'agc_id', 'extended_name', and/or coordinates already exists in the database. Those first 4 fields in 'properties' are REQUIRED.
-			p.important-note The total hectares allocated to the farmers must not exceed the AGC land area.
-			pre.agc-json-data-ex
-				include _agc-json-data-example
+		br
+		h3 Sample AGC JSON Data Structure
+		p Each AGC payload is a GEOJSON #[em #[strong FeatureCollection]], that contains just ONE #[em Feature].
+		//- div IMPORTANT
+		p.important-note The DB insertion will fail if the 'agc_id', 'extended_name', 'location', and/or 'farmers' fields are missing from the JSON payload, or if an AGC with the same 'agc_id', 'extended_name', and/or coordinates already exists in the database. Those first 4 fields in 'properties' are REQUIRED.
+		p.important-note The total hectares allocated to the farmers must not exceed the AGC land area.
+		pre.agc-json-data-ex
+			include _agc-json-data-example
 
 
 	.agcs-overview-container
