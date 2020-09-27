@@ -93,7 +93,7 @@ h2.subtitle {
 
 .agc-card {
 	margin: 15px;
-	padding: 15px;
+	padding: 10px;
 	padding-bottom: 5px;
 	background: #fff;
 	box-shadow: 0 3px 6px 0 rgba(0,0,0,.12);
@@ -135,7 +135,7 @@ h2.subtitle {
 	background: #EFE9DD;
 	/* border-radius: 3px; */
 	display: grid;
-	grid-template-columns: 3fr 1fr;
+	grid-template-columns: 4fr 1fr;
 }
 
 .feature-owner-media-container {
