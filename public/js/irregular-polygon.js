@@ -1,6 +1,4 @@
 import { map } from './main.js'
-import { POLYGON_SUBDIVIDE } from './polygon-subdivide.js'
-import { REFRESH_DOM } from "./dom-render.js";
 import { RENDER_LAYER, GET_MAPBOX_POLYGON_LAYER, CLEAR_LAYERS } from "./mapbox-render.js";
 
 
@@ -33,12 +31,6 @@ export function GET_SHAPEFILE_GRID_DATA(polygonSelection) {
       const primodialGrid = turf.triangleGrid(turf.bbox(polygonSelection), gridCellSide, gridOptions)
       // const primodialGrid = turf.hexGrid(turf.bbox(polygonSelection), gridCellSide, gridOptions)
 
-
-
-
-   // SANDBOX >
-   // SUBDIVIDE THE MAIN POLYGON
-   const KATANA_POLYGONS = POLYGON_SUBDIVIDE(polygonSelection, polygonMask)
 
    
 
@@ -280,12 +272,7 @@ export function RENDER_SHAPEFILE(map, leaflet_map, shapefile) {
 
 
    // ADD A MARKER TO THE CENTER
-   let marker = new mapboxgl.Marker().setLngLat(center).addTo(map)
-
-
-	// REMOVE > 
-   // UPDATE THE POLYGON AREA ON THE DOM
-   // REFRESH_DOM(area, location, center)
+   let marker = new mapboxgl.Marker().setLngLat(center).addTo(map);
 
 
    // ADD LAYERS TO MAPBOX > IRREGULAR POLYGON OUTLINE

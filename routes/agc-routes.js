@@ -6,12 +6,14 @@
 const express = require("express");
 const ROUTER = express.Router();
 const agcController = require('../controllers/agc-controller.js')
+// const parcelizationController = require('../database/agcs/parcelize/parcelize-agc.js')
 
 
 
 ROUTER.route('/')
    .get(agcController.getAllAgcs)
    .post(agcController.insertAgc);
+   // .post(agcController.insertAgc, parcelizationController.parcelizeAgc);
 
 
 

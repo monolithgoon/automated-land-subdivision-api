@@ -94,6 +94,11 @@ const featureSchema = new mongoose.Schema({
          required: false, // the chunk could be an unassigned leftover from parcelization process
          unique: true
       },
+      farmer_name: {
+         type: String,
+         required: true,
+         unique: false
+      },
       center_lng: {
          type: Number,
          required: false

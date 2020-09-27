@@ -3,7 +3,7 @@ const chalk = require('../../../utils/chalk-messages');
 const turf = require('@turf/turf')
 const { _getProps, _calcArea, _analyzeShapefile } = require('./_utils.js');
 const { _getKatanaSlice } = require('./_getKatanaSlice.js');
-const { _chunkify } = require('./_chunkify.js');
+const { _chunkify } = require('./_chunkify.js')
 
 
 
@@ -40,24 +40,16 @@ function calcUnallocatedLandArea(unusedKatanaSlice, unusedShapefile, discardedCh
 
 
 // ALGORITHM STARTING POINT
-exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHAPEFILE, FARMERS_DATA, {katanaSliceDirection, chunkifyDirection}) {
+exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHAPEFILE, FARM_ALLOCATIONS, {katanaSliceDirection, chunkifyDirection}) {
    
    try {
-
-      // GET SHAPEFILE METADATA
-      const shapefileMetadata = _analyzeShapefile(SELECTED_SHAPEFILE)
-      const shapefileID = shapefileMetadata.sfID
-      const shapefileLocation = shapefileMetadata.sfLocation
-
 
       // SAVE THE PROCESSED GEOJSON CHUNKS FROM "CHUNKIFY"
       const PROCESSED_CHUNKS = [];
 
 
       // GET THE TOTAL ALLOC. HECTARES
-      const hectarageAllocations = [];
-      FARMERS_DATA.forEach(farmer=>hectarageAllocations.push(farmer.allocation));
-      const allocationTotal = hectarageAllocations.reduce((allocation, sum) => sum + allocation);
+      const allocationTotal = FARM_ALLOCATIONS.reduce((allocation, sum) => sum + allocation);
 
 
       // VAR. TO KEEP TRACK OF DISCARDED CHUNKIFY POLYGONS
@@ -78,31 +70,21 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
       // GET THE WORKING SHAPEFILE
       let katanaData = _getKatanaSlice(katanaSliceDir, percentIngress, SELECTED_SHAPEFILE)
       let pendingShapefile = katanaData.leftoverPolygon
-      let workingShapefile = katanaData.annexedPolygon; // IMPORTANT 
+      let workingShapefile = katanaData.annexedPolygon; // IMPORTANT
       // let workingShapefile = SELECTED_SHAPEFILE;
 
 
-      // IMPORTANT 
+      // IMPORTANT
       let newChunkifyDir;
 
 
-      for (let idx = 0; idx < FARMERS_DATA.length; idx++) {
+      for (let idx = 0; idx < FARM_ALLOCATIONS.length; idx++) {
 
 
          // CHUNKING BASELINE VARIABLES
          const orgBboxPolygon = _getProps(workingShapefile)._bboxPolygon
          const startShapefileArea = _calcArea(workingShapefile);
-         const allocArea = FARMERS_DATA[idx].allocation;
-
-
-         // KEEP TRACK OF THE FARMER/FARM DATA
-         const allocationMetadata = {
-            agcID: shapefileID,
-            farmerID: FARMERS_DATA[idx].farmer_id,
-            allocArea: FARMERS_DATA[idx].allocation,
-            firstName: FARMERS_DATA[idx].first_name,
-            lastName: FARMERS_DATA[idx].last_name,
-         }
+         const allocArea = FARM_ALLOCATIONS[idx];
          
             
          // INIT. THE START POSITION OF THE MOVING BBOX. POLYGON
@@ -114,7 +96,7 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
          let initChunkifyDir = newChunkifyDir ? newChunkifyDir : chunkifyDirection;
         
 
-         let chunkifyData = _chunkify(allocationMetadata, {initChunkifyDir, newChunkifyDir, katanaSliceDir, percentIngress, allocArea, workingShapefile, pendingShapefile, startShapefileArea, movingBboxPolygon, idx});
+         let chunkifyData = _chunkify({initChunkifyDir, newChunkifyDir, katanaSliceDir, percentIngress, allocArea, workingShapefile, pendingShapefile, startShapefileArea, movingBboxPolygon, idx});
 
 
          // RETURN THE DISCARDED KATANA CHUNKS
@@ -125,15 +107,15 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
 
 
          // DID THIS LOOP ELEMENT FAIL TO BE ALLOCATED?? PUSH IT BACK INTO THE ARRAY..
-         let failedAlloc = FARMERS_DATA[chunkifyData.failedAllocIdx];
+         let failedAlloc = FARM_ALLOCATIONS[chunkifyData.failedAllocIdx];
          
          // if (chunkifyData.failedAllocIdx) { // THIS CHECK WON'T WORK IF THE idx === 0
          if (chunkifyData.failedAllocIdx !== null) {
 
             if( chunkifyData.failedAllocIdx !== undefined) {
 
-               FARMERS_DATA.push(failedAlloc)
-               // console.log(chalk.highlight(failedAlloc.first_name))
+               FARM_ALLOCATIONS.push(failedAlloc)
+               // console.log(failedAlloc);
             }
          } 
 
@@ -172,6 +154,12 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
 
       // CREATE A FEATURE COLLECTION OF ALL THE CHUNKS
       const CHUNKS_COLLECTION = turf.featureCollection(PROCESSED_CHUNKS);
+
+
+      // GET SHAPEFILE METADATA
+      const shapefileMetadata = _analyzeShapefile(SELECTED_SHAPEFILE)
+      const shapefileID = shapefileMetadata.sfID
+      const shapefileLocation = shapefileMetadata.sfLocation
 
       
       // CREATE & APPEND CUSTOM PROPERTIES

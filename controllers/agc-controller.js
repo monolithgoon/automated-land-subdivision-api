@@ -1,15 +1,5 @@
 // CONTAINS THE ROUTE HANDLING FUNCTIONS USED BY agc-routes.js
-
-
-
-const chalk = require('chalk');
-const chalkError = chalk.white.bgRed.bold
-const allGood = chalk.blue.bgGrey.bold
-const chalkSuccess = chalk.white.bgGreen.bold
-const chalkWarning = chalk.white.bgYellow.bold
-
-
-
+const chalk = require('../utils/chalk-messages');
 const AGC_MODEL = require('../models/agc-model.js')
 
 
@@ -28,7 +18,7 @@ exports.getAgc = async (req, res) => {
 
    try {
 
-		console.log(allGood("YOU SUCCESSFULLY CALLED THE getAgc CONTROLLER FN. "));
+		console.log(chalk.working("YOU SUCCESSFULLY CALLED THE getAgc CONTROLLER FN. "));
 
       // EXTRACT THE agc_id FROM THE QUERY OBJ.
       let queryObj = { ...req.query }
@@ -64,7 +54,7 @@ exports.getAllAgcs = async (request, response) => {
 
 	try {
 
-		console.log(allGood("YOU SUCCESSFULLY CALLED THE getAllAgcs CONTROLLER FN. "));
+		console.log(chalk.working("YOU SUCCESSFULLY CALLED THE getAllAgcs CONTROLLER FN. "));
       console.log(request.query);
 
       // FILTER _EXAMPLE 1

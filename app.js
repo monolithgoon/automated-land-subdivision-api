@@ -70,7 +70,7 @@ EXPRESS_APP.use((request, response, next) => {
 // CUSTOM MIDDLEWRE EXAMPLE #2
 // MANIPULATE THE REQUEST OBJ. >> THIS ADDS A CUSTOM PROPERTY TO THE REQUEST OBJ.
 EXPRESS_APP.use((request, response, next) => {
-   request.requestTime = new Date().toISOString(); // add a new custom property to the req. obj.
+   request.requestTime = new Date().toISOString(); // add a new custom property ('requestTime') to the req. obj.
    next();
 });
 

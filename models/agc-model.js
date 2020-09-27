@@ -131,6 +131,7 @@ const agcSchema = new mongoose.Schema({
          type: String,
          required: [true, 'The location of the AGC must be specified']
       },
+      // address: agcAddrSchema,
       // governance_structure: agcGovSchema,
       governance_structure: {
          

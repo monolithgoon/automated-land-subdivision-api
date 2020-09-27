@@ -206,13 +206,13 @@ export function OPEN_RANDOM_POPUP(map, pixelGrid) {
       .setHTML(`(${pixelProps.area.toFixed(3)} ha.)`)
       // .addTo(map);
 
-      if (gridCellPopup.isOpen()) {
-         console.log('fuck chioma iloanusi');
-         gridCellPopup.remove();
-      } else {
-         // gridCellPopup.trackPointer();
-         gridCellPopup.addTo(map)
-      }
+   if (gridCellPopup.isOpen()) {
+      console.log('fuck chioma iloanusi');
+      gridCellPopup.remove();
+   } else {
+      // gridCellPopup.trackPointer();
+      gridCellPopup.addTo(map)
+   }
 };
 
 
@@ -221,41 +221,70 @@ export function OPEN_RANDOM_POPUP(map, pixelGrid) {
 // When a click event occurs on a feature in the grid fill layer, open a popup at the
 // location of the click, with description HTML from its properties.
 
-const clickedLayersIDs = [];
+function toggleMetadataPopup(map, layerProps, layerCenter) {
+
+
+   // LAYER PROPERTIES
+   const layerArea = layerProps.chunk_size;
+   const centerLat = layerProps.center_lat ? layerProps.center_lat : "...";
+   const centerLng = layerProps.center_lng ? layerProps.center_lng : "...";
+
+   
+   // const popup = new mapboxgl.Popup({ className: "mapbox-metadata-popup" })
+   const popup = new mapboxgl.Popup()
+      .setLngLat(layerCenter)
+      .setHTML(`<div class="mapbox-metadata-popup">
+
+                  <div class="text-wrapper">
+                     <div class="popup-farmer-name">${layerProps.farmer_name} </div>
+                     BVN <span>hidden</span> <br>
+                     Farmer_ID ${layerProps.farmer_id.toUpperCase()} <br> 
+                     VARS_ID ${layerProps.chunk_id} <br>
+                     Lat ${centerLat.toFixed(5)}°N Lng ${centerLng.toFixed(5)}°E <br>
+                  </div>
+
+                  <div class="media-wrapper">
+
+                  </div>
+               </div>`)
+      .addTo(map);
+
+
+      // CREATE A CUSTOM EVENT LISTENER >> TRIGGERED BY: map.fire('closeAllPopups')
+   map.on('closeAllPopups', () => {
+      popup.remove();
+   });
+}
+
+
 
 export function POLYGON_FILL_BEHAVIOR(map, leaflet_map, polygonFillLayer) {
+
+   const activeLayersIDs = [];
 
    map.on('click', `${polygonFillLayer.id}`, function(e) {
 
       // JUMP TO THE SATTELITE MAP @ BOTTOM OF THE PAGE
       window.scrollTo(0, document.body.scrollHeight, {behavior: "smooth"});
 
+      // GEOJSON PROPERTIES
       const layer = e.features[0].layer;
       const props = e.features[0].properties;
       const geom = e.features[0].geometry;
       const coords = geom.coordinates[0];
       const center = e.lngLat;
 
-      // LAYER PROPERTIES
+      // MAPBOX LAYER ID
       const layerIndex = props.chunk_index;
       const layerID = `${layerIndex}_${Math.random() * 99999998}`;
-      const layerArea = props.area ? props.area : props.chunk_size;
-      const centerLat = props.center_lat ? props.center_lat : "...";
-      const centerLng = props.center_lng ? props.center_lng : "...";
 
       // KEEP TRACK OF THE CLICKED LAYERS
       const clickedLayerID = `clickedPolyon_${layerID}`
-      clickedLayersIDs.push(clickedLayerID)
+      activeLayersIDs.push(clickedLayerID)
 
 
       // OPEN A MAPBOX POPUP
-      new mapboxgl.Popup()
-         .setLngLat(e.lngLat)
-         // .setHTML(`Grid cell #${layer.id} ${props.farmer_id} (${layerArea} ha.) <br> 
-         .setHTML(`${props.farmer_id.toUpperCase()} <br> 
-                  Lat ${centerLat.toFixed(5)}°N Lng ${centerLng.toFixed(5)}°E <br>`)
-         .addTo(map);
-
+      toggleMetadataPopup(map, props, center);
 
       // COLOR THE GRID CELL THAT WAS CLICKED
       map.addLayer ({
@@ -320,19 +349,36 @@ export function POLYGON_FILL_BEHAVIOR(map, leaflet_map, polygonFillLayer) {
 
     
    // Change the cursor to a pointer when the mouse is over the grid fill layer.
-   map.on('mouseenter', `${polygonFillLayer.id}`, function() {
+   map.on('mouseenter', `${polygonFillLayer.id}`, function(e) {
+
       map.getCanvas().style.cursor = 'pointer';
+
+      // GEOJSON PROPS.
+      const props = e.features[0].properties;
+      const center = e.lngLat
+
+      // MAPBOX LAYER ID
+      const layerIndex = props.chunk_index;
+      const layerID = `${layerIndex}_${Math.random() * 99999998}`;
+
+      // KEEP TRACK OF THE MOUSED OVER LAYERS
+      const mouseoverLayerID = `mousedOverPolygon_${layerID}`
+      activeLayersIDs.push(mouseoverLayerID);
+      
+      // CREATE POPUP
+      toggleMetadataPopup(map, props, center);
    });
 
-    
-
+   
+   
    // Change it back to a pointer when it leaves.
    map.on('mouseleave', `${polygonFillLayer.id}`, function() {
+      
       map.getCanvas().style.cursor = '';
 
-      // CLEAR PREVIOUSLY CLICKED LAYERS
-      const layerIDs = clickedLayersIDs;
-      // CLEAR_LAYERS({map, layerIDs});
+      // CLOSE ALL OPEN POPUPS
+      map.fire('closeAllPopups')
+      
    });
 
 
@@ -381,8 +427,6 @@ export function POLYGON_FILL_BEHAVIOR(map, leaflet_map, polygonFillLayer) {
 //    map.on('mouseleave', 'farmCellGrid_2', function() {
 //       map.getCanvas().style.cursor = '';
 //    });
-
-
 
 }
 

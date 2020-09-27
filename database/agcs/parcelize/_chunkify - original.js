@@ -1,15 +1,10 @@
-import { _getProps, _calcArea, _moveBboxPolygon, _toggleChunkifyDir } from "./_utils.js";
-import { _newKatanaSliceOperation } from "./_newKatanaSliceOp.js";
-import { _getKatanaSlice } from "./_getKatanaSlice.js";
-
-
-import { map } from "./main.js"
-import { GET_MAPBOX_POLYGON_LAYER, RENDER_LAYER, RENDER_SIMPLE_SHAPEFILE } from "./mapbox-render.js"
+const turf = require('@turf/turf');
+const { _getProps, _calcArea, _moveBboxPolygon, _toggleChunkifyDir } = require("./_utils.js")
+const { _newKatanaSliceOperation } = require("./_newKatanaSliceOp.js")
 
 
 
-
-export function _chunkify({
+exports._chunkify = function({
    initChunkifyDir, 
    newChunkifyDir, 
    katanaSliceDir, 
@@ -47,7 +42,7 @@ export function _chunkify({
    let discardedKatanaChunkArea;
 
    
-   console.log(`Starting katana slice area: ${startShapefileArea}`); 
+   // console.log(`Starting katana slice area: ${startShapefileArea}`); 
 
    
    while (intersectSliceArea.toFixed(1) <= allocArea) {
@@ -64,11 +59,6 @@ export function _chunkify({
       movingBboxPolygon = _moveBboxPolygon(moveIncrement, movingBboxPolygon, initChunkifyDir)
 
 
-      // SANDBOX > RENDER GUIDE LINES 
-      let movingBboxPolygonOutline = GET_MAPBOX_POLYGON_LAYER(movingBboxPolygon, {layerID: 9000, color: "orange", thickness: 1, fillOpacity: .1}).outlineLayer;
-      // RENDER_LAYER(map, movingBboxPolygonOutline);
-
-
       // UPDATE THE MUTATED SHAPEFILE
       // THE "mutatedShapefile" IS THE INTERSECT BTW. MOVING BBOX. & THE KATANA SHAPEFILE
       mutatedShapefile = turf.intersect(_getProps(workingShapefile)._geometry, movingBboxPolygon)
@@ -77,7 +67,7 @@ export function _chunkify({
       // SANDBOX > 
       // if (mutatedShapefile) {
       //    if (turf.getType(mutatedShapefile) === "GeometryCollection") {
-      //       console.log(mutatedShapefile);
+            // console.log(mutatedShapefile);
       //    };
       // };
       
@@ -93,7 +83,7 @@ export function _chunkify({
          // HOWEVER, IF THERE WASN'T MUTATION IN THE FIRST PLACE (ie., workingShapefile WAS TOO SMALL TO INTERSECT),
          // THIS if BLOCK WILL FAIL, AND chunkSlicePolygon WILL REMAIN undefined
          
-         console.log(turf.getType(mutatedShapefile));
+         // console.log(turf.getType(mutatedShapefile));
          
          // console.log(mutatedShapefile);
          chunkSlicePolygon = turf.difference(_getProps(workingShapefile)._geometry, _getProps(mutatedShapefile)._geometry)
@@ -104,10 +94,10 @@ export function _chunkify({
 
 
          // THE MOVING BBOX POLYGON HAS MOVED PAST THE SHAPEFILE & CAN NO LONGER MUTATE IT
-         console.log('CHUKIFY >> the moving bbox poly. has moved "out of bounds.."');
+         // console.log('CHUKIFY >> the moving bbox poly. has moved "out of bounds.."');
 
 
-         console.log(chunkSlicePolygon);
+         // console.log(chunkSlicePolygon);
          // SLIGHTLY INCREASE THE SIZE OF THE TOO SMALL SLICE IN ORDER TO SUCCESSFULLY UNITE IT WITH ...
          // let tooSmallKatanaSlice = chunkSlicePolygon;
          let tooSmallKatanaSlice = turf.buffer(chunkSlicePolygon, 0.005, {unit: 'kilometers'}); // **
@@ -135,11 +125,8 @@ export function _chunkify({
             
             
                // SANDBOX > 
-            console.log(tooSmallKatanaSlice.geometry);
-            console.log(pendingShapefile.geometry);
-            // RENDER_SIMPLE_SHAPEFILE(turf.buffer(chunkSlicePolygon, 0.001, {unit: 'kilometers'}), {layerID: 9998, color: "cyan", thickness: 5, fillOpacity: 0.05});
-            // RENDER_SIMPLE_SHAPEFILE(turf.buffer(tooSmallKatanaSlice, 0.001, {unit: 'kilometers'}), {layerID: 1998, color: "blue", thickness: 5, fillOpacity: 0.05});
-
+            // console.log(tooSmallKatanaSlice.geometry);
+            // console.log(pendingShapefile.geometry);
             
             // GET A NEW KATANA SLICE TO CHUNKIFY FROM THE UNION OF THE LEFTFOVER SHAPEFILE & THE "TOO SMALL" SLICE
             // ANALYZE THE TURF UNION, IF THE RESULT WILL BE A MULTIPOLYGON, DISCARD THE tooSmallKatanaSlice 
@@ -156,18 +143,13 @@ export function _chunkify({
                
                // ADD CUSTOM PROPERTIES
                discardedKatanaChunk.properties['chunk_size'] = _calcArea(discardedKatanaChunk);
-
-               RENDER_SIMPLE_SHAPEFILE(tooSmallKatanaSlice, {layerID: Math.random()*999, color: "yellow", thickness: 5, fillOpacity: 0.05});
                
-               reunitedShapefile = pendingShapefile
+               reunitedShapefile = pendingShapefile;
             }
 
             
             // SANDBOX > 
-            console.log(reunitedShapefile);
-            // RENDER_SIMPLE_SHAPEFILE(reunitedShapefile, {layerID: 90999, color: "cyan", thickness: 5, fillOpacity: 0.09});
-            // RENDER_SIMPLE_SHAPEFILE(pendingShapefile, {layerID: 999, color: "purple", thickness: 5, fillOpacity: 0.09});
-                        
+            // console.log(reunitedShapefile);                        
 
             // CONDUCT A NEW K. SLICE OPERATION..
             let newKSliceData = _newKatanaSliceOperation(percentIngress, katanaSliceDir, reunitedShapefile);
@@ -185,12 +167,10 @@ export function _chunkify({
             
             
             // TRACK THE FAILED ALLOC.
-            console.log(idx + 1);
+            // console.log(idx + 1);
             failedAllocIdx = idx;
 
-            
-            // RENDER_SIMPLE_SHAPEFILE(chunkSlicePolygon, {layerID: 91099, color: "orange", thickness: 5, fillOpacity: 0.09});
-            // FIXME > ZERO OUT THE SLICE POLY.
+                        // FIXME > ZERO OUT THE SLICE POLY.
             chunkSlicePolygon = null;
             
             
@@ -212,12 +192,12 @@ export function _chunkify({
       } else {
 
          // THE MOVING BBOX POLYGON HAS NOT MOVED PAST THE K. SLICE, BUT THE REMAINING SLICE IS TOO SMALL TO BE MUTATED..
-         console.log(chunkSlicePolygon);
-         console.log(reunitedShapefile);
-         console.log(percentIngress);
-         console.log(pendingShapefile);
-         console.log('***The remaining katana slice is too tiny even for the moving frames..');
-         console.log(`***Try reducing this allocation [[ ${idx+1} ]] a little bit`);
+         // console.log(chunkSlicePolygon);
+         // console.log(reunitedShapefile);
+         // console.log(percentIngress);
+         // console.log(pendingShapefile);
+         // console.log('***The remaining katana slice is too tiny even for the moving frames..');
+         // console.log(`***Try reducing this allocation [[ ${idx+1} ]] a little bit`);
 
 
          // CONDUCT A NEW K. SLICE OPERATION
@@ -258,16 +238,12 @@ export function _chunkify({
    // ADD CUSTOM PROPERTIES
    if (chunkPolygon) {
       chunkPolygon.properties['chunk_index'] = idx + 1;
-      chunkPolygon.properties['chunk_id'] = `nirsal-agc-code-xxx-unique-chunk-id-${(Math.random()*99999*idx).toFixed(0)}`;
+      chunkPolygon.properties['chunk_id'] = `nirsal-agc-code-xxx-unique-chunk-id-${(Math.random()*99999*(idx+1)).toFixed(0)}`;
       chunkPolygon.properties['chunk_size'] = allocArea.toFixed(1);
-      chunkPolygon.properties['farmer_id'] = `unique-farmer-id-${(Math.random()*99999*idx).toFixed(0)}` 
+      chunkPolygon.properties['farmer_id'] = `unique-farmer-id-${(Math.random()*99999*(idx+1)).toFixed(0)}` 
       chunkPolygon.properties['center_lng'] = turf.centerOfMass(chunkPolygon).geometry.coordinates[0];
       chunkPolygon.properties['center_lat'] = turf.centerOfMass(chunkPolygon).geometry.coordinates[1];
    }
-
-
-   // DRAW THE CHUNK ON THE MAP
-   // _drawChunk(chunkPolygon, idx);
    
    
    // "RECURSION"

@@ -10,7 +10,7 @@ block parcelized-agcs
 
 			br
 			h2 Using the Parcelized AGCs API
-			p.last-update Updated 20 September 2020
+			p.last-update Updated 24 September 2020
 			br
 
 			.credentials-container
@@ -90,9 +90,10 @@ block parcelized-agcs
 
 			br
 			h3 Sample AGC JSON Data Structure
-			p Each AGC payload is a simple GEOJSON #[em #[strong Feature]], and not a #[em FeatureCollection].
+			p Each AGC payload is a GEOJSON #[em #[strong FeatureCollection]], that contains just ONE #[em Feature].
 			//- div IMPORTANT
-			p.important-note The insertion will fail if the 'agc_id', 'extended_name', 'location', and/or 'farmers' fields are missing from the JSON payload, or if an AGC with the same 'agc_id', 'extended_name', and/or coordinates already exists in the database. Those first 4 fields in 'properties' are REQUIRED.
+			p.important-note The DB insertion will fail if the 'agc_id', 'extended_name', 'location', and/or 'farmers' fields are missing from the JSON payload, or if an AGC with the same 'agc_id', 'extended_name', and/or coordinates already exists in the database. Those first 4 fields in 'properties' are REQUIRED.
+			p.important-note The total hectares allocated to the farmers must not exceed the AGC land area.
 			pre.agc-json-data-ex
 				include _agc-json-data-example
 

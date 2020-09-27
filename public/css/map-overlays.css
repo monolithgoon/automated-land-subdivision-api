@@ -1,3 +1,27 @@
+.mapboxgl-popup-content {
+   width: 300px;
+}
+
+.mapbox-metadata-popup {
+	display: grid;
+	grid-template-columns: 2fr 1fr;
+}
+
+.popup-farmer-name {
+	font-size: 18px;
+	font-weight: 500;
+}
+
+.text-wrapper span {
+   padding: 0 10px;
+   background: grey;
+}
+
+.media-wrapper {
+   border: 1px dashed grey;
+   background: #f5f6fa;
+}
+
 .close-btn {
    -webkit-font-smoothing: antialiased;
    text-size-adjust: 100%;

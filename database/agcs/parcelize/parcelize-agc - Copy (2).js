@@ -72,7 +72,7 @@ const compareAgcs = async (agcs, parcelizedAgcs) => {
 
 
 
-const parcelizeAgc = (agc) => {
+const parcelizeAgc = async (agc) => {
    
    try {
       
@@ -81,8 +81,6 @@ const parcelizeAgc = (agc) => {
 
       // GET THE FARM HA. ALLOCATIONS
       const farmerAllocations = [];
-      const farmers_data = agc.properties.farmers;
-      // console.log(chalk.highlight(farmers_data))
       agc.properties.farmers.forEach(farmer=>farmerAllocations.push(farmer.allocation));
    
       const dirOptionsMap = {
@@ -120,8 +118,7 @@ const parcelizeAgc = (agc) => {
       // const dirComboConfigObj = dirOptionsMap.en;
 
       // PARCELIZE
-      // const parcelizedShapefile = await PARCELIZE_SHAPEFILE(selectedShapefile, farmerAllocations, dirComboConfigObj)
-      const parcelizedShapefile = PARCELIZE_SHAPEFILE(selectedShapefile, farmers_data, dirComboConfigObj)
+      const parcelizedShapefile = await PARCELIZE_SHAPEFILE(selectedShapefile, farmerAllocations, dirComboConfigObj)
 
       return parcelizedShapefile;
 
@@ -132,16 +129,16 @@ const parcelizeAgc = (agc) => {
 
 
 
-const parcelizeAgcs =  (agcs) => {
+const parcelizeAgcs = async (agcs) => {
    
    const parcelizedAgcs = [];
 
    try {
       
       // PARCELIZE
-      agcs.forEach((agc) => {
+      agcs.forEach(async (agc) => {
 
-         const parcelizedAgc = parcelizeAgc(agc);
+         const parcelizedAgc = await parcelizeAgc(agc);
 
          // CHECK IF PARCELIZATION SUCCEEDED
          if (!parcelizedAgc) {
@@ -203,13 +200,13 @@ const saveToDatabase = async (agcData) => {
       
       console.log(chalk.success(`The parcelized AGC data (${agcData}) was successfully written to the database `));
 
-      process.exit() // end the NODE process
+      // process.exit() // end the NODE process
 
    } catch(err) {
       
       console.error(chalk.fail(err.message));
 
-      process.exit() // end the NODE process
+      // process.exit() // end the NODE process
    }
 };
 
@@ -223,10 +220,9 @@ async function runProgram() {
    
       const parcelizedAgcs = parcelizeAgcs(unprocessedAgcs[0]);
    
-      console.log(chalk.highlight(parcelizedAgcs))
-      parcelizedAgcs.forEach((agc) => saveToFile(agc));
+      parcelizedAgcs.forEach(async (agc) => await saveToFile(agc));
 
-      saveToDatabase(parcelizedAgcs);
+      await saveToDatabase(parcelizedAgcs);
 
    } catch (err) {
       console.log(chalk.fail(err.message));
