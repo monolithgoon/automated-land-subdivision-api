@@ -134,11 +134,23 @@ h2.subtitle {
 	margin-bottom: 10px;
 	background: #EFE9DD;
 	/* border-radius: 3px; */
+	display: grid;
+	grid-template-columns: 3fr 1fr;
 }
 
-.plot-farmer-id {
+.feature-owner-media-container {
+	/* border: 1px dashed grey */
+	opacity: 0.8;
+}
+
+.plot-owner-name {
 	font-size: 14px;
 	font-weight: 700
+}
+
+.plot-owner-id {
+	/* font-size: 14px;
+	font-weight: 700 */
 }
 
 .app-container {

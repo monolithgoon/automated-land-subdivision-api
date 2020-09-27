@@ -88,16 +88,22 @@ const featureSchema = new mongoose.Schema({
          type: Number,
          required: [true, "Each farm parcel in the AGC must have an allocated size"],
       },
-      farmer_id: {
+      owner_id: {
          type: String,
          // required: [true, "Each farm parcel in the AGC must be assigned to a farmer"],
          required: false, // the chunk could be an unassigned leftover from parcelization process
          unique: true
       },
-      farmer_name: {
+      owner_name: {
          type: String,
          required: true,
          unique: false
+      },
+      owner_photo_url: {
+         type: String,
+         required: false,
+         // FIXME > THE URL NEEDS TO BE UNIQUE 
+         // unique: [true, `The link to each farmer's photo must be unique`]
       },
       center_lng: {
          type: Number,

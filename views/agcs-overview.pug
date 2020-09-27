@@ -140,8 +140,13 @@ block parcelized-agcs
 
 						each feature in parcelizedAgc.features	
 							div.agc-feature
-								div.plot-farmer-id= feature.properties.farmer_id
-								//- div= feature.properties.plot_id
-								div= `${feature.properties.chunk_size} hectares`
-								div= `Lng ${feature.properties.center_lng.toFixed(5)}°E Lat ${feature.properties.center_lat.toFixed(5)}°N`
+								.feature-text-container
+									div.plot-owner-name= feature.properties.owner_name
+									div.plot-owner-id= `${feature.properties.owner_id}`
+									div= `VARS_ID   ${feature.properties.chunk_id}`
+									div= `${feature.properties.chunk_size} hectares`
+									div= `Lng ${feature.properties.center_lng.toFixed(5)}°E Lat ${feature.properties.center_lat.toFixed(5)}°N`
+								.feature-owner-media-container
+									//- img(src=`${feature.properties.owner_photo_url}`, alt="Plot Owner Photo", srcset="")
+									img(src="/images/icon-user.png", alt="Plot Owner Photo", style="max-width:100%;")
 					//- br

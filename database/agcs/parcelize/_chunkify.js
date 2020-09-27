@@ -240,8 +240,9 @@ exports._chunkify = function(allocationMetadata, {
       chunkPolygon.properties['chunk_index'] = idx + 1;
       chunkPolygon.properties['chunk_id'] = `${allocationMetadata.agcID}-${(Math.random()*9999*(idx+1)).toFixed(0)}`;
       chunkPolygon.properties['chunk_size'] = allocArea.toFixed(1);
-      chunkPolygon.properties['farmer_id'] = `${allocationMetadata.farmerID}`
-      chunkPolygon.properties['farmer_name'] = `${allocationMetadata.firstName} ${allocationMetadata.lastName}` 
+      chunkPolygon.properties['owner_id'] = `${allocationMetadata.farmerID}`
+      chunkPolygon.properties['owner_name'] = `${allocationMetadata.firstName} ${allocationMetadata.lastName}` 
+      chunkPolygon.properties['owner_photo_url'] = `${allocationMetadata.photo}` 
       chunkPolygon.properties['center_lng'] = turf.centerOfMass(chunkPolygon).geometry.coordinates[0];
       chunkPolygon.properties['center_lat'] = turf.centerOfMass(chunkPolygon).geometry.coordinates[1];
    }

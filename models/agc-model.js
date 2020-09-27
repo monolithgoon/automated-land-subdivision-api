@@ -95,6 +95,11 @@ const farmerSchema = new mongoose.Schema({
       type: String,
       required: [true, `The farmer's last name must be specified`]
    },
+   photo_url:  {
+      type: String,
+      required: false,
+      unique: [true,`The link to each farmer's photo must be unique`]
+   },
    allocation: {
       type: Number,
       required: [true, `Each farmer's land allocation must be specified`]
