@@ -9,14 +9,14 @@ exports._chunkify = function(allocationMetadata, {
    newChunkifyDir, 
    katanaSliceDir, 
    percentIngress, 
-   allocArea, 
    workingShapefile, 
    pendingShapefile, 
    startShapefileArea, 
    movingBboxPolygon, 
    idx 
 }) {
-   
+
+   const allocationSize = allocationMetadata.allocSize
    
    // INITIAL STATE
    // THE "mutatedShapefile" IS THE INTERSECT BTW. MOVING BBOX. & THE KATANA SHAPEFILE
@@ -45,7 +45,7 @@ exports._chunkify = function(allocationMetadata, {
    // console.log(`Starting katana slice area: ${startShapefileArea}`); 
 
    
-   while (intersectSliceArea.toFixed(1) <= allocArea) {
+   while (intersectSliceArea.toFixed(1) <= allocationSize) {
 
       let reunitedShapefile;
       
@@ -72,7 +72,7 @@ exports._chunkify = function(allocationMetadata, {
       // };
       
       
-      // FOR THE CURRENT allocArea, CHECK THAT THE BBOX POLY. STILL INTERSECTS WITH THE SHAPEFILE
+      // FOR THE CURRENT allocationSize, CHECK THAT THE BBOX POLY. STILL INTERSECTS WITH THE SHAPEFILE
       // AND CHECK THAT THE INTERSECT GIVES A VALID GEOMETRY (ie., A "POLYGON")
       if (mutatedShapefile && turf.getType(mutatedShapefile) === "Polygon") {
 
@@ -239,7 +239,7 @@ exports._chunkify = function(allocationMetadata, {
    if (chunkPolygon) {
       chunkPolygon.properties['chunk_index'] = idx + 1;
       chunkPolygon.properties['chunk_id'] = `${allocationMetadata.agcID}-${(Math.random()*9999*(idx+1)).toFixed(0)}`;
-      chunkPolygon.properties['chunk_size'] = allocArea.toFixed(1);
+      chunkPolygon.properties['chunk_size'] = allocationSize.toFixed(1);
       chunkPolygon.properties['owner_id'] = `${allocationMetadata.farmerID}`
       chunkPolygon.properties['owner_name'] = `${allocationMetadata.firstName} ${allocationMetadata.lastName}` 
       chunkPolygon.properties['owner_photo_url'] = `${allocationMetadata.photo}` 

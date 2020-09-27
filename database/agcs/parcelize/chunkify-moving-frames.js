@@ -92,14 +92,13 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
          // CHUNKING BASELINE VARIABLES
          const orgBboxPolygon = _getProps(workingShapefile)._bboxPolygon
          const startShapefileArea = _calcArea(workingShapefile);
-         const allocArea = FARMERS_DATA[idx].allocation;
 
 
          // KEEP TRACK OF THE FARMER/FARM DATA
          const allocationMetadata = {
             agcID: shapefileID,
             farmerID: FARMERS_DATA[idx].farmer_id,
-            allocArea: FARMERS_DATA[idx].allocation,
+            allocSize: FARMERS_DATA[idx].allocation,
             firstName: FARMERS_DATA[idx].first_name,
             lastName: FARMERS_DATA[idx].last_name,
             photo: FARMERS_DATA[idx].photo_url
@@ -115,7 +114,7 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
          let initChunkifyDir = newChunkifyDir ? newChunkifyDir : chunkifyDirection;
         
 
-         let chunkifyData = _chunkify(allocationMetadata, {initChunkifyDir, newChunkifyDir, katanaSliceDir, percentIngress, allocArea, workingShapefile, pendingShapefile, startShapefileArea, movingBboxPolygon, idx});
+         let chunkifyData = _chunkify(allocationMetadata, {initChunkifyDir, newChunkifyDir, katanaSliceDir, percentIngress, workingShapefile, pendingShapefile, startShapefileArea, movingBboxPolygon, idx});
 
 
          // RETURN THE DISCARDED KATANA CHUNKS
