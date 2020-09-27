@@ -1,5 +1,6 @@
 .mapboxgl-popup-content {
    width: 300px;
+   font-size: 13px;
 }
 
 .mapbox-metadata-popup {
