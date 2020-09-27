@@ -235,11 +235,10 @@ h2.subtitle {
 
 .chunk-coords-body {
 	font-family: monospace;
-
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	width: 70vw;
+	width: 90vw;
  }
  
  .chunk-coords-body:before{
