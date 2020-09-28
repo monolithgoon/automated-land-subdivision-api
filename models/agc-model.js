@@ -170,17 +170,39 @@ agcSchema.pre('save', function(next) {
 
 
 
-// PRE-SAVE M.WARE TO CAP. FIRST LETTER OF FARMER NAMES
+function capFirstWord(word) {
+   let formattedWord = word.toLowerCase();
+   formattedWord = formattedWord.charAt(0).toUpperCase() + formattedWord.slice(1);
+   return formattedWord
+}
+
+
+
+// PRE-SAVE M.WARE TO CAP. 1ST LETTER OF EVERY WORD IN AGC NAME
+agcSchema.pre('save', function(next) {
+
+   const agcNameArray = [];
+
+   this.properties.extended_name.split(' ').forEach(word=>{
+      agcNameArray.push(capFirstWord(word));
+   })
+
+   this.properties.extended_name = agcNameArray.join(' ')
+
+   return next();
+});
+
+
+
+// PRE-SAVE M.WARE TO CAP. 1ST LETTER OF FARMER NAMES
 agcSchema.pre('save', function(next) {
    
    this.properties.farmers.forEach(farmer => {
 
-      const firstName = farmer.first_name.toLowerCase()
-      const lastName = farmer.last_name.toLowerCase()
-      
-      farmer.first_name = firstName.charAt(0).toUpperCase() + firstName.slice(1);
-      farmer.last_name = lastName.charAt(0).toUpperCase() + lastName.slice(1);
-   })
+      farmer.first_name = capFirstWord(farmer.first_name);
+      farmer.last_name = capFirstWord(farmer.last_name);
+
+   });
 
    return next();
 });
