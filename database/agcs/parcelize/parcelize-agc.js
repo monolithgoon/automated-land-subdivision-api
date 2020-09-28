@@ -12,7 +12,7 @@ const { PARCELIZE_SHAPEFILE } = require('./chunkify-moving-frames.js')
 
 
 // IMPORT THE AGC & PARCELIZED AGCS FILES
-const importAgcData = async () => {
+const importAgcsToParcelize = async () => {
    try {
       // CONNECT TO THE REMOTE ATLAS DB
       await DB_CONNECT();
@@ -35,39 +35,31 @@ const importAgcData = async () => {
 
 
 // COMPARE AGCS WITH PARCELIZED AGCS TO CHECK WHICH NEED TO BE PARCELIZED
-const compareAgcs = async (agcs, parcelizedAgcs) => {
+const compareAgcs = (agcs, parcelizedAgcs) => {
 
-   const pendingAgcs = [];
+   let PENDING_AGCS;
+   const PROCESSED_AGCS = [];
+      
+   // BUILD AN ARRY OF AGCS THAT HAVE ALREADY BEEN PROCESSED
+   for (let i = 0; i < agcs.length; i++) {
+
+      const agcID = agcs[i].properties.agc_id;
+
+      for (let j = 0; j < parcelizedAgcs.length; j++) {
+
+         const parcelizedAgcID = parcelizedAgcs[j].properties.agc_id;
+
+         if (agcID === parcelizedAgcID) {
+            PROCESSED_AGCS.push(agcs[i])
+            break
+         }
+      }
+      
+      // FILTER OUT AGCS FROM 'agcs' THAT ARE NOT INCLUDED IN processedAgcs
+      PENDING_AGCS = agcs.filter(agc => !(PROCESSED_AGCS.includes(agc)));
+   }
    
-   // const PENDING_AGCS = agcs.filter(agc => parcelizedAgcs.includes(agc));
-   
-   pendingAgcs.push(agcs);
-   // for (let i = 0; i < agcs.length; i++) {
-
-   //    const agcID = agcs[i].properties.agc_id;
-
-   //    parcelizedAgcs.forEach( parcelizedAgc => {
-
-   //       const parcelizedAgcID = parcelizedAgc.properties.agc_id;
-
-   //       console.log(`agc: ${agcID}`)
-   //       console.log(`p-agc: ${parcelizedAgcID}`)
-
-   //    if (agcID !== parcelizedAgcID) {
-   //          PENDING_AGCS.push(agcs[i])
-   //       }
-   //    })
-      // for (let j = 0; j < parcelizedAgcs.length; j++) {
-      //    const parcelizedAgcID = parcelizedAgcs[j].properties.agc_id;
-      //    if (agcID !== parcelizedAgcID) {
-      //       console.log(`agc: ${agcID}`)
-      //       console.log(`p-agc: ${parcelizedAgcID}`)
-      //       PENDING_AGCS.push(agcs[i])
-      //    }
-      // } 
-   // }
-   // console.log(pendingAgcs);
-   return pendingAgcs
+   return PENDING_AGCS;
 }
 
 
@@ -82,7 +74,6 @@ const parcelizeAgc = (agc) => {
       // GET THE FARM HA. ALLOCATIONS
       const farmerAllocations = [];
       const farmers_data = agc.properties.farmers;
-      // console.log(chalk.highlight(farmers_data))
       agc.properties.farmers.forEach(farmer=>farmerAllocations.push(farmer.allocation));
    
       const dirOptionsMap = {
@@ -132,7 +123,7 @@ const parcelizeAgc = (agc) => {
 
 
 
-const parcelizeAgcs =  (agcs) => {
+const parcelizeAgcs = (agcs) => {
    
    const parcelizedAgcs = [];
 
@@ -159,7 +150,6 @@ const parcelizeAgcs =  (agcs) => {
       });
    
       // RETURN ARRAY TO SAVE TO DB
-      console.log(chalk.highlight(parcelizedAgcs));
       return parcelizedAgcs;
       
    } catch (err) {
@@ -189,7 +179,7 @@ function saveToFile(featureCollection, directions) {
 
 
 // PERSIST TO DB
-const saveToDatabase = async (agcData) => {
+saveToDatabase = async (agcData) => {
 
    try {
       
@@ -215,26 +205,33 @@ const saveToDatabase = async (agcData) => {
 
 
 
-async function runProgram() {
+// MAIN CONTROLLER FN.
+async function bulkParcelize () {
 
    try {
           
-      const unprocessedAgcs = await importAgcData();
-   
-      const parcelizedAgcs = parcelizeAgcs(unprocessedAgcs[0]);
-   
-      console.log(chalk.highlight(parcelizedAgcs))
-      parcelizedAgcs.forEach((agc) => saveToFile(agc));
+      const unprocessedAgcs = await importAgcsToParcelize();
+      
+      if (unprocessedAgcs.length !== 0) {
 
-      saveToDatabase(parcelizedAgcs);
+         console.log(chalk.working(`Parcelizing ${unprocessedAgcs.length} AGCs.. `))
+
+         const parcelizedAgcs = parcelizeAgcs(unprocessedAgcs);
+      
+         parcelizedAgcs.forEach((agc) => saveToFile(agc));
+   
+         saveToDatabase(parcelizedAgcs);
+
+      } else {
+
+         console.log(chalk.warning(`Nothing to parcelize. Exiting.. `))
+         process.exit();
+      }
+   
 
    } catch (err) {
       console.log(chalk.fail(err.message));
    }
 }
 
-runProgram();
-
-
-
-module.exports = runProgram;
+bulkParcelize();

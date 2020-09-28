@@ -85,7 +85,7 @@ const farmerSchema = new mongoose.Schema({
    farmer_id: {
       type: String,
       required: [true, `The farmer must have a global ID`],
-      unique: [true, `The farmer's global ID must be unique`]
+      unique: [true, `A farmer with this ID: ${this.farmer_id} already exists in the database`]
    },
    first_name: {
       type: String,
@@ -97,12 +97,13 @@ const farmerSchema = new mongoose.Schema({
    },
    farmer_photo_url:  {
       type: String,
+      // FIXME > CHANGE THESE TO "true" 
       required: false,
-      unique: [true,`The link to each farmer's photo must be unique`]
+      unique: [false,`This photo url ${this.farmer_photo_url} is already linked to another farmer in the database`]
    },
    allocation: {
       type: Number,
-      required: [true, `Each farmer's land allocation must be specified`]
+      required: [true, `This farmer's (${this.farmer_id}) land allocation size must be specified`]
    }
 })
 
@@ -125,12 +126,12 @@ const agcSchema = new mongoose.Schema({
       agc_id: {
          type: String,
          required: [true, 'Each AGC must have an ID'],
-         unique: [true, 'An AGC with this ID already exists in the database']
+         unique: [true, `An AGC with this ID: ${this.agc_id} already exists in the database`]
       },
       extended_name: {
          type: String,
          required: [true, 'The name of the AGC must be specified'],
-         unique: [true, `An AGC with this extended_name already exists in the database`]
+         unique: [true, `An AGC with this extended_name (${this.extended_name}) already exists in the database`]
       },
       location: {
          type: String,

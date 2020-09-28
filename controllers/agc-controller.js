@@ -170,7 +170,7 @@ exports.getAllAgcs = async (request, response) => {
 
 
 // CREATE/INSERT A NEW AGC (POST REQUEST) HANDLER FN.
-exports.insertAgc = async (req, res) => {
+exports.insertAgc = async (req, res, next) => {
 
    try {
       
@@ -181,14 +181,15 @@ exports.insertAgc = async (req, res) => {
       // CREATE A NEW AGC DOCUMENT _MTD 2
       const newAgc = await AGC_MODEL.create(req.body) // "model.create" returns a promise
 
-      res.status(201).json({
-         status: 'success',
-         inserted_at: req.requestTime,
-         data: newAgc
-         // agcData: {
-         //    agc: newAgc
-         // }
-      })
+      // // SERVER RESPONSE
+      // res.status(201).json({
+      //    status: 'success',
+      //    inserted_at: req.requestTime,
+      //    data: newAgc
+      //    // agcData: {
+      //    //    agc: newAgc
+      //    // }
+      // })
       
    } catch (err) { 
       res.status(400).json({ // 400 => bad request
@@ -197,4 +198,6 @@ exports.insertAgc = async (req, res) => {
          error_msg: err.message,
       })
    }
+
+   next();
 }
