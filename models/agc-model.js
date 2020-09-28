@@ -56,8 +56,8 @@ const geometrySchema = new mongoose.Schema({
    },
    coordinates: {
       type: [Array],
-      required: true,
-      unique: false
+      required: [true, `This AGC shapefile is missing its coordinates`],
+      unique: [true, `An AGC with these coordinates already exists in the database`]
    }
 })
 
@@ -95,7 +95,7 @@ const farmerSchema = new mongoose.Schema({
       type: String,
       required: [true, `The farmer's last name must be specified`]
    },
-   photo_url:  {
+   farmer_photo_url:  {
       type: String,
       required: false,
       unique: [true,`The link to each farmer's photo must be unique`]
@@ -125,12 +125,12 @@ const agcSchema = new mongoose.Schema({
       agc_id: {
          type: String,
          required: [true, 'Each AGC must have an ID'],
-         unique: [true, 'Each AGC must have a unique ID']
+         unique: [true, 'An AGC with this ID already exists in the database']
       },
       extended_name: {
          type: String,
          required: [true, 'The name of the AGC must be specified'],
-         unique: [true, `The AGC name must be unique`]
+         unique: [true, `An AGC with this extended_name already exists in the database`]
       },
       location: {
          type: String,

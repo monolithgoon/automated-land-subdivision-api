@@ -102,7 +102,7 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
             allocSize: FARMERS_DATA[idx].allocation,
             firstName: FARMERS_DATA[idx].first_name,
             lastName: FARMERS_DATA[idx].last_name,
-            photo: FARMERS_DATA[idx].photo_url
+            photo: FARMERS_DATA[idx].farmer_photo_url
          }
          
             
