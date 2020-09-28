@@ -170,6 +170,23 @@ agcSchema.pre('save', function(next) {
 
 
 
+// PRE-SAVE M.WARE TO CAP. FIRST LETTER OF FARMER NAMES
+agcSchema.pre('save', function(next) {
+   
+   this.properties.farmers.forEach(farmer => {
+
+      const firstName = farmer.first_name.toLowerCase()
+      const lastName = farmer.last_name.toLowerCase()
+      
+      farmer.first_name = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+      farmer.last_name = lastName.charAt(0).toUpperCase() + lastName.slice(1);
+   })
+
+   return next();
+});
+
+
+
 // AGC DATA MODEL
 const AGC_MODEL = mongoose.model('agcs', agcSchema);
 
