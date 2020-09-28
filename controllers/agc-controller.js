@@ -181,15 +181,15 @@ exports.insertAgc = async (req, res, next) => {
       // CREATE A NEW AGC DOCUMENT _MTD 2
       const newAgc = await AGC_MODEL.create(req.body) // "model.create" returns a promise
 
-      // // SERVER RESPONSE
-      // res.status(201).json({
-      //    status: 'success',
-      //    inserted_at: req.requestTime,
-      //    data: newAgc
-      //    // agcData: {
-      //    //    agc: newAgc
-      //    // }
-      // })
+      // SERVER RESPONSE
+      res.status(201).json({
+         status: 'success',
+         inserted_at: req.requestTime,
+         data: newAgc
+         // agcData: {
+         //    agc: newAgc
+         // }
+      })
       
    } catch (err) { 
       res.status(400).json({ // 400 => bad request

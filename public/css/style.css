@@ -135,6 +135,7 @@ h2.subtitle {
 	padding: 5px;
 	padding-left: 10px;
 	margin-bottom: 10px;
+	font-size: 12px;
 	background: #EFE9DD;
 	display: grid;
 	grid-template-columns: 1fr;
