@@ -116,8 +116,8 @@ const parcelizeAgc = (agc) => {
       // GET CHUNKIFY DIRECTIONS
       // const dirComboConfigObj = dirOptionsMap.wn;
       // const dirComboConfigObj = dirOptionsMap.ws;
-      // const dirComboConfigObj = dirOptionsMap.ne;
-      const dirComboConfigObj = dirOptionsMap.es;
+      const dirComboConfigObj = dirOptionsMap.ne;
+      // const dirComboConfigObj = dirOptionsMap.es;
 
       // PARCELIZE
       // const parcelizedShapefile = await PARCELIZE_SHAPEFILE(selectedShapefile, farmerAllocations, dirComboConfigObj)
