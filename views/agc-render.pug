@@ -29,13 +29,6 @@ block parcelized-agc-content
             .num-farmers
                div Num. Farmers
                #num_farmers.aggr-data= parcelizedAgcData.properties.num_farmers
-            .allocated-hectares
-               div Total Allocation
-               if parcelizedAgcData.properties
-                  if parcelizedAgcData.properties.total_allocation
-                     #total_allocation.aggr-data= `${parcelizedAgcData.properties.total_allocation.toFixed(1)} ha.`
-               else 
-                  #total_allocation.aggr-data -
             .shapefile-area
                div Delineated Area
                if parcelizedAgcData.properties
@@ -43,6 +36,13 @@ block parcelized-agc-content
                      #shapefile_area.aggr-data= `${parcelizedAgcData.properties.agc_area.toFixed(1)} ha.`
                else 
                   #shapefile_area.aggr-data -
+            .allocated-hectares
+               div Total Allocation
+               if parcelizedAgcData.properties
+                  if parcelizedAgcData.properties.total_allocation
+                     #total_allocation.aggr-data= `${parcelizedAgcData.properties.total_allocation.toFixed(1)} ha.`
+               else 
+                  #total_allocation.aggr-data -
             .unused-land-area
                div Unused Land
                if parcelizedAgcData.properties
