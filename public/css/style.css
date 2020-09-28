@@ -442,8 +442,11 @@ input:focus {
 	.chunks-coords-listing-container {
 		margin-top: 0;
 		display: block;
-
 	}
+
+	.chunk-coords-body {
+		width: 50vw;
+	 }
 
 	.farm-detail-map {
 		height: auto;
