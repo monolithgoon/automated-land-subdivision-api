@@ -1,5 +1,6 @@
 const chalk = require('../../../utils/chalk-messages');
-const DB_CONNECT = require('../../../utils/db-connect.js')
+const DB_CONNECT = require('../../../utils/db-connect.js');
+const mongoose = require('mongoose')
 
 const fs = require('fs')
 
@@ -229,6 +230,8 @@ async function bulkParcelize () {
 
    } catch (err) {
       console.log(chalk.fail(err.message));
+   } finally {
+      mongoose.disconnect();
    }
 }
 

@@ -1,5 +1,5 @@
 const chalk = require('./chalk-messages.js')
-const Mongoose = require('mongoose') // MongoDB driver that facilitates connection to remote db
+const mongoose = require('mongoose') // MongoDB driver that facilitates connection to remote db
 const dotenv = require('dotenv') // read the data from the config file. and use them as env. variables in NODE
 dotenv.config({path: `C:/Users/Mummy Okpue/OneDrive/Documents/Web Development Projects/Mapping/agc-parcelization-api/config.env`}) // CONFIGURE ENV. VARIABLES
 // dotenv.config({path: '../config.env'}) // CONFIGURE ENV. VARIABLES
@@ -17,7 +17,7 @@ async function DB_CONNECT() {
 
       const database = process.env.ATLAS_DB_STRING.replace('<PASSWORD>', process.env.ATLAS_DB_PASSOWRD) // REPLACE THE PLACEHOLDER TEXT IN THE CONNECTION STRING
    
-      Mongoose.connect(database, {
+      mongoose.connect(database, {
       // handle mongoDB deprecation warnings
       useNewUrlParser: true,
       useCreateIndex: true,
@@ -31,7 +31,7 @@ async function DB_CONNECT() {
    
    } catch(err) {
       console.log(chalk.fail(err.message));
-   }
+   } 
 }
 
 

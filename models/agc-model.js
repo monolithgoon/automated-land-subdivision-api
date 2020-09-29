@@ -95,6 +95,7 @@ const farmerSchema = new mongoose.Schema({
       type: String,
       required: [true, `The farmer's last name must be specified`]
    },
+   farmer_photo: Buffer,
    farmer_photo_url:  {
       type: String,
       // FIXME > CHANGE THESE TO "true" 
@@ -142,6 +143,7 @@ const agcSchema = new mongoose.Schema({
       governance_structure: {
          
       },
+
       // agc_details: agcDetailsSchema,
       agc_details: {
          
