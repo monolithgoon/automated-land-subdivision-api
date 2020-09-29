@@ -185,6 +185,10 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
          'agc_area' : _calcArea(SELECTED_SHAPEFILE),
          'total_allocation' : allocationTotal,
          'unused_land_area' : unallocatedLandArea,
+         'parcelization_metadata': {
+            'katana_slice_dir': katanaSliceDirection,
+            'moving_frames_dir': chunkifyDirection,
+         }
       }
       console.log(CHUNKS_COLLECTION);
 

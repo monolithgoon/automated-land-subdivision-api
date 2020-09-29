@@ -107,8 +107,8 @@ const parcelizeAgc = (agc) => {
       // GET CHUNKIFY DIRECTIONS
       // const dirComboConfigObj = dirOptionsMap.wn;
       // const dirComboConfigObj = dirOptionsMap.ws;
-      const dirComboConfigObj = dirOptionsMap.ne;
-      // const dirComboConfigObj = dirOptionsMap.es;
+      // const dirComboConfigObj = dirOptionsMap.ne;
+      const dirComboConfigObj = dirOptionsMap.en;
 
       // PARCELIZE
       // const parcelizedShapefile = await PARCELIZE_SHAPEFILE(selectedShapefile, farmerAllocations, dirComboConfigObj)
@@ -141,9 +141,6 @@ const parcelizeAgcs = (agcs) => {
 
          } else {
             
-            // SAVE TO FILE
-            // await saveToFile (parcelizedAgc);
-
             // SAVE TO ARRAY FOR DB. SAVE
             parcelizedAgcs.push(parcelizedAgc);
          }
@@ -160,11 +157,12 @@ const parcelizeAgcs = (agcs) => {
 
 
 // SAVE TO FILE
-function saveToFile(featureCollection, directions) {
+function saveToFile(featureCollection) {
 
    const agcID = featureCollection.properties.agc_id;
+   const dirCode = `${featureCollection.properties.parcelization_metadata.katana_slice_dir.charAt(0)}${featureCollection.properties.parcelization_metadata.moving_frames_dir.charAt(0)}`
 
-   const fileName = directions ? `${agcID.toLowerCase()}-${directions}` : `${agcID.toLowerCase()}`
+   const fileName = dirCode ? `${agcID.toLowerCase()}-${dirCode}` : `${agcID.toLowerCase()}`
 
    // SAVE TO FILE > APPEND agc_id && directionsCombo TO FILE NAME
    fs.writeFile(`../../parcelized-agcs/data/${fileName}.geojson`, JSON.stringify(featureCollection), (err, data) => {

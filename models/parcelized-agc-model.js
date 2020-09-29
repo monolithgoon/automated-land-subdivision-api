@@ -158,7 +158,11 @@ const parcelizedAgcSchema = new mongoose.Schema({
          type: Number,
          required: [true, 'Each parcelized AGC must have its area specified']
       },
-      unused_land_area: Number
+      unused_land_area: Number,
+      parcelization_metadata: {
+         katana_slice_dir: String,
+         moving_frames_dir: String
+      }
    }
 })
 
