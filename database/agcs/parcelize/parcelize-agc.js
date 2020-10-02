@@ -109,7 +109,7 @@ const parcelizeAgc = (agc) => {
       // const dirComboConfigObj = dirOptionsMap.wn;
       // const dirComboConfigObj = dirOptionsMap.ws;
       // const dirComboConfigObj = dirOptionsMap.ne;
-      const dirComboConfigObj = dirOptionsMap.en;
+      const dirComboConfigObj = dirOptionsMap.sw;
 
       // PARCELIZE
       // const parcelizedShapefile = await PARCELIZE_SHAPEFILE(selectedShapefile, farmerAllocations, dirComboConfigObj)
@@ -230,9 +230,10 @@ async function bulkParcelize () {
 
    } catch (err) {
       console.log(chalk.fail(err.message));
-   } finally {
-      mongoose.disconnect();
-   }
+   } 
+   // finally {
+   //    mongoose.disconnect();
+   // }
 }
 
 bulkParcelize();

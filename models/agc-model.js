@@ -96,7 +96,7 @@ const farmerSchema = new mongoose.Schema({
       required: [true, `The farmer's last name must be specified`]
    },
    farmer_photo: Buffer,
-   farmer_photo_url:  {
+   farmer_photo_url: {
       type: String,
       // FIXME > CHANGE THESE TO "true" 
       required: false,
@@ -173,8 +173,11 @@ agcSchema.pre('save', function(next) {
 
 
 
-function capFirstWord(word) {
+function formalizeWord(word) {
    let formattedWord = word.toLowerCase();
+   // ensure word 'agc' is all caps
+   formattedWord = 'agc' ?  'AGC' : formattedWord;
+   // capitalize the first letter only
    formattedWord = formattedWord.charAt(0).toUpperCase() + formattedWord.slice(1);
    return formattedWord
 }
@@ -187,7 +190,7 @@ agcSchema.pre('save', function(next) {
    const agcNameArray = [];
 
    this.properties.extended_name.split(' ').forEach(word=>{
-      agcNameArray.push(capFirstWord(word));
+      agcNameArray.push(formalizeWord(word));
    })
 
    this.properties.extended_name = agcNameArray.join(' ')
@@ -202,8 +205,8 @@ agcSchema.pre('save', function(next) {
    
    this.properties.farmers.forEach(farmer => {
 
-      farmer.first_name = capFirstWord(farmer.first_name);
-      farmer.last_name = capFirstWord(farmer.last_name);
+      farmer.first_name = formalizeWord(farmer.first_name);
+      farmer.last_name = formalizeWord(farmer.last_name);
 
    });
 
