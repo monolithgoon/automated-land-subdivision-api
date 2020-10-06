@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
       required: [true, "The last name of the user is required"]
    },
 
-   email: {
+   user_email: {
       type: String,
       required: [true, "The email of the user of required"],
       unique: true,
@@ -24,9 +24,9 @@ const userSchema = new mongoose.Schema({
       validate: [validator.isEmail],
    },
 
-   photo: String,
+   photo_url: String,
 
-   password: {
+   user_password: {
       type: String,
       required: [true, "The user must have a password"],
       minLength: 10,
@@ -38,9 +38,9 @@ const userSchema = new mongoose.Schema({
       validate: {
          // IMPORTANT > This validator only works by calling USER_MODEL.save() OR USER_MODEL.create() & NOT WITH .findOne() && .updateOne() 
          validator: function(el) {
-            return el === this.password; // the 'this' keyword refers to the current document..
+            return el === this.user_password; // the 'this' keyword refers to the current document..
          },
-         message: "The passwords are not the same"
+         message: "The password confirmation does not match"
       }
    }
 })
@@ -51,10 +51,10 @@ userSchema.pre('save', async function(next) {
 
    // PROCEED TO RETURN THE NEXT M.WARE IF THE P.WORD HAS NOT BEEN MODIFIED OR NEWLY CREATED
    // ie., ONLY RUN THE REMAINING CODE IN THIS M-WARE IF THE PASS. WAS MODIFIED
-   if (!this.isModified('passowrd')) return next();
+   if (!this.isModified('user_password')) return next();
 
    // HASH / ENCRYPT THE PASSWORD WITH COST OF 12
-   this.password = await bcrypt.hash(this.password, 12);
+   this.user_password = await bcrypt.hash(this.user_password, 12);
 
    // DO NOT PERSIST PASS. CONFIRM TO DB
    this.password_confirm = undefined;
