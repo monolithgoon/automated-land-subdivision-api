@@ -1,5 +1,6 @@
 // CONTAINS THE ROUTE HANDLING FUNCTIONS USED BY agc-routes.js
 const chalk = require('../utils/chalk-messages');
+const catchAsync = require('../utils/catch-async.js');
 const AGC_MODEL = require('../models/agc-model.js')
 
 

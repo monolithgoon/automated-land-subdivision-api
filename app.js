@@ -5,6 +5,8 @@ const Morgan = require('morgan'); // HTTP request logger
 const BodyParser = require('body-parser'); // GET THE CONTENTS OF request.body
 const compression = require('compression'); // server response compression
 const cors = require('cors'); // this will allow other websites access the api
+const AppError = require('./utils/app-error.js')
+const globalErrorHandler = require('./controllers/error-controller.js')
 
 // REMOVE > NOT WORKING ON HEROKU 
 // const chalk = require('chalk');
@@ -15,7 +17,6 @@ const cors = require('cors'); // this will allow other websites access the api
 
 
 
-
 // SET THE TEMPLATING ENGINE TO "PUG"
 // PUG IS A WHTESPACE SENSITIVE SYNTAX FOR WRITING HTML
 EXPRESS_APP.set('view engine', 'pug');
@@ -23,9 +24,9 @@ EXPRESS_APP.set('views', path.join(__dirname, 'views'));
 
 
 
-
 // 3RD PARTY MIDDLEWARE > SERVE STATIC FILES
 EXPRESS_APP.use(express.static(path.join(__dirname, 'public')));
+
 
 
 // 3RD PARTY MIDDLEWARE > IMPLEMENT CORS
@@ -42,6 +43,7 @@ EXPRESS_APP.options('*', cors()); // enable cors pre-flight requests for all rou
 // EXPRESS_APP.options('/api/v1/parcelized-agcs/:id', cors()) // enable cors for complex requests (delete, patch, post) only on this specific route
 
 
+
 // 3RD PARTY MIDDLEWARE
 EXPRESS_APP.use(BodyParser.json())
 
@@ -51,7 +53,6 @@ if (process.env.NODE_ENV === 'development') {
    // console.log(highlight(`Our node environment is currently: ${process.env.NODE_ENV} `))
    EXPRESS_APP.use(Morgan('dev'))
 }
-
 
 
 
@@ -66,7 +67,6 @@ EXPRESS_APP.use((request, response, next) => {
 
 
 
-
 // CUSTOM MIDDLEWRE EXAMPLE #2
 // MANIPULATE THE REQUEST OBJ. >> THIS ADDS A CUSTOM PROPERTY TO THE REQUEST OBJ.
 EXPRESS_APP.use((request, response, next) => {
@@ -76,10 +76,8 @@ EXPRESS_APP.use((request, response, next) => {
 
 
 
-
 // SERVER RESPONSE COMPRESSION MIDDLEWARE FOR ALL TEXT SENT TO CLIENTS
 EXPRESS_APP.use(compression());
-
 
 
 
@@ -96,7 +94,6 @@ const viewRouter = require('./routes/view-routes.js');
 
 
 
-
 // REMOVE > 
 // MOUNTING THE ROUTERS
 // EXPRESS_APP.use('/', TOURS_ROUTE)
@@ -110,6 +107,32 @@ EXPRESS_APP.use('/api/v1/agcs', agcsRouter);
 EXPRESS_APP.use('/api/v1/parcelized-agcs', parcelizedAgcsRouter);
 EXPRESS_APP.use('/api/v1/users', userRouter);
 
+
+
+// HANDLE ALL NON-EXISTING ROUTES
+EXPRESS_APP.use('*', (req, res, next) => {
+
+   // // res.status(404).json({
+   // //    status: 'fail',
+   // //    message: `Can't find ${req.originalUrl} on this server.`
+   // // })
+
+   // const err = new Error(`Can't find ${req.originalUrl} on this server.`);
+
+   // // DEFINE CUSTOM PROPS. ON err
+   // err.status = `fail`;
+   // err.statusCode = 404;
+
+   // // ANY ARG. PASSED TO next() IS ASSUMED BY EXPRESS TO BE AN ERROR.
+   // next(err)
+
+   next(new AppError(`Can't find ${req.originalUrl} on this server.`, 404))
+})
+
+
+
+// // GLOBAL ERROR HANDLING M.WARE
+EXPRESS_APP.use(globalErrorHandler)
 
 
 

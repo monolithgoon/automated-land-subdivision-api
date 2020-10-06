@@ -219,7 +219,7 @@ exports.renderParcelizedAgcByID = async (request, response) => {
 
 // DB QUERY USING QUERY OBJECT
 // http://127.0.0.1:9090/parcelized-agcs/parcelized-agc?UNIQUE-AGC-ID-XXX-XXX
-exports.getParcelizedAgc = async (req, res) => {
+exports.getParcelizedAgc = async (req, res, next) => {
 
    try {
       
@@ -298,4 +298,4 @@ exports.insertParcelizedAgc = async (req, res) => {
          error_msg: err.message,
       })
    }
-}
+};
