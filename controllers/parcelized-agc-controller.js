@@ -1,7 +1,7 @@
 // CONTAINS THE ROUTE HANDLING FUNCTIONS USED BY parcelized-agc-routes.js
 
-
-
+const chalk = require('../utils/chalk-messages.js')
+const catchAsyncError = require('../utils/catch-async.js')
 const PARCELIZED_AGC_MODEL = require('../models/parcelized-agc-model.js')
 
 
@@ -221,6 +221,8 @@ exports.renderParcelizedAgcByID = async (request, response) => {
 // http://127.0.0.1:9090/parcelized-agcs/parcelized-agc?UNIQUE-AGC-ID-XXX-XXX
 exports.getParcelizedAgc = async (req, res, next) => {
 
+   console.log(chalk.success(`YOU SUCCESSFULLY CALLED THE getParcelizedAgc HANDLER `))
+
    try {
       
       // DB QUERY OBJECT
@@ -260,8 +262,10 @@ exports.getParcelizedAgc = async (req, res, next) => {
       
       res.status(200).json({
          status: 'success',
-         // The query using 'agc_id' returns an array with only one element; deal with it..
-         parcelizedAgcData: parcelizedAgc[0]
+         data: {
+            // The query using 'agc_id' returns an array with only one element; deal with it..
+            parcelizedAgcData: parcelizedAgc[0]
+         }
       })
 
    } catch (err) {
@@ -272,7 +276,7 @@ exports.getParcelizedAgc = async (req, res, next) => {
 
 
 // CREATE/INSERT A NEW PARCELIZED AGC (POST REQUEST) HANDLER FN.
-exports.insertParcelizedAgc = async (req, res) => {
+exports.insertParcelizedAg = async (req, res) => {
 
    try {
       
@@ -289,7 +293,7 @@ exports.insertParcelizedAgc = async (req, res) => {
          data: {
             parcelizedAgc: newParcelizedAgc
          }
-      })
+      });
       
    } catch (err) { 
       res.status(400).json({ // 400 => bad request
@@ -299,3 +303,17 @@ exports.insertParcelizedAgc = async (req, res) => {
       })
    }
 };
+
+exports.insertParcelizedAgc = catchAsyncError(async (req, res, next) => {
+   
+   // CREATE A NEW PARCELIZED AGC DOCUMENT _MTD 2
+   const newParcelizedAgc = await PARCELIZED_AGC_MODEL.create(req.body) // "model.create" returns a promise
+
+   res.status(201).json({
+      status: 'success',
+      inserted_at: req.requestTime,
+      data: {
+         parcelizedAgc: newParcelizedAgc
+      }
+   })   
+});
