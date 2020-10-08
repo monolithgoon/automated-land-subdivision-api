@@ -4,7 +4,9 @@ const viewsController = require('../controllers/view-controller.js')
 
 
 
-ROUTER.get('/', viewsController.renderAllParcelizedAgcs);
+ROUTER.get('/', viewsController.renderAPIGuide);
+ROUTER.get('/parcelized-agcs', viewsController.renderOnlyAgcs)
+ROUTER.get('/farm-plots', viewsController.renderOnlyAgcs)
 ROUTER.get('/parcelized-agc/:id', viewsController.checkDatabaseID, viewsController.renderParcelizedAgcByID);
 ROUTER.get('/parcelized-agc', viewsController.renderParcelizedAgc)
 

@@ -1,9 +1,6 @@
 const PARCELIZED_AGC_MODEL = require('../models/parcelized-agc-model.js')
-const catchAsync = require('../utils/catch-async.js') // TODO < 
-const chalk = require('chalk')
-const chalkError = chalk.white.bgRed.bold
-const allGood = chalk.white.bgCyan.bold
-
+const catchAsync = require('../utils/catch-async.js')
+const chalk = require('../utils/chalk-messages.js')
 
 
 
@@ -36,7 +33,7 @@ exports.checkDatabaseID = async (req, res, next, paramValue) => {
 
 
 // this fn. looks in the "views" folder for the "overview" template && renders it to the browser
-exports.renderAllParcelizedAgcs = async (req, res) => {
+exports.renderAPIGuide = async (req, res) => {
 
    try {
 
@@ -46,8 +43,8 @@ exports.renderAllParcelizedAgcs = async (req, res) => {
       // 2 BUILD TEMPLATE
 
       // 3. RENDER THAT TEMPLATE USING DATA FROM 1.)
-      console.log(allGood('VIEW CONTROLLER renderAllParcelizedAgcs WORKING OK '));
-      res.status(200).render('agcs-overview', {
+      console.log(chalk.running('VIEW CONTROLLER renderAPIGuide WORKING OK '));
+      res.status(200).render('api-guide', {
          // THIS DATA IS PASSED TO THE .pug TEMPLATE
          // THESE VARIABLES ARE CALLED "LOCALS" WHEN USED IN THE .pug FILE
          // THE PROCESS OF USING THEM IN THE .pug FILE IS CALLED INTERPOLATION
@@ -61,6 +58,27 @@ exports.renderAllParcelizedAgcs = async (req, res) => {
       console.log(err.message);
    }
 }
+
+
+
+// RENDER ONLY THE AGCS
+exports.renderOnlyAgcs = catchAsync(async (req, res, next) => {
+   // 1. GET ALL THE PARCELIZED AGCS DATA FROM THE ATLAS DB
+   const parcelizedAgcs = await PARCELIZED_AGC_MODEL.find();
+
+   // 2 BUILD TEMPLATE
+
+   // 3. RENDER THAT TEMPLATE USING DATA FROM 1.)
+   console.log(chalk.running('VIEW CONTROLLER renderAllParcelizedAgcs WORKING OK '));
+   res.status(200).render('agcs-overview', {
+      // THIS DATA IS PASSED TO THE .pug TEMPLATE
+      // THESE VARIABLES ARE CALLED "LOCALS" WHEN USED IN THE .pug FILE
+      // THE PROCESS OF USING THEM IN THE .pug FILE IS CALLED INTERPOLATION
+      title: "Parcelized AGCs API Guide",
+      user: "Phillip Moss",
+      parcelizedAgcsData: parcelizedAgcs
+   });   
+})
 
 
 
@@ -115,7 +133,7 @@ exports.renderParcelizedAgc = async (req, res) => {
       })
 
    } catch (err) {
-      console.error(chalkError(err.message));
+      console.error(chalk.error(err.message));
    }
 }
 

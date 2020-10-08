@@ -221,7 +221,7 @@ exports.renderParcelizedAgcByID = async (request, response) => {
 // http://127.0.0.1:9090/parcelized-agcs/parcelized-agc?UNIQUE-AGC-ID-XXX-XXX
 exports.getParcelizedAgc = async (req, res, next) => {
 
-   console.log(chalk.success(`YOU SUCCESSFULLY CALLED THE getParcelizedAgc HANDLER `))
+   console.log(chalk.running(`YOU SUCCESSFULLY CALLED THE getParcelizedAgc HANDLER `))
 
    try {
       
