@@ -1,0 +1,30 @@
+nav.navbar-wrapper.is-fixed-top(role='navigation' aria-label='main navigation')
+
+   //- .navbar-mobile
+   .navbar-brand-wrapper
+      a.navbar-item.logo(href="/")
+         img(src="/img/icons/parcelized-agcs.svg" alt="Parcelized AGCs Logo")
+         span.brand-name agFarmPlots
+
+   .navbar-menu-wrapper
+      ul.nav-links
+         li(aria-hidden='true')
+            a(href="agcfarmlands.herokuapp.com/api/demo") Parcelization Demo
+         li(aria-hidden='true')
+            a(href="agcfarmlands.herokuapp.com/api/demo") API Guide
+         li(aria-hidden='true')
+            a(href="agcfarmlands.herokuapp.com/signup") Signup
+         li(aria-hidden='true')
+            a(href="agcfarmlands.herokuapp.com/login") Login
+
+   .menu-burger(role='button' aria-label='menu' aria-expanded='false')
+      .burger-line1
+      .burger-line2
+      //- .burger-line3
+
+   //- .navbar-expanded-menu
+   //-    .navbar-start
+   //-       a.navbar-item(href='/geojson-editor' data-v-00398c4e='') API Guide
+   //-       a.navbar-item.is-active(href='/blog' data-v-00398c4e='') Parcelization Demo
+   //-       a.navbar-item(href='/leaflet-geoman' data-v-00398c4e='') Signup
+   //-       a.navbar-item(href='/leaflet-geoman-pro' data-v-00398c4e='') Login

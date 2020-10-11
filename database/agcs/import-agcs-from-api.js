@@ -92,7 +92,7 @@ async function returnAgc(agc_id) {
 
 
       // WRITE RESULT TO NEW FILE
-      fs.writeFile(`./agcs/${agc_id.toLowerCase()}.geojson`, agcData, (err, data) => {
+      fs.writeFile(`./data/${agc_id.toLowerCase()}.geojson`, agcData, (err, data) => {
 
          if(err) {
             console.log(chalkError(err.message))

@@ -1,41 +1,56 @@
-header.header
+header.header-wrapper
 
-  nav.navbar.is-fixed-top(role='navigation' aria-label='main navigation')
-  
-    .navbar-brand
-      a.navbar-item.logo(href="/")
-        img(src="/img/icons/parcelized-agcs.svg" alt="Parcelized AGCs Logo")
-        span.brand-name Parcelized AGCs API
-      a.navbar-burger(role='button' aria-label='menu' aria-expanded='false')
+  include _navbar.pug
+
+  include _hero.pug
+
+  //- nav.navbar-section.is-fixed-top(role='navigation' aria-label='main navigation')
+
+  //-   .navbar-mobile
+  //-     a.navbar-item.logo(href="/")
+  //-       img(src="/img/icons/parcelized-agcs.svg" alt="Parcelized AGCs Logo")
+  //-       span.brand-name agFarmPlots
+  //-     a.navbar-burger(role='button' aria-label='menu' aria-expanded='false')
+  //-       ul.user-action
+  //-         li(aria-hidden='true')
+  //-           a(href="agcfarmlands.herokuapp.com/api/demo") Parcelization Demo
+  //-         li(aria-hidden='true')
+  //-           a(href="agcfarmlands.herokuapp.com/api/demo") API Guide
+  //-         li(aria-hidden='true')
+  //-           a(href="agcfarmlands.herokuapp.com/signup") Signup
+  //-         li(aria-hidden='true')
+  //-           a(href="agcfarmlands.herokuapp.com/login") Login
+
+  //-   .navbar-expanded-menu
+  //-     .navbar-start
+  //-       a.navbar-item(href='/geojson-editor' data-v-00398c4e='') API Guide
+  //-       a.navbar-item.is-active(href='/blog' data-v-00398c4e='') Parcelization Demo
+  //-       a.navbar-item(href='/leaflet-geoman' data-v-00398c4e='') Signup
+  //-       a.navbar-item(href='/leaflet-geoman-pro' data-v-00398c4e='') Login
+
+  //- .hero-wrapper
+
+    //- h2.hero-topline Auto land parcelization for smallholder farmer cooperatives
+    h2.hero-topline Auto land parcelization for smallholder farmer geo-cooperatives
+    //- h2.hero-topline Automated land sub-division for smallholder farmers in agro geo-cooperatives
+
+    .hero-content
+
+      p A fast, precise, low-cost tool for groups of smallholder farmers farming collectively to divide up their shared land into smaller, distinct, adjacent farm plots, with sizes matching each farmer's pre-established capacity. 
       
-    .navbar-menu
-    
-      .navbar-start
-        ul.start
-          li logo
-          li API Guide
-          li Sample Parcelized AGCs
+      p Reports back precise, high-resolution coordinates in seconds & eliminates the need to manually map each farmer's plot with traditional survey equipment.
 
-      .navbar-user-action
-        ul.user-action
-          li Signup
-          li Login
-          li Search
-
-
-//- header.header(data-v-00398c4e='')
-//-   nav.navbar.is-fixed-top(role='navigation' aria-label='main navigation' data-v-00398c4e='')
-//-     .navbar-brand(data-v-00398c4e='')
-//-       a.navbar-item.logo(href='/' data-v-00398c4e='')
-//-         img(alt='Geoman Logo' src='/img/icons/geoman_logo.svg' data-v-00398c4e='')
-//-         span.brand-name(data-v-00398c4e='') Geoman.io
-//-       a.navbar-burger(role='button' aria-label='menu' aria-expanded='false' data-v-00398c4e='')
-//-         span(aria-hidden='true' data-v-00398c4e='')
-//-         span(aria-hidden='true' data-v-00398c4e='')
-//-         span(aria-hidden='true' data-v-00398c4e='')
-//-     .navbar-menu(data-v-00398c4e='')
-//-       .navbar-start(data-v-00398c4e='')
-//-         a.navbar-item(href='/geojson-editor' data-v-00398c4e='') Editor
-//-         a.navbar-item.is-active(href='/blog' data-v-00398c4e='') Blog
-//-         a.navbar-item(href='/leaflet-geoman' data-v-00398c4e='') Leaflet-Geoman
-//-         a.navbar-item(href='/leaflet-geoman-pro' data-v-00398c4e='') Leaflet-Geoman Pro
+      .user-action-wrapper
+        div.cta-btn Launch
+          a(href="https://farmplots.web.app")
+        br
+        span
+          a(href="https://agcfarmlands.herokuapp.com/farm-plots") See Examples ->
+      
+      .customers-showcase
+        a(href="#")
+          .customer-logo.w-embed
+            img(src="./images/cbn-logo.jpg", alt="NIRSAL Showcase")
+        a(href="#")
+          .customer-logo.w-embed
+            img(src="./images/cbn-logo.jpg", alt="CBN Showcase")
