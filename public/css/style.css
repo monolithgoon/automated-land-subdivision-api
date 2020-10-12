@@ -93,6 +93,14 @@ header:before {
 	flex-direction: column;
 	align-items: left;
 	position: absolute;
+	
+	visibility: hidden;
+	/* transform: translateY(150%); */
+	transition: transform 0.5s ease-in;
+}
+
+.is-active { 
+	transform: translateY(0%);
 }
 
 .nav-links a {
@@ -105,10 +113,8 @@ header:before {
 	padding: 10px 0;
 }
 
-.menu-burger {
+.burger-wrapper {
 	cursor: pointer;
-	/* background-color: white;
-	border-radius: 200px; */
 	height: 40px;
 	width: 40px;
 	position: relative;
@@ -116,23 +122,50 @@ header:before {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	/* display: block; */
+	position: relative;
 }
 
-.menu-burger div {
+.toggler {
+	position: absolute;
+	top: 0;
+	width: 40px;
+	height: 40px;
+	cursor: pointer;
+	z-index: 2;
+	opacity: 0;
+}
+
+.burger-lines {
+	transition: all 0.4s ease;
+}
+
+.burger-lines div {
 	width: 35px;
 	height: 2px;
 	background-color: white;
 	margin: 3px;
 }
 
-/* div.burger-line1 {
-	width: 25px;
+/* ANIMATE LINES VIA TOGGLER/CHECKBOX ACTION */
+.toggler:checked + .burger-lines {
+	transform: rotate(135deg);
 }
 
-div.burger-line3 {
-	width: 15px;
-} */
+/* ROTATE ON HOVER WHEN CHECKED */
+.toggler:checked:hover + .burger-lines {
+	transform: rotate(225deg);
+}
+
+/* TURN LINES INTO AN 'X' */
+/* .toggler:checked + .burger-lines.burger-line1, */
+.toggler:checked + .burger-lines.burger-line1 {
+	top: 0;
+	transform: rotate(-45deg) translate(-12px, 12px)
+}
+
+.toggler:checked + .burger-lines.burger-line2 {
+	transform: rotate(45deg) translate(-12px, 12px)
+}
 
 .hero-wrapper {
 	padding: 0 35px;
@@ -545,7 +578,7 @@ input:focus {
 		font-weight: light;
 	}	
 
-	.menu-burger {
+	.burger-wrapper {
 		display: none;
 	}
 
@@ -554,6 +587,12 @@ input:focus {
 		display: flex;
 		align-items: flex-start;
 	}
+
+	h2.hero-topline {
+		margin-top: 0;
+		margin-right: 30px;
+		line-height: 60px;
+	}	
 
 	.api-guide-container {
 		margin: auto;

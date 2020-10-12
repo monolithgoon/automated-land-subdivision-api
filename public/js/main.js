@@ -227,6 +227,8 @@ function renderDataOnDOM({parcelizedAgcGeojson, farmPlotsGeojson}) {
    });
 }
 
+// const menuIcon = document.querySelector('.')
+
 
 
 // RENDERS THE DETAILS OF A SINGLE PARCELIZED AGC ON THE PAGE

@@ -17,14 +17,8 @@ nav.navbar-wrapper.is-fixed-top(role='navigation' aria-label='main navigation')
          li(aria-hidden='true')
             a(href="agcfarmlands.herokuapp.com/login") Login
 
-   .menu-burger(role='button' aria-label='menu' aria-expanded='false')
-      .burger-line1
-      .burger-line2
-      //- .burger-line3
-
-   //- .navbar-expanded-menu
-   //-    .navbar-start
-   //-       a.navbar-item(href='/geojson-editor' data-v-00398c4e='') API Guide
-   //-       a.navbar-item.is-active(href='/blog' data-v-00398c4e='') Parcelization Demo
-   //-       a.navbar-item(href='/leaflet-geoman' data-v-00398c4e='') Signup
-   //-       a.navbar-item(href='/leaflet-geoman-pro' data-v-00398c4e='') Login
+   .burger-wrapper
+      input.toggler(type='checkbox' aria-label='menu' aria-expanded='false')
+      .burger-lines
+         .burger-line1
+         .burger-line2
