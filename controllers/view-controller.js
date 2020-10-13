@@ -62,6 +62,26 @@ exports.renderAPIGuide = async (req, res) => {
 
 
 // RENDER ONLY THE AGCS
+exports.renderLandingPage = catchAsync(async (req, res, next) => {
+   // 1. GET ALL THE PARCELIZED AGCS DATA FROM THE ATLAS DB
+   const parcelizedAgcs = await PARCELIZED_AGC_MODEL.find();
+
+   // 2 BUILD TEMPLATE
+
+   // 3. RENDER THAT TEMPLATE USING DATA FROM 1.)
+   console.log(chalk.running('VIEW CONTROLLER renderAllParcelizedAgcs WORKING OK '));
+   res.status(200).render('landing-page', {
+      // THIS DATA IS PASSED TO THE .pug TEMPLATE
+      // THESE VARIABLES ARE CALLED "LOCALS" WHEN USED IN THE .pug FILE
+      // THE PROCESS OF USING THEM IN THE .pug FILE IS CALLED INTERPOLATION
+      title: "Parcelized AGCs API Guide",
+      user: "Phillip Moss",
+      parcelizedAgcsData: parcelizedAgcs
+   });   
+})
+
+
+// RENDER ONLY THE AGCS
 exports.renderOnlyAgcs = catchAsync(async (req, res, next) => {
    // 1. GET ALL THE PARCELIZED AGCS DATA FROM THE ATLAS DB
    const parcelizedAgcs = await PARCELIZED_AGC_MODEL.find();
