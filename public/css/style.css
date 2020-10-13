@@ -208,7 +208,7 @@ h2.hero-topline {
 .hero-content p {
 	padding: 0;
 	color: #ffffffb3;
-	color: white;
+	color: rgba(255, 255, 255, 0.8);
 	font-family: 'Fira Sans Regular', sans-serif;
 	font-size: 18px;
 	line-height: 26px;
