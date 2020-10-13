@@ -89,8 +89,9 @@ header:before {
 }
 
 .branding span {
-	font-family: "Roboto Mono", sans-serif;
+	font-family: 'Syne', sans-serif;	
 	font-size: 18px;
+	letter-spacing: -1px;
 	/* font-weight: 900 */
 }
 
@@ -195,10 +196,6 @@ header:before {
 	padding: 0 35px;
 }
 
-.hero-wrapper p {
-	padding: 0;
-}
-
 h2.hero-topline {
    font-family: 'Fjalla One', sans-serif;
 	font-size: 44px;
@@ -208,7 +205,8 @@ h2.hero-topline {
 }
 
 .hero-content p {
-	color: #ffffffb3;
+	padding: 0;
+	color: white;
 	font-family: 'Fira Sans Regular', sans-serif;
 	font-size: 18px;
 	line-height: 26px;
@@ -250,8 +248,13 @@ h2.hero-topline {
 }
 
 .customers-showcase {
+	padding: 0 150px 20px;
 	display: flex;
 	justify-content: space-around;
+}
+
+.customers-showcase img {
+	width: 50px
 }
 
 .api-guide-container {
@@ -627,6 +630,10 @@ input:focus {
 		margin-right: 30px;
 		line-height: 60px;
 	}	
+
+	.hero-content p {
+		color: #ffffffb3;
+	}
 
 	.hero-content p:first-child {
 		margin-top: 0;
