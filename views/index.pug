@@ -44,6 +44,7 @@ body
    script(type="text/javascript").
       const burgerIcon = document.getElementById('menu_toggler')
       const mobileMenu = document.getElementById('nav_links')
+
       function toggleBurgerIcon(event) {
          if (event.target.checked) {
             console.log('fuck satan');
@@ -51,4 +52,5 @@ body
             mobileMenu.classList.toggle('is-active')
          }
       }
+      
       burgerIcon.addEventListener('change', toggleBurgerIcon)

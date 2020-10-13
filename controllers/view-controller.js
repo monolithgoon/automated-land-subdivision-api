@@ -74,7 +74,7 @@ exports.renderLandingPage = catchAsync(async (req, res, next) => {
       // THIS DATA IS PASSED TO THE .pug TEMPLATE
       // THESE VARIABLES ARE CALLED "LOCALS" WHEN USED IN THE .pug FILE
       // THE PROCESS OF USING THEM IN THE .pug FILE IS CALLED INTERPOLATION
-      title: "Parcelized AGCs API Guide",
+      title: "Land Auto Parcelization Tool",
       user: "Phillip Moss",
       parcelizedAgcsData: parcelizedAgcs
    });   
@@ -94,7 +94,7 @@ exports.renderOnlyAgcs = catchAsync(async (req, res, next) => {
       // THIS DATA IS PASSED TO THE .pug TEMPLATE
       // THESE VARIABLES ARE CALLED "LOCALS" WHEN USED IN THE .pug FILE
       // THE PROCESS OF USING THEM IN THE .pug FILE IS CALLED INTERPOLATION
-      title: "Parcelized AGCs API Guide",
+      title: "Parcelized AGC Examples",
       user: "Phillip Moss",
       parcelizedAgcsData: parcelizedAgcs
    });   
