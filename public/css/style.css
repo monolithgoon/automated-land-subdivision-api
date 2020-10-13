@@ -24,10 +24,6 @@ body {
 	color: #4a4a4a;
 }
 
-.api-guide-container h2 {
-	padding: 5px 35px;
-}
-
 h3 {
 	padding: 5px 35px;
 }
@@ -47,6 +43,13 @@ p.important-note {
 	font-weight: bold;
 	color: #bf360c;
 	background: #feefe3;
+}
+
+a.u__links {
+	color: white;
+	font-size: 15px;
+	font-weight: light;
+	text-decoration: none;
 }
 
 header {
@@ -87,7 +90,6 @@ header:before {
 	right: 0px;
 	height: auto;
 	background-color: white;
-	font-size: 16px;
 	display: flex;
 	justify-content: space-around;
 	flex-direction: column;
@@ -99,13 +101,16 @@ header:before {
 	transition: transform 0.5s ease-in;
 }
 
+.nav-links.is-active {
+	visibility: visible;
+}
+
 .is-active { 
 	transform: translateY(0%);
 }
 
 .nav-links a {
 	color: #2e2e2e;
-	text-decoration: none;
 }
 
 .nav-links li {
@@ -234,6 +239,10 @@ h2.hero-topline {
 	font-family: Roboto, sans-serif;
 	background: white;
 	overflow-x: hidden;
+}
+
+.api-guide-container h2 {
+	padding: 5px 35px;
 }
 
 .agcs-overview-container {
@@ -561,6 +570,10 @@ input:focus {
 		overflow: auto;
 	}
 
+	.navbar-wrapper {
+		margin-bottom: 25px;
+	}
+
 	.nav-links {
 		padding: 0;
 		display: flex;
@@ -571,6 +584,8 @@ input:focus {
 		top: 0;
 		right: 0;
 		position: relative;
+
+		visibility: visible;
 	}
 
 	.nav-links a {
@@ -593,6 +608,10 @@ input:focus {
 		margin-right: 30px;
 		line-height: 60px;
 	}	
+
+	.hero-content p:first-child {
+		margin-top: 0;
+	}
 
 	.api-guide-container {
 		margin: auto;

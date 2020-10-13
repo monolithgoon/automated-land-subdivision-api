@@ -20,6 +20,9 @@ head
 
    //- MAIN STYLESHEET
    link(rel='stylesheet' href='/css/style.css')
+
+   //- MAIN SCRIPT
+   //- script(src='/js/main.js' type='module')
    //- script(src='/jquery-min.js' type='module')
 
    //- MAP SCRIPTS FROM agc-render.pug WILL APPEND HERE
@@ -28,10 +31,23 @@ head
 body
 
    //- //- PAGE HEADER
-   //- include _header.pug
+   include _header.pug
 
    //- POPULATED WITH DATA RETREIVED FOR ALL THE AGCS
    block parcelized-agcs
 
    //- POPULATED WITH DATA RETREIVED FOR A SINGLE AGC
    block parcelized-agc-content
+
+   //- BURGER MENU CLICK HANDLER
+   script(type="text/javascript").
+      const burgerIcon = document.getElementById('menu_toggler')
+      const mobileMenu = document.getElementById('nav_links')
+      function toggleBurgerIcon(event) {
+         if (event.target.checked) {
+            console.log('fuck satan');
+            burgerIcon.classList.toggle('active')
+            mobileMenu.classList.toggle('is-active')
+         }
+      }
+      burgerIcon.addEventListener('click', toggleBurgerIcon)
