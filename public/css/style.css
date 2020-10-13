@@ -216,6 +216,7 @@ h2.hero-topline {
 
 .hero-user-action-wrapper {
 	margin: 30px 0;
+	margin-bottom: 0;
 	padding-bottom: 40px;
 	display: flex;
 	justify-content: flex-start;
