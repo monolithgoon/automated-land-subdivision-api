@@ -216,6 +216,7 @@ h2.hero-topline {
 
 .hero-user-action-wrapper {
 	margin: 30px 0;
+	padding-bottom: 40px;
 	display: flex;
 	justify-content: flex-start;
 	margin-right: auto;
@@ -247,14 +248,23 @@ h2.hero-topline {
 	opacity: 0.2;
 }
 
-.customers-showcase {
-	padding: 0 150px 20px;
+.customer-showcase {
+	padding: 0 100px 20px;
 	display: flex;
 	justify-content: space-around;
 }
 
-.customers-showcase img {
-	width: 50px
+.customer-showcase a {
+	color: #444b5e;
+	font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+	font-size: 40px;
+	line-height: 40px;
+	text-decoration: none;
+	letter-spacing: -1px;
+}
+
+.customer-showcase img {
+	width: 50px;
 }
 
 .api-guide-container {
