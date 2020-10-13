@@ -82,6 +82,25 @@ header:before {
 	align-items: center;
 }
 
+.branding {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.branding span {
+	font-family: "Roboto Mono", sans-serif;
+	font-size: 18px;
+	/* font-weight: 900 */
+}
+
+.branding img {
+	width: 30px;
+	background-color: white;
+	color: white;
+	margin-right: 10px;
+}
+
 .nav-links {
 	margin: 0;
 	padding: 20px;
