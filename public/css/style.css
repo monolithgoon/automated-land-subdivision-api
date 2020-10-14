@@ -140,9 +140,12 @@ header:before {
 .branding img {
 	width: 30px;
 	filter: invert(98%) sepia(0%) saturate(7500%) hue-rotate(259deg) brightness(104%) contrast(101%);
-	/* background-color: white; */
-	color: white;
+	color: green;
 	margin-right: 10px;
+}
+
+.branding img:hover {
+	fill: orange;
 }
 
 .nav-links {
