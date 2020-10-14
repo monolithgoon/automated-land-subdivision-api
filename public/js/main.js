@@ -213,7 +213,7 @@ function renderDataOnDOM({parcelizedAgcGeojson, farmPlotsGeojson}) {
       chunkDivHeader.innerHTML = `
                                  Plot #${index + 1} <br> 
                                  ${chunk.properties.owner_name} - ${chunk.properties.owner_id} <br> 
-                                 VARS_ID ${chunk.properties.chunk_id} <br>`
+                                 VAsT_ID ${chunk.properties.chunk_id} <br>`
 
       chunkDivBody.setAttribute("data-longstring", JSON.stringify(chunk.geometry.coordinates))
       chunkDivBody.innerHTML = `<br><br>`

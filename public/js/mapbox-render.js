@@ -239,7 +239,7 @@ function toggleMetadataPopup(map, layerProps, layerCenter) {
                      <div class="popup-farmer-name">${layerProps.owner_name} </div>
                      BVN <span>hidden</span> <br>
                      Farmer_ID ${layerProps.owner_id.toUpperCase()} <br> 
-                     VARS_ID ${layerProps.chunk_id} <br>
+                     VAsT_ID ${layerProps.chunk_id} <br>
                      Lat ${centerLat.toFixed(5)}°N Lng ${centerLng.toFixed(5)}°E <br>
                   </div>
 
