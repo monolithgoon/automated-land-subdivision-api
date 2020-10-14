@@ -38,6 +38,21 @@ p.standalone {
 	margin: 0;
 }
 
+p.note {
+	padding-bottom: 15px;
+	font-weight: bold;
+	color: #01579B;
+	background-color: rgb(234, 241, 251);
+}
+
+p.note::before {
+	/* content: 'star'; */
+}
+
+.agcs-overview-container p:last-child {
+	padding-bottom: 15px;
+}
+
 p.last-update {
 	color: grey;
 	font-weight: 200;
