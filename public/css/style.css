@@ -318,7 +318,7 @@ h2.hero-topline {
 }
 
 h2.subtitle {
-	margin-top: 0;
+	/* margin-top: 0; */
 	padding: 15px 0 15px 15px;
 	font-size: large;
 }
