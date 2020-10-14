@@ -24,6 +24,32 @@ body {
 	color: #4a4a4a;
 }
 
+/* LIGATURE ICONS VIA ICON FONTS */
+[data-icon]::before {
+	content: attr(data-icon);
+	font-family: 'Material Icons';
+	font-weight: normal;
+	font-style: normal;
+	/* font-size: 1em;
+	display: inline-block;
+	vertical-align: middle;
+	width: 1em;
+	height: 1em;
+	line-height: 1; */
+	padding-right: 5px;
+	font-size: 15px;
+	line-height: 1;
+
+	text-transform: none;
+	letter-spacing: normal;
+	word-wrap: normal;
+	white-space: nowrap;
+	direction: ltr;
+ 
+	/* Support for Safari and Chrome. */
+	text-rendering: optimizeLegibility;
+}
+
 h3 {
 	padding: 5px 35px;
 }
@@ -43,10 +69,6 @@ p.note {
 	font-weight: bold;
 	color: #01579B;
 	background-color: rgb(234, 241, 251);
-}
-
-p.note::before {
-	/* content: 'star'; */
 }
 
 .agcs-overview-container p:last-child {
@@ -271,6 +293,15 @@ h2.hero-topline {
 	opacity: 0.2;
 }
 
+.hero-user-action-wrapper a {
+	display: flex;
+	justify-content: space-between;
+	vertical-align: center;
+}
+
+.hero-user-action-wrapper a > i {
+	padding-left: 10px
+}
 .customer-showcase {
 	padding: 0 100px 20px;
 	display: flex;
