@@ -1,0 +1,203 @@
+{
+  "type": "FeatureCollection",
+  "properties": {
+    "agc_id": "TABANNI_AGC_001",
+    "extended_name": "Rabah Farm",
+    "location": "Tabanni, Sokoto State",
+    "farmers": [
+      {
+        "farmer_id": "TABANNI_AGC_001-1",
+        "first_name": "Mohammed",
+        "last_name": "Sadiq",
+        "photo_base64": "",
+        "allocation": 100
+      },
+      {
+        "farmer_id": "TABANNI_AGC_001-2",
+        "first_name": "Emmanuel",
+        "last_name": "Solomon",
+        "coordinates": "",
+        "allocation": 120
+      },
+      {
+        "farmer_id": "TABANNI_AGC_001-3",
+        "first_name": "David",
+        "last_name": "Adebayo",
+        "coordinates": "",
+        "allocation": 50
+      },
+      {
+        "farmer_id": "TABANNI_AGC_001-4",
+        "first_name": "Phillip",
+        "last_name": "Osunlaja",
+        "coordinates": "",
+        "allocation": 80
+      },
+      {
+        "farmer_id": "TABANNI_AGC_001-5",
+        "first_name": "Seyi",
+        "last_name": "Osunlaja",
+        "coordinates": "",
+        "allocation": 150
+      },
+      {
+        "farmer_id": "TABANNI_AGC_001-6",
+        "first_name": "Tosin",
+        "last_name": "Malu",
+        "coordinates": "",
+        "allocation": 50
+      },
+      {
+        "farmer_id": "TABANNI_AGC_001-7",
+        "first_name": "Dajnuma",
+        "last_name": "Suleman",
+        "coordinates": "",
+        "allocation": 50
+      },
+      {
+        "farmer_id": "TABANNI_AGC_001-8",
+        "first_name": "Aliko",
+        "last_name": "Musa",
+        "coordinates": "",
+        "allocation": 50
+      },
+      {
+        "farmer_id": "TABANNI_AGC_001-9",
+        "first_name": "Nasiru",
+        "last_name": "Gandija",
+        "coordinates": "",
+        "allocation": 50
+      },
+      {
+        "farmer_id": "TABANNI_AGC_001-10",
+        "first_name": "Aminu",
+        "last_name": "Suleman",
+        "coordinates": "",
+        "allocation": 50
+      },
+      {
+        "farmer_id": "TABANNI_AGC_001-11",
+        "first_name": "Barack",
+        "last_name": "Hussein",
+        "photo_base64": "",
+        "allocation": 50
+      },
+      {
+        "farmer_id": "TABANNI_AGC_001-12",
+        "first_name": "Aliyu",
+        "last_name": "Danjuma",
+        "coordinates": "",
+        "allocation": 60
+      },
+      {
+        "farmer_id": "TABANNI_AGC_001-13",
+        "first_name": "Saddiq",
+        "last_name": "Murutala",
+        "coordinates": "",
+        "allocation": 70
+      },
+      {
+        "farmer_id": "TABANNI_AGC_001-14",
+        "first_name": "Moses",
+        "last_name": "Usman",
+        "coordinates": "",
+        "allocation": 70
+      },
+      {
+        "farmer_id": "TABANNI_AGC_001-15",
+        "first_name": "Justice",
+        "last_name": "Tanko",
+        "coordinates": "",
+        "allocation": 70
+      },
+      {
+        "farmer_id": "TABANNI_AGC_001-16",
+        "first_name": "Saddiq",
+        "last_name": "Bello",
+        "coordinates": "",
+        "allocation": 70
+      }
+    ]
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              5.548008816290492,
+              13.13521432292175,
+              0
+            ],
+            [
+              5.544253491547382,
+              13.13369618800654,
+              0
+            ],
+            [
+              5.541825759316015,
+              13.13895534250621,
+              0
+            ],
+            [
+              5.539343058260656,
+              13.14381293721289,
+              0
+            ],
+            [
+              5.546268773840666,
+              13.15293847723741,
+              0
+            ],
+            [
+              5.555975807829001,
+              13.16046394091316,
+              0
+            ],
+            [
+              5.56622010407504,
+              13.16790030979049,
+              0
+            ],
+            [
+              5.572964238174158,
+              13.17193211879266,
+              0
+            ],
+            [
+              5.574319549780842,
+              13.17062131121951,
+              0
+            ],
+            [
+              5.589363537165555,
+              13.15765584215567,
+              0
+            ],
+            [
+              5.548008816290492,
+              13.13521432292175,
+              0
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Polygon Measure",
+        "styleUrl": "#inline0",
+        "styleHash": "-5ca038b3",
+        "styleMapHash": {
+          "normal": "#inline",
+          "highlight": "#inline1"
+        },
+        "stroke": "#ff0000",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "fill": "#1eff00",
+        "fill-opacity": 0.050980392156862744
+      }
+    }
+  ]
+}

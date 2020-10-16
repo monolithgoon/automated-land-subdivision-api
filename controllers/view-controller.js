@@ -90,7 +90,7 @@ exports.renderOnlyAgcs = catchAsync(async (req, res, next) => {
 
    // 3. RENDER THAT TEMPLATE USING DATA FROM 1.)
    console.log(chalk.running('VIEW CONTROLLER renderAllParcelizedAgcs WORKING OK '));
-   res.status(200).render('agcs-overview', {
+   res.status(200).render('parcelized-agcs-overview', {
       // THIS DATA IS PASSED TO THE .pug TEMPLATE
       // THESE VARIABLES ARE CALLED "LOCALS" WHEN USED IN THE .pug FILE
       // THE PROCESS OF USING THEM IN THE .pug FILE IS CALLED INTERPOLATION
@@ -147,7 +147,7 @@ exports.renderParcelizedAgc = async (req, res) => {
       const pageTitle = parcelizedAgc[0].properties.location ? `AGC Plots | ${parcelizedAgc[0].properties.location}` : 'Parcelized AGC'
 
 
-      res.status(200).render('agc-render', {
+      res.status(200).render('parcelized-agc-render', {
          title: pageTitle,
          parcelizedAgcData: parcelizedAgc[0]
       })
@@ -172,7 +172,7 @@ exports.renderParcelizedAgcByID = async (req, res) => {
       const pageTitle = parcelizedAgc.properties.location ? `AGC Plots | ${parcelizedAgc.properties.location}` : 'Parcelized AGC'
 
 
-      res.status(200).render('agc-render', {
+      res.status(200).render('parcelized-agc-render', {
          title: pageTitle,
          parcelizedAgcData: parcelizedAgc
       })

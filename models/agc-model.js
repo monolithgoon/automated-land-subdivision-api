@@ -95,8 +95,8 @@ const farmerSchema = new mongoose.Schema({
       type: String,
       required: [true, `The farmer's last name must be specified`]
    },
-   farmer_photo_base64: Buffer,
-   farmer_photo_url: {
+   photo_base64: Buffer,
+   photo_url: {
       type: String,
       // FIXME > CHANGE THESE TO "true" 
       required: false,
@@ -176,7 +176,7 @@ agcSchema.pre('save', function(next) {
 function formalizeWord(word) {
    let formattedWord = word.toLowerCase();
    // ensure word 'agc' is all caps
-   formattedWord = 'agc' ?  'AGC' : formattedWord;
+   formattedWord === 'agc' ?  'AGC' : formattedWord;
    // capitalize the first letter only
    formattedWord = formattedWord.charAt(0).toUpperCase() + formattedWord.slice(1);
    return formattedWord
@@ -221,4 +221,4 @@ const AGC_MODEL = mongoose.model('agcs', agcSchema);
 
 
 // EXPORT THE MODEL
-module.exports = AGC_MODEL
+module.exports = AGC_MODEL;
