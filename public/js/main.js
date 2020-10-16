@@ -15,9 +15,9 @@ export const map = new mapboxgl.Map({
    style: 'mapbox://styles/mapbox/navigation-preview-day-v4',
    style: 'mapbox://styles/mapbox/cj3kbeqzo00022smj7akz3o1e', // moonlight
    style: 'mapbox://styles/mapbox/cjku6bhmo15oz2rs8p2n9s2hm', // minimo
-   style: 'mapbox://styles/mapbox/cjcunv5ae262f2sm9tfwg8i0w', // Lè Shine
    style: 'mapbox://styles/mapbox/streets-v11',
    style: 'mapbox://styles/mapbox/outdoors-v10',
+   style: 'mapbox://styles/mapbox/cjcunv5ae262f2sm9tfwg8i0w', // Lè Shine
    center: [5.963833, 5.243506],
    // pitch: 50,
    // bearing: -60, // bearing in degrees
