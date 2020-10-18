@@ -32,7 +32,6 @@
 
 /* HEADER/HERO BACKGROUND IMAGE SLIDESHOW USING CSS ONLY */
 
-
 .slideshow-wrapper img {
   -webkit-animation-name: imgFade;
   -webkit-animation-timing-function: ease-in-out;
