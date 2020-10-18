@@ -1,0 +1,91 @@
+/* .slideshow-wrapper{
+	position: relative;
+	height: 100%;
+	width: 100%;
+} */
+
+.slideshow-wrapper img{
+	height: 100%;
+	width: 100%;
+   object-fit: cover;
+   position: absolute;
+   z-index: -1;
+}
+
+@keyframes imgFade {
+   0% {
+     opacity:1;
+   }
+   17% {
+     opacity:1;
+   }
+   25% {
+     opacity:0;
+   }
+   92% {
+     opacity:0;
+   }
+   100% {
+     opacity:1;
+   }
+}
+
+/* HEADER/HERO BACKGROUND IMAGE SLIDESHOW USING CSS ONLY */
+
+
+.slideshow-wrapper img {
+  -webkit-animation-name: imgFade;
+  -webkit-animation-timing-function: ease-in-out;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-duration: 50s;
+
+  -moz-animation-name: imgFade;
+  -moz-animation-timing-function: ease-in-out;
+  -moz-animation-iteration-count: infinite;
+  -moz-animation-duration: 50s;
+
+  -o-animation-name: imgFade;
+  -o-animation-timing-function: ease-in-out;
+  -o-animation-iteration-count: infinite;
+  -o-animation-duration: 50s;
+
+  animation-name: imgFade;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-duration: 50s;
+}
+
+.slideshow-wrapper img:nth-of-type(1) {
+  -webkit-animation-delay: 40s;
+  -moz-animation-delay: 40s;
+  -o-animation-delay: 40s;
+  animation-delay: 40s;
+}
+
+.slideshow-wrapper img:nth-of-type(2) {
+  -webkit-animation-delay: 30s;
+  -moz-animation-delay: 30s;
+  -o-animation-delay: 30s;
+  animation-delay: 30s;
+}
+
+.slideshow-wrapper img:nth-of-type(3) {
+  -webkit-animation-delay: 20s;
+  -moz-animation-delay: 20s;
+  -o-animation-delay: 20s;
+  animation-delay: 20s;
+}
+
+.slideshow-wrapper img:nth-of-type(4) {
+  -webkit-animation-delay: 10s;
+  -moz-animation-delay: 10s;
+  -o-animation-delay: 10s;
+  animation-delay: 10s;
+}
+
+.slideshow-wrapper img:nth-of-type(5) {
+  -webkit-animation-delay: 0;
+  -moz-animation-delay: 0;
+  -o-animation-delay: 0;
+  animation-delay: 0;
+}
