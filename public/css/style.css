@@ -314,6 +314,11 @@ h2.hero-topline {
 	padding-left: 10px
 }
 
+.hero-user-action-wrapper a.u__links:hover i {
+	padding-left: 15px;
+	
+}
+
 .customer-showcase {
 	padding: 0 100px 20px;
 	display: flex;
@@ -699,6 +704,10 @@ input:focus {
 		color: white;
 		font-weight: light;
 	}	
+
+	.nav-links a:hover {
+		border-bottom: 4px solid white;
+	}
 
 	.burger-wrapper {
 		display: none;
