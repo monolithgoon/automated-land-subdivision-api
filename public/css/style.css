@@ -304,19 +304,18 @@ h2.hero-topline {
 	color: white;
 }
 
-.hero-user-action-wrapper a {
+.hero-user-action-wrapper a.u__links {
 	display: flex;
 	justify-content: space-between;
 	vertical-align: center;
 }
 
-.hero-user-action-wrapper a > i {
+.hero-user-action-wrapper a.u__links > i {
 	padding-left: 10px
 }
 
-.hero-user-action-wrapper a.u__links:hover i {
+.hero-user-action-wrapper a.u__links:hover > i {
 	padding-left: 15px;
-	
 }
 
 .customer-showcase {
@@ -684,6 +683,12 @@ input:focus {
 
 	.navbar-wrapper {
 		margin-bottom: 25px;
+	}
+
+	/* HIDE THE LINK ARROW IN DESKTOP MODE */
+	.navbar-menu-wrapper i {
+		/* display: none;
+		visibility: hidden; */
 	}
 
 	.nav-links {
