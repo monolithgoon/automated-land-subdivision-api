@@ -95,6 +95,7 @@ const farmerSchema = new mongoose.Schema({
       type: String,
       required: [true, `The farmer's last name must be specified`]
    },
+   farmer_photo: Buffer,
    photo_base64: Buffer,
    photo_url: {
       type: String,

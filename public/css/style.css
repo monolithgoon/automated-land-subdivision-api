@@ -126,7 +126,8 @@ header {
 	position: sticky;
 	top: 0;
 	width: 100%;
-	/* background: #2e2e2e; */
+	background: #2e2e2e;
+	background: transparent;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
