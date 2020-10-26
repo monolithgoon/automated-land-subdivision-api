@@ -97,7 +97,7 @@ const farmerSchema = new mongoose.Schema({
    },
    // farmer_photo: Buffer,
    farmer_photo: {
-      type: String,
+      type: Array,
       required: true
    },
    farmer_photo_base64: Buffer,
