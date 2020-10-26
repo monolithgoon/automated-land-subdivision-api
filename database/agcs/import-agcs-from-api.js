@@ -18,7 +18,7 @@ async function returnAllAgcs() {
       
       const axiosRequest = axios({
          method: 'get',
-         url: `https://agcfarmlands.herokuapp.com/api/v1/parcelized-agcs/`,
+         url: `https://agcfarmlands.herokuapp.com/api/v1/agcs/`,
          // url: `http://127.0.0.1:9090/api/v1/agcs`,
          crossDomain: true,
          responseType: 'application/json',
@@ -46,7 +46,7 @@ async function returnAllAgcs() {
 
       
       // WRITE RESULT TO NEW FILE
-      fs.writeFile(`./data/parcelized-agcs-${requestTimeStr}.geojson`, agcsData, (err, data) => {
+      fs.writeFile(`./data/agcs-${requestTimeStr}.geojson`, agcsData, (err, data) => {
 
          if(err) {
             console.log(chalkError(err.message))
