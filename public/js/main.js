@@ -21,9 +21,9 @@ export const map = new mapboxgl.Map({
    center: [5.963833, 5.243506],
    pitch: 50,
    bearing: 10, // bearing in degrees
-   zoom: 15.5,
    zoom: 15,
    zoom: 7,
+   zoom: 15.5,
    attribution: 'Nduka Okpue'
 });
 
