@@ -55,7 +55,7 @@ block parcelized-agcs
 									div.plot-owner-id= `${feature.properties.owner_id}`
 									div= `VAsT_ID ${feature.properties.chunk_id}`
 									//- div= `Lng ${feature.properties.center_lng.toFixed(4)}°E Lat ${feature.properties.center_lat.toFixed(5)}°N`
-								.feature-owner-media-container
-									//- img(src=`${feature.properties.owner_photo_url}`, alt="Plot Owner Photo" srcset="")
-									img(src="/images/icon-user.png" alt="Plot Owner Photo" style="max-width:100%;")
+								.feature-owner-avatar-container
+									img(src=`${feature.properties.owner_photo_url === 'undefined' ? "/images/icon-user.png" : feature.properties.owner_photo_url}`, alt="Plot Owner Photo" srcset="")
+									//- img(src="/images/icon-user.png" alt="Plot Owner Photo" style="max-width:100%;")
 					//- br

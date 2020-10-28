@@ -446,7 +446,7 @@ h2.subtitle {
 	grid-template-columns: 1fr;
 }
 
-.feature-owner-media-container {
+.feature-owner-avatar-container {
 	display: none;
 }
 
@@ -754,9 +754,23 @@ input:focus {
 		grid-template-columns: 4fr 1fr;
 	}
 
-	.feature-owner-media-container {
+	.feature-owner-avatar-container {
 		display: block;
 		opacity: 0.8;
+		
+		width: 60px;
+		height: 60px;
+		position: relative;
+		overflow: hidden;
+		border-radius: 50%;
+	}
+	
+	.feature-owner-avatar-container img {
+		height: 100%;
+		width: 100%;
+		object-fit: cover;
+
+		display: inline;
 	}
 
 	.app-container {
