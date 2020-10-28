@@ -1,7 +1,10 @@
+const chalk = require('../../../utils/chalk-messages.js')
 const turf = require('@turf/turf')
+const fs = require('fs')
 
 
 
+// GET DEFINING PROPERTIES OF THE SHAPEFILE
 function _getProps(geojson) {
 
    if(geojson) {
@@ -48,6 +51,7 @@ function _getProps(geojson) {
 
 
 
+// CALC. THE AREA OF A SHAPEFILE POLYGON
 function _calcArea(polygon) {
    return turf.area(polygon)/10000
 }
@@ -111,10 +115,64 @@ function _analyzeShapefile(shapefile) {
 
 
 
+// ...
+function _getAllocationsMetadata(shapefileID, farmersData, farmerIndex) {
+
+
+   // DECODE THE BASE64 IMAGES AN SAVE TO FILE
+   farmersData.forEach( farmer => {
+   
+      // TODO > STRIP OFF THE META HEADERS FROM THE Base64 STRING 
+      // const base64String = apiResponse.data.agcData.properties.farmers[4].farmer_photo
+      // const base64Image = base64String.replace(/^data:image\/\w+;base64,/, '');
+      const base64Image = farmer.farmer_photo;
+   
+      // DECODE & SAVE LOT OWNER'S Base64 PHOTOGRAPH TO FILE
+      if(base64Image) {
+   
+         fs.writeFile(`../../../public/images/farmer-photos/${farmer.farmer_id}.jpg`, base64Image, {encoding: 'base64'}, (err, data) => {
+            
+            if(err) {
+               console.log(chalk.error(err.message));
+               process.exit();
+            } else {
+               console.log(chalk.success(`THE LOT OWNER PHOTOS FROM THIS SHAPEFILE ${shapefileID} WERE SAVED TO FILE  `));
+               process.exit();
+            }
+         });
+      } else {
+         console.error(chalk.error(`This PLOT OWNER ${farmer.first_name} ${farmer.last_name} does not have a photograph..`))
+      }
+   });
+
+
+   // GET THE FARMER (LOT OWNER) PHOTO URL
+   const ownerPhotoURL = `/images/farmer-photos/${farmersData[farmerIndex].farmer_id}.jpg`
+   console.log(chalk.highlight(ownerPhotoURL))
+
+
+   const allocationsMetadata = {
+      agcID: shapefileID,
+      farmerID: farmersData[farmerIndex].farmer_id,
+      allocSize: farmersData[farmerIndex].allocation,
+      firstName: farmersData[farmerIndex].first_name,
+      lastName: farmersData[farmerIndex].last_name,
+      ownerPhotoURL
+   }
+   
+   return allocationsMetadata
+}
+
+
+
+
+
+
 module.exports = {
    _getProps,
    _calcArea,
    _moveBboxPolygon,
    _toggleChunkifyDir,
-   _analyzeShapefile
+   _analyzeShapefile,
+   _getAllocationsMetadata,
 }

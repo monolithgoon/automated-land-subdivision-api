@@ -4,7 +4,7 @@ const { _newKatanaSliceOperation } = require("./_newKatanaSliceOp.js")
 
 
 
-exports._chunkify = function(allocationMetadata, {
+exports._chunkify = function(allocationsMetadata, {
    initChunkifyDir, 
    newChunkifyDir, 
    katanaSliceDir, 
@@ -16,7 +16,7 @@ exports._chunkify = function(allocationMetadata, {
    idx 
 }) {
 
-   const allocationSize = allocationMetadata.allocSize
+   const allocationSize = allocationsMetadata.allocSize
    
    // INITIAL STATE
    // THE "mutatedShapefile" IS THE INTERSECT BTW. MOVING BBOX. & THE KATANA SHAPEFILE
@@ -238,11 +238,11 @@ exports._chunkify = function(allocationMetadata, {
    // ADD CUSTOM PROPERTIES
    if (chunkPolygon) {
       chunkPolygon.properties['chunk_index'] = idx + 1;
-      chunkPolygon.properties['chunk_id'] = `${allocationMetadata.agcID}-${(Math.random()*9999*(idx+1)).toFixed(0)}`;
+      chunkPolygon.properties['chunk_id'] = `${allocationsMetadata.agcID}-${(Math.random()*9999*(idx+1)).toFixed(0)}`;
       chunkPolygon.properties['chunk_size'] = allocationSize.toFixed(1);
-      chunkPolygon.properties['owner_id'] = `${allocationMetadata.farmerID}`
-      chunkPolygon.properties['owner_name'] = `${allocationMetadata.firstName} ${allocationMetadata.lastName}` 
-      chunkPolygon.properties['owner_photo_url'] = `${allocationMetadata.photo}` 
+      chunkPolygon.properties['owner_id'] = `${allocationsMetadata.farmerID}`
+      chunkPolygon.properties['owner_name'] = `${allocationsMetadata.firstName} ${allocationsMetadata.lastName}` 
+      chunkPolygon.properties['owner_photo_url'] = `${allocationsMetadata.ownerPhotoURL}` 
       chunkPolygon.properties['center_lng'] = turf.centerOfMass(chunkPolygon).geometry.coordinates[0];
       chunkPolygon.properties['center_lat'] = turf.centerOfMass(chunkPolygon).geometry.coordinates[1];
    }

@@ -52,6 +52,9 @@ API Deployment Checklist
       [x] RUN: heroku config:set ATLAS_DB_STRING="mongodb+srv://monkey-paw:<PASSWORD>@monkey-paw-cluster-cwcff.gcp.mongodb.net/nirsal_agcs?retryWrites=true&w=majority"
       [x] RUN: heroku config:set ATLAS_DB_PASSOWRD=dooksie
 
+   [ ] Deploy existing git repo. to new Heroku app
+      [ ] RUN: heroku git:remote -a HEROKU_APP_NAME
+
 [ ] Deploy to Firebase >>
    [x] Install the Firebase CLI >> RUN: npm install -g firebase-tools
    [ ] Initialize Firebase in the project directory >> RUN: firebase init

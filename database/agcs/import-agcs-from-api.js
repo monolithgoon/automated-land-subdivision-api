@@ -1,10 +1,4 @@
-const chalk = require('chalk');
-const chalkError = chalk.white.bgRed.bold
-const processWorking = chalk.blue.bgGrey.bold
-const processSuccess = chalk.white.bgGreen.bold
-const goodConnection = chalk.white.bgBlue.bold
-const chalkWarning = chalk.white.bgYellow.bold
-
+const chalk = require('../../utils/chalk-messages.js')
 const fs = require("fs");
 const axios = require("axios");
 const request = require("request");
@@ -49,10 +43,10 @@ async function returnAllAgcs() {
       fs.writeFile(`./data/agcs-${requestTimeStr}.geojson`, agcsData, (err, data) => {
 
          if(err) {
-            console.log(chalkError(err.message))
+            console.log(chalk.error(err.message))
             process.exit();
          } else {
-            console.log(processSuccess(`All the returned AGCs (${numAgcs}) were saved to file.. `));
+            console.log(chalk.success(`All the returned AGCs (${numAgcs}) were saved to file.. `));
             process.exit();
          }
       });
@@ -71,8 +65,8 @@ async function returnAgc(agc_id) {
       
       const axiosRequest = axios({
          method: 'get',
-         // url: `https://agcfarmlands.herokuapp.com/api/v1/agcs/?${agc_id}`,
-         url: `http://127.0.0.1:9090/api/v1/agcs/agc/?${agc_id}`,
+         url: `https://agcfarmlands.herokuapp.com/api/v1/agcs/?${agc_id}`,
+         // url: `http://127.0.0.1:9090/api/v1/agcs/agc/?${agc_id}`,
          crossDomain: true,
          responseType: 'application/json',
          headers: {
@@ -88,23 +82,23 @@ async function returnAgc(agc_id) {
 
       // GET RESPONSE FROM API CALL
       const apiResponse = await axiosRequest
-      const agcData = JSON.stringify(apiResponse.data.agcData)
+      const agcDataString = JSON.stringify(apiResponse.data.agcData)
 
 
-      // WRITE RESULT TO NEW FILE
-      fs.writeFile(`./data/${agc_id.toLowerCase()}.geojson`, agcData, (err, data) => {
+      // SAVE AGC DATA TO FILE
+      fs.writeFile(`./data/${agc_id.toLowerCase()}.geojson`, agcDataString, (err, data) => {
 
          if(err) {
-            console.log(chalkError(err.message))
+            console.log(chalk.error(err.message))
             process.exit();
          } else {
-            console.log(processSuccess('The returned AGC data was saved to file.. '))
+            console.log(chalk.success('The returned AGC data was saved to file.. '))
             process.exit();
          }
       });      
 	}
-	catch (error) {
-		console.error(error.message);
+	catch (_error) {
+		console.error(_error.message);
 	};
 };
 

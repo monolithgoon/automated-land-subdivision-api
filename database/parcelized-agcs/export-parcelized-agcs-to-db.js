@@ -91,7 +91,7 @@ const exportAgcs = async () => {
 
    try {
 
-      const parcelizedAgcs = JSON.parse(fs.readFileSync('./data/parcelized-agcs.geojson', 'utf-8'));
+      const parcelizedAgcs = JSON.parse(fs.readFileSync('./data/bulk-data/parcelized-agcs.geojson', 'utf-8'));
    
       await dbConnect();
    

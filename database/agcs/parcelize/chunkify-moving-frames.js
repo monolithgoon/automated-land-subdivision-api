@@ -1,7 +1,7 @@
 // POLYGON CHUNKING v3.0 > BOUNDING BOX DECAY ALGORITHM
 const chalk = require('../../../utils/chalk-messages');
 const turf = require('@turf/turf')
-const { _getProps, _calcArea, _analyzeShapefile } = require('./_utils.js');
+const { _getProps, _calcArea, _analyzeShapefile, _getAllocationsMetadata } = require('./_utils.js');
 const { _getKatanaSlice } = require('./_getKatanaSlice.js');
 const { _chunkify } = require('./_chunkify.js');
 
@@ -96,14 +96,7 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
 
 
          // KEEP TRACK OF THE FARMER/FARM DATA
-         const allocationMetadata = {
-            agcID: shapefileID,
-            farmerID: FARMERS_DATA[idx].farmer_id,
-            allocSize: FARMERS_DATA[idx].allocation,
-            firstName: FARMERS_DATA[idx].first_name,
-            lastName: FARMERS_DATA[idx].last_name,
-            photo: FARMERS_DATA[idx].farmer_photo_url
-         }
+         const allocationsMetadata = _getAllocationsMetadata(shapefileID, FARMERS_DATA, idx)
          
             
          // INIT. THE START POSITION OF THE MOVING BBOX. POLYGON
@@ -115,7 +108,7 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
          let initChunkifyDir = newChunkifyDir ? newChunkifyDir : chunkifyDirection;
         
 
-         let chunkifyData = _chunkify(allocationMetadata, {initChunkifyDir, newChunkifyDir, katanaSliceDir, percentIngress, workingShapefile, pendingShapefile, startShapefileArea, movingBboxPolygon, idx});
+         let chunkifyData = _chunkify(allocationsMetadata, {initChunkifyDir, newChunkifyDir, katanaSliceDir, percentIngress, workingShapefile, pendingShapefile, startShapefileArea, movingBboxPolygon, idx});
 
 
          // RETURN THE DISCARDED KATANA CHUNKS

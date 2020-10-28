@@ -102,8 +102,7 @@ const featureSchema = new mongoose.Schema({
       owner_photo_url: {
          type: String,
          required: false,
-         // FIXME > THE URL NEEDS TO BE UNIQUE 
-         // unique: [true, `The link to each farmer's photo must be unique`]
+         unique: [true, `The link to each farmer's photo must be unique`]
       },
       center_lng: {
          type: Number,

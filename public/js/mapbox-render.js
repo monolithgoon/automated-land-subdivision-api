@@ -228,10 +228,11 @@ function toggleMetadataPopup(map, layerProps, layerCenter) {
    const layerArea = layerProps.chunk_size;
    const centerLat = layerProps.center_lat ? layerProps.center_lat : "...";
    const centerLng = layerProps.center_lng ? layerProps.center_lng : "...";
+   const plotOwnerPhotoURL = layerProps.owner_photo_url === `undefined` ? `/images/person-default.png` : layerProps.owner_photo_url
 
    
    // const popup = new mapboxgl.Popup({ className: "mapbox-metadata-popup" })
-   const popup = new mapboxgl.Popup()
+   const popup = new mapboxgl.Popup( {closeOnClick: false} )
       .setLngLat(layerCenter)
       .setHTML(`<div class="mapbox-metadata-popup">
 
@@ -244,7 +245,7 @@ function toggleMetadataPopup(map, layerProps, layerCenter) {
                   </div>
 
                   <div class="popup-media-wrapper">
-                     <img src="/images/person-default.png" alt="Plot Owner Photo" style="max-width:100%; opacity: 0.4;">
+                     <img src="${plotOwnerPhotoURL}" alt="Plot Owner Photo" style="max-width:100%; opacity: 1;">
                   </div>
                   
                </div>`)

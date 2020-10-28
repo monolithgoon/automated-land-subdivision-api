@@ -1,8 +1,21 @@
 .mapboxgl-popup-content {
-   width: 300px;
+   width: 350px;
    /* height: 50px;
    line-height: 5px; */
    font-size: 12px;
+}
+
+.mapboxgl-popup-close-button {
+   color: green;
+
+   position: absolute;
+   right: 0;
+   top: 0;
+   border: none;
+   border-radius: 0 3px 0 0;
+   cursor: pointer;
+
+   display: none;
 }
 
 .mapbox-metadata-popup {
@@ -24,7 +37,7 @@
    background: #f5f6fa;
 }
 
-.close-btn {
+.preview-map-close-btn {
    -webkit-font-smoothing: antialiased;
    text-size-adjust: 100%;
    box-sizing: inherit;
