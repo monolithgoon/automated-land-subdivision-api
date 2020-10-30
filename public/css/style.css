@@ -264,7 +264,7 @@ h2.hero-topline {
 	color: #ffffffb3;
 	color: rgba(255, 255, 255, 0.8);
 	font-family: 'Fira Sans Regular', sans-serif;
-	font-family: 'Inter', sans-serif;
+	/* font-family: 'Inter', sans-serif; */
 	font-size: 18px;
 	line-height: 24px;
 	font-weight: 300;
