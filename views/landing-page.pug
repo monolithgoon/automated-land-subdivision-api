@@ -1,9 +1,10 @@
 extends index
 
-block parcelized-agcs
+block landing-page
 
 	include _header.pug
 
+	// TODO > FIX THIS NAME > 
 	.agcs-overview-container
 
 		.standalone-wrapper
@@ -19,13 +20,18 @@ block parcelized-agcs
 			//- p.standalone The tool helped eliminate land boundary disputes, and sped up their access to funding since lenders were assured of the farmers field identity.
 			p.standalone The tool helps eliminate land boundary disputes among farmers, and speeds up their access to funding since lenders are assured of the farmers' field identity.
 
-		h2.subtitle= `Parcelized AGCs (${parcelizedAgcsData.length} AGCs)`
-		//- p.standalone.note(data-icon="star") Click on the AGC IDs to preview the farm cluster maps.
-		p.standalone.note Click on the AGC IDs to preview the farm cluster maps.
-		//- br
 
-		//- LOOP THRU ALL THE AGCS
-		each parcelizedAgc in parcelizedAgcsData
+		// RENDER ONLY ONE PARCELIZED AGC PREVIEW MAP
+		// TODO > 
+
+
+		//- h2.subtitle= `Parcelized AGCs (${parcelizedAgcsData.length} AGCs)`
+		//- //- p.standalone.note(data-icon="star") Click on the AGC IDs to preview the farm cluster maps.
+		//- p.standalone.note Click on the AGC IDs to preview the farm cluster maps.
+		//- br
+		
+		//- LOOP THRU ALL THE PARCELIZED AGCS
+		//- each parcelizedAgc in parcelizedAgcsData
 
 			section.agc-cards-container
 
@@ -71,3 +77,6 @@ block parcelized-agcs
 									img(src=`${feature.properties.owner_photo_url === 'undefined' ? "/images/icon-user.png" : feature.properties.owner_photo_url}`, alt="Plot Owner Photo" srcset="")
 									//- img(src="/images/icon-user.png" alt="Plot Owner Photo" style="max-width:100%;")
 					//- br
+
+
+		include _footer.pug

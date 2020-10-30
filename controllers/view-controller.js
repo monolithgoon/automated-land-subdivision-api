@@ -61,7 +61,7 @@ exports.renderAPIGuide = async (req, res) => {
 
 
 
-// RENDER ONLY THE AGCS
+// RENDER THE LANDING PAGE
 exports.renderLandingPage = catchAsync(async (req, res, next) => {
    // 1. GET ALL THE PARCELIZED AGCS DATA FROM THE ATLAS DB
    const parcelizedAgcs = await PARCELIZED_AGC_MODEL.find();
@@ -81,7 +81,7 @@ exports.renderLandingPage = catchAsync(async (req, res, next) => {
 })
 
 
-// RENDER ONLY THE AGCS
+// RENDER ONLY THE PARCELIZED AGCS SUMMARIES
 exports.renderOnlyAgcs = catchAsync(async (req, res, next) => {
    // 1. GET ALL THE PARCELIZED AGCS DATA FROM THE ATLAS DB
    const parcelizedAgcs = await PARCELIZED_AGC_MODEL.find();

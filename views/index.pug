@@ -16,7 +16,6 @@ head
    //- FONTS
    link(href='https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap' rel='stylesheet')
    link(href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet")
-   link(href="https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap" rel="stylesheet")
    link(href="https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap" rel="stylesheet")
    link(href="https://fonts.googleapis.com/css2?family=Syne:wght@500&display=swap" rel="stylesheet")
    link(href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet")
@@ -39,11 +38,14 @@ body
    //- //- PAGE HEADER
    //- include _header.pug
 
-   //- POPULATED WITH DATA RETREIVED FOR ALL THE AGCS
-   block parcelized-agcs
+   // LANDING PAGE BLOCK
+   block landing-page
 
-   //- POPULATED WITH DATA RETREIVED FOR A SINGLE AGC
-   block parcelized-agc-content
+   //- POPULATED WITH SUMMARIES OF DATA RETREIVED FOR ALL THE AGCS
+   block parcelized-agcs-overview
+
+   //- POPULATED WITH DATA RETREIVED FOR A SINGLE AGC, SHOWING PREVIEW MAPS
+   block parcelized-agc-preview-map
 
    //- BURGER MENU CLICK HANDLER
    script(type="text/javascript").
