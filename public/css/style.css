@@ -352,17 +352,23 @@ h2.hero-topline {
 
 
 .standalone-header {
+	padding: 15px;
 	display: grid;
 	place-items: center;
+	grid-template-columns: 1fr 2fr;
 }
 
-.standalone-header {
-	font-family: 'Oswald', sans-serif;
+.standalone-header h3 {
+	margin: 0;
+	padding: 0;
+	font-family: 'Fjalla One', sans-serif;
+	font-size: 28px;
+	line-height: 40px;
 	text-transform: capitalize;
 }
 
 .standalone-header img {
-	width: 30%;
+	width: 80%;
 }
 
 .api-guide-container {
