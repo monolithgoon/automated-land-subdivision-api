@@ -355,7 +355,7 @@ h2.hero-topline {
 	padding: 15px;
 	display: grid;
 	place-items: center;
-	grid-template-columns: 1fr 2fr;
+	grid-template-columns: 1fr 1fr;
 }
 
 .standalone-header h3 {
@@ -368,7 +368,7 @@ h2.hero-topline {
 }
 
 .standalone-header img {
-	width: 70%;
+	width: 100%;
 }
 
 .api-guide-container {
