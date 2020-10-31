@@ -23,7 +23,6 @@ body {
 	background: rgba(128, 134, 139, 0.2);
 	background: #f9f9f9;
 	background: #F4F4F4;
-	background: white;
 	color: #4a4a4a;
 	color: black;
 }
@@ -347,25 +346,23 @@ h2.hero-topline {
 .standalone-wrapper {
 	margin: 20px;
 	padding: 0;
-	/* border: 1px solid #4a4a4a; */
+	border: 1px solid #4a4a4a;
 	border-radius: 10px;
-	background-color: #ECE2FD;
 }
 
-.standalone-wrapper:nth-of-type(2) {
-	background-color: #FFF5DA;
-}
 
-.standalone-title-wrapper {
-	font-family: 'Oswald', sans-serif;
+.standalone-header {
 	display: grid;
 	place-items: center;
-	/* display: none; */
 }
 
-.standalone-title-wrapper > h2 {
-	margin: 0;
-	padding: 0;
+.standalone-header {
+	font-family: 'Oswald', sans-serif;
+	text-transform: capitalize;
+}
+
+.standalone-header img {
+	width: 30%;
 }
 
 .api-guide-container {
