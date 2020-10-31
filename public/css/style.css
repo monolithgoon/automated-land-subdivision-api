@@ -1,13 +1,14 @@
 @import url("./_map-overlays.css");
 @import url('./_header-slideshow.css');
+@import url('./_footer.css');
 
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,300i,400&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Overpass:wght@200&display=swap');
 
 * {
-	font-family: 'Roboto', sans-serif;
-	box-sizing: border-box;
 	/* margin: 0;
 	padding: 0; */
+	box-sizing: border-box;
 	text-size-adjust: 100%;
 }
 
@@ -107,6 +108,10 @@ header {
 	/* background: #121621; */
 	color: white;
 	position: relative;
+}
+
+.header-wrapper {
+	font-family: 'Roboto', sans-serif;
 }
 
 /* STATIC HEADER/HERO BACKGROUND IMAGE USING CSS ONLY */
@@ -343,13 +348,25 @@ h2.hero-topline {
 	width: 50px;
 }
 
+/* main.landing-page-content-wrapper {
+	margin: auto;
+	width: 50vw;
+	display: grid;
+	place-items: center
+} */
+
 .standalone-wrapper {
+	/* width: 100%; */
 	margin: 20px;
 	padding: 0;
 	border: 1px solid #4a4a4a;
 	border-radius: 10px;
+	font-family: 'Roboto', sans-serif;
 }
 
+.standalone-wrapper P:last-child {
+	padding-bottom: 15px;
+}
 
 .standalone-header {
 	padding: 15px;
@@ -776,6 +793,11 @@ input:focus {
 	}
 
 	.agcs-overview-container {
+		margin: auto;
+		width: 45vw;
+	}
+
+	main.landing-page-content-wrapper {
 		margin: auto;
 		width: 45vw;
 	}

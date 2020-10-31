@@ -5,7 +5,8 @@ block landing-page
 	include _header.pug
 
 	// TODO > FIX THIS NAME > 
-	.agcs-overview-container
+	//- .agcs-overview-container
+	main.landing-page-content-wrapper
 
 		//- .standalone-title-wrapper
 		//- 	h2 The Problem
@@ -37,13 +38,14 @@ block landing-page
 		.standalone-wrapper
 
 			.standalone.standalone-header
-				.standalone-header-text
-					div OUR SOLUTION
-					h3 Collective effort + individual responsibility + Strong farmland identity
-					div 
 
 				.standalone-header-graphic
 					img(src="/images/assets/rmb-transact.svg" alt="The Smallholder Farmer Funding Problem")
+
+				.standalone-header-text
+					div OUR SOLUTION
+					h3 Collective farmer effort + Strong farmland identity
+					div 
 
 			p.standalone The examples below are a demonstration of how groups of farmers in AGCs use our web-based tool to quickly, precisely and digitally divvy up their delineated, aggregate land among their members, according to the number of hectares each member elected to cultivate. 
 
@@ -110,4 +112,4 @@ block landing-page
 									//- br
 
 
-		include _footer.pug
+	include _footer.pug
