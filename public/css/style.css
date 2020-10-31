@@ -349,6 +349,18 @@ h2.hero-topline {
 	border-radius: 10px;
 }
 
+.standalone-title-wrapper {
+	background-color: white;
+	border-bottom: 1px solid #4a4a4a;
+	display: grid;
+	place-items: center;
+}
+
+.standalone-title-wrapper > h3 {
+	margin: 5px 0;
+	padding: 0;
+}
+
 .api-guide-container {
 	font-family: Roboto, sans-serif;
 	background: white;
