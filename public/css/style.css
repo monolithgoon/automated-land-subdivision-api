@@ -304,7 +304,7 @@ h2.hero-topline {
 	text-decoration: none;
 	background-color: transparent;
 	border: 2px solid white;
-	border-color: hsla(0,0%,100%,.4);
+	/* border-color: hsla(0,0%,100%,.4); */
 	border-radius: 100px;
 	transition: border-color 0.3s ease, box-shadow 0.3s ease;
 	cursor: pointer;
@@ -780,11 +780,16 @@ input:focus {
 	}	
 
 	.hero-content p {
+		margin: 40px 0;
 		color: #ffffffb3;
 	}
 
 	.hero-content p:first-child {
 		margin-top: 0;
+	}
+
+	.hero-user-action-wrapper {
+		margin-top: 45px;
 	}
 
 	.api-guide-container {
