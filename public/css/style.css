@@ -4,6 +4,7 @@
 
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,300i,400&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Overpass:wght@200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap');
 
 * {
 	/* margin: 0;
@@ -303,7 +304,7 @@ h2.hero-topline {
 	text-align: center;
 	text-decoration: none;
 	background-color: transparent;
-	border: 2px solid white;
+	border: 1px solid white;
 	/* border-color: hsla(0,0%,100%,.4); */
 	border-radius: 100px;
 	transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -750,6 +751,8 @@ input:focus {
 		top: 0;
 		right: 0;
 		position: relative;
+
+		font-family: 'Overpass', sans-serif; 
 
 		visibility: visible;
 	}
