@@ -4,7 +4,7 @@
 
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,300i,400&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Overpass:wght@200&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300&family=Oswald&display=swap');
 
 * {
 	/* margin: 0;
@@ -371,6 +371,7 @@ h2.hero-topline {
 
 .standalone-header {
 	padding: 15px;
+	padding-bottom: 0;
 	display: grid;
 	place-items: center;
 	grid-template-columns: 1fr 1fr;
@@ -384,8 +385,9 @@ h2.hero-topline {
 .standalone-header h3 {
 	margin: 0;
 	padding: 0;
+	font-family: 'Oswald', sans-serif;
 	font-family: 'Fjalla One', sans-serif;
-	font-size: 24px;
+	font-size: 26px;
 	line-height: 30px;
 	text-transform: capitalize;
 }
