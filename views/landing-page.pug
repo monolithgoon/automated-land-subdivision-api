@@ -4,108 +4,121 @@ block landing-page
 
 	include _header.pug
 
-	// TODO > FIX THIS NAME > 
-	main.landing-page-content-wrapper
+	main.landing-page-main-wrapper
 
-		//- .standalone-title-wrapper
-		//- 	h2 The Problem
-
-		.standalone-wrapper
-
-			.standalone.standalone-header
-				.standalone-header-text
-					div The PROBLEM
-					h3 Smallholder farmers are too risky to insure & fund individually
-					div
-
-				.standalone-header-graphic
-					img(src="/images/assets/rmb-advise.svg" alt="The Smallholder Farmer Funding Problem")
-
-			p.standalone  Smallholder farmers in Nigeria typically work at near-subsistence levels on informal plots of land that are often just a fraction of an acre. This makes it near impossible to provide them funding or crop insurance. 
-
-			p.standalone.bold However, they become much more attractive to lenders when they band together, pooling their effort to cultivate on a single land expanse, forming contiguous farmland aggregation structures ("agro geo-clusters" or AGCs). These clusters present a lower risk profile to a lender.
-
-		//- .standalone-title-wrapper
-		//- 	h2 Our Solution
-
-		.standalone-wrapper
-
-			.standalone.standalone-header
-
-				.standalone-header-graphic
-					img(src="/images/assets/fruits-and-vegetables.svg" alt="Our Smallholder Farmer Funding Solution")
-
-				.standalone-header-text
-					div OUR SOLUTION
-					h3 Collective farmer effort + Strong farmland identity
-					div 
-
-			p.standalone.bold The farmers have formed an agro geo-cluster. Now What? How can they tell their land apart?
-
-			p.standalone The examples below are a demonstration of how groups of farmers in AGCs use our web-based tool to quickly, precisely and digitally divvy up their delineated, aggregate land among their members, according to the number of hectares each member elected to cultivate. 
-
-			//- p.standalone The tool helped eliminate land boundary disputes, and sped up their access to funding since lenders were assured of the farmers field identity.
-			p.standalone The tool helps eliminate land boundary disputes among farmers, and speeds up their access to funding since lenders are assured of the farmers' field identity.
-
-		.svg-page-crawl
-			img(src="/images/assets/noun-contour-topography.svg", alt="alt", style="width: 500px;")
-
-		// RENDER ONLY ONE PARCELIZED AGC PREVIEW MAP
-		// TODO > 
+		.landing-page-content-wrapper
 
 
-		//- h2.subtitle= `Parcelized AGCs (${parcelizedAgcsData.length} AGCs)`
-		//- //- p.standalone.note(data-icon="star") Click on the AGC IDs to preview the farm cluster maps.
-		//- p.standalone.note Click on the AGC IDs to preview the farm cluster maps.
-		//- br
+			.svg-page-crawl
+				img(src="/images/assets/noun-contour-topography-top-left.svg" alt="alt" style="width: 600px; position: absolute; left: -200px; top: 0; z-index: -10;")
+				//- img(src="/images/assets/noun-contour-topography.svg" alt="alt" style="width: 700px; position: absolute; left: -300px; top: 0; z-index: -10;")
 
-		//- LOOP THRU ALL THE PARCELIZED AGCS
-		//- each parcelizedAgc in parcelizedAgcsData
 
-			section.agc-cards-container
+			.bordered-paragraph-wrapper
 
-				main.agc-card
+				.bordered-paragraph-header
+					.bordered-paragraph-header-text
+						div THE PROBLEM
+						h3 Smallholder farmers are too risky to insure & fund individually
+						div CBN | NIRSAL | Go ->
 
-					div.agc-card-header
-						div= `${parcelizedAgc.properties.agc_extended_name}`
-						div= `${parcelizedAgc.properties.agc_location}`
+					.bordered-paragraph-header-graphic
+						img(src="/images/assets/rmb-advise.svg" alt="The Smallholder Farmer Funding Problem")
 
-					br
+				p.standalone  Smallholder farmers in Nigeria typically work at near-subsistence levels on informal plots of land that are often just a fraction of an acre. This makes it near impossible to provide them funding or crop insurance. 
 
-					div.agc-card-summary
-						div.agc-id AGC ID
-							div
-							//- a(href=`/parcelized-agc/?${parcelizedAgc.properties.agc_id}`)= `${parcelizedAgc.properties.agc_id}`
-							a(href=`/api/demo/parcelized-agc/?${parcelizedAgc.properties.agc_id}`)= `${parcelizedAgc.properties.agc_id}`
-						div.agc-area AGC Area
-							div= `${parcelizedAgc.properties.agc_area.toFixed(1)} ha.`
-						//- div.center-coords
-						//- div= parcelizedAgc.properties.agc_center_coords
-						div.total-allocation Allocations
-							div= `${parcelizedAgc.properties.total_allocation.toFixed(1)} ha.`
-						div.unused-land Unallocated
-							div= `${parcelizedAgc.properties.unused_land_area.toFixed(1)} ha.`
+				p.standalone.bold However, they become much more attractive to lenders when they band together, pooling their effort to cultivate on a single land expanse, forming contiguous farmland aggregation structures ("agro geo-clusters" or AGCs). 
+				
+				p.standalone These clusters present a lower risk profile to a lender.
 
-					br
 
-					div.agc-card-features-header Farmers
+			.standalone-header
+				h2.standalone.bold The farmers have formed an agro geo-cluster. Now What? How can they tell their farmlands apart?
 
-					br
 
-					div.agc-features-container
+			.bordered-paragraph-wrapper
 
-						each feature in parcelizedAgc.features	
-							div.agc-feature
-								.feature-text-container
-									div.plot-owner-name= feature.properties.owner_name
-									div= `${feature.properties.chunk_size} ha.`
-									div.plot-owner-id= `${feature.properties.owner_id}`
-									div= `VAsT_ID   ${feature.properties.chunk_id}`
-									//- div= `Lng ${feature.properties.center_lng.toFixed(4)}°E Lat ${feature.properties.center_lat.toFixed(5)}°N`
-								.feature-owner-avatar-container
-									img(src=`${feature.properties.owner_photo_url === 'undefined' ? "/images/icon-user.png" : feature.properties.owner_photo_url}`, alt="Plot Owner Photo" srcset="")
-									//- img(src="/images/icon-user.png" alt="Plot Owner Photo" style="max-width:100%;")
-									//- br
+				.bordered-paragraph-header
+
+					.bordered-paragraph-header-graphic
+						img(src="/images/assets/fruits-and-vegetables.svg" alt="Our Smallholder Farmer Funding Solution")
+
+					.bordered-paragraph-header-text
+						div OUR SOLUTION
+						h3 Collective farmer effort + Strong farmland identity
+						div 
+
+				p.standalone.bold The farmers have formed an agro geo-cluster. Now What? How can they tell their land apart?
+
+				p.standalone The examples below are a demonstration of how groups of farmers in AGCs use our web-based tool to quickly, precisely and digitally divvy up their delineated, aggregate land among their members, according to the number of hectares each member elected to cultivate. 
+
+				//- p.standalone The tool helped eliminate land boundary disputes, and sped up their access to funding since lenders were assured of the farmers field identity.
+				p.standalone The tool helps eliminate land boundary disputes among farmers, and speeds up their access to funding since lenders are assured of the farmers' field identity.
+
+
+			.parcelized-agc-preview-wrapper
+
+
+		//- .svg-page-crawl
+		//- 	img(src="/images/assets/noun-contour-topography.svg" alt="alt" style="width: 800px;")
+
+
+			// RENDER ONLY ONE PARCELIZED AGC PREVIEW MAP
+			// TODO > 
+
+
+			//- h2.subtitle= `Parcelized AGCs (${parcelizedAgcsData.length} AGCs)`
+			//- //- p.standalone.note(data-icon="star") Click on the AGC IDs to preview the farm cluster maps.
+			//- p.standalone.note Click on the AGC IDs to preview the farm cluster maps.
+			//- br
+
+			//- LOOP THRU ALL THE PARCELIZED AGCS
+			//- each parcelizedAgc in parcelizedAgcsData
+
+				section.agc-cards-container
+
+					main.agc-card
+
+						div.agc-card-header
+							div= `${parcelizedAgc.properties.agc_extended_name}`
+							div= `${parcelizedAgc.properties.agc_location}`
+
+						br
+
+						div.agc-card-summary
+							div.agc-id AGC ID
+								div
+								//- a(href=`/parcelized-agc/?${parcelizedAgc.properties.agc_id}`)= `${parcelizedAgc.properties.agc_id}`
+								a(href=`/api/demo/parcelized-agc/?${parcelizedAgc.properties.agc_id}`)= `${parcelizedAgc.properties.agc_id}`
+							div.agc-area AGC Area
+								div= `${parcelizedAgc.properties.agc_area.toFixed(1)} ha.`
+							//- div.center-coords
+							//- div= parcelizedAgc.properties.agc_center_coords
+							div.total-allocation Allocations
+								div= `${parcelizedAgc.properties.total_allocation.toFixed(1)} ha.`
+							div.unused-land Unallocated
+								div= `${parcelizedAgc.properties.unused_land_area.toFixed(1)} ha.`
+
+						br
+
+						div.agc-card-features-header Farmers
+
+						br
+
+						div.agc-features-container
+
+							each feature in parcelizedAgc.features	
+								div.agc-feature
+									.feature-text-container
+										div.plot-owner-name= feature.properties.owner_name
+										div= `${feature.properties.chunk_size} ha.`
+										div.plot-owner-id= `${feature.properties.owner_id}`
+										div= `VAsT_ID   ${feature.properties.chunk_id}`
+										//- div= `Lng ${feature.properties.center_lng.toFixed(4)}°E Lat ${feature.properties.center_lat.toFixed(5)}°N`
+									.feature-owner-avatar-container
+										img(src=`${feature.properties.owner_photo_url === 'undefined' ? "/images/icon-user.png" : feature.properties.owner_photo_url}`, alt="Plot Owner Photo" srcset="")
+										//- img(src="/images/icon-user.png" alt="Plot Owner Photo" style="max-width:100%;")
+										//- br
 
 
 	include _footer.pug

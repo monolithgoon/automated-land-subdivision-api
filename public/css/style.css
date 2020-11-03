@@ -5,12 +5,19 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,300i,400&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Overpass:wght@200&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300&family=Oswald&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@700&family=Scada:wght@700&display=swap');
 
 * {
 	/* margin: 0;
 	padding: 0; */
 	box-sizing: border-box;
 	text-size-adjust: 100%;
+}
+
+:root {
+  --button-primary-background: #1A73E8;
+  --background-color: #F4F4F4;
+
 }
 
 html {
@@ -258,7 +265,7 @@ header {
 }
 
 .hero-wrapper {
-	margin-bottom: 20px;
+	margin-bottom: 0;
 	padding: 0 35px;
 }
 
@@ -304,7 +311,8 @@ h2.hero-topline {
 	text-align: center;
 	text-decoration: none;
 	background-color: transparent;
-	border: 1px solid white;
+	background-color: var(--button-primary-background);
+	/* border: 1px solid white; */
 	/* border-color: hsla(0,0%,100%,.4); */
 	border-radius: 100px;
 	transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -349,27 +357,25 @@ h2.hero-topline {
 	width: 50px;
 }
 
-/* main.landing-page-content-wrapper {
-	margin: auto;
-	width: 50vw;
-	display: grid;
-	place-items: center
-} */
+.bordered-paragraph-wrapper:nth-of-type(1) {
+	margin-bottom: 60;
+}
 
-.standalone-wrapper {
+.bordered-paragraph-wrapper {
 	/* width: 100%; */
 	margin: 20px;
 	padding: 0;
 	border: 1px solid #4a4a4a;
 	border-radius: 10px;
 	font-family: 'Roboto', sans-serif;
+	background: #F4F4F4;
 }
 
-.standalone-wrapper P:last-child {
+.bordered-paragraph-wrapper P:last-child {
 	padding-bottom: 15px;
 }
 
-.standalone-header {
+.bordered-paragraph-header {
 	padding: 15px;
 	padding-bottom: 0;
 	display: grid;
@@ -377,22 +383,28 @@ h2.hero-topline {
 	grid-template-columns: 1fr 1fr;
 }
 
-.standalone-header-text {
+.bordered-paragraph-header-text {
 	display: grid;
 	grid-template-rows: 1fr 3fr 1fr;
+	align-items: center;
 }
 
-.standalone-header h3 {
+.bordered-paragraph-header-text:first-child {
+	font-family: 'Scada', sans-serif;	
+	font-family: 'Jura', sans-serif;	
+}
+
+.bordered-paragraph-header h3 {
 	margin: 0;
 	padding: 0;
-	font-family: 'Oswald', sans-serif;
 	font-family: 'Fjalla One', sans-serif;
-	font-size: 26px;
+	font-size: 27px;
+	font-weight: 900;
 	line-height: 30px;
 	text-transform: capitalize;
 }
 
-.standalone-header img {
+.bordered-paragraph-header img {
 	width: 100%;
 }
 
@@ -754,7 +766,7 @@ input:focus {
 		right: 0;
 		position: relative;
 
-		font-family: 'Overpass', sans-serif; 
+		font-family: 'Overpass', sans-serif;
 
 		visibility: visible;
 	}
@@ -807,9 +819,23 @@ input:focus {
 		width: 45vw;
 	}
 
-	main.landing-page-content-wrapper {
+	main.landing-page-main-wrapper {
+		background: pink;
+		background: var(--background-color);
+		/* background: url('/images/assets/noun-contour-topography.svg') no-repeat left bottom; */
+		z-index: 10;
+		margin-bottom: 450px;
+		position: relative;
+	}
+
+	.landing-page-content-wrapper {
 		margin: auto;
 		width: 45vw;
+
+		/* background: pink;
+		z-index: 10;
+		margin-bottom: 450px;
+		position: relative; */
 	}
 
 	.agc-feature {
