@@ -3,6 +3,8 @@ extends index
 
 //- APPEND THE MAP SCRIPTS TO THE HEAD OF index.pug
 block append head-map-scripts
+   //- TURF JS
+   script(src='/plugins/turf.min.js')
    //- MAPBOX
    script(src='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js')
    link(href='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css' rel='stylesheet')
@@ -67,5 +69,5 @@ block append head-map-scripts
          section#farm_detail_map.farm-detail-map
             #map_location_overlay.leaflet-map-overlay Nigeria 6.1816&deg;N, 6.5303&deg;E
 
-         script(src='/js/main.js' type='module')
-         //- script(src='/jquery-min.js' type='module')
+         //- script(src='/js/main.js' type='module')
+         script(src='/jquery-min.js' type='module')
