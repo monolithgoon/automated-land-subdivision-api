@@ -7,7 +7,7 @@ block landing-page
 
 	main
 
-		.landing-page-main-wrapper
+		.landing-page-wrapper
 
 
 			.landing-page-content-wrapper
@@ -36,11 +36,11 @@ block landing-page
 					p.standalone These clusters present a lower risk profile to a lender.
 
 
-				.standalone-headline
-					h2.standalone The farmers have banded together. 
+				.standalone-headline.among-us
+					h2 The farmers have banded together. 
 						span Now What?			
 
-					h2.standalone.bold How can they tell their farmlands apart?
+					h2.bold How can they tell their farmlands apart?
 
 
 				.bordered-paragraph-wrapper
@@ -60,18 +60,20 @@ block landing-page
 					//- p.standalone The tool helped eliminate land boundary disputes, and sped up their access to funding since lenders were assured of the farmers field identity.
 					p.standalone The tool helps eliminate land boundary disputes among farmers, and speeds up their access to funding since lenders are assured of the farmers' field identity.
 
-				br
-				br
-				br
-				br
+
+				.standalone-headline
+					h2 Auto Parcelization Preview
+					br
+					br
+					div
+						i.fi.fi-angle-down
+					br
+					br
+					br
 
 
 		// RENDER ONLY ONE PARCELIZED AGC PREVIEW MAP
 		.parcelization-preview-wrapper
-
-			.standalone-headline
-				h2.standalone Auto Parcelization Preview
-					//- span Now What?			
 
 			include parcelization-preview.pug
 
