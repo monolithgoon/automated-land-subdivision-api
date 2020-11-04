@@ -26,11 +26,7 @@ head
    //- MAIN STYLESHEET
    link(rel='stylesheet' href='/css/style.css')
 
-   //- MAIN SCRIPT
-   //- script(src='/js/main.js' type='module')
-   //- script(src='/jquery-min.js' type='module')
-
-   //- MAP SCRIPTS FROM agc-render.pug WILL APPEND HERE
+   //- MAP SCRIPTS FROM parcelized-agc-render.pug WILL APPEND HERE
    block head-map-scripts
 
 body
@@ -42,10 +38,11 @@ body
    block landing-page
 
    //- POPULATED WITH SUMMARIES OF DATA RETREIVED FOR ALL THE AGCS
-   block parcelized-agcs-overview
+   //- block parcelized-agcs-overview
 
    //- POPULATED WITH DATA RETREIVED FOR A SINGLE AGC, SHOWING PREVIEW MAPS
-   block parcelized-agc-preview-map
+   //- block parcelized-agc-preview-map
+
 
    //- BURGER MENU CLICK HANDLER
    script(type="text/javascript").

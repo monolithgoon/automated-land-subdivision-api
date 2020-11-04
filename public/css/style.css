@@ -357,10 +357,6 @@ h2.hero-topline {
 	width: 50px;
 }
 
-.bordered-paragraph-wrapper:nth-of-type(1) {
-	margin-bottom: 60;
-}
-
 .bordered-paragraph-wrapper {
 	/* width: 100%; */
 	margin: 20px;
@@ -369,6 +365,10 @@ h2.hero-topline {
 	border-radius: 10px;
 	font-family: 'Roboto', sans-serif;
 	background: #F4F4F4;
+}
+
+.bordered-paragraph-wrapper:nth-of-type(2) {
+	margin-bottom: 60px;
 }
 
 .bordered-paragraph-wrapper P:last-child {
@@ -410,19 +410,20 @@ h2.hero-topline {
 
 .standalone-headline {
 	margin: 30px 0;
-	font-family: 'Oswald', sans-serif;
 }
 
 .standalone-headline h2 {
 	margin: 15px 25px;
 	font-size: 30px;
+	font-family: 'Oswald', sans-serif;
 	text-align: center;
 	color: grey;
 }
 
 .standalone-headline h2 > span {
 	padding: 0 6px;
-	border: 1px solid grey
+	border: 1px solid grey; 
+	font-family: 'Oswald', sans-serif;
 }
 
 .standalone-headline h2:nth-of-type(1) {
@@ -845,27 +846,27 @@ input:focus {
 		width: 45vw;
 	}
 
-	main.landing-page-main-wrapper {
-		/* background: url('/images/assets/noun-contour-topography.svg') no-repeat left bottom; */
-		background: var(--background-color);
-		
+	main {
+		background: white;
 		z-index: 10;
 		margin-bottom: 300px;
 		position: relative;
+
+	}
+
+	.landing-page-main-wrapper {
+		margin-bottom: 60px;
+		background: var(--background-color);		
 	}
 
 	.landing-page-content-wrapper {
 		margin: auto;
 		width: 45vw;
-
-		/* background: pink;
-		z-index: 10;
-		margin-bottom: 450px;
-		position: relative; */
 	}
 
 	.parcelization-preview-wrapper {
-		background: limegreen;
+		margin: auto;
+		width: 90vw;
 	}
 
 	.agc-feature {
