@@ -357,6 +357,20 @@ h2.hero-topline {
 	width: 50px;
 }
 
+main {
+	background: white;
+	z-index: 10;
+	margin-bottom: 300px;
+	position: relative;
+
+}
+
+.landing-page-main-wrapper {
+	margin-bottom: 30px;
+	background: var(--background-color);		
+}
+
+
 .bordered-paragraph-wrapper {
 	/* width: 100%; */
 	margin: 20px;
@@ -846,17 +860,8 @@ input:focus {
 		width: 45vw;
 	}
 
-	main {
-		background: white;
-		z-index: 10;
-		margin-bottom: 300px;
-		position: relative;
-
-	}
-
 	.landing-page-main-wrapper {
 		margin-bottom: 60px;
-		background: var(--background-color);		
 	}
 
 	.landing-page-content-wrapper {
