@@ -864,6 +864,10 @@ input:focus {
 		position: relative; */
 	}
 
+	.parcelization-preview-wrapper {
+		background: limegreen;
+	}
+
 	.agc-feature {
 		display: grid;
 		grid-template-columns: 4fr 1fr;
