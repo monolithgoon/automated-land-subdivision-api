@@ -16,7 +16,7 @@
 
 :root {
   --button-primary-background: #1A73E8;
-  --background-color: #F4F4F4;
+  --grey-background: #F4F4F4;
 
 }
 
@@ -358,21 +358,33 @@ h2.hero-topline {
 }
 
 main {
+	margin-bottom: 300px;
 	background: white;
 	z-index: 10;
-	margin-bottom: 300px;
 	position: relative;
 
 }
 
-.landing-page-wrapper {
+.landing-page-main-wrapper {
 	margin-bottom: 0;
-	background: var(--background-color);		
+	background: url('../images/assets/noun-contour-topography-top-left.svg') no-repeat center center/cover;
+	background: url('../images/assets/noun-contour-topography-2.svg') no-repeat center center/cover;
+	background-color: var(--grey-background);		
+
+	/* ADJUST THE SVG CRAWL TO NOT OBSCURE THE MIDDLE TEXT */
+	background-position: -550px 0;
+	background-size: 800px;
 }
 
+.landing-page-content-wrapper {
+	padding-top: 20px;
+}
+
+.svg-page-crawl img {
+	z-index: 99;
+}
 
 .bordered-paragraph-wrapper {
-	/* width: 100%; */
 	margin: 20px;
 	padding: 0;
 	border: 1px solid #4a4a4a;
@@ -439,6 +451,7 @@ main {
 
 .standalone-headline.among-us h2 {
 	margin: 5px;
+	/* color: #836C3A; */
 	/* color: pink; */
 }
 
@@ -882,13 +895,20 @@ input:focus {
 		width: 45vw;
 	}
 
-	.landing-page-wrapper {
+	.landing-page-main-wrapper {
 		margin-bottom: 0;
+
+		background-position: -380px 0;
+		background-size: 800px;	
 	}
 
 	.landing-page-content-wrapper {
 		margin: auto;
 		width: 50vw;
+	}
+
+	.bordered-paragraph-wrapper {
+		padding: 20px;
 	}
 
 	.parcelization-preview-wrapper {

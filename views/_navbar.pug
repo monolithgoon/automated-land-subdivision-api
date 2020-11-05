@@ -26,3 +26,19 @@ nav.navbar-wrapper.is-fixed-top(role='navigation' aria-label='main navigation')
       .burger-lines
          .burger-line1
          .burger-line2
+
+
+   //- BURGER MENU CLICK HANDLER
+   script(type="text/javascript").
+      const burgerIcon = document.getElementById('menu_toggler')
+      const mobileMenu = document.getElementById('nav_links')
+
+      function toggleBurgerIcon(event) {
+         if (event.target.checked) {
+            console.log('fuck satan');
+            burgerIcon.classList.toggle('active')
+            mobileMenu.classList.toggle('is-active')
+         }
+      }
+
+      burgerIcon.addEventListener('change', toggleBurgerIcon)

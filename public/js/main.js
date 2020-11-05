@@ -21,7 +21,7 @@ import { RENDER_SHAPEFILE } from './irregular-polygon.js'
       bearing: 10, // bearing in degrees
       zoom: 15,
       zoom: 7,
-      zoom: 15.5,
+      zoom: 16,
       attribution: 'Nduka Okpue'
    });
 
