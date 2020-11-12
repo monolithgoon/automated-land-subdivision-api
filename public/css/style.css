@@ -7,6 +7,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300&family=Oswald&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Jura:wght@700&family=Scada:wght@700&display=swap');
 
+
+@font-face {
+	font-family: "CNN Business";
+	font-style: normal;
+	src: url('fonts/cnnbiz-bold.woff2') format('woff2');
+}
+
+
 * {
 	/* margin: 0;
 	padding: 0; */
@@ -898,8 +906,8 @@ input:focus {
 	.landing-page-main-wrapper {
 		margin-bottom: 0;
 
+		background-size: 780	px;	
 		background-position: -380px 0;
-		background-size: 800px;	
 	}
 
 	.landing-page-content-wrapper {
@@ -914,6 +922,12 @@ input:focus {
 	.parcelization-preview-wrapper {
 		margin: auto;
 		width: 90vw;
+	}
+
+	.parcelization-preview-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+		grid-gap: 1rem;
 	}
 
 	.agc-feature {
