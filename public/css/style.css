@@ -279,7 +279,7 @@ header {
 
 h2.hero-topline {
    font-family: 'Fjalla One', sans-serif;
-	font-size: 44px;
+	font-size: 48px;
 	line-height: 46px;
    font-weight: 400;
    text-align: left;
@@ -926,8 +926,18 @@ input:focus {
 
 	.parcelization-preview-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-		grid-gap: 1rem;
+		grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+		grid-gap: 0.5rem;
+	}
+
+	.cluster-preview-wrapper {
+		background: pink;
+	}
+
+	.cluster-preview-wrapper img {
+		height: 100%;
+		width: 100%;
+		object-fit: contain;
 	}
 
 	.agc-feature {

@@ -5,13 +5,15 @@
 
 const express = require("express");
 const ROUTER = express.Router();
+const subdivideController = require('../controllers/auto-subdivide-controller.js');
 const agcController = require('../controllers/agc-controller.js')
 
 
 
 ROUTER.route('/')
    .get(agcController.getAllAgcs)
-   .post(agcController.insertAgc);
+   // .post(agcController.insertAgc);
+   .post(agcController.insertAgc, subdivideController.parcelizeAgc);
 
 
 

@@ -4,7 +4,7 @@
   "description": "NIRSAL Parcelized Agcs API",
   "main": "app.js",
   "scripts": {
-    "exportdb": "cd ./database && node export-fs-data-to-db.js --export",
+    "exportdb": "cd ./data && node export-fs-data-to-db.js --export",
     "deploy": "git push && git push heroku master && heroku open",
     "deploy:default": "git add --all && git commit -m 'Housekeeping' && git push && git push heroku master && heroku open",
     "start": "node server.js",

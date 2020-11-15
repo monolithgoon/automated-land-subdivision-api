@@ -1,10 +1,10 @@
 const chalk = require('../utils/chalk-messages.js');
 const PARCELIZED_AGC_MODEL = require('../models/parcelized-agc-model.js')
-const { PARCELIZE_SHAPEFILE } = require('../database/agcs/parcelize/chunkify-moving-frames.js')
+const { PARCELIZE_SHAPEFILE } = require('../data/agcs/parcelize/chunkify-moving-frames.js')
 
 
 
-// PARCELIZATION LOGIC FN.
+// AUTO-SUBDIVIDE / AUTO-PARCELIZATION LOGIC FN.
 async function parcelize(agc) {
    
    try {
@@ -66,13 +66,14 @@ async function parcelize(agc) {
 
 
 // PARCELIZE THE NEW AGC AND INSERT INTO DB.
-exports.parcelizeAgc = async (req, res) => {
+exports.parcelizeAgc = async (req, res, next) => {
 
    try {
 
-      // PARCELIZE THE NEW AGC
       console.log(chalk.highlight(JSON.stringify(req.body)));
-      const parcelizedAgc = await parcelize(req.body)
+      
+      // PARCELIZE THE NEW AGC
+      const parcelizedAgc = await parcelize(req.body);
 
       // INSERT PARCELIZED AGC INTO DB.
       const insertedAgc = await PARCELIZED_AGC_MODEL.create(parcelizedAgc) // "model.create" returns a promise

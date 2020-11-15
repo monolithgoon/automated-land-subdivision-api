@@ -34,6 +34,8 @@ const PARCELIZED_AGC_CONTROLLER = require('../controllers/parcelized-agc-control
 // ROUTER.patch('/:id', updateTour) // PATCH ROUTE > MODIFY ONLY PARTS OF THE DATA
 // ROUTER.delete('/:id', deleteTour)
 
+
+
 // COMMAND CHAINING > A BETTER WAY OF WRITING ROUTES
 // REMOVE > 
 // ROUTER.route("/")
