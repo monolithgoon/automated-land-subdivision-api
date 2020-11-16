@@ -12,8 +12,8 @@ const agcController = require('../controllers/agc-controller.js')
 
 ROUTER.route('/')
    .get(agcController.getAllAgcs)
-   // .post(agcController.insertAgc);
-   .post(agcController.insertAgc, subdivideController.parcelizeAgc);
+   .post(agcController.insertAgc);
+   // .post(agcController.insertAgc, subdivideController.parcelizeAgc);
 
 
 

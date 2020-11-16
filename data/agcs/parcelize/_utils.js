@@ -133,7 +133,7 @@ function _getAllocationsMetadata(shapefileID, farmersData, farmerIndex) {
          fs.writeFile(`../../../public/images/farmer-photos/${farmer.farmer_id}.jpg`, base64Image, {encoding: 'base64'}, (err, data) => {
             
             if(err) {
-               console.log(chalk.error(err.message));
+               console.log(chalk.fail(err.message));
                process.exit();
             } else {
                console.log(chalk.success(`THE LOT OWNER PHOTOS FROM THIS SHAPEFILE ${shapefileID} WERE SAVED TO FILE  `));
@@ -141,7 +141,7 @@ function _getAllocationsMetadata(shapefileID, farmersData, farmerIndex) {
             }
          });
       } else {
-         console.error(chalk.error(`This PLOT OWNER ${farmer.first_name} ${farmer.last_name} does not have a photograph..`))
+         console.error(chalk.fail(`This PLOT OWNER ${farmer.first_name} ${farmer.last_name} does not have a photograph..`))
       }
    });
 
