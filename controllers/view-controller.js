@@ -76,8 +76,8 @@ exports.renderLandingPage = catchAsync(async (req, res, next) => {
       // THE PROCESS OF USING THEM IN THE .pug FILE IS CALLED INTERPOLATION
       title: "Farmland Auto Parcelization Tool",
       user: "Phillip Moss",
-      // parcelizedAgcsData: parcelizedAgcs
-      parcelizedAgcData: parcelizedAgcs[5]
+      parcelizedAgcsData: parcelizedAgcs
+      // parcelizedAgcData: parcelizedAgcs[5]
    });   
 })
 

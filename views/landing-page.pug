@@ -62,7 +62,7 @@ block landing-page
 
 
 				.standalone-headline
-					h2 Auto Parcelization Preview
+					h2 Auto Parcelization Examples
 					br
 					br
 					div
@@ -72,42 +72,66 @@ block landing-page
 					br
 
 
+		//- .parcelization-examples-wrapper
+
+		//- 	.parcelization-examples-carousel
+
+		//- 		.cluster-preview-wrapper
+		//- 			.cluster-preview-header 
+		//- 				h2 Ogo Owo is a worthless cunt
+		//- 			.cluster-preview-map
+		//- 				a(href="https://agcfarmlands.herokuapp.com/api/demo/parcelized-agc/?AGCABJ002B2B")
+		//- 					img(src="/images/agc-1.png" alt="")
+		//- 			.cluster-preview-info-wrapper
+		//- 				.cluster-preview-info-header
+		//- 					div Go fuck yourself, Ogo Owo
+		//- 				.cluster-preview-info-body
+		//- 					div Go fuck yourself some more, Ogo Owo
+
+		//- 		.cluster-preview-wrapper
+		//- 			.cluster-preview-map
+		//- 				a(href="https://agcfarmlands.herokuapp.com/api/demo/parcelized-agc/?AGCABJ002B2B")
+		//- 					img(src="/images/agc-2.png" alt="")
+		//- 			.cluster-preview-info-wrapper
+		//- 				.cluster-preview-info-header
+		//- 					div Go fuck yourself, Ogo Owo
+		//- 				.cluster-preview-info-body
+		//- 					div Go fuck yourself some more, Ogo Owo
+
+		//- 		.cluster-preview-wrapper
+		//- 			.cluster-preview-map
+		//- 				a(href="https://agcfarmlands.herokuapp.com/api/demo/parcelized-agc/?AGCABJ002B2B")
+		//- 					img(src="/images/agc-3.png" alt="")
+		//- 			.cluster-preview-info-wrapper
+		//- 				.cluster-preview-info-header
+		//- 					div Go fuck yourself, Ogo Owo
+		//- 				.cluster-preview-info-body
+		//- 					div Go fuck yourself some more, Ogo Owo
+
+		//- 		.cluster-preview-wrapper
+		//- 			.cluster-preview-map
+		//- 				a(href="https://agcfarmlands.herokuapp.com/api/demo/parcelized-agc/?AGCABJ002B2B")
+		//- 					img(src="/images/agc-4.jpg" alt="")
+		//- 			.cluster-preview-info-wrapper
+		//- 				.cluster-preview-info-header
+		//- 					div Go fuck yourself, Ogo Owo
+		//- 				.cluster-preview-info-body
+		//- 					div Go fuck yourself some more, Ogo Owo
+		//- 		//- div 4
+		//- 		//- div 5
+		//- 		//- div 6
+
+		//- 	button#previous_image_btn Previous
+		//- 	button#next_image_btn Next
+
+
 		// RENDER ONLY ONE PARCELIZED AGC PREVIEW MAP
-		.parcelization-preview-wrapper
+		//- include parcelization-preview.pug
+		include parcelized-agcs-overview.pug
+	
 
-		.parcelization-preview-grid
-			.cluster-preview-wrapper
-				.cluster-preview
-					a(href="https://agcfarmlands.herokuapp.com/api/demo/parcelized-agc/?AGCABJ002B2B")
-						img(src="/images/agc-1.png" alt="")
-				.cluster-preview-info-wrapper
-					.cluster-preview-info-header
-						//- div Go fuck yourself, Ogo Owo
-					.cluster-preview-info-body
-						//- div Go fuck yourself some more, Ogo Owo
-			.cluster-preview-wrapper
-				.cluster-preview
-					a(href="https://agcfarmlands.herokuapp.com/api/demo/parcelized-agc/?AGCABJ002B2B")
-						img(src="/images/agc-2.png" alt="")
-				.cluster-preview-info-wrapper
-					.cluster-preview-info-header
-						//- div Go fuck yourself, Ogo Owo
-					.cluster-preview-info-body
-						//- div Go fuck yourself some more, Ogo Owo
-			.cluster-preview-wrapper
-				.cluster-preview
-					a(href="https://agcfarmlands.herokuapp.com/api/demo/parcelized-agc/?AGCABJ002B2B")
-						img(src="/images/agc-3.png" alt="")
-				.cluster-preview-info-wrapper
-					.cluster-preview-info-header
-						//- div Go fuck yourself, Ogo Owo
-					.cluster-preview-info-body
-						//- div Go fuck yourself some more, Ogo Owo
-			//- div 4
-			//- div 5
-			//- div 6
-
-			//- include parcelization-preview.pug
+	//- include _footer.pug
 
 
-	include _footer.pug
+	//- script(src="/carousel.js" type='module')
+	script(src="/_carousel.js" type='module')

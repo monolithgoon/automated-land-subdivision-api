@@ -1,5 +1,4 @@
 const USER_MODEL = require('../models/user-model.js');
-const { request } = require('../app.js');
 
 
 

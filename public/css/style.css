@@ -279,7 +279,7 @@ header {
 
 h2.hero-topline {
    font-family: 'Fjalla One', sans-serif;
-	font-size: 48px;
+	font-size: 46px;
 	line-height: 46px;
    font-weight: 400;
    text-align: left;
@@ -485,6 +485,24 @@ main {
 .standalone-headline:last-of-type h2 {
 	font-size: 36px;
 	color: black;
+}
+
+.parcelization-examples-wrapper {
+	margin: auto;
+	width: 80vw;
+	overflow: hidden;
+}
+
+.parcelization-examples-carousel {
+	display: flex;
+	width: 100%;
+	/* height: 400px; */
+}
+
+.cluster-preview-wrapper {
+	padding: 10px;
+	background: pink;
+	border: 1px solid green
 }
 
 .api-guide-container {
@@ -919,25 +937,20 @@ input:focus {
 		padding: 20px;
 	}
 
-	.parcelization-preview-wrapper {
-		margin: auto;
+	.parcelization-examples-wrapper {
 		width: 90vw;
 	}
 
-	.parcelization-preview-grid {
+	.parcelization-examples-carousel {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
 		grid-gap: 0.5rem;
 	}
 
-	.cluster-preview-wrapper {
-		background: pink;
-	}
-
-	.cluster-preview-wrapper img {
+	.cluster-preview-map img {
 		height: 100%;
 		width: 100%;
-		object-fit: contain;
+		object-fit: cover;
 	}
 
 	.agc-feature {
