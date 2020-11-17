@@ -37,7 +37,23 @@
    background: #f5f6fa;
 }
 
-.preview-map-close-btn {
+.agc-info-overlay {
+   margin: 0;
+   /* margin-top: 12px; */
+   padding: 12px;
+   -webkit-font-smoothing: antialiased;
+   top: 0;
+   left: 0;
+   width: auto;
+   height: auto;
+   font-size: 14px;
+   color: white;
+   position: absolute;
+   z-index: 2;
+   background-color: rgba(31,51,73,.5)!important;
+}
+
+.cluster-map-close-btn {
    -webkit-font-smoothing: antialiased;
    text-size-adjust: 100%;
    box-sizing: inherit;
@@ -56,7 +72,6 @@
    position: absolute!important;
    top: 0!important;
    right: 0!important;
-   z-index: 2!important;
    margin-top: 12px!important;
    margin-right: 12px!important;
    padding-top: 12px!important;
@@ -64,6 +79,7 @@
    padding-left: 12px!important;
    padding-right: 12px!important;
    background-color: rgba(31,51,73,.5)!important;
+   z-index: 2!important;
 }
 
 .leaflet-map-overlay {

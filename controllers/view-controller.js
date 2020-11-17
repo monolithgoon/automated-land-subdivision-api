@@ -82,6 +82,7 @@ exports.renderLandingPage = catchAsync(async (req, res, next) => {
 })
 
 
+
 // RENDER ONLY THE PARCELIZED AGCS SUMMARIES
 exports.renderOnlyAgcs = catchAsync(async (req, res, next) => {
    // 1. GET ALL THE PARCELIZED AGCS DATA FROM THE ATLAS DB
@@ -154,7 +155,7 @@ exports.renderParcelizedAgc = async (req, res) => {
       })
 
    } catch (err) {
-      console.error(chalk.error(err.message));
+      console.error(chalk.fail(err.message));
    }
 }
 

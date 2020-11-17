@@ -13,13 +13,14 @@ block append head-map-scripts
 
 block parcelized-agc-preview-map
 
-   //- include _navbar.pug
+   //- include __navbar.pug
 
    //- div Data from the retreived parcelized AGC
    .app-container
 
       section#map
-         button.preview-map-close-btn
+         .agc-info-overlay= parcelizedAgcData.properties.agc_extended_name
+         button.cluster-map-close-btn
             svg.events-none.icon.color-lighten75.color-white-on-hover(role='presentation' focusable='false' style='width: 18px; height: 18px;')
                use(xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#icon-close')
 

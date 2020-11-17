@@ -1,7 +1,6 @@
 const chalk = require('../../utils/chalk-messages.js')
 const fs = require("fs");
-const axios = require("axios");
-const request = require("request");
+const axios = require("axios");;
 
 
 
@@ -40,7 +39,7 @@ async function returnAllAgcs() {
 
       
       // WRITE RESULT TO NEW FILE
-      fs.writeFile(`./data/agcs-${requestTimeStr}.geojson`, agcsData, (err, data) => {
+      fs.writeFile(`./data/bulk-data/agcs-${requestTimeStr}.geojson`, agcsData, (err, data) => {
 
          if(err) {
             console.log(chalk.error(err.message))

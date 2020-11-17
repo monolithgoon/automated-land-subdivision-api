@@ -23,7 +23,7 @@ const colors = [
    "#f0932b", // orange
    "#EAB543", // turquoise 
    "#1B9CFC", // sea blue
-   
+   "#FFFFFF", // white
    "#2d3436", // dracula
    "#be2edd", // FUCHSIA
    "#FD7272", // geogia peach
