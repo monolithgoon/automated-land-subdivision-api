@@ -137,7 +137,7 @@ function _getAllocationsMetadata(shapefileID, farmersData, farmerIndex) {
                process.exit();
             } else {
                console.log(chalk.success(`THE LOT OWNER PHOTOS FROM THIS SHAPEFILE ${shapefileID} WERE SAVED TO FILE  `));
-               process.exit();
+               // process.exit();
             }
          });
       } else {

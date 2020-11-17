@@ -95,11 +95,15 @@ const farmerSchema = new mongoose.Schema({
       type: String,
       required: [true, `The farmer's last name must be specified`]
    },
-   // farmer_photo: Buffer,
+   farmer_photo: Buffer,
    farmer_photo: {
-      type: Array,
-      required: true
+      type: Buffer,
+      unique: [true, `Each farmer's Base64 string must be unique`]
    },
+   // farmer_photo: {
+   //    type: Array,
+   //    required: true
+   // },
    farmer_photo_base64: Buffer,
    farmer_photo_url: {
       type: String,
@@ -160,6 +164,17 @@ const agcSchema = new mongoose.Schema({
       }
    }
 })
+
+
+
+// PRE-SAVE M-WARE TO REJECT ALLOCATIONS THAT ARE <= 0
+agcSchema.pre('save', function(next) {
+   this.properties.farmers.forEach( farmer => {
+      if(farmer.allocation <= 0) {
+         return next(new Error(`A farmer's hectarage allocation cannot be a negative number or equal to zero. Fix the AGC payload.`))
+      };
+   })
+});
 
 
 

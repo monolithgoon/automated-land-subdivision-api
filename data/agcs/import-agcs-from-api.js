@@ -65,8 +65,8 @@ async function returnAgc(agc_id) {
       
       const axiosRequest = axios({
          method: 'get',
-         url: `https://agcfarmlands.herokuapp.com/api/v1/agcs/?${agc_id}`,
-         // url: `http://127.0.0.1:9090/api/v1/agcs/agc/?${agc_id}`,
+         // url: `https://agcfarmlands.herokuapp.com/api/v1/agcs/?${agc_id}`,
+         url: `http://127.0.0.1:9090/api/v1/agcs/agc/?${agc_id}`,
          crossDomain: true,
          responseType: 'application/json',
          headers: {
