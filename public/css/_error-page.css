@@ -17,12 +17,17 @@
 .agc-not-found-page-wrapper h1 {
    padding: 10px;
    padding-left: 20px;
-   line-height: 30px;
+   line-height: 25px;
 }
 
 .agc-not-found-page-wrapper h1:first-of-type {
    padding: 30px;
    font-size: 40px;
+}
+
+.agc-not-found-page-wrapper h1:last-of-type {
+   padding: 0 30px;
+   font-size: 20px;
 }
 
 .page-graphic img {
