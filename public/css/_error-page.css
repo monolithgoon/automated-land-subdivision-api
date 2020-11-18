@@ -6,7 +6,7 @@
 
 .agc-not-found-page-wrapper {
    background: white;
-   /* background: rgb(43, 49, 55); */
+   background: rgba(43, 49, 55, 0.5);
    margin: auto;
    width: 75vw;
    display: grid;
