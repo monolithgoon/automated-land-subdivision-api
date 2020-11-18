@@ -1,0 +1,17 @@
+extends index.pug
+
+block parcelized-agc-not-found
+
+   //- main
+
+   .agc-not-found-page-wrapper
+
+      //- .section-1
+      h1= `404. Not Found.`
+
+      .page-graphic
+         //- img(src="/images/assets/noun-contour-topography-2.svg" alt="")
+         img(src="/images/assets/noun-dark-contour.svg" alt="")
+
+      //- .section-2
+      h1= `There is no AGC with ID ${agcID} in the database.`

@@ -1,4 +1,5 @@
 const chalk = require('../../utils/chalk-messages')
+const dbConnect = require('../../utils/db-connect.js')
 
 const fs = require('fs')
 const Mongoose = require('mongoose') // MongoDB driver that facilitates connection to remote db
@@ -11,28 +12,28 @@ const PARCELIZED_AGC_MODEL = require('../../models/parcelized-agc-model.js')
 
 
 // CONNECT TO THE REMOTE ATLAS DB
-async function dbConnect() {
-   try {
-      console.log(chalk.working('Connecting to the remote Atlas DB...'));
+// async function dbConnect() {
+//    try {
+//       console.log(chalk.working('Connecting to the remote Atlas DB...'));
 
-      const database = process.env.ATLAS_DB_STRING.replace('<PASSWORD>', process.env.ATLAS_DB_PASSOWRD) // REPLACE THE PLACEHOLDER TEXT IN THE CONNECTION STRING
+//       const database = process.env.ATLAS_DB_STRING.replace('<PASSWORD>', process.env.ATLAS_DB_PASSOWRD) // REPLACE THE PLACEHOLDER TEXT IN THE CONNECTION STRING
    
-      Mongoose.connect(database, {
-      // handle deprecation warnings
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
-      useUnifiedTopology: true
-   })
-      .then(connectionObject => {
-         // console.log((connectionObject))
-         console.log(chalk.connected('YOU CONNECTED TO THE ATLAS DATABASE SUCCESSFULLY '));
-      })
+//       Mongoose.connect(database, {
+//       // handle deprecation warnings
+//       useNewUrlParser: true,
+//       useCreateIndex: true,
+//       useFindAndModify: false,
+//       useUnifiedTopology: true
+//    })
+//       .then(connectionObject => {
+//          // console.log((connectionObject))
+//          console.log(chalk.connected('YOU CONNECTED TO THE ATLAS DATABASE SUCCESSFULLY '));
+//       })
    
-   } catch(err) {
-      console.log(err.message);
-   }
-}
+//    } catch(err) {
+//       console.log(err.message);
+//    }
+// }
 
 
 

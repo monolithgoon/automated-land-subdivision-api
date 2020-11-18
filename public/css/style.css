@@ -1,6 +1,7 @@
 @import url("./_map-overlays.css");
 @import url('./_header-slideshow.css');
 @import url('./_footer.css');
+@import url('./_error-page.css');
 
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,300i,400&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Overpass:wght@200&display=swap');

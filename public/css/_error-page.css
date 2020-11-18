@@ -1,0 +1,43 @@
+* {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+}
+
+.agc-not-found-page-wrapper {
+   background: white;
+   margin: auto;
+   width: 75vw;
+   display: grid;
+   grid-template-rows: 1fr auto 1fr;
+   place-items: center;
+   font-family: 'Roboto', sans-serif;
+}
+
+.agc-not-found-page-wrapper h1 {
+   padding: 10px;
+   padding-left: 20px;
+   line-height: 30px;
+}
+
+.agc-not-found-page-wrapper h1:first-of-type {
+   padding: 30px;
+   font-size: 40px;
+}
+
+.page-graphic img {
+   width: 100%;
+}
+
+/* ----------- Non-Retina Screens ----------- */
+@media screen and (min-device-width: 700px) and (max-device-width: 1600px) {
+
+   .agc-not-found-page-wrapper {
+      /* grid-template-columns: auto 1fr auto; */
+      width: 30vw;
+   }
+
+   .page-graphic img {
+      width: 100%;
+   }
+}
