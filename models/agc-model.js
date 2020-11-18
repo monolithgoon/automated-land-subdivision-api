@@ -172,10 +172,10 @@ const agcSchema = new mongoose.Schema({
 
 
 // PRE-SAVE M-WARE TO APPEND A TIMESTAMP TO THE DB SAVE OP.
-agcSchema.pre('save', function(next) {
-   const insertTimeStr = new Date().toISOString();
-   this.properties.db_insert_timestamp = insertTimeStr
-})
+// agcSchema.pre('save', function(next) {
+//    const insertTimeStr = new Date().toISOString();
+//    this.properties.db_insert_timestamp = insertTimeStr
+// })
 
 
 
