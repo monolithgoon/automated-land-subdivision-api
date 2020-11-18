@@ -161,11 +161,11 @@ const agcSchema = new mongoose.Schema({
          type: [farmerSchema],
          required: [true, `The AGC must have at least one farmer, or an array of farmers`],
          validate: [(entry) => Array.isArray(entry) && entry.length > 0, `The AGC must have at least one farmer, or an array of farmers`]
-      },
-      db_insert_timestamp: {
-         type: String,
-         required: [true, `Please provide a timestamp when the AGC was inserted to the database`]
       }
+      // db_insert_timestamp: {
+      //    type: String,
+      //    required: [true, `Please provide a timestamp when the AGC was inserted to the database`]
+      // }
    }
 })
 
