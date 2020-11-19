@@ -4,11 +4,6 @@
    box-sizing: border-box;
 }
 
-p {
-   /* margin: 0;
-   padding: 0; */
-   font-weight: lighter;
-}
 
 main {
    /* background: rgba(43, 49, 55, 0.5); */
@@ -16,17 +11,20 @@ main {
    height: 100vh; */
 }
 
+p {
+   font-weight: lighter;
+}
+
 .error-page-wrapper {
-   background: white;
-   background: rgba(43, 49, 55, 0.5);
    margin: auto;
    width: 80%;
+   background: white;
+   /* background-color: rgba(43, 49, 55, 0.5); */
+   font-family: 'Roboto', sans-serif;
 
    display: grid;
    grid-template-rows: 1fr auto 1fr;
    place-items: center;
-
-   font-family: 'Roboto', sans-serif;
 
    /* display: flex;
    flex-direction: column;

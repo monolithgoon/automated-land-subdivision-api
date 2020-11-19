@@ -279,15 +279,17 @@ header {
 }
 
 h2.hero-topline {
+	padding: 20px 0;
    font-family: 'Fjalla One', sans-serif;
-	font-size: 46px;
-	line-height: 46px;
-   font-weight: 400;
+	font-size: 50px;
+	line-height: 50px;
+	font-weight: 400;
+	text-transform: capitalize;
    text-align: left;
 }
 
 .hero-content p {
-	padding: 0;
+	padding: 20px 0 10px 0;
 	color: #ffffffb3;
 	color: rgba(255, 255, 255, 0.8);
 	font-family: 'Fira Sans Regular', sans-serif;
