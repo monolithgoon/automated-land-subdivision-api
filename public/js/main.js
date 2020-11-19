@@ -14,8 +14,8 @@ import { RENDER_SHAPEFILE } from './irregular-polygon.js'
       style: 'mapbox://styles/mapbox/cj3kbeqzo00022smj7akz3o1e', // moonlight
       style: 'mapbox://styles/mapbox/cjku6bhmo15oz2rs8p2n9s2hm', // minimo
       style: 'mapbox://styles/mapbox/streets-v11',
-      style: 'mapbox://styles/mapbox/outdoors-v11',
       style: 'mapbox://styles/mapbox/cjcunv5ae262f2sm9tfwg8i0w', // Lè Shine
+      style: 'mapbox://styles/mapbox/outdoors-v11',
       center: [5.963833, 5.243506],
       pitch: 50,
       bearing: 10, // bearing in degrees

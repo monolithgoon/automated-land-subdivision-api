@@ -1,5 +1,5 @@
-// // CSS
-// require('../css/style.css');
+// CSS
+require('../css/style.css');
 
-// // JAVASCRIPT
-// require ('./main.js')
+// JAVASCRIPT
+require ('./main.js')
