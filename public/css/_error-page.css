@@ -19,7 +19,7 @@ main {
    background: white;
    background: rgba(43, 49, 55, 0.5);
    margin: auto;
-   width: 70%;
+   width: 80%;
    /* height: 100%; */
 
    display: grid;
@@ -40,7 +40,7 @@ main {
 
 .error-page-wrapper h1:first-of-type {
    padding: 20px 35px;
-   font-size: 45px;
+   font-size: 55px;
 }
 
 .error-page-wrapper h1:last-of-type {
@@ -58,6 +58,11 @@ main {
 
    .error-page-wrapper {
       width: 30%;
+   }
+
+   .error-page-wrapper h1:first-of-type {
+      padding: 20px 35px;
+      font-size: 45px;
    }
 
    .page-graphic img {
