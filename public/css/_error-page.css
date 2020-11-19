@@ -38,7 +38,7 @@ p {
 
 .error-page-wrapper h1:first-of-type {
    padding: 20px 35px;
-   font-size: 55px;
+   font-size: 60px;
 }
 
 .error-page-wrapper h1:last-of-type {
@@ -48,6 +48,8 @@ p {
 }
 
 .page-graphic img {
+   /* background-color: grey; */
+   background-color: #F4F4F4;
    width: 100%;
 }
 
