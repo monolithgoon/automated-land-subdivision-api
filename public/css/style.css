@@ -282,15 +282,15 @@ header {
 h2.hero-topline {
 	padding: 20px 0;
    font-family: 'Fjalla One', sans-serif;
-	font-size: 50px;
-	line-height: 54px;
+	font-size: 45px;
+	line-height: 50px;
 	font-weight: 400;
 	text-transform: capitalize;
    text-align: left;
 }
 
 .hero-content p {
-	padding: 20px 0 10px 0;
+	padding: 10px 0 10px 0;
 	color: #ffffffb3;
 	color: rgba(255, 255, 255, 0.8);
 	font-family: 'Fira Sans Regular', sans-serif;
@@ -894,11 +894,13 @@ input:focus {
 	h2.hero-topline {
 		margin-top: 0;
 		margin-right: 30px;
+		font-size: 50px;
 		line-height: 60px;
-	}	
+	}
 
 	.hero-content p {
 		/* margin: 40px 0; */
+		padding: 20px 0 10px 0;
 		color: #ffffffb3;
 	}
 
