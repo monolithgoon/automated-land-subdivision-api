@@ -138,8 +138,7 @@ exports.renderParcelizedAgc = async (req, res) => {
       // CHECK IF A MATCHING RECORD EXISTS IN THE DB.
       if (await PARCELIZED_AGC_MODEL.countDocuments(queryObj) !==0) {
 
-         console.log(chalk.highlight(`WE FOUND IT!`));
-
+         
          // CONDUCT DB QUERY
          // let dbQuery = PARCELIZED_AGC_MODEL.find(JSON.parse(formattedQueryStr))
          let dbQuery = PARCELIZED_AGC_MODEL.find(queryObj)

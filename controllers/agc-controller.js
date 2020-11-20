@@ -173,6 +173,8 @@ exports.getAllAgcs = async (request, response) => {
 // CREATE/INSERT A NEW AGC (POST REQUEST) HANDLER FN.
 exports.insertAgc = async (req, res, next) => {
 
+   console.log(chalk.highlight('you hit the insertAgc fn.'));
+
    try {
       
       // CREATE A NEW AGC DOCUMENT _MTD 1
@@ -200,5 +202,5 @@ exports.insertAgc = async (req, res, next) => {
       });
    }
 
-   next();
+   // next();
 }

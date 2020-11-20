@@ -118,8 +118,8 @@
       }
     ],
     "properties": {
-      "extended_name": "AGC ABIA 1",
-      "agc_id": "AGCABI000000",
+      "extended_name": "POSTMAN TEST AGC 001",
+      "agc_id": "POSTMAN_AGC_001",
       "location": "Aba,Aba South,Abia",
       "governance_structure": {
         "president": "ADAMA  ABDUL",
@@ -138,15 +138,15 @@
         {
           "last_name": "ABDUL",
           "first_name": "ADAMA",
-          "farmer_id": "AGCABI000579",
-          "allocation": 4.0,
+          "farmer_id": "POSTMAN_TEST_AGC_001_579",
+          "allocation": 2.0,
           "farmer_photo_url": "",
           "farmer_photo": ""
         },
         {
           "last_name": "ABUBAKAR",
           "first_name": "ADAMU",
-          "farmer_id": "AGCABI000580",
+          "farmer_id": "POSTMAN_TEST_AGC_001_580",
           "allocation": 3.0,
           "farmer_photo_url": "",
           "farmer_photo": ""
@@ -154,7 +154,7 @@
         {
           "last_name": "ADAMU",
           "first_name": "ANGULU",
-          "farmer_id": "AGCABI000581",
+          "farmer_id": "POSTMAN_TEST_AGC_001_581",
           "allocation": 2.0,
           "farmer_photo_url": "",
           "farmer_photo": ""
@@ -162,7 +162,7 @@
         {
           "last_name": "ABU",
           "first_name": "KABIRU",
-          "farmer_id": "AGCABI000582",
+          "farmer_id": "POSTMAN_TEST_AGC_001_582",
           "allocation": 1.0,
           "farmer_photo_url": "",
           "farmer_photo": ""

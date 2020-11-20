@@ -207,7 +207,7 @@ agcSchema.pre('save', function(next) {
    if (agcArea >= totalAllocation) {
       return next();
    } else {
-      return next(new Error(`The total allocations exceed the land area. Reduce allocations by ${(totalAllocation - agcArea).toFixed(2)} ha.`))   
+      return next(new Error(`The total allocations exceed the land area. Reduce allocations by at least ${(totalAllocation - agcArea).toFixed(2)} ha.`))   
    }
 })
 
