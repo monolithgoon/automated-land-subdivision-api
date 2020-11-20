@@ -19,7 +19,7 @@ block parcelized-agc-preview-map
    .app-container
 
       section#map
-         .agc-info-overlay= parcelizedAgcData.properties.agc_extended_name
+         .agc-info-overlay= `${parcelizedAgcData.properties.agc_extended_name}  ${parcelizedAgcData.properties.agc_id}`
          button.cluster-map-close-btn
             svg.events-none.icon.color-lighten75.color-white-on-hover(role='presentation' focusable='false' style='width: 18px; height: 18px;')
                use(xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#icon-close')
