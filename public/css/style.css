@@ -519,6 +519,10 @@ main {
 	padding: 5px 35px;
 }
 
+.api-guide-container h3 {
+	font-size: 16px;
+}
+
 .agcs-overview-container {
 	font-family: Roboto, sans-serif;
 }

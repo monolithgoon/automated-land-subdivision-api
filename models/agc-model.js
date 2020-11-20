@@ -161,21 +161,27 @@ const agcSchema = new mongoose.Schema({
          type: [farmerSchema],
          required: [true, `The AGC must have at least one farmer, or an array of farmers`],
          validate: [(entry) => Array.isArray(entry) && entry.length > 0, `The AGC must have at least one farmer, or an array of farmers`]
+      },
+      db_insert_timestamp: {
+         type: String,
+         default: new Date().toISOString(),
+         required: [true, `Please provide a timestamp when the AGC was inserted to the database`]
       }
-      // db_insert_timestamp: {
-      //    type: String,
-      //    required: [true, `Please provide a timestamp when the AGC was inserted to the database`]
-      // }
    }
 })
 
 
 
 // PRE-SAVE M-WARE TO APPEND A TIMESTAMP TO THE DB SAVE OP.
-// agcSchema.pre('save', function(next) {
-//    const insertTimeStr = new Date().toISOString();
-//    this.properties.db_insert_timestamp = insertTimeStr
-// })
+agcSchema.pre('save', function(next) {
+
+   console.log(chalk.highlight(this.properties.db_insert_timestamp));
+
+   const insertTimeStr = new Date().toISOString();
+   this.properties.db_insert_timestamp = insertTimeStr
+
+   return next();
+})
 
 
 
@@ -186,6 +192,8 @@ agcSchema.pre('save', function(next) {
          return next(new Error(`A farmer's hectarage allocation cannot be a negative number or equal to zero. Please fix the AGC payload.`))
       };
    })
+
+   return next();
 });
 
 

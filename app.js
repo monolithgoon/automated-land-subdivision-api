@@ -103,7 +103,7 @@ const viewRouter = require('./routes/view-routes.js');
 // MOUNTING THE ROUTERS
 EXPRESS_APP.use('/', viewRouter);
 EXPRESS_APP.use('/api/demo/', viewRouter);
-EXPRESS_APP.use('/api/v1/agcs', agcsRouter);
+EXPRESS_APP.use('/api/v1/agcs/', agcsRouter);
 EXPRESS_APP.use('/api/v1/parcelized-agcs', parcelizedAgcsRouter);
 EXPRESS_APP.use('/api/v1/users', userRouter);
 
@@ -112,10 +112,10 @@ EXPRESS_APP.use('/api/v1/users', userRouter);
 // HANDLE ALL NON-EXISTING ROUTES
 EXPRESS_APP.use('*', (req, res, next) => {
 
-   // // res.status(404).json({
-   // //    status: 'fail',
-   // //    message: `Can't find ${req.originalUrl} on this server.`
-   // // })
+   res.status(404).json({
+      status: 'fail',
+      message: `Can't find ${req.originalUrl} on this server.`
+   })
 
    // const err = new Error(`Can't find ${req.originalUrl} on this server.`);
 
@@ -126,12 +126,12 @@ EXPRESS_APP.use('*', (req, res, next) => {
    // // ANY ARG. PASSED TO next() IS ASSUMED BY EXPRESS TO BE AN ERROR.
    // next(err)
 
-   next(new AppError(`Can't find ${req.originalUrl} on this server.`, 404))
+   // next(new AppError(`Can't find ${req.originalUrl} on this server.`, 404))
 })
 
 
 
-// // GLOBAL ERROR HANDLING M.WARE
+// GLOBAL ERROR HANDLING M.WARE
 EXPRESS_APP.use(globalErrorHandler)
 
 
