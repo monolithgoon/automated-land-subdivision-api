@@ -4,10 +4,6 @@
    box-sizing: border-box; */
 }
 
-/* p {
-   font-weight: lighter;
-} */
-
 .error-page-wrapper {
    margin: auto;
    width: 80%;
@@ -25,17 +21,28 @@
 }
 
 .error-page-wrapper h1 {
-   padding: 10px;
+   margin:0;
+   padding: 0;
+   /* padding: 10px; */
    padding-left: 20px;
+}
+
+.error-page-wrapper p {
+   margin: 0;
+   padding: 5px 35px;
+   padding-bottom: 0;
+   font-weight: lighter;
 }
 
 .error-page-wrapper h1:first-of-type {
    padding: 20px 35px;
+   padding: 0 30px;
    font-size: 60px;
 }
 
 .error-page-wrapper h1:last-of-type {
    padding: 20px 30px;
+   padding: 0 30px;
    font-size: 20px;
    line-height: 25px;
 }
