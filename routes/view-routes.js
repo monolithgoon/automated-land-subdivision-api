@@ -4,8 +4,8 @@ const viewsController = require('../controllers/view-controller.js')
 
 
 
-ROUTER.get('/', viewsController.renderLandingPage); // FOR > agfarmplots.com
-// ROUTER.get('/', viewsController.renderOnlyAgcs); // FOR > agcfarmlands.com
+// ROUTER.get('/', viewsController.renderLandingPage); // FOR > agfarmplots.com
+ROUTER.get('/', viewsController.renderOnlyAgcs); // FOR > agcfarmlands.com
 ROUTER.get('/agcs-overview', viewsController.renderOnlyAgcs);
 ROUTER.get('/api-guide', viewsController.renderAPIGuide);
 ROUTER.get('/parcelized-agc/:id', viewsController.checkDatabaseID, viewsController.renderParcelizedAgcByID);
