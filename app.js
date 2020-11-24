@@ -44,8 +44,8 @@ EXPRESS_APP.options('*', cors()); // enable cors pre-flight requests for all rou
 
 
 
-// 3RD PARTY MIDDLEWARE
-EXPRESS_APP.use(BodyParser.json())
+// 3RD PARTY MIDDLEWARE > PARSE DATA FROM INCOMING REQUESTS
+EXPRESS_APP.use(BodyParser.json({limit: '16mb'}))
 
 // 3RD PARTY MIDDLEWARE > REQ. LOGGING
 // perform logging only while in development mode..

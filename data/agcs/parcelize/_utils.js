@@ -125,7 +125,7 @@ function _getAllocationsMetadata(shapefileID, farmersData, farmerIndex) {
       // TODO > STRIP OFF THE META HEADERS FROM THE Base64 STRING 
       // const base64String = apiResponse.data.agcData.properties.farmers[4].farmer_photo
       // const base64Image = base64String.replace(/^data:image\/\w+;base64,/, '');
-      const base64Image = farmer.farmer_photo;
+      const base64Image = farmer.farmer_photo[0];
    
       // DECODE & SAVE LOT OWNER'S Base64 PHOTOGRAPH TO FILE
       if(base64Image) {
@@ -141,7 +141,7 @@ function _getAllocationsMetadata(shapefileID, farmersData, farmerIndex) {
             }
          });
       } else {
-         console.error(chalk.fail(`This PLOT OWNER ${farmer.first_name} ${farmer.last_name} does not have a photograph..`))
+         console.error(chalk.warning(`This PLOT OWNER ${farmer.first_name} ${farmer.last_name} does not have a photograph..`))
       }
    });
 

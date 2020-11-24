@@ -112,8 +112,8 @@ const parcelizeAgc = (agc) => {
       // const dirComboConfigObj = dirOptionsMap.es;
       // const dirComboConfigObj = dirOptionsMap.ne;
       // const dirComboConfigObj = dirOptionsMap.nw;
-      const dirComboConfigObj = dirOptionsMap.sw;
-      // const dirComboConfigObj = dirOptionsMap.se;
+      // const dirComboConfigObj = dirOptionsMap.sw;
+      const dirComboConfigObj = dirOptionsMap.se;
 
       // PARCELIZE
       // const parcelizedShapefile = await PARCELIZE_SHAPEFILE(selectedShapefile, farmerAllocations, dirComboConfigObj)
