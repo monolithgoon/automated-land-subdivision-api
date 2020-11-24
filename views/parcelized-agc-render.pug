@@ -50,8 +50,8 @@ block parcelized-agc-preview-map
                div Unused Land
                if parcelizedAgcData.properties
                   if parcelizedAgcData.properties.unused_land_area
-                     #unused_land.aggr-data= `${(parcelizedAgcData.properties.agc_area-parcelizedAgcData.properties.total_allocation).toFixed(1)} ha.`
                      //- #unused_land.aggr-data= `${parcelizedAgcData.properties.unused_land_area.toFixed(1)} ha.`
+                     #unused_land.aggr-data= `${(parcelizedAgcData.properties.agc_area-parcelizedAgcData.properties.total_allocation).toFixed(1)} ha.`
                else 
                   #shapefile_area.aggr-data -
 

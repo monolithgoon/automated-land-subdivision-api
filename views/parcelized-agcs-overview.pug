@@ -38,7 +38,8 @@ block parcelized-agcs-overview
 						div.total-allocation Allocations
 							div= `${parcelizedAgc.properties.total_allocation.toFixed(1)} ha.`
 						div.unused-land Unallocated
-							div= `${parcelizedAgc.properties.unused_land_area.toFixed(1)} ha.`
+							//- div= `${parcelizedAgc.properties.unused_land_area.toFixed(1)} ha.`
+							div= `${(parcelizedAgc.properties.agc_area-parcelizedAgc.properties.total_allocation).toFixed(1)} ha.`
 
 					br
 
