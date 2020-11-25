@@ -632,7 +632,7 @@ h2.subtitle {
 .plot-metadata-wrapper {
 	border: 1px solid #BAA884;
 	border-radius: 3px;
-	background-color: #E3D9C3;
+	/* background-color: #E3D9C3; */
 }
 
 .plot-owner-id,
