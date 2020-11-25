@@ -21,7 +21,7 @@ block parcelized-agcs-overview
 					div.agc-card-header
 						//- div= `${parcelizedAgc.properties.agc_extended_name}`
 						div
-							a(href=`/api/demo/parcelized-agc/?${parcelizedAgc.properties.agc_id}`)= `${parcelizedAgc.properties.agc_extended_name}`
+							a(href=`/api/demo/parcelized-agc/?${parcelizedAgc.properties.agc_id}`)= `${parcelizedAgc.properties.agc_extended_name.toUpperCase()}`
 						div= `${parcelizedAgc.properties.agc_location}`
 
 					br
@@ -53,17 +53,17 @@ block parcelized-agcs-overview
 							div.agc-feature
 								.feature-text-container
 									div.plot-owner-name= feature.properties.owner_name
-									div= `${feature.properties.chunk_size} ha.`
-									//- div.plot-owner-id= `${feature.properties.owner_id}`
 									div.plot-metadata-wrapper
+										div= `${feature.properties.chunk_size} ha.`
+										//- div.plot-owner-id= `${feature.properties.owner_id}`
 										div.plot-owner-id
-											span Farmer ID
+											span FID •  
 											span= `${feature.properties.owner_id}`
 										//- div= `VAsT ID ${feature.properties.chunk_id}`
 										div.plot-id
-											span VAsT ID
+											span VAsTID • 
 											span= `${feature.properties.chunk_id}`
-										//- div= `Lng ${feature.properties.center_lng.toFixed(4)}°E Lat ${feature.properties.center_lat.toFixed(5)}°N`
+										div= `Lng ${feature.properties.center_lng.toFixed(4)}°E Lat ${feature.properties.center_lat.toFixed(5)}°N`
 								.feature-owner-avatar-container
 									img(src=`${feature.properties.owner_photo_url === 'undefined' ? "/images/assets/icon-user.png" : feature.properties.owner_photo_url}`, alt="Plot Owner Photo" srcset="")
 									//- img(src="/images/assets/icon-user.png" alt="Plot Owner Photo" style="max-width:100%;")
