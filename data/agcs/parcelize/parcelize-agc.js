@@ -69,6 +69,8 @@ const parcelizeAgc = (agc) => {
    
    try {
       
+      console.log(chalk.working(`PARCELIZING ${agc.properties.agc_id} ... `));
+      
       // INIT. PARCELIZATION VARIABLES
       const selectedShapefile = agc
 

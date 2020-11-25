@@ -603,6 +603,7 @@ h2.subtitle {
 .agc-features-container {
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
+	place-items: center;
 }
 
 .agc-feature {
@@ -611,7 +612,12 @@ h2.subtitle {
 	margin-bottom: 10px;
 	background: #efe9dd;
 	display: grid;
-	grid-template-columns: 1fr;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 20px;
+}
+
+.feature-text-container div {
+	padding: 2px 0
 }
 
 .feature-owner-avatar-container {
@@ -623,9 +629,34 @@ h2.subtitle {
 	font-weight: 700;
 }
 
-.plot-owner-id {
+.plot-metadata-wrapper {
+	border: 1px solid #BAA884;
+	border-radius: 3px;
+	background-color: #E3D9C3;
+}
+
+.plot-owner-id,
+.plot-id {
 	/* font-size: 14px;
 	font-weight: 700 */
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	grid-gap: 3px;
+}
+
+.plot-owner-id span,
+.plot-id span {
+	/* padding: 2px; */
+	padding-left: 4px;
+	font-size: 11px;
+	/* border: 1px solid grey; */
+	/* border-bottom: 1px solid brown; */
+}
+
+.plot-owner-id span:last-of-type,
+.plot-id span:last-of-type {
+	width: 100px;
+	width: auto;
 }
 
 .app-container {
@@ -928,7 +959,7 @@ input:focus {
 
 	.agcs-overview-container {
 		margin: auto;
-		width: 45vw;
+		width: 50vw;
 	}
 
 	.landing-page-main-wrapper {

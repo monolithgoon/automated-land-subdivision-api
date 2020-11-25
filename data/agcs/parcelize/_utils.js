@@ -125,7 +125,13 @@ function _getAllocationsMetadata(shapefileID, farmersData, farmerIndex) {
       // TODO > STRIP OFF THE META HEADERS FROM THE Base64 STRING 
       // const base64String = apiResponse.data.agcData.properties.farmers[4].farmer_photo
       // const base64Image = base64String.replace(/^data:image\/\w+;base64,/, '');
-      const base64Image = farmer.farmer_photo[0];
+
+      const mongoBufferStr = Buffer.from(farmer.farmer_photo, 'base64');
+      // console.log(mongoBufferStr);
+      // console.log(farmer.farmer_photo[0]);
+      
+      const base64Image = farmer.farmer_photo;
+      // const base64Image = mongoBufferStr;
    
       // DECODE & SAVE LOT OWNER'S Base64 PHOTOGRAPH TO FILE
       if(base64Image) {
