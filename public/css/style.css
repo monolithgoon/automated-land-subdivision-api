@@ -371,6 +371,7 @@ h2.hero-topline {
 main {
 	margin-bottom: 300px;
 	background: white;
+	/* background: #efe9dd; */
 	z-index: 10;
 	position: relative;
 
@@ -383,6 +384,7 @@ main {
 	background-color: var(--grey-background);		
 
 	/* ADJUST THE SVG CRAWL TO NOT OBSCURE THE MIDDLE TEXT */
+	background-position: -550px; 
 	background-size: 760px;
 }
 
@@ -546,8 +548,8 @@ h2.subtitle {
 	padding: 15px;
 	padding-bottom: 5px;
 	background: #fff;
-	border: 1px solid rgba(211, 211, 211, 0.768);
 	border: 1px solid #efe9dd;
+	border: 1px solid rgba(211, 211, 211, 0.768);
 	box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.12);
 	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.12);
 }
