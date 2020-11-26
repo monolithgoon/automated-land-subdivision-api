@@ -136,7 +136,7 @@ function _getAllocationsMetadata(shapefileID, farmersData, farmerIndex) {
       // DECODE & SAVE LOT OWNER'S Base64 PHOTOGRAPH TO FILE
       if(base64Image) {
    
-         fs.writeFile(`../../../public/images/farmer-photos/${farmer.farmer_id}.jpg`, base64Image, {encoding: 'base64'}, (err, data) => {
+         fs.writeFile(`../../../public/assets/farmer-photos/${farmer.farmer_id}.jpg`, base64Image, {encoding: 'base64'}, (err, data) => {
             
             if(err) {
                console.log(chalk.fail(err.message));
@@ -153,7 +153,7 @@ function _getAllocationsMetadata(shapefileID, farmersData, farmerIndex) {
 
 
    // GET THE FARMER (LOT OWNER) PHOTO URL
-   const ownerPhotoURL = `/images/farmer-photos/${farmersData[farmerIndex].farmer_id}.jpg`
+   const ownerPhotoURL = `/assets/farmer-photos/${farmersData[farmerIndex].farmer_id}.jpg`
    console.log(chalk.highlight(ownerPhotoURL))
 
 

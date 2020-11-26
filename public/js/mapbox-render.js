@@ -228,8 +228,8 @@ function toggleMetadataPopup(map, layerProps, layerCenter) {
    const layerArea = layerProps.chunk_size;
    const centerLat = layerProps.center_lat ? layerProps.center_lat : "...";
    const centerLng = layerProps.center_lng ? layerProps.center_lng : "...";
-   const plotOwnerPhotoURL = layerProps.owner_photo_url === `undefined` ? `/images/assets/person-default.png` : layerProps.owner_photo_url
-   // const plotOwnerPhotoURL =`/images/person-default.png`
+   const plotOwnerPhotoURL = layerProps.owner_photo_url === `undefined` ? `/assets/images/assets/person-default.png` : layerProps.owner_photo_url
+   // const plotOwnerPhotoURL =`/assets/images/person-default.png`
 
    
    // const popup = new mapboxgl.Popup({ className: "mapbox-metadata-popup" })

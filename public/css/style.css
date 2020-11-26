@@ -136,9 +136,9 @@ header {
 /* STATIC HEADER/HERO BACKGROUND IMAGE USING CSS ONLY */
 /* header:before {
 	content: '';
-	background: url('../images/one-soil.jpg') no-repeat center center/cover;
-	background: url('../images/maxar-tech.jpg') no-repeat center center/cover;
-	background: url('../images/one-soil-4.jpg') no-repeat center center/cover;
+	background: url('../assets/images/one-soil.jpg') no-repeat center center/cover;
+	background: url('../assets/images/maxar-tech.jpg') no-repeat center center/cover;
+	background: url('../assets/images/one-soil-4.jpg') no-repeat center center/cover;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -379,7 +379,7 @@ main {
 
 .landing-page-main-wrapper {
 	margin-bottom: 0;
-	background: url('../images/assets/noun-contour-topography-top-left.svg') no-repeat center center/cover;
+	background: url('../assets/images/assets/noun-contour-topography-top-left.svg') no-repeat center center/cover;
 	background: url('../assets/images/noun-contour-topography.svg') no-repeat center center/cover;
 	background-color: var(--grey-background);		
 
@@ -390,10 +390,6 @@ main {
 
 .landing-page-content-wrapper {
 	padding-top: 20px;
-}
-
-.svg-page-crawl img {
-	z-index: 99;
 }
 
 .bordered-paragraph-wrapper {
