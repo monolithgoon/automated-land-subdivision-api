@@ -376,12 +376,11 @@ main {
 .landing-page-main-wrapper {
 	margin-bottom: 0;
 	background: url('../images/assets/noun-contour-topography-top-left.svg') no-repeat center center/cover;
-	background: url('../images/assets/noun-contour-topography-2.svg') no-repeat center center/cover;
+	background: url('../assets/images/noun-contour-topography.svg') no-repeat center center/cover;
 	background-color: var(--grey-background);		
 
 	/* ADJUST THE SVG CRAWL TO NOT OBSCURE THE MIDDLE TEXT */
-	background-position: -550px 0;
-	background-size: 800px;
+	background-size: 760px;
 }
 
 .landing-page-content-wrapper {
@@ -500,6 +499,10 @@ main {
 	font-family: Roboto, sans-serif;
 }
 
+.agcs-overview-container p {
+	margin: 0 15px;
+}
+
 .embedded-code-snippet {
 	/* overflow-x: hidden; */
 }
@@ -542,6 +545,7 @@ h2.subtitle {
 	background: #fff;
 	border: 1px solid #efe9dd;
 	box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.12);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
 }
 
 .agc-card-header {
