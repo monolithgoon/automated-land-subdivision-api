@@ -6,12 +6,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Overpass:wght@200&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300&family=Oswald&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Jura:wght@700&family=Scada:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fauna+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nova+Mono&display=swap');
 
 
 @font-face {
-	font-family: "CNN Business";
+	font-family: "Duolingo";
 	font-style: normal;
-	src: url('fonts/cnnbiz-bold.woff2') format('woff2');
+	src: url('fonts/DulingoNextRoundedLTPro-Regular.woff2') format('woff2');
 }
 
 
@@ -543,9 +546,10 @@ h2.subtitle {
 	padding: 15px;
 	padding-bottom: 5px;
 	background: #fff;
+	border: 1px solid rgba(211, 211, 211, 0.768);
 	border: 1px solid #efe9dd;
 	box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.12);
-	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.12);
 }
 
 .agc-card-header {
@@ -608,6 +612,9 @@ h2.subtitle {
 
 .plot-metadata-wrapper div {
 	padding: 2px 0;
+	/* font-family: 'Roboto Slab', sans-serif;
+	font-family: 'Fauna One', sans-serif; */
+	font-weight: 300;
 	font-size: 11.5px;
 	color: #404040;
 }
