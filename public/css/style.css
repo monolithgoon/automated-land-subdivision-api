@@ -1,6 +1,7 @@
 @import url("./_map-overlays.css");
 @import url('./_header-slideshow.css');
 @import url('./_footer.css');
+@import url('./_404.css');
 
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,300i,400&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Overpass:wght@200&display=swap');
@@ -27,7 +28,8 @@
 
 :root {
   --button-primary-background: #1A73E8;
-  --grey-background: #F4F4F4;
+  --grey-background: #F4F4F4; 
+  --grey-background: #F8F9FA; /* GOOGLE LIGHT GREY */
 
 }
 
@@ -370,9 +372,14 @@ h2.hero-topline {
 
 main {
 	margin-bottom: 300px;
+
+	background: #F8F9FA; /* GOOGLE LIGHT GREY */
 	background: white;
-	background: #EAF1FB;
+	background: #F4F4F4;
+	background: #EFE9DD;
+	
 	z-index: 10;
+
 	position: relative;
 
 }
@@ -543,18 +550,15 @@ h2.subtitle {
 	margin: 15px;
 	padding: 15px;
 	padding-bottom: 5px;
-	background: #fff;
-	border: 1px solid #efe9dd;
-	border: 1px solid rgba(211, 211, 211, 0.768);
-	box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.12);
-	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.12);
-	box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14),
-                    0 1px 10px 0 rgba(0, 0, 0, 0.12),
-						  0 2px 4px -1px rgba(0, 0, 0, 0.4);
-						  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                    0 1px 5px 0 rgba(0, 0, 0, 0.12),
-                    0 3px 1px -2px rgba(0, 0, 0, 0.2);
-}
+	background: #FFF;
+
+	/* border: 1px solid #efe9dd;
+	border: 1px solid rgba(211, 211, 211, 0.768); */
+
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+					0 1px 5px 0 rgba(0, 0, 0, 0.12),
+					0 3px 1px -2px rgba(0, 0, 0, 0.2);
+} 
 
 .agc-card-header {
 	padding-right: 3px;
@@ -570,7 +574,7 @@ h2.subtitle {
 	border-bottom: none;
 	display: grid;
 	grid-template-columns: 1fr repeat(3, 0.6fr);
-	/* grid-template-columns: 1fr auto 1fr 1fr; */
+	grid-template-columns: 1fr repeat(4, 0.6fr);
 	background: #f5f6fa;
 	border-radius: 3px;
 }

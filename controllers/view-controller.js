@@ -162,7 +162,7 @@ exports.renderParcelizedAgc = async (req, res) => {
       } else {
 
          // NO PARCELIZED AGC WITH THAT ID EXISTS IN THE DB.
-         res.status(404).render('data-not-found.pug', {
+         res.status(404).render('404.pug', {
             title: `AGC Not Found`,
             agcID: queryObjKey[0]
          });

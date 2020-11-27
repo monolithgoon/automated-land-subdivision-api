@@ -40,10 +40,12 @@ block parcelized-agcs-overview
 						div.unused-land Unallocated
 							//- div= `${parcelizedAgc.properties.unused_land_area.toFixed(1)} ha.`
 							div= `${(parcelizedAgc.properties.agc_area-parcelizedAgc.properties.total_allocation).toFixed(1)} ha.`
+						//- div.parcelization-timestamp Submitted
+						//- 	div= `${parcelizedAgc.properties.parcelization_timestamp || 'Nov 27, 20 3:40PM'}`
 
 					br
 
-					div.agc-card-features-header Farmers
+					div.agc-card-features-header=`${parcelizedAgc.features.length} farmers`
 
 					br
 
