@@ -99,6 +99,7 @@ p.note {
 	font-weight: bold;
 	color: #01579B;
 	background-color: rgb(234, 241, 251);
+	border: 1px solid #01579B;
 }
 
 .agcs-overview-container p:last-child {
@@ -374,9 +375,9 @@ main {
 	margin-bottom: 300px;
 
 	background: #F8F9FA; /* GOOGLE LIGHT GREY */
-	background: white;
 	background: #F4F4F4;
 	background: #EFE9DD;
+	background: white;
 	
 	z-index: 10;
 
