@@ -33,6 +33,9 @@
   --subtle-blue-background: rgb(234, 241, 251);
   --grey-standalone: #808080;
   --gold-trim: #836C3A;
+  --blue-google-text: #4285f4;
+  --blue-faded: #3e94b6;
+  --navy-blue: #01579B;
 
 }
 
@@ -106,7 +109,7 @@ p.note {
 	margin: 0;
 	padding-bottom: 15px;
 	font-weight: bold;
-	color: #01579B;
+	color: var(--navy-blue);
 	background-color: var(--subtle-blue-background);
 	border-top: 4px solid var(--grey-background-primary);
 }
@@ -483,8 +486,6 @@ main {
 
 .standalone-headline.among-us h2 {
 	margin: 5px;
-	/* color: #836C3A; */
-	/* color: pink; */
 }
 
 .standalone-headline h2 > span {
@@ -528,10 +529,6 @@ main {
 	margin: 0 15px;
 }
 
-.embedded-code-snippet {
-	/* overflow-x: hidden; */
-}
-
 .agc-json-data-ex {
 	font-size: 10px !important;
 	/* height: 400px; */
@@ -547,13 +544,12 @@ main {
 
 .token-subtitle {
 	font-size: 15px;
-	color: #01579b;
+	color: var(--navy-blue);
 }
 
 .token-code {
 	font-size: medium;
-	color: #3e94b6;
-	color: #4285f4;
+	color: var(--blue-google-text);
 }
 
 h2.subtitle {
@@ -576,15 +572,27 @@ h2.subtitle {
 	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
 					0 1px 5px 0 rgba(0, 0, 0, 0.12),
 					0 3px 1px -2px rgba(0, 0, 0, 0.2);
-} 
+}
+
+.agc-card a {
+	color: var(--navy-blue);
+}
 
 .agc-card-header {
 	padding-right: 3px;
-	color: #4285f4;
+	color: var(--navy-blue);
 	font-size: medium;
 	font-weight: 700;
 	display: flex;
 	justify-content: space-between;
+}
+
+.agc-card-header a {
+	text-decoration: none;
+}
+
+.agc-card-header a:hover {
+	text-decoration: underline;
 }
 
 .agc-card-summary {
@@ -597,6 +605,14 @@ h2.subtitle {
 	border-radius: 3px;
 }
 
+.agc-card-summary a {
+	text-decoration: none;
+}
+
+.agc-card-summary a:hover {
+	text-decoration: underline;
+}
+
 .agc-id,
 .agc-area,
 .total-allocation,
@@ -605,6 +621,7 @@ h2.subtitle {
 }
 
 .agc-card-features-header {
+	font-size: 14px;
 	font-weight: 700;
 }
 
@@ -869,12 +886,6 @@ input:focus {
 
 	.navbar-wrapper {
 		margin-bottom: 25px;
-	}
-
-	/* HIDE THE LINK ARROW IN DESKTOP MODE */
-	.navbar-menu-wrapper i {
-		/* display: none;
-		visibility: hidden; */
 	}
 
 	.nav-links {
