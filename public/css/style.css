@@ -404,7 +404,6 @@ main {
 .landing-page-main-wrapper {
 	margin-bottom: 0;
 
-	background: url('../assets/images/assets/noun-contour-topography-top-left.svg') no-repeat center center/cover;
 	background: url('../assets/images/noun-contour-topography.svg') no-repeat center center/cover;
 	background-color: var(--grey-background-secondary);		
 
