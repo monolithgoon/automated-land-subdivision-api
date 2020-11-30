@@ -3,7 +3,7 @@ const turf = require('@turf/turf')
 
 
 
-exports._getKatanaSlice = function(direction, percentage, shapefile) {
+exports._getKatanaSlice = function _getKatanaSlice(direction, percentage, shapefile) {
 
    const shapefileArea = _calcArea(shapefile);
    let areaToAnnex = shapefileArea * percentage
@@ -65,7 +65,7 @@ exports._getKatanaSlice = function(direction, percentage, shapefile) {
          
          
          // REDUCE THE % INGRESS BY 5f%..
-         // RE-START THE KATANA SLICING PROCESS FROM THE TOP..
+         // RECURSIVELY RE-START THE KATANA SLICING PROCESS FROM THE TOP..
          percentage = percentage - 0.05
          _getKatanaSlice(direction, percentage, shapefile)
          // console.log(intersectSliceArea.toFixed(1));

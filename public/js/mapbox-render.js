@@ -23,7 +23,8 @@ const colors = [
    "#f0932b", // orange
    "#EAB543", // turquoise 
    "#1B9CFC", // sea blue
-   "#FFFFFF", // white
+   "#57606f", // grisaillee (dark grey)
+   "#3742fa", // bright greek (dark blue)
    "#2d3436", // dracula
    "#be2edd", // FUCHSIA
    "#FD7272", // geogia peach
@@ -32,6 +33,16 @@ const colors = [
    "#f0932b", // orange
    "#EAB543", // turquoise 
    "#1B9CFC", // sea blue
+   "#b2bec3", // soothing breeze (grey)
+   "#a4b0be", // peace (grey)
+   "#fd79a8", // pico-8 pink
+   "#00b894", // mint leaf (green)
+
+   // DUTCH PALETTE
+   "#ED4C67", // bara red
+   "#B53471", // very berry
+   "#833471", // hollyhock
+   "#6F1E51", // magenta purple
 ]
 
 const getLayerColor = (index) => {
@@ -228,8 +239,7 @@ function toggleMetadataPopup(map, layerProps, layerCenter) {
    const layerArea = layerProps.chunk_size;
    const centerLat = layerProps.center_lat ? layerProps.center_lat : "...";
    const centerLng = layerProps.center_lng ? layerProps.center_lng : "...";
-   const plotOwnerPhotoURL = layerProps.owner_photo_url === `undefined` ? `/assets/images/assets/person-default.png` : layerProps.owner_photo_url
-   // const plotOwnerPhotoURL =`/assets/images/person-default.png`
+   const plotOwnerPhotoURL = layerProps.owner_photo_url === `undefined` ? `/assets/icons/person-default.png` : layerProps.owner_photo_url
 
    
    // const popup = new mapboxgl.Popup({ className: "mapbox-metadata-popup" })
@@ -240,13 +250,13 @@ function toggleMetadataPopup(map, layerProps, layerCenter) {
                   <div class="popup-text-wrapper">
                      <div class="popup-farmer-name">${layerProps.owner_name} </div>
                      BVN <span>hidden</span> <br>
-                     Farmer_ID ${layerProps.owner_id.toUpperCase()} <br> 
-                     VAsT_ID ${layerProps.chunk_id} <br>
+                     FarmerID • ${layerProps.owner_id.toUpperCase()} <br> 
+                     VAsTID • ${layerProps.chunk_id} <br>
                      Lat ${centerLat.toFixed(5)}°N Lng ${centerLng.toFixed(5)}°E <br>
                   </div>
 
                   <div class="popup-media-wrapper">
-                     <img src="${plotOwnerPhotoURL}" alt="Plot Owner Photo" style="max-width:100%; opacity: 1;">
+                     <img class="object-fit-test" src="${plotOwnerPhotoURL}" alt="Plot Owner Photo" style="max-width:100%; opacity: 1;">
                   </div>
                   
                </div>`)

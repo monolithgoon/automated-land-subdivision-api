@@ -118,43 +118,78 @@ function _analyzeShapefile(shapefile) {
 // ...
 function _getAllocationsMetadata(shapefileID, farmersData, farmerIndex) {
 
+   // VARIABLE TO HOLD URL TO DECODED PHOTO
+   let ownerPhotoUrl;
 
    // DECODE THE BASE64 IMAGES AN SAVE TO FILE
-   farmersData.forEach( farmer => {
-   
-      // TODO > STRIP OFF THE META HEADERS FROM THE Base64 STRING 
-      // const base64String = apiResponse.data.agcData.properties.farmers[4].farmer_photo
-      // const base64Image = base64String.replace(/^data:image\/\w+;base64,/, '');
+   const farmer = farmersData[farmerIndex];
 
-      const mongoBufferStr = Buffer.from(farmer.farmer_photo, 'base64');
-      // console.log(mongoBufferStr);
-      // console.log(farmer.farmer_photo[0]);
+   // TODO > STRIP OFF THE META HEADERS FROM THE Base64 STRING 
+   // const base64String = apiResponse.data.agcData.properties.farmers[4].farmer_photo
+   // const base64Image = base64String.replace(/^data:image\/\w+;base64,/, '');
+   const base64ImageStr = farmer.farmer_photo;
+   
+   // DECODE & SAVE LOT OWNER'S Base64 PHOTOGRAPH TO FILE
+   if (JSON.stringify(base64ImageStr) !== `[""]`) {
+
+      // CREATE THE FARMER (LOT OWNER) PHOTO URL
+      ownerPhotoURL = `/assets/farmer-photos/${farmer.farmer_id}.jpg`
+      console.log(chalk.highlight(ownerPhotoURL))
+   
+      // WRITE TO FILE
+      fs.writeFile(`../../../public/assets/farmer-photos/${farmer.farmer_id}.jpg`, base64ImageStr, {encoding: 'base64'}, (err, data) => {
+         
+         if(err) {
+            console.log(chalk.fail(err.message));
+            process.exit();
+         } else {
+            // console.log(chalk.success(`THE LOT OWNER PHOTOS FROM THIS SHAPEFILE ${shapefileID} WERE SAVED TO FILE  `));
+            // process.exit();
+         }
+      });
+
+   } else {
+
+      ownerPhotoURL = undefined;
       
-      const base64Image = farmer.farmer_photo;
-      // const base64Image = mongoBufferStr;
+      console.error(chalk.warning(`This PLOT OWNER ${farmer.first_name} ${farmer.last_name} does not have a photograph..`))
+   }
+
+
    
-      // DECODE & SAVE LOT OWNER'S Base64 PHOTOGRAPH TO FILE
-      if(base64Image) {
+   // farmersData.forEach( farmer => {
    
-         fs.writeFile(`../../../public/assets/farmer-photos/${farmer.farmer_id}.jpg`, base64Image, {encoding: 'base64'}, (err, data) => {
+   //    // REMOVE > 
+   //    const mongoBufferStr = Buffer.from(farmer.farmer_photo, 'base64');
+   //    // console.log(mongoBufferStr);
+   //    // console.log(farmer.farmer_photo[0]);
+      
+   //    const base64Image = farmer.farmer_photo;
+   //    // const base64Image = mongoBufferStr;
+   
+   //    // DECODE & SAVE LOT OWNER'S Base64 PHOTOGRAPH TO FILE
+   //    if (base64Image) {
+   
+   //       fs.writeFile(`../../../public/assets/farmer-photos/${farmer.farmer_id}.jpg`, base64Image, {encoding: 'base64'}, (err, data) => {
             
-            if(err) {
-               console.log(chalk.fail(err.message));
-               process.exit();
-            } else {
-               // console.log(chalk.success(`THE LOT OWNER PHOTOS FROM THIS SHAPEFILE ${shapefileID} WERE SAVED TO FILE  `));
-               // process.exit();
-            }
-         });
-      } else {
-         console.error(chalk.warning(`This PLOT OWNER ${farmer.first_name} ${farmer.last_name} does not have a photograph..`))
-      }
-   });
+   //          if(err) {
+   //             console.log(chalk.fail(err.message));
+   //             process.exit();
+   //          } else {
+   //             // console.log(chalk.success(`THE LOT OWNER PHOTOS FROM THIS SHAPEFILE ${shapefileID} WERE SAVED TO FILE  `));
+   //             // process.exit();
+   //          }
+   //       });
+
+   //    } else {
+   //       console.error(chalk.warning(`This PLOT OWNER ${farmer.first_name} ${farmer.last_name} does not have a photograph..`))
+   //    }
+   // });
 
 
-   // GET THE FARMER (LOT OWNER) PHOTO URL
-   const ownerPhotoURL = `/assets/farmer-photos/${farmersData[farmerIndex].farmer_id}.jpg`
-   console.log(chalk.highlight(ownerPhotoURL))
+   // // CREATE THE FARMER (LOT OWNER) PHOTO URL
+   // const ownerPhotoURL = `/assets/farmer-photos/${farmersData[farmerIndex].farmer_id}.jpg`
+   // console.log(chalk.highlight(ownerPhotoURL))
 
 
    const allocationsMetadata = {

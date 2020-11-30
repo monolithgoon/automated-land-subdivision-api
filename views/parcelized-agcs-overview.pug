@@ -7,7 +7,11 @@ block parcelized-agcs-overview
 	.agcs-overview-container
 
 		h2.subtitle= `Parcelized AGCs (${parcelizedAgcsData.length} AGCs)`
-		p.standalone.note Click on the AGC names or IDs to preview the farm cluster map.
+		.standalone-container
+			p.standalone.note(style="display: flex; align-items: center;")
+				span
+					img(src="/assets/icons/click.svg" alt="" style="padding-right: 8px; width: 32px;")
+				span Click on the AGC names or IDs to preview the farm cluster map.
 		//- p These examples below demostrate how groups of farmers farming collectively in agro geo-clusters (AGCs) have used our entirely web-based tool to quickly, precisely and digitally divvy up their aggregate land among their members; a process that has helped eliminate land boundary disputes, and sped up their access to funding.
 		//- br
 
@@ -67,6 +71,6 @@ block parcelized-agcs-overview
 											span= `${feature.properties.chunk_id}`
 										div= `Lng ${feature.properties.center_lng.toFixed(4)}°E Lat ${feature.properties.center_lat.toFixed(5)}°N`
 								.feature-owner-avatar-container
-									img(src=`${feature.properties.owner_photo_url === 'undefined' ? "/assets/images/assets/icon-user.png" : feature.properties.owner_photo_url}`, alt="Plot Owner Photo" srcset="")
-									//- img(src="/assets/images/assets/icon-user.png" alt="Plot Owner Photo" style="max-width:100%;")
+									img(src=`${feature.properties.owner_photo_url === 'undefined' ? "/assets/icons/icon-user.png" : feature.properties.owner_photo_url}`, alt="Plot Owner Photo" srcset="")
+									//- img(src="/assets/icons/icon-user.png" alt="Plot Owner Photo" style="max-width:100%;")
 									//- br

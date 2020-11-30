@@ -28,8 +28,11 @@
 
 :root {
   --button-primary-background: #1A73E8;
-  --grey-background: #F4F4F4; 
-  --grey-background: #F8F9FA; /* GOOGLE LIGHT GREY */
+  --grey-background-primary: #F4F4F4;
+  --grey-background-secondary: #F8F9FA; /* GOOGLE LIGHT GREY */
+  --subtle-blue-background: rgb(234, 241, 251);
+  --grey-standalone: #808080;
+  --gold-trim: #836C3A;
 
 }
 
@@ -79,6 +82,11 @@ h3 {
 	padding: 5px 35px;
 }
 
+.standalone-container {
+	margin: 0 15px;
+	border: 1px solid #d2e3fc;
+}
+
 p {
 	padding: 15px 35px 0 35px;
 	font-size: 15px;
@@ -95,11 +103,16 @@ p.bold {
 }
 
 p.note {
+	margin: 0;
 	padding-bottom: 15px;
 	font-weight: bold;
 	color: #01579B;
-	background-color: rgb(234, 241, 251);
-	border: 1px solid #01579B;
+	background-color: var(--subtle-blue-background);
+	border-top: 4px solid var(--grey-background-primary);
+}
+
+p.standalone.note {
+	margin: 0;
 }
 
 .agcs-overview-container p:last-child {
@@ -375,9 +388,9 @@ main {
 	margin-bottom: 300px;
 
 	background: #F8F9FA; /* GOOGLE LIGHT GREY */
-	background: #F4F4F4;
 	background: #EFE9DD;
 	background: white;
+	background: #F4F4F4;
 	
 	z-index: 10;
 
@@ -387,13 +400,16 @@ main {
 
 .landing-page-main-wrapper {
 	margin-bottom: 0;
+
 	background: url('../assets/images/assets/noun-contour-topography-top-left.svg') no-repeat center center/cover;
 	background: url('../assets/images/noun-contour-topography.svg') no-repeat center center/cover;
-	background-color: var(--grey-background);		
+	background-color: var(--grey-background-secondary);		
 
 	/* ADJUST THE SVG CRAWL TO NOT OBSCURE THE MIDDLE TEXT */
 	background-position: -550px; 
 	background-size: 760px;
+
+	border-bottom: 1px solid #EFE9DD;
 }
 
 .landing-page-content-wrapper {
@@ -553,8 +569,9 @@ h2.subtitle {
 	padding-bottom: 5px;
 	background: #FFF;
 
-	/* border: 1px solid #efe9dd;
-	border: 1px solid rgba(211, 211, 211, 0.768); */
+	/* border: 1px solid #efe9dd; */
+	/* border: 1px solid rgba(211, 211, 211, 0.268); */
+	border-radius: 2px;
 
 	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
 					0 1px 5px 0 rgba(0, 0, 0, 0.12),
@@ -926,7 +943,7 @@ input:focus {
 
 	.agcs-overview-container {
 		margin: auto;
-		width: 45vw;
+		width: 48vw;
 	}
 
 	.landing-page-main-wrapper {

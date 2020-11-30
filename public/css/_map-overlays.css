@@ -1,5 +1,5 @@
 .mapboxgl-popup-content {
-   width: 350px;
+   width: 300px;
    /* height: 50px;
    line-height: 5px; */
    font-size: 12px;
@@ -20,7 +20,7 @@
 
 .mapbox-metadata-popup {
 	display: grid;
-	grid-template-columns: 2fr 1fr;
+	grid-template-columns: 2fr auto;
 }
 
 .popup-farmer-name {
@@ -35,6 +35,17 @@
 
 .popup-media-wrapper {
    background: #f5f6fa;
+   /* background: pink; */
+}
+
+.popup-media-wrapper img {
+   height: 100px;
+   object-fit: fill;
+}
+
+.object-fit-test {
+   /* height: 500px; */
+   object-fit: fill;
 }
 
 .agc-info-overlay {

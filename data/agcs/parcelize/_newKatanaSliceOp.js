@@ -14,7 +14,7 @@ exports._newKatanaSliceOperation = function (percentIngress, kSliceDir, reunited
 
    } else {
       
-      newPercentIngress = percentIngress - 0.10
+      newPercentIngress = percentIngress - 0.20
       // percentIngress = percentIngress + 0.05
       console.log(`percent ingress: ${newPercentIngress}`);
 

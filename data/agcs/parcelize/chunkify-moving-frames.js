@@ -78,9 +78,12 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
 
       // GET THE WORKING SHAPEFILE
       let katanaData = _getKatanaSlice(katanaSliceDir, percentIngress, SELECTED_SHAPEFILE)
+      
+      // let workingShapefile = SELECTED_SHAPEFILE; // IMPORTANT > WILL PARCELIZE W/OUT MAKING BLOCKS 
+      let workingShapefile = katanaData.annexedPolygon;
+
       let pendingShapefile = katanaData.leftoverPolygon
-      // let workingShapefile = katanaData.annexedPolygon; // IMPORTANT 
-      let workingShapefile = SELECTED_SHAPEFILE;
+
 
 
       // IMPORTANT 
