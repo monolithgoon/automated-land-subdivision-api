@@ -224,9 +224,9 @@ exports._chunkify = function(allocationsMetadata, {
       // UNDESIREABLE GEOMETRY INTERSECTS ("GeometryCollection") WILL OCCUR WHEN THIS NUMBER IS TOO SMALL
       // IMPORTANT 
       // moveIncrement += 0.001; // USE FOR TINY SHAPEFILES (<10 ha.)
-      moveIncrement += 0.0009; // USE FOR SMALL SHAPEFILES (<25 ha.)
+      // moveIncrement += 0.0009; // USE FOR SMALL SHAPEFILES (<25 ha.)
       // moveIncrement += 0.0005; // USE FOR MEDIUM SHAPEFILES (<50 ha.) **
-      // moveIncrement += 0.0003; // USE FOR MEDIUM SHAPEFILES (<50 ha.) ***
+      moveIncrement += 0.0003; // USE FOR MEDIUM SHAPEFILES (<50 ha.) ***
       // moveIncrement += 0.0002; // USE FOR ..
       // moveIncrement += 0.0001; // USE FOR LARGE SHAPEFILES (>100 ha.)
    }

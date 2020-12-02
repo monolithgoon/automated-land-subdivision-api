@@ -2,6 +2,7 @@
 @import url('./_header-slideshow.css');
 @import url('./_footer.css');
 @import url('./_404.css');
+@import url('./_animated-svg-marker.css');
 
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,300i,400&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Overpass:wght@200&display=swap');
@@ -858,6 +859,7 @@ input:focus {
 	overflow: hidden;
 }
 
+
 /* ----------- Non-Retina Screens ----------- */
 @media screen and (min-device-width: 700px) and (max-device-width: 1600px) {
 	/* and (-webkit-min-device-pixel-ratio: 1) {  */
@@ -953,7 +955,7 @@ input:focus {
 
 	.agcs-overview-container {
 		margin: auto;
-		width: 48vw;
+		width: 46vw;
 	}
 
 	.landing-page-main-wrapper {
@@ -1064,14 +1066,8 @@ input:focus {
 	}
 
 	.farm-detail-map {
-		height: auto;
-	}
-
-	.chunk-polygon-label {
-		font-size: 10px;
-		color: black;
-		background: white;
-		border: 2px solid black;
+		/* height: auto; */
+		height: 63vh;
 	}
 }
 

@@ -50,13 +50,13 @@
 
 .agc-info-overlay {
    margin: 0;
-   /* margin-top: 12px; */
    padding: 12px;
    -webkit-font-smoothing: antialiased;
    top: 0;
    left: 0;
    width: auto;
    height: auto;
+   font-family: "Roboto", sans-serif;
    font-size: 14px;
    color: white;
    position: absolute;
@@ -111,3 +111,88 @@
    user-select: none;
    z-index: 999!important;
 }
+
+.plot-metadata-label {
+   width: 150px !important;
+   height: auto !important;
+
+   font-size: 9px;
+   color: black;
+   background-color: white;
+   border: 2px solid black;
+
+   display: grid !important;
+   grid-template-columns: 1fr 2fr;
+}
+
+.plot-metadata-label > div:first-of-type {
+   margin: auto 0;
+   padding: 0 4px;
+   height: 100%;
+   background-color: black;
+   color: white;
+   border-right: 2px solid black;
+
+   /* CENTER THE TEXT IN THE GRID ITEM */
+   display: flex;
+   align-items: center;
+}
+
+.plot-metadata-label > div:last-of-type {
+   padding: 4px;
+   display: grid;
+   grid-template-rows: repeat(2, 1fr);
+   font-weight: bold;
+}
+
+.plot-polygon-vertex-coords-label {
+   padding: 2px;
+   padding-left: 0;
+	width: 95px !important; /* OVERIDE .leaflet-marker-icon STYLING */
+	height: 15px !important; /* OVERIDE .leaflet-marker-icon STYLING */
+   font-size: 7px;
+   font-weight: bold;
+	color: black;
+	background-color: white;
+	border: 1px solid black;
+	display: none !important;
+}
+
+.plot-polygon-vertex-coords-label span{
+   padding: 2px;
+   color: white;
+   background-color: black;
+   border: 1px solid black;
+}
+
+.plot-polygon-vertex-dist-label,
+.plot-polygon-vertex-dist-bearing-label {
+   padding: 2px;
+	width: 35px !important; /* OVERIDE .leaflet-marker-icon STYLING */
+	height: 15px !important; /* OVERIDE .leaflet-marker-icon STYLING */
+   font-size: 8px;
+   font-weight: bold;
+	color: black;
+	background-color: #00b894;
+	background-color: #00cec9;
+	border: 1px solid black;
+}
+
+.plot-polygon-vertex-dist-bearing-label {
+   display: none !important;
+}
+
+/* ----------- Non-Retina Screens ----------- */
+@media screen and (min-device-width: 700px) and (max-device-width: 1600px) {
+   /* and (-webkit-min-device-pixel-ratio: 1) {  */
+      
+      .plot-polygon-vertex-coords-label {
+         display: block !important;
+      }
+
+      .plot-polygon-vertex-dist-bearing-label {
+         width: 80px !important; /* OVERIDE .leaflet-marker-icon STYLING */
+         display: block !important;
+      }
+   }
+   

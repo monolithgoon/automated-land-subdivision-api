@@ -1,0 +1,69 @@
+#personPin path {
+   /* fill: #ce7575; */
+}
+
+#personPin .pulse-outer-ring {
+   animation: opacityPulse 2s cubic-bezier(1, 0.14, 1, 1);
+   animation-iteration-count: infinite;
+   opacity: 0.5;
+}
+
+#personPin path.pulse-outer-ring {
+   /* fill: lighten(@color, 40%); */
+}
+
+#personPin .pulse-inner-ring {
+   animation: opacityPulse 2s cubic-bezier(0.4, 0.74, 0.56, 0.82);
+   animation-iteration-count: infinite;
+   opacity: 0.8;
+}
+
+#personPin path.pulse-inner-ring {
+   /* fill: lighten(@color, 30%); */
+}
+
+@keyframes opacityPulse {
+	0% {
+		opacity: 0.1;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0.1;
+	}
+}
+
+@keyframes bounceInDown {
+	from, 60%, 75%, 90%, to {
+		animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+	}
+
+	0% {
+		opacity: 0;
+		transform: translate3d(0, -3000px, 0);
+	}
+
+	60% {
+		opacity: 1;
+		transform: translate3d(0, 5px, 0);
+	}
+
+	75% {
+		transform: translate3d(0, -3px, 0);
+	}
+
+	90% {
+		transform: translate3d(0, 5px, 0);
+	}
+
+	to {
+		transform: none;
+	}
+}
+
+.bounceInDown {
+	animation-name: bounceInDown;
+	animation-duration: 2s;
+	animation-fill-mode: both;
+}

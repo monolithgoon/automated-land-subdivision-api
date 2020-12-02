@@ -1,4 +1,5 @@
 import { map } from "./main.js"
+import { getAnimatedPersonMarker } from "./_animated-svg-marker.js";
 
 
 
@@ -271,67 +272,100 @@ function toggleMetadataPopup(map, layerProps, layerCenter) {
 
 
 
+// CONVERT DEGREES TO DEG. MIN. SEC. (DMS) FORMAT
+function toDegreesMinutesAndSeconds (deg) {
+   var absolute = Math.abs(deg);
+
+   var degrees = Math.floor(absolute);
+   var minutesNotTruncated = (absolute - degrees) * 60;
+   var minutes = Math.floor(minutesNotTruncated);
+   var seconds = ((minutesNotTruncated - minutes) * 60).toFixed(2);
+
+   return `${degrees}° ${minutes}' ${seconds}"`
+}
+
+
+
 export function POLYGON_FILL_BEHAVIOR(map, leaflet_map, polygonFillLayer) {
 
-   const activeLayersIDs = [];
+   try {
 
-   map.on('click', `${polygonFillLayer.id}`, function(e) {
-
-      // JUMP TO THE SATTELITE MAP @ BOTTOM OF THE PAGE
-      window.scrollTo(0, document.body.scrollHeight, {behavior: "smooth"});
-
-      // GEOJSON PROPERTIES
-      const layer = e.features[0].layer;
-      const props = e.features[0].properties;
-      const geom = e.features[0].geometry;
-      const coords = geom.coordinates[0];
-      const center = e.lngLat;
-
-      // MAPBOX LAYER ID
-      const layerIndex = props.chunk_index;
-      const layerID = `${layerIndex}_${Math.random() * 99999998}`;
-
-      // KEEP TRACK OF THE CLICKED LAYERS
-      const clickedLayerID = `clickedPolyon_${layerID}`
-      activeLayersIDs.push(clickedLayerID)
+      const activeLayersIDs = [];
 
 
-      // OPEN A MAPBOX POPUP
-      toggleMetadataPopup(map, props, center);
-
-      // COLOR THE GRID CELL THAT WAS CLICKED
-      map.addLayer ({
-         'id': `clickedPolyon_${layerID}`,
-         'type': 'fill',
-         'source': {
-           'type': 'geojson',
-           'data': geom
-         },
-         'paint': {
-            //   'fill-color': '#686de0', // INDIGO
-            // 'fill-color': '#F19066', // SALMON
-            'fill-color': colors[layerIndex-1],
-            'fill-opacity': 0.3,
-         }
-       })
+      // Create group for your layers and add it to the map
+      var leafletLayerGroup = L.layerGroup().addTo(leaflet_map);
 
 
-      // RENDER THE FARM PLOT IN THE LEAFLET MINI MAP
+      map.on('click', `${polygonFillLayer.id}`, function(e) {
 
-         leaflet_map.setView(center, 16.5)
+         // JUMP TO THE SATTELITE MAP @ BOTTOM OF THE PAGE
+         window.scrollTo(0, document.body.scrollHeight, {behavior: "smooth"});
+
+         // CLEAR THE PREVIOUS LEAFLET LAYERS
+         leafletLayerGroup.clearLayers();
+
+         // GET THE GEOJSON PROPERTIES
+         const layer = e.features[0].layer;
+         const props = e.features[0].properties;
+         const geom = e.features[0].geometry;
+         const coords = geom.coordinates[0];
+         const center = e.lngLat;
+         const turfCenter = turf.centerOfMass(geom).geometry.coordinates; // LNG. LAT. FORMAT
+         const leafletCenter = [turfCenter[1], turfCenter[0]] // CONVERT TO LAT. LNG FORMAT
+         console.log(props);
+
+         // MAPBOX LAYER ID
+         const layerIndex = props.chunk_index;
+         const layerID = `${layerIndex}_${Math.random() * 99999998}`;
+
+         // KEEP TRACK OF THE CLICKED LAYERS
+         const clickedLayerID = `clickedPolyon_${layerID}`
+         activeLayersIDs.push(clickedLayerID)
+
+
+         // OPEN A MAPBOX POPUP
+         toggleMetadataPopup(map, props, center);
+
+         // COLOR THE GRID CELL THAT WAS CLICKED
+         map.addLayer ({
+            'id': `clickedPolyon_${layerID}`,
+            'type': 'fill',
+            'source': {
+            'type': 'geojson',
+            'data': geom
+            },
+            'paint': {
+               //   'fill-color': '#686de0', // INDIGO
+               // 'fill-color': '#F19066', // SALMON
+               'fill-color': colors[layerIndex-1],
+               'fill-opacity': 0.3,
+            }
+         })
+
+
+         // RENDER THE FARM PLOT IN THE LEAFLET MINI MAP       
+         // leaflet_map.setView(center, 17.5);
+         const bufferedPlot = turf.buffer(geom, 0.09, {unit: 'kilometers'})
+         const plotBounds = L.geoJson(geom).getBounds();
+         leaflet_map.fitBounds(plotBounds, {padding: [150, 50]}); // PADDING: [L-R, T-D]
          
          
-         // ADD A MARKER
-         L.marker(center).addTo(leaflet_map);
-
+         // // ADD A MARKER TO PLOT CENTER
+         // // L.marker(center).addTo(leaflet_map);
+         // L.marker(leafletCenter).addTo(leafletLayerGroup);
          
+
          // RENDER A LEAFLET POLYGON TO REPRESENT THE FARM PLOT
          L.geoJSON(geom, {
             "color": "white", 
             "weight": 4,
             "opacity": 1
-         }).addTo(leaflet_map);
+         // }).addTo(leaflet_map);
+         }).addTo(leafletLayerGroup);
 
+
+         // FILL THE POLYGON
          // FIXME > THE COORD. SYSTEM HERE IS OFF..
          L.polygon([...coords], {
             style: {
@@ -342,104 +376,135 @@ export function POLYGON_FILL_BEHAVIOR(map, leaflet_map, polygonFillLayer) {
                dashArray: '3',
                opacity: 3,
             }
-         }).addTo(leaflet_map);  
+         // }).addTo(leaflet_map);  
+         }).addTo(leafletLayerGroup);  
 
 
-         // SHOW THE FARM BOUNDARY COORDS. AS A LEAFLET ICON
-         coords.forEach(coordinate => {
-            L.marker(coordinate, {
-               icon: L.divIcon({
-                  className: 'chunk-polygon-label',
-                  html: `${coordinate[0].toFixed(2)}, ${coordinate[1].toFixed(2)}`,
-                  iconSize: [100,20]
-               }),
-               zIndexOffset: 1
-            })
-            .addTo(leaflet_map)
-         });
-   });
+         // DISPLAY PLOT METADATA AT CENTER OF PLOT
+         L.marker(leafletCenter, {
+            icon: L.divIcon({
+               className: 'plot-metadata-label',
+               html: `
+                     <div> ${props.chunk_size === 1 ? "1 hectare" : props.chunk_size} hectares </div>
+                     <div> 
+                        <span> Plot-${props.chunk_index} </span>
+                        <span> ${props.owner_name} </span>
+                     </div>`,
+            }),
+            zIndexOffset: 100
+         }).addTo(leafletLayerGroup);
+
+
+         // SHOW THE DISTANCE & BEARING BTW. FARM PLOT CORNERS
+         for (let idx = 0; idx < coords.length; idx++) {
+
+            const plotCorner = coords[idx];
+
+            const fromPlotCorner = coords[idx];
+            const toPlotCorner = coords[idx + 1] === undefined ? coords[0] : coords[idx + 1]; // RETURN BACK TO STARTING CORNER
+
+            const midpoint = turf.midpoint(fromPlotCorner, toPlotCorner)
+            const midpointCoords = midpoint.geometry.coordinates;
+            const distance = turf.distance(fromPlotCorner, toPlotCorner, {units: 'kilometers'}) * 1000;
+            const bearing = turf.distance(fromPlotCorner, toPlotCorner, {units: 'degrees'});
+            const degMinSec = toDegreesMinutesAndSeconds(bearing); // CONVERT bearing to 0° 0' 4.31129" FORMAT    
+
+
+            // YOU ARE AT STARTING POINT WHEN BEARING === 0
+            // DON'T SHOW A MIDPOINT DIST. MARKER HERE
+            // ONLY SHOW LABELS IF DIST. BTW. VERTICES > 5.0 meters
+            if (bearing !== 0 && distance > 5) {
+
+               // SHOW THE PLOT VERTICES AS LEAFLET ICONS
+               // IMPORTANT 
+               // NOTE: COORDS. IN LEAFLET ARE "latLng" 
+               // NOTE: COORDS. IN MAPBOX ARE "lngLat"
+               L.marker([plotCorner[1], plotCorner[0]], {
+                  icon: L.divIcon({
+                     className: 'plot-polygon-vertex-coords-label',
+                     html: `<span>${idx}</span> ${plotCorner[0].toFixed(5)}°N, ${plotCorner[1].toFixed(5)}°E`,
+                     iconSize: [70, 15]
+                  }),
+                  zIndexOffset: 98
+                  
+               }).addTo(leafletLayerGroup);   
+               
+
+               // SHOW DIST. BTW. CORNERS ONLY
+               L.marker([midpointCoords[1], midpointCoords[0]], {
+                  icon: L.divIcon({
+                     className: 'plot-polygon-vertex-dist-label',
+                     html: `${distance.toFixed(0)} m,`,
+                     iconSize: [30, 15]
+                  }),
+                  zIndexOffset: 99
+   
+               // }).addTo(leaflet_map);
+               }).addTo(leafletLayerGroup);
+
+               
+               // SHOW DIST. & BEARING
+               L.marker([midpointCoords[1], midpointCoords[0]], {
+                  icon: L.divIcon({
+                     className: 'plot-polygon-vertex-dist-bearing-label',
+                     html: `${distance.toFixed(0)} m, ${degMinSec}`,
+                     iconSize: [30, 15]
+                  }),
+                  zIndexOffset: 99
+   
+               // }).addTo(leaflet_map);
+               }).addTo(leafletLayerGroup);
+
+            } else if (bearing === 0) {
+
+               // THE BEARING == 0 => THAT CORNER IS THE PLOT "STARTING" POINT
+               // ADD A MARKER
+               leafletLayerGroup.addLayer(getAnimatedPersonMarker([plotCorner[1], plotCorner[0]]));
+               // L.marker([plotCorner[1], plotCorner[0]]).addTo(leafletLayerGroup);               
+            }
+         }
+      });
 
 
     
-   // Change the cursor to a pointer when the mouse is over the grid fill layer.
-   map.on('mouseenter', `${polygonFillLayer.id}`, function(e) {
+      // Change the cursor to a pointer when the mouse is over the grid fill layer.
+      map.on('mouseenter', `${polygonFillLayer.id}`, function(e) {
 
-      map.getCanvas().style.cursor = 'pointer';
+         map.getCanvas().style.cursor = 'pointer';
 
-      // GEOJSON PROPS.
-      const props = e.features[0].properties;
-      const center = e.lngLat
+         // GEOJSON PROPS.
+         const props = e.features[0].properties;
+         const center = e.lngLat
 
-      // MAPBOX LAYER ID
-      const layerIndex = props.chunk_index;
-      const layerID = `${layerIndex}_${Math.random() * 99999998}`;
+         // MAPBOX LAYER ID
+         const layerIndex = props.chunk_index;
+         const layerID = `${layerIndex}_${Math.random() * 99999998}`;
 
-      // KEEP TRACK OF THE MOUSED OVER LAYERS
-      const mouseoverLayerID = `mousedOverPolygon_${layerID}`
-      activeLayersIDs.push(mouseoverLayerID);
-      
-      // CREATE POPUP
-      toggleMetadataPopup(map, props, center);
-   });
+         // KEEP TRACK OF THE MOUSED OVER LAYERS
+         const mouseoverLayerID = `mousedOverPolygon_${layerID}`
+         activeLayersIDs.push(mouseoverLayerID);
+         
+         // CREATE POPUP
+         toggleMetadataPopup(map, props, center);
+      });
 
    
    
-   // Change it back to a pointer when it leaves.
-   map.on('mouseleave', `${polygonFillLayer.id}`, function() {
-      
-      map.getCanvas().style.cursor = '';
+      // Change it back to a pointer when it leaves.
+      map.on('mouseleave', `${polygonFillLayer.id}`, function() {
+         
+         map.getCanvas().style.cursor = '';
 
-      // CLOSE ALL OPEN POPUPS
-      map.fire('closeAllPopups')
-      
-   });
+         // CLOSE ALL OPEN POPUPS
+         map.fire('closeAllPopups')
+         
+      });
 
 
 
-   // REMOVE  
-//    // // When a click event occurs on a feature in the states layer, open a popup at the
-//    // // location of the click, with description HTML from its properties.
-//    // map.on('click', 'regularPolyGrid', function(e) {
-//    //    props = e.features[0].properties
-//    //    new mapboxgl.Popup()
-//    //       .setLngLat(e.lngLat)
-//    //       .setHTML(`${props.id} <br> 
-//    //                Area ~ ${props.area} ha. <br> 
-//    //                Lat ${(props.latitude).toFixed(4)}, Lng ${(props.longitude).toFixed(4)}`)
-//    //       .addTo(map);
-//    // });
-    
-//    // // Change the cursor to a pointer when the mouse is over the states layer.
-//    // map.on('mouseenter', 'regularPolyGrid', function() {
-//    //    map.getCanvas().style.cursor = 'pointer';
-//    // });
-    
-//    // // Change it back to a pointer when it leaves.
-//    // map.on('mouseleave', 'regularPolyGrid', function() {
-//    //    map.getCanvas().style.cursor = '';
-//    // });
-
-//    // When a click event occurs on a feature in the states layer, open a popup at the
-//    // location of the click, with description HTML from its properties.
-//    map.on('click', 'farmCellGrid_2', function(e) {
-//       props = e.features[0].properties
-//       new mapboxgl.Popup()
-//          .setLngLat(e.lngLat)
-//          .setHTML(`Farm #${props.id} <br> 
-//                   Area ~ ${props.area} ha. <br> 
-//                   Lat ${(props.latitude).toFixed(4)}, Lng ${(props.longitude).toFixed(4)}`)
-//          .addTo(map);
-//    });
-    
-//    // Change the cursor to a pointer when the mouse is over the states layer.
-//    map.on('mouseenter', 'farmCellGrid_2', function() {
-//       map.getCanvas().style.cursor = 'pointer';
-//    });
-    
-//    // Change it back to a pointer when it leaves.
-//    map.on('mouseleave', 'farmCellGrid_2', function() {
-//       map.getCanvas().style.cursor = '';
-//    });
+   } catch (err) {
+      console.log(err.message)
+   }
 
 }
 

@@ -4,47 +4,49 @@ import { GET_MAPBOX_POLYGON_LAYER, GET_LABEL_LAYER, CLEAR_LAYERS, RENDER_LAYER, 
 import { RENDER_SHAPEFILE } from './irregular-polygon.js'
 
 
-   // MAIN MAP
-   mapboxgl.accessToken = 'pk.eyJ1IjoiYnBhY2h1Y2EiLCJhIjoiY2lxbGNwaXdmMDAweGZxbmg5OGx2YWo5aSJ9.zda7KLJF3TH84UU6OhW16w';
-   export const map = new mapboxgl.Map({
-      container: 'map',
-      style: 'mapbox://styles/mapbox/satellite-streets-v11',
-      style: 'mapbox://styles/mapbox/cjerxnqt3cgvp2rmyuxbeqme7', // cali terrain
-      style: 'mapbox://styles/mapbox/navigation-preview-day-v4',
-      style: 'mapbox://styles/mapbox/cj3kbeqzo00022smj7akz3o1e', // moonlight
-      style: 'mapbox://styles/mapbox/cjku6bhmo15oz2rs8p2n9s2hm', // minimo
-      style: 'mapbox://styles/mapbox/streets-v11',
-      style: 'mapbox://styles/mapbox/cjcunv5ae262f2sm9tfwg8i0w', // Lè Shine
-      style: 'mapbox://styles/mapbox/outdoors-v11',
-      center: [5.963833, 5.243506],
-      pitch: 50,
-      bearing: 10, // bearing in degrees
-      zoom: 15,
-      zoom: 7,
-      zoom: 16,
-      attribution: 'Nduka Okpue'
-   });
+// MAIN MAP
+mapboxgl.accessToken = 'pk.eyJ1IjoiYnBhY2h1Y2EiLCJhIjoiY2lxbGNwaXdmMDAweGZxbmg5OGx2YWo5aSJ9.zda7KLJF3TH84UU6OhW16w';
+export const map = new mapboxgl.Map({
+   container: 'map',
+   style: 'mapbox://styles/mapbox/satellite-streets-v11',
+   style: 'mapbox://styles/mapbox/cjerxnqt3cgvp2rmyuxbeqme7', // cali terrain
+   style: 'mapbox://styles/mapbox/navigation-preview-day-v4',
+   style: 'mapbox://styles/mapbox/cj3kbeqzo00022smj7akz3o1e', // moonlight
+   style: 'mapbox://styles/mapbox/cjku6bhmo15oz2rs8p2n9s2hm', // minimo
+   style: 'mapbox://styles/mapbox/streets-v11',
+   style: 'mapbox://styles/mapbox/cjcunv5ae262f2sm9tfwg8i0w', // Lè Shine
+   style: 'mapbox://styles/mapbox/outdoors-v11',
+   center: [5.963833, 5.243506],
+   pitch: 50,
+   bearing: 10, // bearing in degrees
+   zoom: 15,
+   zoom: 7,
+   zoom: 16,
+   attribution: 'Nduka Okpue'
+});
 
 
 
-   // BING MAP TILE
-   const bing_maps_tile = L.bingLayer('ArOrASno0BM9N0a3FfAOKXbzNfZA8BdB5Y7OFqbDIcbhkTiDHwmiNGfNFXoL9CTY', {
-      imagerySet: 'AerialWithLabels',
-      maxZoom: 28,
-      detectRetina: true,
-      retinaDpi: 'd2',
-      mapLayer: "TrafficFlow",
-      attribution: '&copy; Nduka Okpue'
-   })
+// BING MAP TILE
+const bing_maps_tile = L.bingLayer('ArOrASno0BM9N0a3FfAOKXbzNfZA8BdB5Y7OFqbDIcbhkTiDHwmiNGfNFXoL9CTY', {
+   imagerySet: 'AerialWithLabels',
+   maxZoom: 28,
+   detectRetina: true,
+   retinaDpi: 'd2',
+   mapLayer: "TrafficFlow",
+   attribution: '&copy; Nduka Okpue'
+})
 
 
-   // FARM DETAIL MINI-MAP
-   export const leaflet_map = L.map("farm_detail_map", { zoomSnap: 0.01 })
-      .addLayer(bing_maps_tile)
-      // .setView([6.514869, 6.146273], 14);
-      // .setView([6.476225, 6.191201], 15);
-      .setView([5.49709, 5.340072], 10);
-      // .setView([5.49709, 5.340072], 7);
+
+// FARM DETAIL MINI-MAP
+export const leaflet_map = L.map("farm_detail_map", { zoomSnap: 0.01 })
+   .addLayer(bing_maps_tile)
+   // .setView([6.514869, 6.146273], 14);
+   // .setView([6.476225, 6.191201], 15);
+   .setView([5.49709, 5.340072], 10);
+   // .setView([5.49709, 5.340072], 7);
+
 
    {
 
@@ -238,7 +240,7 @@ import { RENDER_SHAPEFILE } from './irregular-polygon.js'
       window.scrollTo(0, document.body.scrollTop, {behavior: "smooth"});
 
 
-      // GET DATA FROM BACKEND
+      // GET DATA FROM BACKEND TO USE TO RENDER THE PLOTS
       const parcelizedAgcGeojson = JSON.parse(GET_PARCELIZED_AGC_API_DATA());
       console.log(parcelizedAgcGeojson);
 
