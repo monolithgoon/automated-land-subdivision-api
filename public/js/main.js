@@ -2,6 +2,7 @@
 
 import { GET_MAPBOX_POLYGON_LAYER, GET_LABEL_LAYER, CLEAR_LAYERS, RENDER_LAYER, POLYGON_FILL_BEHAVIOR } from "./mapbox-render.js"
 import { RENDER_SHAPEFILE } from './irregular-polygon.js'
+import { ACTIVATE_CUSTOM_CONTROLS } from './_leaflet-map-custom-controls.js'
 
 
 // MAIN MAP
@@ -40,52 +41,36 @@ const bing_maps_tile = L.bingLayer('ArOrASno0BM9N0a3FfAOKXbzNfZA8BdB5Y7OFqbDIcbh
 
 
 // FARM DETAIL MINI-MAP
-export const leaflet_map = L.map("farm_detail_map", { zoomSnap: 0.01 })
+export const leaflet_map = L.map("leaflet_map", { 
+   minZoom: 0,
+   maxZoom: 19,
+   zoomSnap: 0.01,
+   zoomDelta: 0.10 
+});
+
+// LEAFLET MAP ON LOAD EVT. HANDLER >> PUT B4 .setView
+leaflet_map.on('load', () => {
+
+   // INIT. THE CUSTOM CONTROLS ON THE LEAFLET MINI MAP
+   ACTIVATE_CUSTOM_CONTROLS();
+})
+
+// DEFAULT LEAFLET MAP VIEW
+leaflet_map
    .addLayer(bing_maps_tile)
+   .setView([5.49709, 5.340072], 10);
    // .setView([6.514869, 6.146273], 14);
    // .setView([6.476225, 6.191201], 15);
-   .setView([5.49709, 5.340072], 10);
    // .setView([5.49709, 5.340072], 7);
 
 
-   {
 
-   // // Script for adding marker on map click
-   // function onMapClick(e) {
-
-   //    var marker = L.marker(e.latlng, {
-   //        draggable: true,
-   //        title: "Resource location",
-   //        alt: "Resource Location",
-   //        riseOnHover: true
-   //      }).addTo(leaflet_map)
-   //      .bindPopup(e.latlng.toString()).openPopup();
-
-   //    // Update marker on changing it's position
-   //    marker.on("dragend", function(ev) {
-
-   //      var changedPos = ev.target.getLatLng();
-   //      this.bindPopup(changedPos.toString()).openPopup();
-
-   //    });
-   //  }
-
-   // leaflet_map.on('click', onMapClick);
-
-   // // const mapOverlay = L.DivOverlay()
-   // // leaflet_map.addLayer(mapOverlay)
-   // leaflet_map.openPopup(popup, popupOptions)
-
-   }
-
-
-
-   // UTILITY FUNCTIONS & GLOBAL VARIABLES
+   // KEEP TRACK OF RENDERED LAYERS ON MAPBOX MAP
    const RENDERED_LAYERS = [];
 
 
-   // CLEAR PREVIOUS RENDERED LAYERS
-   function clearPreviousLayers() {
+   // CLEAR PREVIOUS RENDERED LAYERS ON LEAFLET MAP
+   function ClearRenderedMapboxLayer() {
       const lastRenderedLayers = RENDERED_LAYERS;
       if (lastRenderedLayers.length > 0) {
          CLEAR_LAYERS(map, lastRenderedLayers)
@@ -151,6 +136,20 @@ export const leaflet_map = L.map("farm_detail_map", { zoomSnap: 0.01 })
       const dataStream = document.getElementById('api_data_stream').dataset.parcelizedagc
       return dataStream
    }
+   
+
+
+   // COPY TEXT FROM DIV
+   function CopyToClipboard(node) {
+      var r = document.createRange();
+      r.selectNode(node);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(r);
+      document.execCommand('copy');
+      window.getSelection().removeAllRanges();
+      console.log(`${node.innerText}`)
+   }
+
 
 
 
@@ -159,13 +158,16 @@ export const leaflet_map = L.map("farm_detail_map", { zoomSnap: 0.01 })
 
 
       // GET DOM ELEMENTS
-      const chunksListing_Div = document.getElementById('chunks_coords_listing_container');
-      const mapLocation_Div = document.getElementById('map_location_overlay')
+      const coordsListingHeaderWrapper_div = document.getElementById('coords_listing_header_wrapper')
+      const coordsListingChunksDataWrapper_div = document.getElementById('coords_listing_chunks_data_wrapper')
+      const leafletMapOverlay_div = document.getElementById('leaflet_map_overlay');
+      // TURN-BY-TURN OVERLAY
+      const leafletMapExtOverlay_div = document.getElementById("leaflet_map_overlay_extended");
 
 
       // VARIABLES
       const agcLocation = parcelizedAgcGeojson.properties.agc_location;
-      const agcCenterCoords = [6.18, 6.53] // FIXME < update the parcelized AGC properties to include agc_center_coords 
+      const agcCenterCoords = [6.18, 6.53];
       const allocationTotal = parcelizedAgcGeojson.properties.agc_area;
       const unallocatedLandArea = parcelizedAgcGeojson.properties.unused_land_area;
 
@@ -173,28 +175,42 @@ export const leaflet_map = L.map("farm_detail_map", { zoomSnap: 0.01 })
       
       // CLEAR THE LISTINGS EACH TIME THIS FN. IS CALLED
       // totalAllocation_Div.innerText = "";
-      chunksListing_Div.innerText = "";
-      mapLocation_Div.innerText = "";
+      // leafletMapOverlay_div.innerText = "";
       
       
       // POPULALTE THE DOM ELEMENTS
       // numFarmers_Div.innerText = farmPlotsGeojson.length;
       // totalAllocation_Div.innerText = `${allocationTotal.toFixed(1)} ha.`;
       // unusedLand_Div.innerText = `${(unallocatedLandArea).toFixed(1)} ha.`
-      mapLocation_Div.innerText = agcLocation
-      mapLocation_Div.innerText = `${agcLocation || 'Nigeria'} ${agcCenterCoords[0].toFixed(5)}°E ${agcCenterCoords[1].toFixed(5)}°N`
+      leafletMapOverlay_div.innerText = agcLocation;
+      leafletMapOverlay_div.innerText = `${agcLocation || 'Nigeria'} ${agcCenterCoords[0].toFixed(5)}°E ${agcCenterCoords[1].toFixed(5)}°N`
+      leafletMapOverlay_div.appendChild(leafletMapExtOverlay_div);
 
 
       const listingHeader_div = document.createElement('div')
-      listingHeader_div.innerHTML = `Parcelized Plots' Coordinates <br><br>`
-      listingHeader_div.className = "coords-listing-container-header"
-      chunksListing_Div.appendChild(listingHeader_div);
+      // listingHeader_div.innerHTML = `Parcelized Plots' Coordinates <span><i class="fas fa-link"></i></span> <br><br>`
+      listingHeader_div.innerHTML = `
+                                    <div>Parcelized Plots' Coordinates</div>
+                                    <div class="user-action-wrapper">
+                                       <button class="btn-copy-coords" href="#" role="buton" title="Copy coordinates" aria-label="Copy coordinates"><span><i id="btn_copy_coords" class="far fa-copy"></i></span></button>
+                                       <button><span><i class="fas fa-file-pdf"></i></span></button>
+                                       <button><span><i class="fas fa-envelope-open"></i></span></button>
+                                       <button><span><i class="fab fa-superpowers"></i></span></button>
+                                       </div>`
+                                       // <button><span><i class="fas fa-download"></i></span></button>
+                                       // <button><span><i class="fas fa-share"></i></span></button>
+                                       listingHeader_div.className = "coords-listing-header"
+      coordsListingHeaderWrapper_div.appendChild(listingHeader_div);
 
 
-      // APPLY STYLING
-      chunksListing_Div.style.display = "block";
-      chunksListing_Div.style.background = "#f5f6fa";
-      chunksListing_Div.style.border = "grey 1px solid";
+      // USER ACTION BUTTON EVENT HANDLERS
+      // document.getElementById("btn_copy_coords").addEventListener('click', CopyToClipboard(coordsListingChunksDataWrapper_div));
+      document.getElementById("btn_copy_coords").addEventListener('click', ()=> {
+         CopyToClipboard(coordsListingChunksDataWrapper_div);
+      });
+      if (document.getElementById("btn_copy_coords")) {
+
+      }
 
          
       // COORDINATES LISTING
@@ -211,9 +227,9 @@ export const leaflet_map = L.map("farm_detail_map", { zoomSnap: 0.01 })
          chunkDivBody.className = 'chunk-coords-body'
 
          chunkDivHeader.innerHTML = `
-                                    Plot #${index + 1} <br> 
-                                    ${chunk.properties.owner_name} - ${chunk.properties.owner_id} <br> 
-                                    VAsT_ID ${chunk.properties.chunk_id} <br>`
+                                    Plot-${index + 1} <br> 
+                                    ${chunk.properties.owner_name} <br> 
+                                    Farmer ID • ${chunk.properties.owner_id} • VAsT ID • ${chunk.properties.chunk_id} <br>`
 
          chunkDivBody.setAttribute("data-longstring", JSON.stringify(chunk.geometry.coordinates))
          chunkDivBody.innerHTML = `<br><br>`
@@ -223,9 +239,17 @@ export const leaflet_map = L.map("farm_detail_map", { zoomSnap: 0.01 })
          chunk_Div.appendChild(chunkDivHeader)
          chunk_Div.appendChild(chunkDivBody)
 
-         chunksListing_Div.appendChild(chunk_Div);
+         coordsListingChunksDataWrapper_div.appendChild(chunk_Div);
       });
    }
+
+
+
+   // // USER ACTION BUTTON EVENT HANDLERS
+   // if (document.getElementById("btn_copy_coords")) {
+
+   //    document.getElementById("btn_copy_coords").addEventListener('click', CopyToClipboard);
+   // }
 
 
 
@@ -233,7 +257,7 @@ export const leaflet_map = L.map("farm_detail_map", { zoomSnap: 0.01 })
    map.on('load', function () {
 
 
-      clearPreviousLayers();
+      ClearRenderedMapboxLayer();
       
       
       // JUMP TO TOP OF THE PAGE
@@ -253,7 +277,7 @@ export const leaflet_map = L.map("farm_detail_map", { zoomSnap: 0.01 })
       parcelizedAgcGeojson.features.forEach((farmPlot,idx)=>{
          drawChunk(farmPlot, idx, -0.005)
          console.log(farmPlot)
-      })
+      });
 
 
       // RENDER THE PLOTS' COORDINATES IN THE DOM

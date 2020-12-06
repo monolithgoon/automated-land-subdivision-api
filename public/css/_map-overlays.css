@@ -96,24 +96,32 @@
 .leaflet-map-overlay {
    -webkit-font-smoothing: antialiased;
    padding: 6px 25px;
-   position: absolute!important;
-   top: 0!important;
-   right: 0!important;
+
+   position: absolute;
+   top: 0;
+   right: 0;
    height: auto;
    width: auto;
+   min-width: 260px;
+
    text-size-adjust: 100%;
    box-sizing: inherit;
-   background: 0 0;
    color: white;
-   background-color: rgba(31,51,73,.8)!important;
+   background-color: var(--map-overlay-deep-blue) ;
+   font-family: "Roboto", sans-serif;
    text-align: center;
-   appearance: none; 
+
    user-select: none;
-   z-index: 999!important;
+   z-index: 999;
+}
+
+.leaflet-map-overlay-extended {
+   display: none;
+   text-align: left;
 }
 
 .plot-metadata-label {
-   width: 150px !important;
+   min-width: max-content;
    height: auto !important;
 
    font-size: 9px;
@@ -122,7 +130,13 @@
    border: 2px solid black;
 
    display: grid !important;
-   grid-template-columns: 1fr 2fr;
+   grid-template-columns: 1fr 1.5fr 0.65fr;
+
+   border-radius: 3px;
+   box-shadow: 0px 0px 0px 1px rgba(255,255,255,1);
+   -webkit-box-shadow: 0px 0px 0px 1px rgba(255,255,255,1);
+   -moz-box-shadow: 0px 0px 0px 1px rgba(255,255,255,1);
+
 }
 
 .plot-metadata-label > div:first-of-type {
@@ -138,27 +152,54 @@
    align-items: center;
 }
 
-.plot-metadata-label > div:last-of-type {
+.metadata-label--owner-info {
    padding: 4px;
    display: grid;
    grid-template-rows: repeat(2, 1fr);
    font-weight: bold;
 }
 
+.metadata-label--turn-by-turn {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   background-color: lightgrey;
+   color: #808080;
+   font-size: 15px;
+
+   /* REMOVE */
+   display: none;
+}
+
+.metadata-label--turn-by-turn:hover {
+   background-color: pink;
+   color: blue;
+}
+
+.metadata-label--turn-by-turn > a:active {
+   background-color: lightgrey;
+   color: grey;
+   /* filer 3500 gas 3200 comp 55k, exp v. 6000 oil 4000 */
+}
+
 .plot-polygon-vertex-coords-label {
    padding: 2px;
    padding-left: 0;
-	width: 95px !important; /* OVERIDE .leaflet-marker-icon STYLING */
+	width: 100px !important; /* OVERIDE .leaflet-marker-icon STYLING */
 	height: 15px !important; /* OVERIDE .leaflet-marker-icon STYLING */
    font-size: 7px;
    font-weight: bold;
 	color: black;
 	background-color: white;
-	border: 1px solid black;
-	display: none !important;
+   border: 1px solid black;
+   
+   /* border-radius: 2px;
+   box-shadow: 0px 0px 0px 1px rgba(255,255,255,1);
+   -webkit-box-shadow: 0px 0px 0px 1px rgba(255,255,255,1);
+   -moz-box-shadow: 0px 0px 0px 1px rgba(255,255,255,1); */
 }
 
-.plot-polygon-vertex-coords-label span{
+.plot-polygon-vertex-coords-label span {
    padding: 2px;
    color: white;
    background-color: black;
@@ -186,12 +227,49 @@
 @media screen and (min-device-width: 700px) and (max-device-width: 1600px) {
    /* and (-webkit-min-device-pixel-ratio: 1) {  */
       
+      .leaflet-map-overlay-extended {
+         margin: 0;
+         padding: 6px 15px;
+
+         position: absolute;
+         top: 30px;
+         right: 0px;
+         height: auto;
+         width: inherit;
+         background-color: white;
+         color: var(--map-overlay-deep-blue);
+         font-family: "Roboto", sans-serif;
+
+         display: none;
+         z-index: 1000;      
+
+         animation-name: slide-down;
+         animation: slide-down 0.1s ease;
+         -webkit-animation: slide-down 0.1s ease;
+
+         /* REMOVE */
+         display: none;
+      }
+
+      @keyframes slide-down {
+         0% {
+            height: 0px;
+         }
+         100% {
+            height: 100%;
+         }
+      }
+      
       .plot-polygon-vertex-coords-label {
          display: block !important;
       }
 
+      .plot-polygon-vertex-dist-label {
+         display: none !important;
+      }
+      
       .plot-polygon-vertex-dist-bearing-label {
-         width: 80px !important; /* OVERIDE .leaflet-marker-icon STYLING */
+         width: 90px !important; /* OVERIDE .leaflet-marker-icon STYLING */
          display: block !important;
       }
    }

@@ -31,6 +31,7 @@ async function DB_CONNECT() {
       .catch(err => {
          console.log(chalk.fail(`ERROR CONNECTING TO THE REMOTE DATABASE. CHECK YOUR INTERNET CONNECTION. `))
          console.log(chalk.fail(`${err.message}`))
+         process.exit();
       });
    
    } catch(err) {

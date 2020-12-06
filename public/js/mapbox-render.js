@@ -44,6 +44,47 @@ const colors = [
    "#B53471", // very berry
    "#833471", // hollyhock
    "#6F1E51", // magenta purple
+   
+   "#088", // green
+   "#f39c12", // ORANGE
+   "#8e44ad", // wisteria purple
+   "#eb4d4b", // red
+   "#44bd32", // skittles green
+   "#130f40", // indigo
+   "#00a8ff", // blue
+   "#535c68", // wizard grey
+   "#EAB543", // honey glow
+   "#a29bfe", // light indigo
+   "#686de0", // purple
+   "#f9ca24", // yellow
+   "#2d3436", // dracula
+   "#be2edd", // FUCHSIA
+   "#FD7272", // geogia peach
+   "#78e08f", // aurora green
+   "#b71540", // jalepeno red
+   "#f0932b", // orange
+   "#EAB543", // turquoise 
+   "#1B9CFC", // sea blue
+   "#57606f", // grisaillee (dark grey)
+   "#3742fa", // bright greek (dark blue)
+   "#2d3436", // dracula
+   "#be2edd", // FUCHSIA
+   "#FD7272", // geogia peach
+   "#78e08f", // aurora green
+   "#b71540", // jalepeno red
+   "#f0932b", // orange
+   "#EAB543", // turquoise 
+   "#1B9CFC", // sea blue
+   "#b2bec3", // soothing breeze (grey)
+   "#a4b0be", // peace (grey)
+   "#fd79a8", // pico-8 pink
+   "#00b894", // mint leaf (green)
+
+   // DUTCH PALETTE
+   "#ED4C67", // bara red
+   "#B53471", // very berry
+   "#833471", // hollyhock
+   "#6F1E51", // magenta purple
 ]
 
 const getLayerColor = (index) => {
@@ -272,6 +313,30 @@ function toggleMetadataPopup(map, layerProps, layerCenter) {
 
 
 
+// MATH FORMULA TO CALC. BEARING
+function CalculateBearing (fromCoords, toCoords) {
+
+   const lat1 = fromCoords[0];
+   const long1 = fromCoords[1];
+   const lat2 = toCoords[0];
+   const long2 = toCoords[1];
+   
+   // CONVERT COORDS. TO RADIANS > φ is latitude, λ is longitude in radians
+   const φ1 = lat1 * Math.PI/180; 
+   const φ2 = lat2 * Math.PI/180;
+   const λ1 = long1 * Math.PI/180;
+   const λ2 = long2 * Math.PI/180;
+
+   const y = Math.sin(λ2-λ1) * Math.cos(φ2);
+   const x = Math.cos(φ1)*Math.sin(φ2) - Math.sin(φ1)*Math.cos(φ2)*Math.cos(λ2-λ1);
+   const θ = Math.atan2(y, x);
+   const bearing = (θ*180/Math.PI + 360) % 360; // in degrees
+   
+   return bearing
+}
+
+
+
 // CONVERT DEGREES TO DEG. MIN. SEC. (DMS) FORMAT
 function toDegreesMinutesAndSeconds (deg) {
    var absolute = Math.abs(deg);
@@ -303,6 +368,7 @@ export function POLYGON_FILL_BEHAVIOR(map, leaflet_map, polygonFillLayer) {
          window.scrollTo(0, document.body.scrollHeight, {behavior: "smooth"});
 
          // CLEAR THE PREVIOUS LEAFLET LAYERS
+         console.log(leafletLayerGroup);
          leafletLayerGroup.clearLayers();
 
          // GET THE GEOJSON PROPERTIES
@@ -344,6 +410,7 @@ export function POLYGON_FILL_BEHAVIOR(map, leaflet_map, polygonFillLayer) {
          })
 
 
+
          // RENDER THE FARM PLOT IN THE LEAFLET MINI MAP       
          // leaflet_map.setView(center, 17.5);
          const bufferedPlot = turf.buffer(geom, 0.09, {unit: 'kilometers'})
@@ -351,10 +418,12 @@ export function POLYGON_FILL_BEHAVIOR(map, leaflet_map, polygonFillLayer) {
          leaflet_map.fitBounds(plotBounds, {padding: [150, 50]}); // PADDING: [L-R, T-D]
          
          
+
          // // ADD A MARKER TO PLOT CENTER
          // // L.marker(center).addTo(leaflet_map);
          // L.marker(leafletCenter).addTo(leafletLayerGroup);
          
+
 
          // RENDER A LEAFLET POLYGON TO REPRESENT THE FARM PLOT
          L.geoJSON(geom, {
@@ -363,6 +432,7 @@ export function POLYGON_FILL_BEHAVIOR(map, leaflet_map, polygonFillLayer) {
             "opacity": 1
          // }).addTo(leaflet_map);
          }).addTo(leafletLayerGroup);
+
 
 
          // FILL THE POLYGON
@@ -380,40 +450,81 @@ export function POLYGON_FILL_BEHAVIOR(map, leaflet_map, polygonFillLayer) {
          }).addTo(leafletLayerGroup);  
 
 
+
          // DISPLAY PLOT METADATA AT CENTER OF PLOT
          L.marker(leafletCenter, {
+            draggable: true,
             icon: L.divIcon({
                className: 'plot-metadata-label',
                html: `
-                     <div> ${props.chunk_size === 1 ? "1 hectare" : props.chunk_size} hectares </div>
-                     <div> 
+                     <div> ${props.chunk_size} hectares </div>
+                     <div class="metadata-label--owner-info"> 
                         <span> Plot-${props.chunk_index} </span>
                         <span> ${props.owner_name} </span>
+                     </div>
+                     <div class="metadata-label--turn-by-turn" id="metadata_label_turn_by_turn">
+                        <a href="#" role="button" title="Plot boundary turn-by-turn directions" aria-label="Plot boundary turn-by-turn directions"></a>
+                           <span >
+                              <i id="" class="fas fa-route"></i>
+                           </span>
                      </div>`,
             }),
             zIndexOffset: 100
          }).addTo(leafletLayerGroup);
 
 
+         
+         // ADD EVT. LIST. TO TURN-BY-TURN ICON
+         document.querySelectorAll(".metadata-label--turn-by-turn i")
+         document.querySelectorAll(".metadata-label--turn-by-turn").forEach(()=>{
+            document.getElementById('leaflet_map_overlay_extended').classList.toggle('show-element');
+         });
+         // document.getElementById("metadata_label_turn_by_turn").addEventListener('click', () => {
+         //    document.getElementById('leaflet_map_overlay_extended').classList.toggle('show-element');
+         // })
+
+
+
+         // BUILD A GLOBAL DATA OBJ. WITH THE NAV. INFO. FOR EACH PLOT
+         const FARM_PLOT_NAV_DATA_MAP = {
+            farm_plot : {
+               plot_index: 0,
+               start_coords: 0,
+               vertex_pairs: [],
+               vertex_bearings: [],
+               vertex_deltas: []
+            }
+         };
+
+
          // SHOW THE DISTANCE & BEARING BTW. FARM PLOT CORNERS
          for (let idx = 0; idx < coords.length; idx++) {
+
+            // REFERENCE THE INDEX OF THIS PLOT
+            FARM_PLOT_NAV_DATA_MAP.farm_plot.plot_index = props.chunk_index;
 
             const plotCorner = coords[idx];
 
             const fromPlotCorner = coords[idx];
             const toPlotCorner = coords[idx + 1] === undefined ? coords[0] : coords[idx + 1]; // RETURN BACK TO STARTING CORNER
 
+            // SAVE THE CURRENT PLOT CORNERS > REMOVE THE REDUNDANT PAIR @ START POINT..
+            // if (fromPlotCorner[0] !== toPlotCorner[0] && fromPlotCorner[1] !== toPlotCorner[1]) {
+               FARM_PLOT_NAV_DATA_MAP.farm_plot.vertex_pairs.push([fromPlotCorner, toPlotCorner]);
+            // }
+
             const midpoint = turf.midpoint(fromPlotCorner, toPlotCorner)
-            const midpointCoords = midpoint.geometry.coordinates;
+            const midpointCoords = midpoint.geometry.coordinates; // TO PLACE THE DIST. LABELS
             const distance = turf.distance(fromPlotCorner, toPlotCorner, {units: 'kilometers'}) * 1000;
-            const bearing = turf.distance(fromPlotCorner, toPlotCorner, {units: 'degrees'});
-            const degMinSec = toDegreesMinutesAndSeconds(bearing); // CONVERT bearing to 0° 0' 4.31129" FORMAT    
+            const turfBearing = turf.distance(fromPlotCorner, toPlotCorner, {units: 'degrees'});
+            const mathBearing = CalculateBearing(fromPlotCorner, toPlotCorner);
+            const degMinSec = toDegreesMinutesAndSeconds(mathBearing); // CONVERT bearing to 0° 0' 4.31129" FORMAT    
 
 
             // YOU ARE AT STARTING POINT WHEN BEARING === 0
             // DON'T SHOW A MIDPOINT DIST. MARKER HERE
             // ONLY SHOW LABELS IF DIST. BTW. VERTICES > 5.0 meters
-            if (bearing !== 0 && distance > 5) {
+            if (turfBearing !== 0 && distance > 5) {
 
                // SHOW THE PLOT VERTICES AS LEAFLET ICONS
                // IMPORTANT 
@@ -422,7 +533,7 @@ export function POLYGON_FILL_BEHAVIOR(map, leaflet_map, polygonFillLayer) {
                L.marker([plotCorner[1], plotCorner[0]], {
                   icon: L.divIcon({
                      className: 'plot-polygon-vertex-coords-label',
-                     html: `<span>${idx}</span> ${plotCorner[0].toFixed(5)}°N, ${plotCorner[1].toFixed(5)}°E`,
+                     html: `<span>${idx}</span> ${plotCorner[0].toFixed(6)}°N, ${plotCorner[1].toFixed(6)}°E`,
                      iconSize: [70, 15]
                   }),
                   zIndexOffset: 98
@@ -430,11 +541,12 @@ export function POLYGON_FILL_BEHAVIOR(map, leaflet_map, polygonFillLayer) {
                }).addTo(leafletLayerGroup);   
                
 
-               // SHOW DIST. BTW. CORNERS ONLY
+               // SHOW DIST. BTW. CORNERS ONLY (FOR SMALL SCREENS)
                L.marker([midpointCoords[1], midpointCoords[0]], {
+                  draggable: true,
                   icon: L.divIcon({
                      className: 'plot-polygon-vertex-dist-label',
-                     html: `${distance.toFixed(0)} m,`,
+                     html: `${distance.toFixed(0)} m`,
                      iconSize: [30, 15]
                   }),
                   zIndexOffset: 99
@@ -443,8 +555,9 @@ export function POLYGON_FILL_BEHAVIOR(map, leaflet_map, polygonFillLayer) {
                }).addTo(leafletLayerGroup);
 
                
-               // SHOW DIST. & BEARING
+               // SHOW DIST. & BEARING (FOR DESKTOP)
                L.marker([midpointCoords[1], midpointCoords[0]], {
+                  draggable: true,
                   icon: L.divIcon({
                      className: 'plot-polygon-vertex-dist-bearing-label',
                      html: `${distance.toFixed(0)} m, ${degMinSec}`,
@@ -454,15 +567,29 @@ export function POLYGON_FILL_BEHAVIOR(map, leaflet_map, polygonFillLayer) {
    
                // }).addTo(leaflet_map);
                }).addTo(leafletLayerGroup);
+               
+               
+               // SAVE THE BEARING BTW. THE VERTICES
+               FARM_PLOT_NAV_DATA_MAP.farm_plot.vertex_bearings.push(mathBearing);
+               FARM_PLOT_NAV_DATA_MAP.farm_plot.vertex_deltas.push(distance);
+               
 
-            } else if (bearing === 0) {
+            } else if (turfBearing === 0) {
 
                // THE BEARING == 0 => THAT CORNER IS THE PLOT "STARTING" POINT
-               // ADD A MARKER
+
+               // SAVE THE BEARING & COORDS. @ 0
+               FARM_PLOT_NAV_DATA_MAP.farm_plot.start_coords = plotCorner;
+               // FARM_PLOT_NAV_DATA_MAP.farm_plot.vertex_bearings.unshift(mathBearing);
+               
+               // ADD AN ANIMATED MARKER
                leafletLayerGroup.addLayer(getAnimatedPersonMarker([plotCorner[1], plotCorner[0]]));
                // L.marker([plotCorner[1], plotCorner[0]]).addTo(leafletLayerGroup);               
             }
          }
+
+         // DATA OBJ. WITH THE NAV. INFO. FOR EACH PLOT
+         console.log({...FARM_PLOT_NAV_DATA_MAP});
       });
 
 

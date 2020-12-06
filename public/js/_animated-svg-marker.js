@@ -17,9 +17,14 @@ export function getAnimatedPersonMarker(latlng) {
 		zIndexOffset: 100,
 	});
 
-	console.log(document.getElementById("personPin"));
-	// const personPinDiv = document.getElementById("personPin")
-	// personPinDiv.addClass('bounceInDown')
+	const personPinDiv = document.getElementById("personPin")
+
+	// THE PIN SOMETIMES IS NOT IN THE MAP VIEWPORT
+	if (personPinDiv) {
+		
+		console.log(document.getElementById("personPin"));
+		personPinDiv.classList.add('bounceInDown')
+	}
 
 	return animatedPersonMarker;
 }

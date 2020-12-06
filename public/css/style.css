@@ -1,8 +1,9 @@
-@import url("./_map-overlays.css");
 @import url('./_header-slideshow.css');
 @import url('./_footer.css');
 @import url('./_404.css');
 @import url('./_animated-svg-marker.css');
+@import url("./_map-overlays.css");
+@import url('./_leaflet-map-controls.css');
 
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,300i,400&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Overpass:wght@200&display=swap');
@@ -31,13 +32,22 @@
   --button-primary-background: #1A73E8;
   --grey-background-primary: #F4F4F4;
   --grey-background-secondary: #F8F9FA; /* GOOGLE LIGHT GREY */
+  --light-grey-text-container-background: #F5F5FA;
   --subtle-blue-background: rgb(234, 241, 251);
-  --grey-standalone: #808080;
   --gold-trim: #836C3A;
   --blue-google-text: #4285f4;
   --blue-faded: #3e94b6;
   --navy-blue: #01579B;
+  --map-overlay-deep-blue: rgba(31,51,73,.8);
+}
 
+/* HIDE / SHOW ELEMENT TOGGLES */
+.hide-element {
+	display: none;
+}
+
+.show-element {
+	display: block;
 }
 
 html {
@@ -588,6 +598,7 @@ h2.subtitle {
 }
 
 .agc-card-header a {
+	padding-right: 8px;
 	text-decoration: none;
 }
 
@@ -595,12 +606,32 @@ h2.subtitle {
 	text-decoration: underline;
 }
 
+.agc-card-header--agc-name > span {
+	display: flex;
+	align-content: center;
+}
+
+.agc-card-header--agc-name > span > i {
+	font-size: 13px;
+	opacity: 0.5;
+	display: none;
+}
+
+.agc-card-header--agc-name:hover > span > i {
+	display: block;
+}
+
+.agc-card-header--agc-name {
+	display: flex;
+	justify-content: space-between;
+}
+
 .agc-card-summary {
 	padding: 8px;
 	border-bottom: none;
 	display: grid;
-	grid-template-columns: 1fr repeat(3, 0.6fr);
 	grid-template-columns: 1fr repeat(4, 0.6fr);
+	grid-template-columns: 1fr repeat(3, 0.6fr);
 	background: #f5f6fa;
 	border-radius: 3px;
 }
@@ -613,11 +644,36 @@ h2.subtitle {
 	text-decoration: underline;
 }
 
-.agc-id,
-.agc-area,
-.total-allocation,
-.unused-land {
+.agc-card-summary--agc-id,
+.agc-card-summary--agc-area,
+.agc-card-summary--total-allocation,
+.agc-card-summary--unused-land {
 	font-weight: 700;
+	display: flex;
+	flex-direction: column;
+}
+
+.agc-card-summary--agc-id > a {
+	display: flex;
+	justify-content: flex-start;
+}
+
+.agc-card-summary--agc-id > a > span {
+	padding-left: 6px;
+	display: flex;
+	align-content: center;
+
+}
+
+.agc-card-summary--agc-id > a > span > i {
+	font-size: 9px;
+	opacity: 0.5;
+	display: none;
+}
+
+.agc-card-summary--agc-id a:hover > span > i {
+	text-decoration: none;
+	display: block;
 }
 
 .agc-card-features-header {
@@ -682,8 +738,6 @@ h2.subtitle {
 
 .section-2-container {
 	display: grid;
-
-	/* background: white; */
 }
 
 .summaries {
@@ -713,31 +767,74 @@ h2.subtitle {
 }
 
 .user-feedback-container {
-	margin: 0 10px;
 	margin-bottom: 10px;
 }
 
-.chunks-coords-listing-container {
+/* FIXME */
+.section-wrapper {
+	padding: 0 5px;
+}
+
+.coords-listing-container {
 	margin: 0;
 	margin-top: 10px;
-	padding: 10px;
-	background: #f5f6fa;
+	background: var(--light-grey-text-container-background);
+	border: 1px solid grey;
 	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	display: none;
+	grid-template-rows: 1fr auto;
 
 	max-height: 170px;
 	overflow-y: scroll;
 }
 
-.coords-listing-container-header {
+.coords-listing-header-wrapper {
+	padding: 0 10px;
+	padding-right: 0;
+	border-bottom: 1px solid grey;
+	display: block;
+}
+
+.coords-listing-header {
 	font-weight: 900;
-	font-size: 14px;
+	font-size: 16px;
+	align-items: center;
+	display: grid;
+	grid-template-columns: 2fr 1fr;
+
+}
+
+.user-action-wrapper {
+	display: flex;
+	justify-content: space-evenly;
+	background-color: grey;
+
+	/* REMOVE */
+	display: none;
+}
+
+.coords-listing-header button {
+	padding: 0 5px;
+	background: transparent;
+	color: white;
+	width: auto;
+	cursor: pointer;
+}
+
+.coords-listing-header button:hover {
+	color: pink;
+	-webkit-transform: scale(1.3);
+	-ms-transform: scale(1.3);
+	transform: scale(1.3);
+}
+
+.coords-listing-chunks-data-wrapper {
+	padding: 10px 10px;
 }
 
 .chunk-coords-header {
 	font-weight: 700;
 	font-size: 13px;
+	line-height: 16px;
 }
 
 .chunk-coords-body {
@@ -1051,14 +1148,11 @@ input:focus {
 
 	.user-feedback-container {
 		margin-bottom: 10px;
-		display: grid;
-		grid-template-columns: 0fr 1fr;
 		height: auto;
 	}
 
-	.chunks-coords-listing-container {
+	.coords-listing-container {
 		margin-top: 0;
-		display: block;
 	}
 
 	.chunk-coords-body {
@@ -1066,8 +1160,11 @@ input:focus {
 	}
 
 	.farm-detail-map {
-		/* height: auto; */
-		height: 63vh;
+		height: 62vh;
+	}
+
+	.farm-detail-map-expanded {
+		height: 100%;
 	}
 }
 

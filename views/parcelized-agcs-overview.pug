@@ -24,24 +24,28 @@ block parcelized-agcs-overview
 
 					div.agc-card-header
 						//- div= `${parcelizedAgc.properties.agc_extended_name}`
-						div
+						div.agc-card-header--agc-name
 							a(href=`/api/demo/parcelized-agc/?${parcelizedAgc.properties.agc_id}`)= `${parcelizedAgc.properties.agc_extended_name.toUpperCase()}`
+							span
+								//- i(class="fas fa-external-link-alt")
+								i(class="fas fa-link")
 						div= `${parcelizedAgc.properties.agc_location.replace(/,/g,", ")}`
 
 					br
 
 					div.agc-card-summary
-						div.agc-id AGC ID
-							div
+						div.agc-card-summary--agc-id AGC ID
 							//- a(href=`/parcelized-agc/?${parcelizedAgc.properties.agc_id}`)= `${parcelizedAgc.properties.agc_id}`
 							a(href=`/api/demo/parcelized-agc/?${parcelizedAgc.properties.agc_id}`)= `${parcelizedAgc.properties.agc_id}`
-						div.agc-area AGC Area
+								span
+									i(class="fas fa-link")
+						div.agc-card-summary--agc-area AGC Area
 							div= `${parcelizedAgc.properties.agc_area.toFixed(1)} ha.`
 						//- div.center-coords
 						//- div= parcelizedAgc.properties.agc_center_coords
-						div.total-allocation Allocations
+						div.agc-card-summary--total-allocation Allocations
 							div= `${parcelizedAgc.properties.total_allocation.toFixed(1)} ha.`
-						div.unused-land Unallocated
+						div.agc-card-summary--unused-land Unallocated
 							//- div= `${parcelizedAgc.properties.unused_land_area.toFixed(1)} ha.`
 							div= `${(parcelizedAgc.properties.agc_area-parcelizedAgc.properties.total_allocation).toFixed(1)} ha.`
 						//- div.parcelization-timestamp Submitted
