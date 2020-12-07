@@ -5,8 +5,8 @@ exports._newKatanaSliceOperation = function (percentIngress, kSliceDir, reunited
 
    let mutatedSf, unslicedSf, newPercentIngress
 
-   // IF THE REMAINING SHAPEFILE IS LAST 25% OF ORIGINAL, DON'T SLICE..
-   if (percentIngress < 0.25) {
+      // DON'T SLICE THE REMAINING SHAPEFILE IF THE % INGRESS HAS BECOME LESS THAN 25% > USE SF. AS IS..
+      if (percentIngress < 0.40) {
             
       console.log("The remaining shapefile is too small to slice..");
 
@@ -14,7 +14,7 @@ exports._newKatanaSliceOperation = function (percentIngress, kSliceDir, reunited
 
    } else {
       
-      newPercentIngress = percentIngress - 0.20
+      newPercentIngress = percentIngress - 0.15
       // percentIngress = percentIngress + 0.05
       console.log(`percent ingress: ${newPercentIngress}`);
 

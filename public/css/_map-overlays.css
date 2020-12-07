@@ -166,9 +166,6 @@
    background-color: lightgrey;
    color: #808080;
    font-size: 15px;
-
-   /* REMOVE */
-   display: none;
 }
 
 .metadata-label--turn-by-turn:hover {
@@ -246,9 +243,6 @@
          animation-name: slide-down;
          animation: slide-down 0.1s ease;
          -webkit-animation: slide-down 0.1s ease;
-
-         /* REMOVE */
-         display: none;
       }
 
       @keyframes slide-down {

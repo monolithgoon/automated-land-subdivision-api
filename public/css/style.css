@@ -807,9 +807,6 @@ h2.subtitle {
 	display: flex;
 	justify-content: space-evenly;
 	background-color: grey;
-
-	/* REMOVE */
-	display: none;
 }
 
 .coords-listing-header button {
