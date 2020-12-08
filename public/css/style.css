@@ -39,6 +39,9 @@
   --blue-faded: #3e94b6;
   --navy-blue: #01579B;
   --map-overlay-deep-blue: rgba(31,51,73,.8);
+  --material-red: #bf360c;
+  --light-red-background: #feefe3;
+
 }
 
 /* HIDE / SHOW ELEMENT TOGGLES */
@@ -139,9 +142,10 @@ p.last-update {
 }
 
 p.important-note {
+	padding: 8px 35px !important;
 	font-weight: bold;
-	color: #bf360c;
-	background: #feefe3;
+	color: var(--material-red);
+	background-color: var(--light-red-background);
 }
 
 a.u__links {
@@ -529,6 +533,22 @@ main {
 
 .api-guide-container h2 {
 	padding: 5px 35px;
+}
+
+.api-guide-container h3 {
+	font-size: 16px;
+}
+
+.api-guide-container h3 > span {
+	margin: 0 10px;
+	padding: 5px;
+	border-radius: 5px;
+	color: var(--material-red);
+	background-color: #feefe3;
+}
+
+.api-guide-container p {
+	padding: 0 35px;
 }
 
 .agcs-overview-container {
@@ -1044,12 +1064,12 @@ input:focus {
 
 	.api-guide-container {
 		margin: auto;
-		width: 60vw;
+		width: 70vw;
 	}
 
 	.agcs-overview-container {
 		margin: auto;
-		width: 46vw;
+		width: 55vw;
 	}
 
 	.landing-page-main-wrapper {

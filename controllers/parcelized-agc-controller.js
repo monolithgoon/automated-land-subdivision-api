@@ -246,27 +246,35 @@ exports.getParcelizedAgc = async (req, res, next) => {
       }
       
 
-      // let queryStr = JSON.stringify(queryObj)
-      // const formattedQueryStr = queryStr.replace()
+      // CHECK IF A MATCHING RECORD EXISTS IN THE DB.
+      if (await PARCELIZED_AGC_MODEL.countDocuments(queryObj) !==0 ) {
 
 
-      // CONDUCT THE DB QUERY
-      // let dbQuery = PARCELIZED_AGC_MODEL.find(JSON.parse(formattedQueryStr))
-      let dbQuery = PARCELIZED_AGC_MODEL.find(queryObj)
+         // CONDUCT THE DB QUERY
+         let dbQuery = PARCELIZED_AGC_MODEL.find(queryObj)
 
 
-      const parcelizedAgc = await dbQuery
-      console.log(parcelizedAgc);
+         // SAVE THE RESULTS OF THE QUERY
+         const parcelizedAgc = await dbQuery
+         console.log(parcelizedAgc);
 
+         
+         // SEND SUCCESS HEADER
+         res.status(200).json({
+            status: 'success',
+            data: {
+               // The query using 'agc_id' returns an array with only one element; deal with it..
+               parcelizedAgcData: parcelizedAgc[0]
+            }
+         })
 
-      
-      res.status(200).json({
-         status: 'success',
-         data: {
-            // The query using 'agc_id' returns an array with only one element; deal with it..
-            parcelizedAgcData: parcelizedAgc[0]
-         }
-      })
+      } else {
+
+         // NO PARCELIZED AGC WITH THAT ID EXISTS IN THE DB.
+         res.status(404).json({
+            message: `AGC ${queryObjKey[0]} does not exist in the parcelized AGCs database..`
+         });
+      };
 
    } catch (err) {
       console.error(chalkError(err.message));

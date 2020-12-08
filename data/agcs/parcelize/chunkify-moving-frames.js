@@ -1,7 +1,7 @@
 // POLYGON CHUNKING v3.0 > BOUNDING BOX DECAY ALGORITHM
 const chalk = require('../../../utils/chalk-messages');
 const turf = require('@turf/turf')
-const { _getProps, _calcArea, _analyzeShapefile, _getAllocationsMetadata } = require('./_utils.js');
+const { _getProps, _calcArea, _analyzeShapefile, _generateRandomString, _getAllocationsMetadata } = require('./_utils.js');
 const { _getKatanaSlice } = require('./_getKatanaSlice.js');
 const { _chunkify } = require('./_chunkify.js');
 
@@ -184,7 +184,8 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
          'parcelization_metadata': {
             'katana_slice_dir': katanaSliceDirection,
             'moving_frames_dir': chunkifyDirection,
-         }
+         },
+         'preview_map_url_hash': _generateRandomString(64, shapefileID),
       }
       console.log(CHUNKS_COLLECTION);
 

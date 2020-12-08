@@ -10,7 +10,8 @@ block api-guide
 
 		br
 		h2 Using the Farmland Parcelization API
-		p.last-update Updated 27 September 2020
+		//- p.last-update Updated 27 September 2020
+		p.last-update Updated 11 December 2020
 		br
 
 		.credentials-container
@@ -43,7 +44,9 @@ block api-guide
 						}
 					);
 
+		br
 		h3 Retreive All the Parcelzied AGCs
+		br
 
 		pre.embedded-code-snippet
 			code.language-javascript.
@@ -65,6 +68,45 @@ block api-guide
 						console.log(JSON.stringify(data));
 						}
 					);
+
+		br
+		h3 Render the Parcelized Plots Preview Map
+			span New!
+
+		p Each subsequent parcelized AGC payload retreived from the endpoint will now contain a secret string hash. Get that string by reading the #[strong "properties.preview_map_url_hash"] field. Here's a sample JSON snippet from an API call to the parcelized AGCs endpoint-
+
+		pre.embedded-code-snippet
+			code.language-javascript.
+				{
+					"status": "success",
+					"data": {
+						"parcelizedAgcData": {
+							"properties": {
+								"agc_id": "AGCABI000010",
+								"agc_extended_name": "Agc Nosa 7",
+								"agc_location": "ABA,Aba South,Abia",
+								"num_farmers": 10,
+								"agc_area": 50.6404559187225,
+								"total_allocation": 45,
+								"unused_land_area": 4.417271065696374,
+								"preview_map_url_hash": "XAWXEACGEBVLGDRACUGOZYBSZTCKHMMDHOYVAPRWKXRNJVWXHXZHUMXTYTILBBMY"
+							},
+							"type": "FeatureCollection",
+							"_id": "5fce88c3071dac0c0c924f7d",
+							"features": [ ... ]
+						}
+					}
+				}
+
+		p Construct the preview map url using the hash string like so-
+		//- .credentials-container
+		pre.embedded-code-snippet
+			code.language-javascript.
+				// `https://agcfarmlands.herokuapp.com/parcelized-agc/?${preview_map_url_hash}`
+
+				https://agcfarmlands.herokuapp.com/parcelized-agc/?XAWXEACGEBVLGDRACUGOZYBSZTCKHMMDHOYVAPRWKXRNJVWXHXZHUMXTYTILBBMY
+
+		p.important-note Note that all the previous, public preview map URLs that contained the AGC IDs are now decommissioned, and will therefore not work any longer. All the test AGCs that have been parcelized so far will not have working preview map URLs anymore.
 
 		br
 		h3 Sending AGC data to the DB (using the Fetch API)

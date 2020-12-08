@@ -127,6 +127,7 @@ exports.renderParcelizedAgc = async (req, res) => {
       // RE-BUILD THE QUERY OBJ.
       queryObj = {
          "properties.agc_id" : queryObjKey[0]
+         // "properties.preview_url_hash": queryObjKey[0]
          // "properties.agc_id" : formattedAgcID
       }
       
@@ -136,7 +137,7 @@ exports.renderParcelizedAgc = async (req, res) => {
       
 
       // CHECK IF A MATCHING RECORD EXISTS IN THE DB.
-      if (await PARCELIZED_AGC_MODEL.countDocuments(queryObj) !==0) {
+      if (await PARCELIZED_AGC_MODEL.countDocuments(queryObj) !==0 ) {
 
          
          // CONDUCT DB QUERY
@@ -168,26 +169,67 @@ exports.renderParcelizedAgc = async (req, res) => {
          });
       }
 
-
-      // // CONDUCT DB QUERY
-      // // let dbQuery = PARCELIZED_AGC_MODEL.find(JSON.parse(formattedQueryStr))
-      // let dbQuery = PARCELIZED_AGC_MODEL.find(queryObj)
-
-
-      // // SAVE THE RESULTS OF THE QUERY
-      // const parcelizedAgc = await dbQuery
-      // console.log(parcelizedAgc);
+   } catch (err) {
+      console.error(chalk.fail(err.message));
+   }
+}
 
 
-      // // SET DEFAULT TITLE IF AGC DOES NOT HAVE A LOCATION
-      // // The query using 'agc_id' returns an array with only one element; deal with it..
-      // const pageTitle = parcelizedAgc[0].properties.location ? `AGC Plots | ${parcelizedAgc[0].properties.location}` : 'Parcelized AGC'
+// RENDER THE PARCELIZED AGC VIA THE STRING IN THE preview_map_url_hash FIELD
+// http://127.0.0.1:9090/parcelized-agc/?XAWXEACGEBVLGDRACUGOZYBSZTCKHMMDHOYVAPRWKXRNJVWXHXZHUMXTYTILBBMY
+exports.renderParcelizedAgcBySecretURL = async (req, res) => {
+
+   try {
+      
+      // DB QUERY OBJECT
+      let queryObj = { ...req.query }
+      
+      // IDEALLY, THE QUERY OBJECT IS SUPPOSED TO BE:
+      // http://127.0.0.1:9090/parcelized-agc?properties.preview_map_url_hash=XAWXEACGEBVLGDRACUGOZYBSZTCKHMMDHOYVAPRWKXRNJVWXHXZHUMXTYTILBBMY
+      // THE QUERY OBJ. IS NOW IN THE FORM { "XAWXEACGEBVLGDRACUGOZYBSZTCKHMMDHOYVAPRWKXRNJVWXHXZHUMXTYTILBBMY": " " }
+      
+      // EXTRACT THE agc_id FROM THE QUERY OBJ.
+      const queryObjKey = Object.keys(queryObj);
+
+      
+      // RE-BUILD THE QUERY OBJ.
+      queryObj = {
+         "properties.preview_map_url_hash": queryObjKey[0]
+      }
+            
+
+      // CHECK IF A MATCHING RECORD EXISTS IN THE DB.
+      if (await PARCELIZED_AGC_MODEL.countDocuments(queryObj) !==0 ) {
+
+         
+         // CONDUCT DB QUERY
+         // let dbQuery = PARCELIZED_AGC_MODEL.find(JSON.parse(formattedQueryStr))
+         let dbQuery = PARCELIZED_AGC_MODEL.find(queryObj)
 
 
-      // res.status(200).render('parcelized-agc-render', {
-      //    title: pageTitle,
-      //    parcelizedAgcData: parcelizedAgc[0]
-      // })
+         // SAVE THE RESULTS OF THE QUERY
+         const parcelizedAgc = await dbQuery
+         console.log(parcelizedAgc);
+
+
+         // SET DEFAULT TITLE IF AGC DOES NOT HAVE A LOCATION
+         // The query using 'agc_id' returns an array with only one element; deal with it..
+         const pageTitle = parcelizedAgc[0].properties.location ? `AGC Plots | ${parcelizedAgc[0].properties.location}` : 'Parcelized AGC'
+
+
+         res.status(200).render('parcelized-agc-render', {
+            title: pageTitle,
+            parcelizedAgcData: parcelizedAgc[0]
+         });
+
+      } else {
+
+         // NO PARCELIZED AGC WITH THAT ID EXISTS IN THE DB.
+         res.status(404).render('404.pug', {
+            title: `AGC Not Found`,
+            agcID: queryObjKey[0]
+         });
+      }
 
    } catch (err) {
       console.error(chalk.fail(err.message));

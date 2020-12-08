@@ -23,9 +23,9 @@ block parcelized-agcs-overview
 				main.agc-card
 
 					div.agc-card-header
-						//- div= `${parcelizedAgc.properties.agc_extended_name}`
 						div.agc-card-header--agc-name
-							a(href=`/api/demo/parcelized-agc/?${parcelizedAgc.properties.agc_id}`)= `${parcelizedAgc.properties.agc_extended_name.toUpperCase()}`
+							//- a(href=`/api/demo/parcelized-agc/?${parcelizedAgc.properties.agc_id}`)= `${parcelizedAgc.properties.agc_extended_name.toUpperCase()}`
+							a(href=`/parcelized-agc/?${parcelizedAgc.properties.preview_map_url_hash}`)= `${parcelizedAgc.properties.agc_extended_name.toUpperCase()}`
 							span
 								//- i(class="fas fa-external-link-alt")
 								i(class="fas fa-link")
@@ -36,7 +36,8 @@ block parcelized-agcs-overview
 					div.agc-card-summary
 						div.agc-card-summary--agc-id AGC ID
 							//- a(href=`/parcelized-agc/?${parcelizedAgc.properties.agc_id}`)= `${parcelizedAgc.properties.agc_id}`
-							a(href=`/api/demo/parcelized-agc/?${parcelizedAgc.properties.agc_id}`)= `${parcelizedAgc.properties.agc_id}`
+							//- a(href=`/api/demo/parcelized-agc/?${parcelizedAgc.properties.agc_id}`)= `${parcelizedAgc.properties.agc_id}`
+							a(href=`/parcelized-agc/?${parcelizedAgc.properties.preview_map_url_hash}`)= `${parcelizedAgc.properties.agc_id}`
 								span
 									i(class="fas fa-link")
 						div.agc-card-summary--agc-area AGC Area

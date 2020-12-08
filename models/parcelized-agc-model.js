@@ -161,6 +161,11 @@ const parcelizedAgcSchema = new mongoose.Schema({
       parcelization_metadata: {
          katana_slice_dir: String,
          moving_frames_dir: String
+      },
+      preview_map_url_hash: {
+         type: String,
+         required: true,
+         unique: true
       }
    }
 })
