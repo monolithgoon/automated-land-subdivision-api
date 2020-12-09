@@ -139,7 +139,7 @@
 
 }
 
-.plot-metadata-label > div:first-of-type {
+.plot-metadata-label--chunk-size {
    margin: auto 0;
    padding: 0 4px;
    height: 100%;
@@ -148,6 +148,11 @@
    border-right: 2px solid black;
 
    /* CENTER THE TEXT IN THE GRID ITEM */
+   display: grid;
+   grid-template-rows: 1fr 1fr;
+}
+
+.plot-metadata-label--chunk-size span {
    display: flex;
    align-items: center;
 }

@@ -701,9 +701,25 @@ h2.subtitle {
 	font-weight: 700;
 }
 
+.toggle-agc-features {
+	margin: 5px 0;
+	padding: 7px;
+	border-radius: 20px;
+	display: flex;
+	justify-content: center;
+	color: var(--navy-blue);
+	font-size: 10px;
+	background-color: var(--light-grey-text-container-background);
+	background-color: var(--grey-background-primary);
+}
+
 .agc-features-container {
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
+}
+
+.toggle-agc-features:hover + .agc-features-container {
+	display: block;
 }
 
 .agc-feature {

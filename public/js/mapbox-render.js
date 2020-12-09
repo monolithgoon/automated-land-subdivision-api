@@ -457,7 +457,10 @@ export function POLYGON_FILL_BEHAVIOR(map, leaflet_map, polygonFillLayer) {
             icon: L.divIcon({
                className: 'plot-metadata-label',
                html: `
-                     <div> ${props.chunk_size} hectares </div>
+                     <div class= "plot-metadata-label--chunk-size"> 
+                        <span> ${props.chunk_size} hectares </span>
+                        <span> ${(props.chunk_size * 2.47105).toFixed(1)} acres </span> 
+                     </div>
                      <div class="metadata-label--owner-info"> 
                         <span> Plot-${props.chunk_index} </span>
                         <span> ${props.owner_name} </span>
@@ -475,13 +478,11 @@ export function POLYGON_FILL_BEHAVIOR(map, leaflet_map, polygonFillLayer) {
 
          
          // ADD EVT. LIST. TO TURN-BY-TURN ICON
-         document.querySelectorAll(".metadata-label--turn-by-turn i")
-         document.querySelectorAll(".metadata-label--turn-by-turn").forEach(()=>{
-            document.getElementById('leaflet_map_overlay_extended').classList.toggle('show-element');
+         document.querySelectorAll(".metadata-label--turn-by-turn i").forEach( icon => {
+            icon.addEventListener('click', ()=> {
+               document.getElementById('leaflet_map_overlay_extended').classList.toggle('show-element');
+            });
          });
-         // document.getElementById("metadata_label_turn_by_turn").addEventListener('click', () => {
-         //    document.getElementById('leaflet_map_overlay_extended').classList.toggle('show-element');
-         // })
 
 
 
