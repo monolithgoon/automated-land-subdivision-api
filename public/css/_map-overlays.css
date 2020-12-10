@@ -130,7 +130,7 @@
    border: 2px solid black;
 
    display: grid !important;
-   grid-template-columns: 1fr 1.5fr 0.65fr;
+   grid-template-columns: 1fr 1.5fr;
 
    border-radius: 3px;
    box-shadow: 0px 0px 0px 1px rgba(255,255,255,1);
@@ -165,23 +165,7 @@
 }
 
 .metadata-label--turn-by-turn {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   background-color: lightgrey;
-   color: #808080;
-   font-size: 15px;
-}
-
-.metadata-label--turn-by-turn:hover {
-   background-color: pink;
-   color: blue;
-}
-
-.metadata-label--turn-by-turn > a:active {
-   background-color: lightgrey;
-   color: grey;
-   /* filer 3500 gas 3200 comp 55k, exp v. 6000 oil 4000 */
+   display: none;
 }
 
 .plot-polygon-vertex-coords-label {
@@ -228,6 +212,31 @@
 /* ----------- Non-Retina Screens ----------- */
 @media screen and (min-device-width: 700px) and (max-device-width: 1600px) {
    /* and (-webkit-min-device-pixel-ratio: 1) {  */
+
+      .plot-metadata-label {      
+         display: grid !important;
+         grid-template-columns: 1fr 1.5fr 0.65fr;
+      }
+
+      .metadata-label--turn-by-turn {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         background-color: lightgrey;
+         color: #808080;
+         font-size: 15px;
+      }
+      
+      .metadata-label--turn-by-turn:hover {
+         background-color: pink;
+         color: blue;
+      }
+      
+      .metadata-label--turn-by-turn > a:active {
+         background-color: lightgrey;
+         color: grey;
+         /* filer 3500 gas 3200 comp 55k, exp v. 6000 oil 4000 */
+      }
       
       .leaflet-map-overlay-extended {
          margin: 0;
