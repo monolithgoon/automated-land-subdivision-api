@@ -73,7 +73,9 @@ block api-guide
 		h3 Render the Parcelized Plots Preview Map
 			span New!
 
-		p Each subsequent parcelized AGC payload retreived from the endpoint will now contain a unique string hash. Get that string by reading the #[strong "properties.preview_map_url_hash"] field. Here's a sample JSON snippet from an API call to the parcelized AGCs endpoint-
+		p Each subsequent parcelized AGC payload retreived from the endpoint will now contain a unique string hash that is required to construct a URL that renders the preview map. 
+		
+		p Get that string by reading the #[strong "properties.preview_map_url_hash"] field. Here's a sample JSON snippet from an API call to the parcelized AGCs endpoint-
 
 		pre.embedded-code-snippet
 			code.language-javascript.
@@ -98,8 +100,10 @@ block api-guide
 					}
 				}
 
+		p.important-note For security, the url hash string might change periodically. Therefore, before presenting the link to the user, always query the API for the most recent hash string. #[u #[strong Do not save the string in a variable and expect it to work at a later date]].
+
 		p Construct the preview map url using the hash string like so-
-		//- .credentials-container
+
 		pre.embedded-code-snippet
 			code.language-javascript.
 				// `https://agcfarmlands.herokuapp.com/parcelized-agc/?${preview_map_url_hash}`

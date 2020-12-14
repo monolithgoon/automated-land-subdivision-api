@@ -63,7 +63,7 @@ function _moveBboxPolygon(dist, bboxPolygon, bearing) {
 
    let bearings = {north: 0, south: 180, east: 90, west: -90}
 
-   let movedBboxPolygon = turf.transformTranslate(bboxPolygon, dist, bearings[bearing], {units: 'kilometers'}) // -> NORTH
+   let movedBboxPolygon = turf.transformTranslate(bboxPolygon, dist, bearings[bearing], {units: 'kilometers'});
    
    return movedBboxPolygon
 }
@@ -83,7 +83,7 @@ function _toggleChunkifyDir(direction) {
 
 
 // CHECK WHETHER FEAT. OR FEAT. COLL.
-function _analyzeShapefile(shapefile) {
+function _analyzeGeojson(shapefile) {
    
    let sfID, sfLocation, sfName;
    const randomSfID = `unique-agc-id-${(Math.random()*999999999).toFixed(0)}`
@@ -225,7 +225,7 @@ module.exports = {
    _calcArea,
    _moveBboxPolygon,
    _toggleChunkifyDir,
-   _analyzeShapefile,
+   _analyzeGeojson,
    _generateRandomString,
    _getAllocationsMetadata,
 }

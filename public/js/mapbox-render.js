@@ -1,4 +1,4 @@
-import { map } from "./main.js"
+import { map, leaflet_map } from "./main.js"
 import { getAnimatedPersonMarker } from "./_animated-svg-marker.js";
 
 
@@ -81,10 +81,48 @@ const colors = [
    "#00b894", // mint leaf (green)
 
    // DUTCH PALETTE
-   "#ED4C67", // bara red
-   "#B53471", // very berry
-   "#833471", // hollyhock
-   "#6F1E51", // magenta purple
+   "#FFC312",
+   "#F79F1F",
+   "#EE5A24",
+   "#EA2027",
+   "#C4E538",
+   "#A3CB38",
+   "#009432",
+   "#006266",
+   "#12CBC4",
+   "#1289A7",
+   "#0652DD",
+   "#1B1464", 
+   "#FDA7DF",
+   "#D980FA",
+   "#9980FA",
+   "#5758BB", 
+   "#ED4C67",
+   "#B53471",
+   "#833471",
+   "#6F1E51",
+
+   // DEFAULT
+   "#1abc9c",
+   "#2ecc71",
+   "#3498db",
+   "#9b59b6",
+   "#34495e",
+   "#16a085",
+   "#27ae60",
+   "#2980b9",
+   "#8e44ad",
+   "#2c3e50",
+   "#f1c40f",
+   "#e67e22",
+   "#e74c3c",
+   "#ecf0f1",
+   "#95a5a6",
+   "#f39c12",
+   "#d35400",
+   "#c0392b",
+   "#bdc3c7",
+   "#7f8c8d",
 ]
 
 const getLayerColor = (index) => {
@@ -348,6 +386,11 @@ function toDegreesMinutesAndSeconds (deg) {
 
    return `${degrees}° ${minutes}' ${seconds}"`
 }
+
+
+
+// Create group for your layers and add it to the map
+const leafletLayerGroup = L.layerGroup()
 
 
 

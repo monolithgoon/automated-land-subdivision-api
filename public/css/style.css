@@ -188,9 +188,16 @@ header {
 	width: 100%;
 	background: #2e2e2e;
 	background: transparent;
+}
+
+.navbar {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+}
+
+.navbar.scrolled {
+	
 }
 
 .branding {

@@ -90,12 +90,17 @@ exports._getKatanaSlice = function _getKatanaSlice(direction, percentage, shapef
       // UPDATE POSITION OF MOVING BBOX.
       // moveIncrement += 0.02;
       // moveIncrement += 0.01; // **
-      moveIncrement += 0.001; // ****
+      // moveIncrement += 0.001; // ****
       // moveIncrement += 0.0005;
       // moveIncrement += 0.00001;
+
+      // SMOOTH MOVEMENT..
+      moveIncrement += 0.0002; // USE FOR ..
+      moveIncrement += 0.00001; // USE FOR ..
+      moveIncrement += 0.000001; // USE FOR ..   
    }
    
-   // @ END OF WHILE LOOP => THE AREA OF SLICE ~= AREA OF DESIRED CHUNK
+   // @ COMPLETION OF WHILE LOOP => THE AREA OF SLICE ~= AREA OF DESIRED CHUNK
    // let leftoverPolygon = intersectModulusPoly;
    let leftoverPolygon = turf.buffer(intersectModulusPoly, -0.00005, {unit: 'kilometers'});
    

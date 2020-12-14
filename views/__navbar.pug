@@ -1,31 +1,32 @@
 nav.navbar-wrapper.is-fixed-top(role='navigation' aria-label='main navigation')
 
-   //- .navbar-mobile
-   .navbar-brand-wrapper
-      a.u__links.branding(href="https://agcfarmlands.herokuapp.com")
-         img(src="/assets/icons/kagawa-japan-flag.svg" alt="Parcelized AGCs Logo")
-         span agFarmPlots
+   .navbar
 
-   .navbar-menu-wrapper
-      ul.nav-links#nav_links
-         li(aria-hidden='true')
-            a.u__links(href="https://farmplots.web.app") Parcelization Demo
-               //- span Parcelization Demo
-               //- i.fi.fi-angle-right
-         li(aria-hidden='true')
-            a.u__links(href="https://agcfarmlands.herokuapp.com/api-guide") API Guide
-         li(aria-hidden='true')
-            a.u__links(href="#") Signup
-            //- a.u__links(href="https://agcfarmlands.herokuapp.com/signup") Signup
-         li(aria-hidden='true')
-            a.u__links(href="#") Login
-            //- a.u__links(href="https://agcfarmlands.herokuapp.com/login") Login
+      .navbar-brand-wrapper
+         a.u__links.branding(href="https://agcfarmlands.herokuapp.com")
+            img(src="/assets/icons/kagawa-japan-flag.svg" alt="Parcelized AGCs Logo")
+            span agFarmPlots
 
-   .burger-wrapper
-      input.toggler#menu_toggler(type='checkbox' aria-label='menu' aria-expanded='false')
-      .burger-lines
-         .burger-line1
-         .burger-line2
+      .navbar-menu-wrapper
+         ul.nav-links#nav_links
+            li(aria-hidden='true')
+               a.u__links(href="https://farmplots.web.app") Parcelization Demo
+                  //- span Parcelization Demo
+                  //- i.fi.fi-angle-right
+            li(aria-hidden='true')
+               a.u__links(href="https://agcfarmlands.herokuapp.com/api-guide") API Guide
+            li(aria-hidden='true')
+               a.u__links(href="#") Signup
+               //- a.u__links(href="https://agcfarmlands.herokuapp.com/signup") Signup
+            li(aria-hidden='true')
+               a.u__links(href="#") Login
+               //- a.u__links(href="https://agcfarmlands.herokuapp.com/login") Login
+
+      .burger-wrapper
+         input.toggler#menu_toggler(type='checkbox' aria-label='menu' aria-expanded='false')
+         .burger-lines
+            .burger-line1
+            .burger-line2
 
 
    //- BURGER MENU CLICK HANDLER

@@ -1,7 +1,7 @@
 // POLYGON CHUNKING v3.0 > BOUNDING BOX DECAY ALGORITHM
 const chalk = require('../../../utils/chalk-messages');
 const turf = require('@turf/turf')
-const { _getProps, _calcArea, _analyzeShapefile, _generateRandomString, _getAllocationsMetadata } = require('./_utils.js');
+const { _getProps, _calcArea, _analyzeGeojson, _generateRandomString, _getAllocationsMetadata } = require('./_utils.js');
 const { _getKatanaSlice } = require('./_getKatanaSlice.js');
 const { _chunkify } = require('./_chunkify.js');
 
@@ -45,7 +45,7 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
    try {
 
       // GET SHAPEFILE METADATA
-      const shapefileMetadata = _analyzeShapefile(SELECTED_SHAPEFILE)
+      const shapefileMetadata = _analyzeGeojson(SELECTED_SHAPEFILE)
       const shapefileID = shapefileMetadata.sfID
       const shapefileName = shapefileMetadata.sfName
       const shapefileLocation = shapefileMetadata.sfLocation
