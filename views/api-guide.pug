@@ -100,7 +100,12 @@ block api-guide
 					}
 				}
 
-		p.important-note For security, the url hash string might change periodically. Therefore, before presenting the link to the user, always query the API for the most recent hash string. #[u #[strong Do not save the string in a variable and expect it to work at a later date]].
+		//- p.important-note(data-icon='warning') For security, the url hash string might change periodically. Therefore, before presenting the preview map link to the user, always query the API for the most recent hash string. #[u #[strong Do not save the string in a variable and expect it to work at a later date]].
+		p.important-note(style="display: flex; align-items: center;")
+			span(style="padding-right: 20px; font-size: 25px; font-weight: 100;")
+				i.fas.fa-exclamation-triangle
+			span For security, the url hash string might change periodically. Therefore, before presenting the preview map link to the user, always query the API for the most recent hash string. #[u #[strong Do not save the string in a variable and expect it to work at a later date]].
+
 
 		p Construct the preview map url using the hash string like so-
 
@@ -110,7 +115,11 @@ block api-guide
 
 				https://agcfarmlands.herokuapp.com/parcelized-agc/?XAWXEACGEBVLGDRACUGOZYBSZTCKHMMDHOYVAPRWKXRNJVWXHXZHUMXTYTILBBMY
 
-		p.important-note Please note that for all the previously parcelized test AGCs, the preview map URLs that included the AGC IDs have now all been deprecated, and will therefore no longer work.
+		p.important-note(style="display: flex; align-items: center;")
+			span(style="padding-right: 20px; font-size: 25px; font-weight: 100;")
+				i.fas.fa-info-circle
+				//- i.fas.fa-exclamation-circle
+			span Please note that for all the previously parcelized test AGCs, the preview map URLs that included the AGC IDs have now all been deprecated, and will therefore no longer work.
 
 		br
 		h3 Sending AGC data to the DB (using the Fetch API)

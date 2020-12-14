@@ -77,13 +77,13 @@ body {
 	font-style: normal;
 	/* font-size: 1em;
 	display: inline-block;
-	vertical-align: middle;
 	width: 1em;
-	height: 1em;
 	line-height: 1; */
+	/* height: 2em; */
+	vertical-align: middle;
 	padding-right: 5px;
-	font-size: 15px;
-	line-height: 1;
+	font-size: 20px;
+	line-height: 2;
 
 	text-transform: none;
 	letter-spacing: normal;
