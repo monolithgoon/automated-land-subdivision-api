@@ -128,20 +128,24 @@ function _generateRandomString(length, chars) {
 
 
 
+
 // ...
 function _getAllocationsMetadata(shapefileID, farmersData, farmerIndex) {
 
    // VARIABLE TO HOLD URL TO DECODED PHOTO
    let ownerPhotoUrl;
 
+   
    // DECODE THE BASE64 IMAGES AN SAVE TO FILE
    const farmer = farmersData[farmerIndex];
+
 
    // TODO > STRIP OFF THE META HEADERS FROM THE Base64 STRING 
    // const base64String = apiResponse.data.agcData.properties.farmers[4].farmer_photo
    // const base64Image = base64String.replace(/^data:image\/\w+;base64,/, '');
    const base64ImageStr = farmer.farmer_photo;
    
+
    // DECODE & SAVE LOT OWNER'S Base64 PHOTOGRAPH TO FILE
    if (JSON.stringify(base64ImageStr) !== `[""]`) {
 
@@ -167,43 +171,6 @@ function _getAllocationsMetadata(shapefileID, farmersData, farmerIndex) {
       
       console.error(chalk.warning(`This PLOT OWNER ${farmer.first_name} ${farmer.last_name} does not have a photograph..`))
    }
-
-
-   
-   // farmersData.forEach( farmer => {
-   
-   //    // REMOVE > 
-   //    const mongoBufferStr = Buffer.from(farmer.farmer_photo, 'base64');
-   //    // console.log(mongoBufferStr);
-   //    // console.log(farmer.farmer_photo[0]);
-      
-   //    const base64Image = farmer.farmer_photo;
-   //    // const base64Image = mongoBufferStr;
-   
-   //    // DECODE & SAVE LOT OWNER'S Base64 PHOTOGRAPH TO FILE
-   //    if (base64Image) {
-   
-   //       fs.writeFile(`../../../public/assets/farmer-photos/${farmer.farmer_id}.jpg`, base64Image, {encoding: 'base64'}, (err, data) => {
-            
-   //          if(err) {
-   //             console.log(chalk.fail(err.message));
-   //             process.exit();
-   //          } else {
-   //             // console.log(chalk.success(`THE LOT OWNER PHOTOS FROM THIS SHAPEFILE ${shapefileID} WERE SAVED TO FILE  `));
-   //             // process.exit();
-   //          }
-   //       });
-
-   //    } else {
-   //       console.error(chalk.warning(`This PLOT OWNER ${farmer.first_name} ${farmer.last_name} does not have a photograph..`))
-   //    }
-   // });
-
-
-   // // CREATE THE FARMER (LOT OWNER) PHOTO URL
-   // const ownerPhotoURL = `/assets/farmer-photos/${farmersData[farmerIndex].farmer_id}.jpg`
-   // console.log(chalk.highlight(ownerPhotoURL))
-
 
    const allocationsMetadata = {
       agcID: shapefileID,

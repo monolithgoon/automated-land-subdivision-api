@@ -32,6 +32,7 @@
   --button-primary-background: #1A73E8;
   --grey-background-primary: #F4F4F4;
   --grey-background-secondary: #F8F9FA; /* GOOGLE LIGHT GREY */
+  --light-blue-background-primary: #EEF3FA;
   --light-grey-text-container-background: #F5F5FA;
   --subtle-blue-background: rgb(234, 241, 251);
   --gold-trim: #836C3A;
@@ -64,7 +65,7 @@ body {
 	line-height: 1;
 	background: rgba(128, 134, 139, 0.2);
 	background: #f9f9f9;
-	background: #F4F4F4;
+	background: var(--grey-background-primary);
 	color: #4a4a4a;
 	color: black;
 }
@@ -186,8 +187,8 @@ header {
 	position: sticky;
 	top: 0;
 	width: 100%;
-	background: #2e2e2e;
 	background: transparent;
+	background-color: #2e2e2e;
 }
 
 .navbar {
@@ -415,7 +416,9 @@ main {
 	background: #F8F9FA; /* GOOGLE LIGHT GREY */
 	background: #EFE9DD;
 	background: white;
-	background: #F4F4F4;
+	background: var(--grey-background-primary);
+	background: var(--light-blue-background-primary);
+	
 	
 	z-index: 10;
 
@@ -446,7 +449,7 @@ main {
 	border: 1px solid #4a4a4a;
 	border-radius: 10px;
 	font-family: 'Roboto', sans-serif;
-	background: #F4F4F4;
+	background: var(--grey-background-primary);
 }
 
 .bordered-paragraph-wrapper P:last-child {

@@ -1,4 +1,4 @@
-import { map, leaflet_map } from "./main.js"
+import { map } from "./main.js"
 import { getAnimatedPersonMarker } from "./_animated-svg-marker.js";
 
 
@@ -390,7 +390,7 @@ function toDegreesMinutesAndSeconds (deg) {
 
 
 // Create group for your layers and add it to the map
-const leafletLayerGroup = L.layerGroup()
+// const leafletLayerGroup = L.layerGroup()
 
 
 
@@ -403,6 +403,7 @@ export function POLYGON_FILL_BEHAVIOR(map, leaflet_map, polygonFillLayer) {
 
       // Create group for your layers and add it to the map
       var leafletLayerGroup = L.layerGroup().addTo(leaflet_map);
+      // leafletLayerGroup.addTo(leaflet_map);
 
 
       map.on('click', `${polygonFillLayer.id}`, function(e) {
