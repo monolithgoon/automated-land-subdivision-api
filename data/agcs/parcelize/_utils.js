@@ -129,6 +129,20 @@ function _generateRandomString(length, chars) {
 
 
 
+// CREATE A FOLDER WITH THE AGC ID
+const createDirectory = (directoryPath) => {
+   fs.mkdirSync(process.cwd() + directoryPath, {recursive: true}, (error) => {
+      if (error) {
+         console.error(`An error occured: ${error.message}`)
+      } else {
+         console.log(`The folder was created`)
+      }
+   })
+}
+
+
+
+
 // ...
 function _getAllocationsMetadata(shapefileID, farmersData, farmerIndex) {
 
@@ -149,10 +163,47 @@ function _getAllocationsMetadata(shapefileID, farmersData, farmerIndex) {
    // DECODE & SAVE LOT OWNER'S Base64 PHOTOGRAPH TO FILE
    if (JSON.stringify(base64ImageStr) !== `[""]`) {
 
-      // CREATE THE FARMER (LOT OWNER) PHOTO URL
-      ownerPhotoURL = `/assets/farmer-photos/${farmer.farmer_id}.jpg`
-      console.log(chalk.highlight(ownerPhotoURL))
-   
+      // PATH TO PHOTOS DIRECTORY WITH AGC ID
+      const agcPhotosDir = `../../../public/assets/farmer-photos/${shapefileID}`
+
+      // CREATE A PHOTOS FOLDER WITH THE AGC ID
+      if (!fs.existsSync(agcPhotosDir)) {
+         fs.mkdirSync(process.cwd() + agcPhotosDir, {recursive: true}, (err) => {
+            if (err) {
+               console.error(chalk.fail(`An error occured when trying to create a photos directory with agc ID ${shapefileID}: ${err.message}`))
+            } else {
+               console.log(chalk.success(`The folder ${shapefileID} was created`))
+            }
+         })
+      }
+
+      // // CHECK IF THE DIR. WITH THAT AGC ID EXISTS BEFORE ATTEMPTING TO WRITE THE PHOTO TO FILE
+      // if(fs.existsSync(agcPhotosDir)) {
+
+      //    // WRITE TO FILE
+      //    fs.writeFile(`../../../public/assets/farmer-photos/${farmer.farmer_id}.jpg`, base64ImageStr, {encoding: 'base64'}, (err, data) => {
+            
+      //       if(err) {
+      //          console.log(chalk.fail(err.message));
+      //          process.exit();
+      //       } else {
+      //          // console.log(chalk.success(`THE LOT OWNER PHOTOS FROM THIS SHAPEFILE ${shapefileID} WERE SAVED TO FILE  `));
+      //          // process.exit();
+      //       }
+      //    });
+
+      //    // VARIABLE TO POINT TO THE FARMER (LOT OWNER) PHOTO URL
+      //    ownerPhotoURL = `/assets/farmer-photos/${farmer.farmer_id}.jpg`
+      //    console.log(chalk.highlight(ownerPhotoURL));      
+
+      // } else {
+
+      //    ownerPhotoUrl = undefined;
+         
+      //    console.error(chalk.warning(`We could not create a URL to this PLOT OWNER'S ${farmer.first_name} ${farmer.last_name} photo..`))
+
+      // }
+      
       // WRITE TO FILE
       fs.writeFile(`../../../public/assets/farmer-photos/${farmer.farmer_id}.jpg`, base64ImageStr, {encoding: 'base64'}, (err, data) => {
          
@@ -164,6 +215,10 @@ function _getAllocationsMetadata(shapefileID, farmersData, farmerIndex) {
             // process.exit();
          }
       });
+
+      // VARIABLE TO POINT TO THE FARMER (LOT OWNER) PHOTO URL
+      ownerPhotoURL = `/assets/farmer-photos/${farmer.farmer_id}.jpg`
+      console.log(chalk.highlight(ownerPhotoURL));      
 
    } else {
 

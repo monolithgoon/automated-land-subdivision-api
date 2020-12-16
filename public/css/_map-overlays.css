@@ -23,9 +23,9 @@
 	grid-template-columns: 2fr auto;
 }
 
-.popup-farmer-name {
+.popup--plot-owner-name {
 	font-size: 14px;
-	font-weight: 500;
+	font-weight: 700;
 }
 
 .popup-text-wrapper span {

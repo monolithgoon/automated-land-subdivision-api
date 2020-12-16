@@ -187,20 +187,22 @@ leaflet_map
       leafletMapOverlay_div.appendChild(leafletMapExtOverlay_div);
 
 
-      const listingHeader_div = document.createElement('div')
-      // listingHeader_div.innerHTML = `Parcelized Plots' Coordinates <span><i class="fas fa-link"></i></span> <br><br>`
-      listingHeader_div.innerHTML = `
-                                    <div>Parcelized Plots' Coordinates</div>
-                                    <div class="user-action-wrapper">
-                                       <button class="btn-copy-coords" href="#" role="buton" title="Copy coordinates" aria-label="Copy coordinates"><span><i id="btn_copy_coords" class="far fa-copy"></i></span></button>
-                                       <button><span><i class="fas fa-file-pdf"></i></span></button>
-                                       <button><span><i class="fas fa-envelope-open"></i></span></button>
-                                       <button><span><i class="fab fa-superpowers"></i></span></button>
-                                       </div>`
-                                       // <button><span><i class="fas fa-download"></i></span></button>
-                                       // <button><span><i class="fas fa-share"></i></span></button>
-                                       listingHeader_div.className = "coords-listing-header"
-      coordsListingHeaderWrapper_div.appendChild(listingHeader_div);
+      // REMOVE > 
+      // // CONSTRUCT THE COORDS. LISTING HEADER
+      // const listingHeader_div = document.createElement('div')
+      // // listingHeader_div.innerHTML = `Parcelized Plots' Coordinates <span><i class="fas fa-link"></i></span> <br><br>`
+      // listingHeader_div.innerHTML = `
+      //                               <div>Parcelized Plots' Coordinates</div>
+      //                               <div class="coords-listing--user-action-wrapper">
+      //                                  <button class="btn-copy-coords" href="#" role="buton" title="Copy coordinates" aria-label="Copy coordinates"><span><i id="btn_copy_coords" class="far fa-copy"></i></span></button>
+      //                                  <button><span><i class="fas fa-file-pdf"></i></span></button>
+      //                                  <button><span><i class="fas fa-envelope-open"></i></span></button>
+      //                                  <button><span><i class="fab fa-superpowers"></i></span></button>
+      //                               </div>`
+      //                                  // <button><span><i class="fas fa-download"></i></span></button>
+      //                                  // <button><span><i class="fas fa-share"></i></span></button>
+      //                                  listingHeader_div.className = "coords-listing-header"
+      // coordsListingHeaderWrapper_div.appendChild(listingHeader_div);
 
 
       // USER ACTION BUTTON EVENT HANDLERS
@@ -208,9 +210,6 @@ leaflet_map
       document.getElementById("btn_copy_coords").addEventListener('click', ()=> {
          CopyToClipboard(coordsListingChunksDataWrapper_div);
       });
-      if (document.getElementById("btn_copy_coords")) {
-
-      }
 
          
       // COORDINATES LISTING

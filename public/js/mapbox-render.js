@@ -328,7 +328,7 @@ function toggleMetadataPopup(map, layerProps, layerCenter) {
       .setHTML(`<div class="mapbox-metadata-popup">
 
                   <div class="popup-text-wrapper">
-                     <div class="popup-farmer-name">${layerProps.owner_name} </div>
+                     <div class="popup--plot-owner-name">${layerProps.owner_name} </div>
                      BVN <span>hidden</span> <br>
                      FarmerID • ${layerProps.owner_id.toUpperCase()} <br> 
                      VAsTID • ${layerProps.chunk_id} <br>

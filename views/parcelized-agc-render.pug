@@ -59,24 +59,36 @@ block parcelized-agc-preview-map
                else 
                   #shapefile_area.aggr-data -
 
-         //- DATA ATTRIBUTE STORE && CHUNK COORDS. LISTING
-         #user_feedback_container.user-feedback-container
+         //- CHUNK COORDS. LISTING
+         .coords-listing-container
 
-            #section_wrapper.section-wrapper
+            #coords_listing_header_wrapper.coords-listing--header-wrapper   
+               div Parcelized Plots&apos; Coordinates
+               .coords-listing--user-action-wrapper
+                  button.btn-copy-coords(href='#' role='buton' title='Copy coordinates' aria-label='Copy coordinates')
+                     span
+                        i#btn_copy_coords.far.fa-copy
+                  button
+                     span
+                        i.fas.fa-file-pdf
+                  button
+                     span
+                        i.fas.fa-envelope-open
+                  button
+                     span
+                        i.fab.fa-superpowers
 
-               //- THIS ALLOWS THE FRONTEND RECEIVE DATA FROM THE API & PASS IT TO THE SCRIPT BELOW
-               .data-container
-                  div#api_data_stream(data-parcelizedagc=`${JSON.stringify(parcelizedAgcData)}`)
-                  //- div= JSON.stringify(parcelizedAgcData.features[0].properties)
 
-               #coords_listing_container.coords-listing-container
-                  #coords_listing_header_wrapper.coords-listing-header-wrapper
-                  #coords_listing_chunks_data_wrapper.coords-listing-chunks-data-wrapper
+            //- THIS ALLOWS THE FRONTEND RECEIVE DATA FROM THE API & PASS IT TO THE SCRIPT BELOW
+            .data-container
+               div#api_data_stream(data-parcelizedagc=`${JSON.stringify(parcelizedAgcData)}`)
+
+            #coords_listing_chunks_data_wrapper.coords-listing-chunks-data-wrapper
 
          //- SATTELITE MAP
          section#leaflet_map.farm-detail-map
             #leaflet_map_overlay.leaflet-map-overlay Nigeria 6.1816&deg;N, 6.5303&deg;E
                #leaflet_map_overlay_extended.leaflet-map-overlay-extended Walking turn-by-turn directions for selected farm plot..
 
-         //- script(src='/js/main.js' type='module')
+         script(src='/js/main.js' type='module')
          //- script(src='/jquery-min.js' type='module')
