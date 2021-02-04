@@ -4,24 +4,25 @@ import { getAnimatedPersonMarker } from "./_animated-svg-marker.js";
 
 
 const colors = [
+   "#b71540", // jalepeno red
    "#088", // green
    "#f39c12", // ORANGE
    "#8e44ad", // wisteria purple
+   "#be2edd", // FUCHSIA
    "#eb4d4b", // red
-   "#44bd32", // skittles green
-   "#130f40", // indigo
-   "#00a8ff", // blue
    "#535c68", // wizard grey
    "#EAB543", // honey glow
    "#a29bfe", // light indigo
    "#686de0", // purple
    "#f9ca24", // yellow
    "#2d3436", // dracula
-   "#be2edd", // FUCHSIA
+   "#44bd32", // skittles green
+   "#00a8ff", // blue
    "#FD7272", // geogia peach
    "#78e08f", // aurora green
    "#b71540", // jalepeno red
    "#f0932b", // orange
+   "#130f40", // indigo
    "#EAB543", // turquoise 
    "#1B9CFC", // sea blue
    "#57606f", // grisaillee (dark grey)
@@ -30,7 +31,6 @@ const colors = [
    "#be2edd", // FUCHSIA
    "#FD7272", // geogia peach
    "#78e08f", // aurora green
-   "#b71540", // jalepeno red
    "#f0932b", // orange
    "#EAB543", // turquoise 
    "#1B9CFC", // sea blue
@@ -748,8 +748,9 @@ export function RENDER_SIMPLE_SHAPEFILE(shapefile, {layerID, color, thickness, f
    
       } else {
    
-         console.log(turf.getType(shapefile));
-         alert(`Your shapefile is a (${turf.getType(shapefile)}), and probably has unbounded holes..`)
+         console.warn(`Your shapefile is a (${turf.getType(shapefile)}), and probably has unbounded holes..`)
+         
+         RENDER_LAYER(map, GET_MAPBOX_POLYGON_LAYER(shapefile, {layerID, color, thickness, fillOpacity}).fillLayer)
       }
 
    } else {

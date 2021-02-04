@@ -28,14 +28,14 @@ async function DB_CONNECT() {
          // console.log((connectionObject))
          console.log(chalk.connected('YOU CONNECTED TO THE ATLAS DATABASE SUCCESSFULLY '));
       })
-      .catch(err => {
+      .catch(_err => {
          console.log(chalk.fail(`ERROR CONNECTING TO THE REMOTE DATABASE. CHECK YOUR INTERNET CONNECTION. `))
-         console.log(chalk.fail(`${err.message}`))
+         console.log(chalk.fail(`${_err.message}`))
          process.exit();
       });
    
-   } catch(err) {
-      console.log(chalk.fail(err.message));
+   } catch(_err) {
+      console.log(chalk.fail(_err.message));
       process.exit();
    } 
 }

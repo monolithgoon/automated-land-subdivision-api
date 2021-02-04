@@ -1,6 +1,8 @@
-const chalk = require('../../../utils/chalk-messages.js')
-const turf = require('@turf/turf')
 const fs = require('fs')
+const path = require('path')
+const turf = require('@turf/turf')
+const chalk = require('../../../utils/chalk-messages.js')
+const { EROFS } = require('constants')
 
 
 
@@ -129,29 +131,63 @@ function _generateRandomString(length, chars) {
 
 
 
-// CREATE A FOLDER WITH THE AGC ID
-const createDirectory = (directoryPath) => {
-   fs.mkdirSync(process.cwd() + directoryPath, {recursive: true}, (error) => {
-      if (error) {
-         console.error(`An error occured: ${error.message}`)
-      } else {
-         console.log(`The folder was created`)
+// CREATE A FOLDER WITH THE geofileID && SAVE THE PLOT OWNER PHOTOS INSIDE
+function savePlotOwnerPhoto({photosDirectory, geofileID, farmer, base64ImageStr}) {
+
+   // CREATE A PHOTOS FOLDER WITH THE geofileID
+   if (!fs.existsSync(photosDirectory)) {
+      try {
+         fs.mkdirSync(photosDirectory, {recursive: true})
+         console.log(chalk.success(`The plot owners' photos folder for ${geofileID} was created `));
+      } catch (_err) {
+         console.error(chalk.fail(`An error occured when trying to create a photos directory with geofileID ${geofileID}: ${_err.message}`))
+         throw new Error(_err)
       }
-   })
-}
+
+      // CREATE DIRECTORY > METHOD 2
+      // var mkdirp = require('mkdirp');
+      // mkdirp(photosDirectory, function (err) {
+      //     if (err) console.error(err)
+      //     else console.log('dir created')
+      // });
+   }
+
+   
+   // REMOVE > DEPRECATED > WILL NOT WORK WHEN CALLED IN AN EXPRESS APP 
+   // fs.writeFile(`../../../../public/assets/farmer-photos/${farmer.farmer_id}.jpg`, base64ImageStr, {encoding: 'base64'}, (_err, data) => {
+      // When the entry point is app.js (Express), "../../../public/assets..." goes up by 3 directories, and resolves incorrectly
+      // When the entry point is parcelize-local-agc.js (from the command line), "../../../public/assets..." resolves correctly
+      
+
+   // CHECK IF THE DIR. WITH THAT geofileID EXISTS BEFORE ATTEMPTING TO WRITE THE PHOTO TO FILE   
+   if (fs.existsSync(photosDirectory)) {   
+
+      // fs.writeFile(path.resolve(`${__approotdir}/public/assets/farmer-photos/${farmer.farmer_id}.jpg`), base64ImageStr, {encoding: 'base64'}, (_err, data) => {
+      fs.writeFile(path.resolve(`${photosDirectory}/${farmer.farmer_id}.jpg`), base64ImageStr, {encoding: 'base64'}, (_err, data) => {
+         if(_err) {
+            console.error(chalk.fail(_err.message));
+            throw new Error(`Could not create a URL to this PLOT OWNER'S ${farmer.first_name} ${farmer.last_name} photo..${_err.message}`)
+            process.exit();
+         } else {
+            // console.log(chalk.success(`THE LOT OWNER PHOTOS FROM THIS SHAPEFILE ${geofileID} WERE SAVED TO FILE  `));
+            // process.exit();
+         }
+      });
+   } 
+};
 
 
 
 
 // ...
-function _getAllocationsMetadata(shapefileID, farmersData, farmerIndex) {
+function _getAllocationsMetadata(geofileID, plotOwnersData, plotOwnerIndex) {
 
    // VARIABLE TO HOLD URL TO DECODED PHOTO
    let ownerPhotoUrl;
 
    
    // DECODE THE BASE64 IMAGES AN SAVE TO FILE
-   const farmer = farmersData[farmerIndex];
+   const farmer = plotOwnersData[plotOwnerIndex];
 
 
    // TODO > STRIP OFF THE META HEADERS FROM THE Base64 STRING 
@@ -163,76 +199,34 @@ function _getAllocationsMetadata(shapefileID, farmersData, farmerIndex) {
    // DECODE & SAVE LOT OWNER'S Base64 PHOTOGRAPH TO FILE
    if (JSON.stringify(base64ImageStr) !== `[""]`) {
 
-      // PATH TO PHOTOS DIRECTORY WITH AGC ID
-      const agcPhotosDir = `../../../public/assets/farmer-photos/${shapefileID}`
+      // RELATIVE PATH TO PHOTOS DIRECTORY WITH geofileID
+      const relPhotosPath = `assets/images/farmer-photos/${geofileID}`
 
-      // CREATE A PHOTOS FOLDER WITH THE AGC ID
-      if (!fs.existsSync(agcPhotosDir)) {
-         fs.mkdirSync(process.cwd() + agcPhotosDir, {recursive: true}, (err) => {
-            if (err) {
-               console.error(chalk.fail(`An error occured when trying to create a photos directory with agc ID ${shapefileID}: ${err.message}`))
-            } else {
-               console.log(chalk.success(`The folder ${shapefileID} was created`))
-            }
-         })
-      }
+      // ABSOLUTE PATH TO PHOTOS DIRECTORY WITH geofileID
+      const photosDirectory = path.resolve(`${__approotdir}/public/${relPhotosPath}`);
 
-      // // CHECK IF THE DIR. WITH THAT AGC ID EXISTS BEFORE ATTEMPTING TO WRITE THE PHOTO TO FILE
-      // if(fs.existsSync(agcPhotosDir)) {
+      // CREATE A FOLDER WITH THE geofileID && SAVE THE PLOT OWNER PHOTOS INSIDE
+      savePlotOwnerPhoto({photosDirectory, geofileID, farmer, base64ImageStr});
 
-      //    // WRITE TO FILE
-      //    fs.writeFile(`../../../public/assets/farmer-photos/${farmer.farmer_id}.jpg`, base64ImageStr, {encoding: 'base64'}, (err, data) => {
-            
-      //       if(err) {
-      //          console.log(chalk.fail(err.message));
-      //          process.exit();
-      //       } else {
-      //          // console.log(chalk.success(`THE LOT OWNER PHOTOS FROM THIS SHAPEFILE ${shapefileID} WERE SAVED TO FILE  `));
-      //          // process.exit();
-      //       }
-      //    });
-
-      //    // VARIABLE TO POINT TO THE FARMER (LOT OWNER) PHOTO URL
-      //    ownerPhotoURL = `/assets/farmer-photos/${farmer.farmer_id}.jpg`
-      //    console.log(chalk.highlight(ownerPhotoURL));      
-
-      // } else {
-
-      //    ownerPhotoUrl = undefined;
-         
-      //    console.error(chalk.warning(`We could not create a URL to this PLOT OWNER'S ${farmer.first_name} ${farmer.last_name} photo..`))
-
-      // }
-      
-      // WRITE TO FILE
-      fs.writeFile(`../../../public/assets/farmer-photos/${farmer.farmer_id}.jpg`, base64ImageStr, {encoding: 'base64'}, (err, data) => {
-         
-         if(err) {
-            console.log(chalk.fail(err.message));
-            process.exit();
-         } else {
-            // console.log(chalk.success(`THE LOT OWNER PHOTOS FROM THIS SHAPEFILE ${shapefileID} WERE SAVED TO FILE  `));
-            // process.exit();
-         }
-      });
-
-      // VARIABLE TO POINT TO THE FARMER (LOT OWNER) PHOTO URL
-      ownerPhotoURL = `/assets/farmer-photos/${farmer.farmer_id}.jpg`
-      console.log(chalk.highlight(ownerPhotoURL));      
+      // URL FROM WHICH FRONTEND CODE RENDERS THE PLOT OWNER'S PHOTO
+      // ownerPhotoURL = `/assets/farmer-photos/${farmer.farmer_id}.jpg` // REMOVE < DEPRECATED 
+      ownerPhotoURL = `/${relPhotosPath}/${farmer.farmer_id}.jpg`
+      console.log(chalk.highlight(ownerPhotoURL));    
 
    } else {
 
       ownerPhotoURL = undefined;
       
-      console.error(chalk.warning(`This PLOT OWNER ${farmer.first_name} ${farmer.last_name} does not have a photograph..`))
+      console.error(chalk.warning(`This PLOT OWNER ${farmer.first_name} ${farmer.last_name} does not have a base64ImageStr..`))
    }
 
+
    const allocationsMetadata = {
-      agcID: shapefileID,
-      farmerID: farmersData[farmerIndex].farmer_id,
-      allocSize: farmersData[farmerIndex].allocation,
-      firstName: farmersData[farmerIndex].first_name,
-      lastName: farmersData[farmerIndex].last_name,
+      agcID: geofileID,
+      farmerID: plotOwnersData[plotOwnerIndex].farmer_id,
+      allocSize: plotOwnersData[plotOwnerIndex].allocation,
+      firstName: plotOwnersData[plotOwnerIndex].first_name,
+      lastName: plotOwnersData[plotOwnerIndex].last_name,
       ownerPhotoURL
    }
    

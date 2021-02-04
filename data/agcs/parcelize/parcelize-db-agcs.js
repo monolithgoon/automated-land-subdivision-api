@@ -8,6 +8,13 @@ const { PARCELIZE_AGC } = require("./parcelize-agc.js"); // IMPORT AGC PARCELIZA
 
 
 
+// THIS IS NEEDED FOR NON-EXPRESS APPS (LIKE THIS ONE) THAT CALL THIS MODULE FROM THE CMD. LINE
+// __approotdir IS USED IN THE _getAllocationsMetadata FN. IN _utils.js
+global.__approotdir = `../../..`
+
+
+
+
 // IMPORT THE AGC & PARCELIZED AGCS FILES
 const importAgcsToParcelize = async () => {
    try {
@@ -150,7 +157,7 @@ async function bulkParcelize () {
 
       if (process.argv[2] === undefined) {
 
-         console.log(chalk.warning(`Enter the parcelization directions code (eg: 'nw', 'se'). Exiting.. `))
+         console.log(chalk.warning(`Enter the parcelization directions code flag (eg: 'nw', 'se'). Exiting.. `))
    
          process.exit;
    

@@ -1,10 +1,10 @@
-const turf = require('@turf/turf');
+ const turf = require('@turf/turf');
 const { _getProps, _calcArea, _moveBboxPolygon, _toggleChunkifyDir } = require("./_utils.js")
 const { _newKatanaSliceOperation } = require("./_newKatanaSliceOp.js")
 
 
 
-exports._chunkify = function(allocationsMetadata, {
+exports._chunkify = function(allocationMetadata, {
    initChunkifyDir, 
    newChunkifyDir, 
    katanaSliceDir, 
@@ -12,11 +12,11 @@ exports._chunkify = function(allocationsMetadata, {
    workingShapefile, 
    pendingShapefile, 
    startShapefileArea, 
-   movingBboxPolygon, 
+   baseBboxPolygon, 
    idx 
 }) {
 
-   const allocationSize = allocationsMetadata.allocSize
+   const allocationSize = allocationMetadata.allocSize
    
    // INITIAL STATE
    // THE "mutatedShapefile" IS THE INTERSECT BTW. MOVING BBOX. & THE KATANA SHAPEFILE
@@ -30,6 +30,10 @@ exports._chunkify = function(allocationsMetadata, {
    
    // THE AREA EACH MOVEMENT OF THE BBOX POLY. CARVES OUT OF THE SHAPEFILE..
    let intersectSliceArea = startShapefileArea - _calcArea(mutatedShapefile) // 0.0 ha. initially
+
+   // THE INITIAL STATE OF THE MOVING BBOX. POLYGON 
+   let movingBboxPolygon = baseBboxPolygon;
+
 
    // INIT. STARTING POS. OF MOVING BBOX. POLY.
    let moveIncrement = 0;
@@ -94,11 +98,9 @@ exports._chunkify = function(allocationsMetadata, {
 
 
          // THE MOVING BBOX POLYGON HAS MOVED PAST THE SHAPEFILE & CAN NO LONGER MUTATE IT
-         // console.log('CHUKIFY >> the moving bbox poly. has moved "out of bounds.."');
 
 
-         // console.log(chunkSlicePolygon);
-         // SLIGHTLY INCREASE THE SIZE OF THE TOO SMALL SLICE IN ORDER TO SUCCESSFULLY UNITE IT WITH ...
+         // SLIGHTLY INCREASE THE SIZE OF THE TOO SMALL SLICE IN ORDER TO SUCCESSFULLY UNITE IT WITH THE PENDING SF.
          // let tooSmallKatanaSlice = chunkSlicePolygon;
          let tooSmallKatanaSlice = turf.buffer(chunkSlicePolygon, 0.005, {unit: 'kilometers'}); // **
          // let tooSmallKatanaSlice = turf.buffer(chunkSlicePolygon, 0.001, {unit: 'kilometers'});
@@ -106,18 +108,6 @@ exports._chunkify = function(allocationsMetadata, {
          // let tooSmallKatanaSlice = turf.buffer(chunkSlicePolygon, 0.0005, {unit: 'kilometers'}); // ****
          // let tooSmallKatanaSlice = turf.buffer(chunkSlicePolygon, 0.00005, {unit: 'kilometers'});
          // let tooSmallKatanaSlice = turf.buffer(chunkSlicePolygon, 0.000005, {unit: 'kilometers'});
-
-
-         // let reunitedShapefile;
-
-
-         // SANDBOX > HANDLE WIERD CHUNK SLICES 
-         // if (turf.getType(tooSmallKatanaSlice) !== "Polygon") {
-         //    reunitedShapefile = pendingShapefile
-         // }
-         // } else {
-
-         // // }
 
 
          // CHECK THAT THERE IS STILL pendingShapefile REMAINING > WE HAVE NOT REACHED END OF THE ORG. SF.
@@ -242,18 +232,17 @@ exports._chunkify = function(allocationsMetadata, {
    // ADD CUSTOM PROPERTIES
    if (chunkPolygon) {
       chunkPolygon.properties['chunk_index'] = idx + 1;
-      chunkPolygon.properties['chunk_id'] = `${allocationsMetadata.agcID}-${(Math.random()*9999*(idx+1)).toFixed(0)}`;
+      chunkPolygon.properties['chunk_id'] = `${allocationMetadata.agcID}-${(Math.random()*9999*(idx+1)).toFixed(0)}`;
       chunkPolygon.properties['chunk_size'] = allocationSize.toFixed(1);
-      chunkPolygon.properties['owner_id'] = `${allocationsMetadata.farmerID}`
-      chunkPolygon.properties['owner_name'] = `${allocationsMetadata.firstName} ${allocationsMetadata.lastName}` 
-      chunkPolygon.properties['owner_photo_url'] = `${allocationsMetadata.ownerPhotoURL}` 
+      chunkPolygon.properties['actual_chunk_size'] = _calcArea(chunkPolygon).toFixed(1);
+      chunkPolygon.properties['owner_id'] = `${allocationMetadata.farmerID}`
+      chunkPolygon.properties['owner_name'] = `${allocationMetadata.firstName} ${allocationMetadata.lastName}` 
+      chunkPolygon.properties['owner_photo_url'] = `${allocationMetadata.ownerPhotoURL}` 
       chunkPolygon.properties['center_lng'] = turf.centerOfMass(chunkPolygon).geometry.coordinates[0];
       chunkPolygon.properties['center_lat'] = turf.centerOfMass(chunkPolygon).geometry.coordinates[1];
    }
    
    
-   // "RECURSION"
-   // THE ALLOCATIONS "FOR" LOOP WILL EVALUATE A SMALLER SHAPE WITH EACH ITERATION
    return {
       chunkPolygon,
       mutatedShapefile,

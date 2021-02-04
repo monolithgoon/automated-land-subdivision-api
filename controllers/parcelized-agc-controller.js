@@ -2,6 +2,7 @@
 
 const chalk = require('../utils/chalk-messages.js')
 const catchAsyncError = require('../utils/catch-async.js')
+const { _getNextPayload } = require('../utils/utils.js');
 const PARCELIZED_AGC_MODEL = require('../models/parcelized-agc-model.js')
 
 
@@ -19,7 +20,7 @@ exports.checkID = async (req, res, next, paramValue) => {
       if (!databaseQuery) {
          return res.status(404).json({
             status: 'failed',
-            message: 'That was an invalid ID, you absolute cuck.'
+            message: 'A document with that MongoDB ID does not exist in the collection.'
          })
       }
       
@@ -68,7 +69,7 @@ exports.getAllParcelizedAgcs = async (request, response) => {
 
 	try {
 
-		console.log("YOU SUCCESSFULLY CALLED THE getAllParcelizedAgcs CONTROLLER");
+		console.log(chalk.success("YOU SUCCESSFULLY CALLED THE [ getAllParcelizedAgcs ] CONTROLLER"));
       console.log(request.query);
 
       // FILTER _EXAMPLE 1
@@ -221,7 +222,7 @@ exports.renderParcelizedAgcByID = async (request, response) => {
 // http://127.0.0.1:9090/parcelized-agcs/parcelized-agc?UNIQUE-AGC-ID-XXX-XXX
 exports.getParcelizedAgc = async (req, res, next) => {
 
-   console.log(chalk.running(`YOU SUCCESSFULLY CALLED THE getParcelizedAgc HANDLER `))
+   console.log(chalk.success(`YOU SUCCESSFULLY CALLED THE [ getParcelizedAgc ] FN. `))
 
    try {
       
@@ -276,27 +277,32 @@ exports.getParcelizedAgc = async (req, res, next) => {
          });
       };
 
-   } catch (err) {
-      console.error(chalkError(err.message));
+   } catch (_err) {
+      console.error(chalkError(_err.message));
    }
 }
 
 
 
 // CREATE/INSERT A NEW PARCELIZED AGC (POST REQUEST) HANDLER FN.
-exports.insertParcelizedAg = async (req, res) => {
+exports.insertParcelizedAgc = async (req, res) => {
 
    try {
+
+      // GET PAYLOAD FROM PREV. M.WARE. (res.locals.appendedGeojson) VS. API CALL PARAM (req.body)
+      const parcelizedAgcPayload = _getNextPayload(res.locals.parcelizedAgc, req.body);
       
       // CREATE A NEW PARCELIZED AGC DOCUMENT _MTD 1
       // const newAgc = new TOUR_MODEL(req.body)
       // newAgc.save // returns a promise
       
       // CREATE A NEW PARCELIZED AGC DOCUMENT _MTD 2
-      const newParcelizedAgc = await PARCELIZED_AGC_MODEL.create(req.body) // "model.create" returns a promise
+      // const newParcelizedAgc = await PARCELIZED_AGC_MODEL.create(req.body) // "model.create" returns a promise
+      const newParcelizedAgc = await PARCELIZED_AGC_MODEL.create(parcelizedAgcPayload) // "model.create" returns a promise > resolve with "await"
 
       res.status(201).json({
          status: 'success',
+         message: `[ ${req.file.originalname} ] was successfully uploaded to the server, converted to a GeoJSON polygon, updated with the farmer allocations JSON, parcelized, and inserted into the database.`,
          inserted_at: req.requestTime,
          data: {
             parcelizedAgc: newParcelizedAgc
@@ -306,22 +312,30 @@ exports.insertParcelizedAg = async (req, res) => {
    } catch (err) { 
       res.status(400).json({ // 400 => bad request
          status: 'fail',
-         message: 'That POST request failed.',
-         error_msg: err.message,
+         // message: 'That POST request failed.',
+         message: `[ ${req.file.originalname} ] was successfully uploaded to the server, converted to a GeoJSON polygon, updated with the farmer allocations JSON, and parcelized.`,
+         error_msg: `Failed to insert the parcelized AGC into the database. ${err.message}`,
       })
    }
 };
 
-exports.insertParcelizedAgc = catchAsyncError(async (req, res, next) => {
-   
-   // CREATE A NEW PARCELIZED AGC DOCUMENT _MTD 2
-   const newParcelizedAgc = await PARCELIZED_AGC_MODEL.create(req.body) // "model.create" returns a promise
 
-   res.status(201).json({
-      status: 'success',
-      inserted_at: req.requestTime,
-      data: {
-         parcelizedAgc: newParcelizedAgc
-      }
-   })   
-});
+// .. insertParcelizedAgc USING GLOBAL catchAsyncError HANDLER
+// exports.insertParcelizedAgc = catchAsyncError(async (req, res, next) => {
+   
+//    // GET PAYLOAD FROM PREV. M.WARE. (res.locals.appendedGeojson) VS. API CALL PARAM (req.body)
+//    const parcelizedAgcPayload = _getNextPayload(res.locals.parcelizedAgc, req.body);
+   
+//    // CREATE A NEW PARCELIZED AGC DOCUMENT _MTD 2
+//    // const newParcelizedAgc = await PARCELIZED_AGC_MODEL.create(req.body) // "model.create" returns a promise
+//    const newParcelizedAgc = await PARCELIZED_AGC_MODEL.create(parcelizedAgcPayload) // "model.create" returns a promise > resolve with "await"
+
+//    res.status(201).json({
+//       status: 'success',
+//       message: `$[ {req.file.originalname} ] was successfully uploaded to the server, converted to a GeoJSON polygon, and parcelized.`,
+//       inserted_at: req.requestTime,
+//       data: {
+//          parcelizedAgc: newParcelizedAgc
+//       }
+//    })   
+// });

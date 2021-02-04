@@ -1,6 +1,7 @@
+const turf = require('@turf/turf');
 const chalk = require('../utils/chalk-messages.js');
-const PARCELIZED_AGC_MODEL = require('../models/parcelized-agc-model.js')
-const { PARCELIZE_SHAPEFILE } = require('../data/agcs/parcelize/chunkify-moving-frames.js')
+const { PARCELIZE_SHAPEFILE } = require('../data/agcs/parcelize/chunkify-moving-frames.js');
+const { _getNextPayload } = require('../utils/utils.js');
 
 
 
@@ -49,11 +50,10 @@ async function parcelize(agc) {
       // GET CHUNKIFY DIRECTIONS
       // const dirComboConfigObj = dirOptionsMap.wn;
       // const dirComboConfigObj = dirOptionsMap.ws;
-      // const dirComboConfigObj = dirOptionsMap.ne;
-      const dirComboConfigObj = dirOptionsMap.es;
+      // const dirComboConfigObj = dirOptionsMap.sw;
+      const dirComboConfigObj = dirOptionsMap.ne;
 
       // PARCELIZE
-      // const parcelizedShapefile = await PARCELIZE_SHAPEFILE(selectedShapefile, farmerAllocations, dirComboConfigObj)
       const parcelizedShapefile = PARCELIZE_SHAPEFILE(selectedShapefile, farmers_data, dirComboConfigObj)
 
       return parcelizedShapefile;
@@ -68,28 +68,49 @@ async function parcelize(agc) {
 // PARCELIZE THE NEW AGC AND INSERT INTO DB.
 exports.parcelizeAgc = async (req, res, next) => {
 
+	console.log(chalk.success(`CALLED THE [ parcelizeAgc ] CONTROLLER FN. `))
+
    try {
 
-      console.log(chalk.highlight(JSON.stringify(req.body)));
+      // SELECT PARAM FROM PREV. M.WARE. (res.locals.appendedGeojson) VS. API CALL PARAM (req.body)
+      const agcPayload = _getNextPayload(res.locals.appendedGeojson, req.body);
+
+      console.log(agcPayload);
       
       // PARCELIZE THE NEW AGC
-      const parcelizedAgc = await parcelize(req.body);
+      // const parcelizedAgc = await parcelize(res.locals.appendedGeojson); // IMPORTANT < DON'T USE await HERE < 
+      const parcelizedAgc = parcelize(agcPayload);
 
-      // INSERT PARCELIZED AGC INTO DB.
-      const insertedAgc = await PARCELIZED_AGC_MODEL.create(parcelizedAgc) // "model.create" returns a promise
+      // PASS PARCELIZED AGC TO insertParcelizedAgc M.WARE.
+      if (await parcelizedAgc) {
 
-      // SERVER RESPONSE
-      res.status(201).json({
-         status: 'success',
-         inserted_at: req.requestTime,
-         data: insertedAgc
-      })
+         res.locals.parcelizedAgc = await parcelizedAgc;
 
-   } catch (err) {
+         next();
+         
+         // REMOVE > DEPRECATED > NOW PASSING parcelizedAgc TO NEXT M.WARE 
+         // const insertedAgc = await PARCELIZED_AGC_MODEL.create(parcelizedAgc) // "model.create" returns a promise
+
+         // if (insertedAgc) {
+         //    // SERVER RESPONSE
+         //    res.status(201).json({
+         //       status: 'success',
+         //       // status: 'This file [ ${req.file.originalname} ] was successfully uploaded, converted to GeoJSON, parcelized & saved to the database.',
+         //       inserted_at: req.requestTime,
+         //       data: insertedAgc
+         //    })
+         // }
+
+      } else {
+         
+         throw new Error(`PARCELIZATION OF [ ${req.file.originalname} ] FAILED.`)
+      }
+
+   } catch (_err) {
       res.status(400).json({ // 400 => bad request
          status: 'fail',
-         message: 'That POST request failed. Check your JSON data payload.',
-         error_msg: err.message,
+         message: `[ ${req.file.originalname} ] was successfully uploaded to the server, converted to a GeoJSON polygon, and updated with the farmer allocations JSON.`,
+         error_msg: _err.message,
       });
    }
 }

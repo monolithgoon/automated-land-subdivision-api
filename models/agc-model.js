@@ -175,8 +175,6 @@ const agcSchema = new mongoose.Schema({
 // PRE-SAVE M-WARE TO APPEND A TIMESTAMP TO THE DB SAVE OP.
 agcSchema.pre('save', function(next) {
 
-   console.log(chalk.highlight(this.properties.db_insert_timestamp));
-
    const insertTimeStr = new Date().toISOString();
    this.properties.db_insert_timestamp = insertTimeStr
 
@@ -203,11 +201,11 @@ agcSchema.pre('save', function(next) {
    const agcArea = turf.area(this) / 10000;
    const allocations = [];
    this.properties.farmers.forEach(farmer=>allocations.push(farmer.allocation));
-   const totalAllocation = allocations.reduce((alloc, sum) => alloc + sum)
-   if (agcArea >= totalAllocation) {
+   const totalAllocArea = allocations.reduce((alloc, sum) => alloc + sum)
+   if (agcArea >= totalAllocArea) {
       return next();
    } else {
-      return next(new Error(`The total allocations exceed the land area. Reduce allocations by at least ${(totalAllocation - agcArea).toFixed(2)} ha.`))   
+      return next(new Error(`The total allocations exceed the land area. Reduce allocations by at least ${(totalAllocArea - agcArea).toFixed(2)} ha.`))   
    }
 })
 
@@ -255,7 +253,7 @@ agcSchema.pre('save', function(next) {
 
 
 
-// AGC DATA MODEL
+// INIT. THE AGC DATA MODEL
 const AGC_MODEL = mongoose.model('agcs', agcSchema);
 
 

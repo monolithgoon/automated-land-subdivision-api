@@ -68,6 +68,7 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
 
       // SLICE THE MAIN SHAPEFILE INTO "LARGE" SECTIONS >>
       // ANNEX A 20% SECTION OF THE ORIGINAL SHAPEFILE && USE THAT FOR CHUNKING
+      // let percentIngress = 0;
       let percentIngress = 0.80;
       // let percentIngress = 0.5;
 
@@ -94,16 +95,16 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
 
 
          // CHUNKING BASELINE VARIABLES
-         const orgBboxPolygon = _getProps(workingShapefile)._bboxPolygon
+         const baseBboxPolygon = _getProps(workingShapefile)._bboxPolygon; // THE INITIAL STATE+POSITION OF THE MOVING BBOX. POLYGON IN _chunkify
          const startShapefileArea = _calcArea(workingShapefile);
 
-
+         
          // KEEP TRACK OF THE FARMER/FARM DATA
-         const allocationsMetadata = _getAllocationsMetadata(shapefileID, FARMERS_DATA, idx)
+         const allocationMetadata = _getAllocationsMetadata(shapefileID, FARMERS_DATA, idx)
          
             
          // INIT. THE START POSITION OF THE MOVING BBOX. POLYGON
-         let movingBboxPolygon = orgBboxPolygon;
+         // let movingBboxPolygon = baseBboxPolygon;
 
 
          // SET THE DIRECTION TO CHUNKIFY
@@ -111,7 +112,7 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
          let initChunkifyDir = newChunkifyDir ? newChunkifyDir : chunkifyDirection;
         
 
-         let chunkifyData = _chunkify(allocationsMetadata, {initChunkifyDir, newChunkifyDir, katanaSliceDir, percentIngress, workingShapefile, pendingShapefile, startShapefileArea, movingBboxPolygon, idx});
+         let chunkifyData = _chunkify(allocationMetadata, {initChunkifyDir, newChunkifyDir, katanaSliceDir, percentIngress, workingShapefile, pendingShapefile, startShapefileArea, baseBboxPolygon, idx});
 
 
          // RETURN THE DISCARDED KATANA CHUNKS
@@ -127,7 +128,7 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
          // if (chunkifyData.failedAllocIdx) { // THIS CHECK WON'T WORK IF THE idx === 0
          if (chunkifyData.failedAllocIdx !== null) {
 
-            if( chunkifyData.failedAllocIdx !== undefined) {
+            if (chunkifyData.failedAllocIdx !== undefined) {
 
                FARMERS_DATA.push(failedAlloc)
                // console.log(chalk.highlight(failedAlloc.first_name))

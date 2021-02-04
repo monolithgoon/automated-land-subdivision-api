@@ -1,3 +1,7 @@
+"use-strict";
+
+
+
 const path = require('path');
 const express = require('express')
 const EXPRESS_APP = express()
@@ -7,6 +11,11 @@ const compression = require('compression'); // server response compression
 const cors = require('cors'); // this will allow other websites access the api
 const AppError = require('./utils/app-error.js')
 const globalErrorHandler = require('./controllers/error-controller.js')
+
+// APPEND THE APP BASE DIR. TO THE GLOBAL OBJ.
+// Node HAS A GLOBAL NAMESPACE OBJECT CALLED "global" — 
+// ANYTHING THAT YOU ATTACH TO THIS OBJ. WILL BE AVAIL. EVERYWHERE IN YOUR APP
+global.__approotdir = __dirname;
 
 // REMOVE > NOT WORKING ON HEROKU 
 // const chalk = require('chalk');
@@ -91,6 +100,8 @@ const parcelizedAgcsRouter = require('./routes/parcelized-agc-routes.js');
 const agcsRouter = require('./routes/agc-routes.js');
 const userRouter = require('./routes/user-routes.js');
 const viewRouter = require('./routes/view-routes.js');
+const geoClustersRouter = require('./routes/geo-cluster-routes.js');
+const geofilesRouter = require('./routes/geofile-routes.js');
 
 
 
@@ -104,8 +115,10 @@ const viewRouter = require('./routes/view-routes.js');
 EXPRESS_APP.use('/', viewRouter);
 EXPRESS_APP.use('/api/demo/', viewRouter);
 EXPRESS_APP.use('/api/v1/agcs/', agcsRouter);
+EXPRESS_APP.use('/api/v2/geo-clusters/', geoClustersRouter);
 EXPRESS_APP.use('/api/v1/parcelized-agcs/', parcelizedAgcsRouter);
 EXPRESS_APP.use('/api/v1/users/', userRouter);
+EXPRESS_APP.use('/api/v2/geofiles/', geofilesRouter)
 
 
 
@@ -133,6 +146,11 @@ EXPRESS_APP.use('*', (req, res, next) => {
 
 // GLOBAL ERROR HANDLING M.WARE
 EXPRESS_APP.use(globalErrorHandler)
+
+
+
+//  ?????
+EXPRESS_APP.use(express.urlencoded({ extended: true}));
 
 
 

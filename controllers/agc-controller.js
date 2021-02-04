@@ -1,6 +1,6 @@
 // CONTAINS THE ROUTE HANDLING FUNCTIONS USED BY agc-routes.js
 const chalk = require('../utils/chalk-messages');
-const catchAsync = require('../utils/catch-async.js');
+const { _getNextPayload } = require('../utils/utils.js')
 const AGC_MODEL = require('../models/agc-model.js')
 
 
@@ -19,7 +19,7 @@ exports.getAgc = async (req, res) => {
 
    try {
 
-		console.log(chalk.working("YOU SUCCESSFULLY CALLED THE getAgc CONTROLLER FN. "));
+		console.log(chalk.success("YOU SUCCESSFULLY CALLED THE getAgc CONTROLLER FN. "));
 
       // EXTRACT THE agc_id FROM THE QUERY OBJ.
       let queryObj = { ...req.query }
@@ -55,8 +55,7 @@ exports.getAllAgcs = async (request, response) => {
 
 	try {
 
-		console.log(chalk.working("YOU SUCCESSFULLY CALLED THE getAllAgcs CONTROLLER FN. "));
-      console.log(request.query);
+		console.log(chalk.success("YOU SUCCESSFULLY CALLED THE getAllAgcs CONTROLLER FN. "));
 
       // FILTER _EXAMPLE 1
       // GET TOURS DATA FROM DATABASE > 
@@ -103,6 +102,9 @@ exports.getAllAgcs = async (request, response) => {
          // BUILD THE QUERY
          // AGC_MODEL.find() returns a Query obj., and you can chain more Query class mtds. (like .sort()) to it.
          let dbQuery = AGC_MODEL.find(JSON.parse(formattedQueryStr)); 
+         
+
+         console.log(chalk.working(`Waiting for DB. response .. `))
          
          
          // 3. SORTING
@@ -173,7 +175,12 @@ exports.getAllAgcs = async (request, response) => {
 // CREATE/INSERT A NEW AGC (POST REQUEST) HANDLER FN.
 exports.insertAgc = async (req, res, next) => {
 
-   console.log(chalk.highlight('you hit the insertAgc fn.'));
+	console.log(chalk.success(`CALLED THE insertAgc CONTROLLER FN. `))
+   
+   // GET PAYLOAD FROM PREV. M.WARE. (res.locals.appendedGeojson) VS. API CALL PARAM (req.body)
+   const agcPayload = _getNextPayload(res.locals.appendedGeojson, req.body);
+   
+   console.log(agcPayload);
 
    try {
       
@@ -182,7 +189,8 @@ exports.insertAgc = async (req, res, next) => {
       // newAgc.save // returns a promise
       
       // CREATE A NEW AGC DOCUMENT _MTD 2
-      const newAgc = await AGC_MODEL.create(req.body) // "model.create" returns a promise
+      // const newAgc = await AGC_MODEL.create(req.body) // "model.create" returns a promise
+      const newAgc = await AGC_MODEL.create(agcPayload) // "model.create" returns a promise
 
       // SERVER RESPONSE
       res.status(201).json({
@@ -194,6 +202,8 @@ exports.insertAgc = async (req, res, next) => {
          // }
       });
       
+      // next();
+
    } catch (err) { 
       res.status(400).json({ // 400 => bad request
          status: 'fail',
@@ -201,6 +211,4 @@ exports.insertAgc = async (req, res, next) => {
          error_msg: err.message,
       });
    }
-
-   // next();
-}
+};

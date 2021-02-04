@@ -3,10 +3,10 @@ const turf = require('@turf/turf')
 
 
 
-exports._getKatanaSlice = function _getKatanaSlice(direction, percentage, shapefile) {
+exports._getKatanaSlice = function _getKatanaSlice(direction, annexPercent, shapefile) {
 
    const shapefileArea = _calcArea(shapefile);
-   let areaToAnnex = shapefileArea * percentage
+   let areaToAnnex = shapefileArea * annexPercent
             
    // INITIAL STATE
    // let annexedPolygon = shapefile
@@ -66,8 +66,8 @@ exports._getKatanaSlice = function _getKatanaSlice(direction, percentage, shapef
          
          // REDUCE THE % INGRESS BY 5f%..
          // RECURSIVELY RE-START THE KATANA SLICING PROCESS FROM THE TOP..
-         percentage = percentage - 0.05
-         _getKatanaSlice(direction, percentage, shapefile)
+         annexPercent = annexPercent - 0.05
+         _getKatanaSlice(direction, annexPercent, shapefile)
          // console.log(intersectSliceArea.toFixed(1));
          // console.log(areaToAnnex.toFixed(1));
 
@@ -94,10 +94,12 @@ exports._getKatanaSlice = function _getKatanaSlice(direction, percentage, shapef
       // moveIncrement += 0.0005;
       // moveIncrement += 0.00001;
 
-      // SMOOTH MOVEMENT..
-      moveIncrement += 0.0002; // USE FOR ..
-      moveIncrement += 0.00001; // USE FOR ..
-      moveIncrement += 0.000001; // USE FOR ..   
+      // THIS STACKED ADDITION ENSURES SMOOTH MOVEMENT..
+      // THE SMALLER THE STARTING INCREMENT, THE 'THINNER' THE KNIFE
+      moveIncrement += 0.00001;
+      moveIncrement += 0.000001;  
+      moveIncrement += 0.0000001;  
+      moveIncrement += 0.00000001;  
    }
    
    // @ COMPLETION OF WHILE LOOP => THE AREA OF SLICE ~= AREA OF DESIRED CHUNK
