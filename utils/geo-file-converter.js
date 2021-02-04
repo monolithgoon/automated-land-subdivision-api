@@ -6,7 +6,7 @@ const tj = require("@mapbox/togeojson");
 const fs = require("fs");
 const path = require("path");
 const turf = require('@turf/turf');
-const JSZip = require('JSZip');
+const JSZip = require('jszip');
 const shapefile = require("shapefile");
 // node doesn't have xml parsing or a dom. > so, use xmldom
 const DOMParser = require("xmldom").DOMParser;

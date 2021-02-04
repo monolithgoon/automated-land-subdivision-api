@@ -186,7 +186,7 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
             'katana_slice_dir': katanaSliceDirection,
             'moving_frames_dir': chunkifyDirection,
          },
-         'preview_map_url_hash': _generateRandomString(32, shapefileID),
+         'preview_map_url_hash': _generateRandomString(16, shapefileID),
       }
       console.log(CHUNKS_COLLECTION);
 
