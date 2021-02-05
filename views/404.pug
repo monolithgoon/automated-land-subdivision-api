@@ -8,7 +8,8 @@ block parcelized-agc-not-found
 
       //- .section-1
       //- .page-header
-      h1= `404. Not Found.`
+      section.top-section
+         h1= `404. Not Found.`
          p You are trying to access a resource that does not exist.
 
       .page-graphic
@@ -17,7 +18,9 @@ block parcelized-agc-not-found
       //- .section-2
       //- h1= `There is no AGC with ID ${agcID} in our database. Contact the AGC portal administrator.`
       //- h1= `That URL is either invalid, or there is no AGC with ID ${agcID} in our database.`
-      h1= `That URL is either invalid, or has expired. Ask the AGC portal admin to generate a new map preview link from the API.`
+      section.bottom-section
+         h1= `That map preview link is either invalid, or has expired.`
+         p= `Contact the AGC portal administrator to generate a valid link from the land subdivision API.`
          //- p Contact the site admin. Please confirm that that AGC has been uploaded.
-      //- p= `You are attemptting access a resource that does not exist.`
-      //- h1= `There is no AGC with ID ${agcID} in our database. You are attemtpting to access a resource that does not exist.`
+         //- p= `You are attemptting access a resource that does not exist.`
+         //- h1= `There is no AGC with ID ${agcID} in our database. You are attemtpting to access a resource that does not exist.`

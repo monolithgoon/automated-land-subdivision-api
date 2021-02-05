@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>Testing 5.kml</name>
+	<Style id="inline">
+		<LineStyle>
+			<color>ff0000ff</color>
+			<width>2</width>
+		</LineStyle>
+		<PolyStyle>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<StyleMap id="inline0">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#inline</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#inline1</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="inline1">
+		<LineStyle>
+			<color>ff0000ff</color>
+			<width>2</width>
+		</LineStyle>
+		<PolyStyle>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<Placemark>
+		<name>Testing 5</name>
+		<styleUrl>#inline0</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						8.152060691172956,6.133309366279582,0 8.154233546456116,6.128287491757102,0 8.154455397781206,6.125893095026385,0 8.155418868994097,6.124375255487825,0 8.157042743431035,6.122860784936949,0 8.157344899032354,6.12078227816589,0 8.156887669061771,6.119274355457351,0 8.158347004074303,6.114867934148279,0 8.162648299353254,6.115713727894574,0 8.167056864088245,6.119845840031168,0 8.168476545846858,6.121740003635439,0 8.168769895490493,6.124022682854436,0 8.166594757988079,6.124786555911904,0 8.163848479112289,6.123644034382855,0 8.162801525748087,6.125169049250704,0 8.161554793040334,6.128036132723016,0 8.160111195351787,6.130816763556219,0 8.161908879845353,6.134041086428463,0 8.160744053839261,6.136580207694639,0 8.158141610514722,6.137546733771521,0 8.154480132389228,6.137837970297447,0 8.151919844172472,6.135759664175779,0 8.152060691172956,6.133309366279582,0 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+</Document>
+</kml>

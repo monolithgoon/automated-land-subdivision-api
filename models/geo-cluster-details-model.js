@@ -124,6 +124,11 @@ const clusterDetailsSchema = new mongoose.Schema({
          type: Number,
          required: [true],
          default: 0,
+      },
+      num_plot_owners: {
+         type: Number,
+         required: [true],
+         default: 0,
       }
    }
 });
@@ -153,13 +158,14 @@ clusterDetailsSchema.pre('save', function(next) {
 
 // CALCULATE THE TOTAL. AREA OF ALLOCATIONS & SAVE TO A NEW PROP.
 clusterDetailsSchema.pre('save', function(next) {
-   const allocations = []
+   const allocations = [];
    this.properties.farmers.forEach(farmer=>allocations.push(farmer.allocation));
    const totalAllocArea = allocations.reduce((alloc, sum) => alloc + sum);
    if (totalAllocArea > 0) {
       this.properties.allocations_total = totalAllocArea;
+      this.properties.num_plot_owners = allocations.length;
    } else {
-      return next(new Error(`The total allocated area cannot be 0. Please check your JSON file.`))
+      return next(new Error(`The total allocated area cannot be 0. Please check your JSON file.`));
    }
    return next();
 })

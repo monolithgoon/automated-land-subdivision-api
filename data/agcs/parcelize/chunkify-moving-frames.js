@@ -69,7 +69,7 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
       // SLICE THE MAIN SHAPEFILE INTO "LARGE" SECTIONS >>
       // ANNEX A 20% SECTION OF THE ORIGINAL SHAPEFILE && USE THAT FOR CHUNKING
       // let percentIngress = 0;
-      let percentIngress = 0.80;
+      let percentIngress = 0.85;
       // let percentIngress = 0.5;
 
 
@@ -185,6 +185,7 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
          'parcelization_metadata': {
             'katana_slice_dir': katanaSliceDirection,
             'moving_frames_dir': chunkifyDirection,
+            'is_inaccurate': this.unused_land_area <= (this.agc_area - this.total_allocation),
          },
          'preview_map_url_hash': _generateRandomString(16, shapefileID),
       }

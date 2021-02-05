@@ -66,7 +66,7 @@ exports._getKatanaSlice = function _getKatanaSlice(direction, annexPercent, shap
          
          // REDUCE THE % INGRESS BY 5f%..
          // RECURSIVELY RE-START THE KATANA SLICING PROCESS FROM THE TOP..
-         annexPercent = annexPercent - 0.05
+         annexPercent = annexPercent - 0.15
          _getKatanaSlice(direction, annexPercent, shapefile)
          // console.log(intersectSliceArea.toFixed(1));
          // console.log(areaToAnnex.toFixed(1));

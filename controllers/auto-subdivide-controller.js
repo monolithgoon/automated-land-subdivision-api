@@ -6,7 +6,8 @@ const { _getNextPayload } = require('../utils/utils.js');
 
 
 // AUTO-SUBDIVIDE / AUTO-PARCELIZATION LOGIC FN.
-async function parcelize(agc) {
+// async function parcelize(agc, dirCombo) { // FIXME > THIS SHOULDN'T BE AN ASYNC FN.
+function parcelize(agc, dirCombo) {
    
    try {
       
@@ -51,7 +52,7 @@ async function parcelize(agc) {
       // const dirComboConfigObj = dirOptionsMap.wn;
       // const dirComboConfigObj = dirOptionsMap.ws;
       // const dirComboConfigObj = dirOptionsMap.sw;
-      const dirComboConfigObj = dirOptionsMap.ne;
+      const dirComboConfigObj = dirOptionsMap[dirCombo];
 
       // PARCELIZE
       const parcelizedShapefile = PARCELIZE_SHAPEFILE(selectedShapefile, farmers_data, dirComboConfigObj)
@@ -72,19 +73,36 @@ exports.parcelizeAgc = async (req, res, next) => {
 
    try {
 
-      // SELECT PARAM FROM PREV. M.WARE. (res.locals.appendedGeojson) VS. API CALL PARAM (req.body)
+      // SELECT PAYLOAD > 
+      // EITHER FROM PARAM FROM PREV. M.WARE. (res.locals.appendedGeojson) VS. API CALL PARAM (req.body)
       const agcPayload = _getNextPayload(res.locals.appendedGeojson, req.body);
 
       console.log(agcPayload);
       
       // PARCELIZE THE NEW AGC
       // const parcelizedAgc = await parcelize(res.locals.appendedGeojson); // IMPORTANT < DON'T USE await HERE < 
-      const parcelizedAgc = parcelize(agcPayload);
+      let parcelizedAgc; // TODO > CHANGE TO parcelizedGeoCluster 
+      const directionsArray = [ 'nw', 'ne', 'sw', 'se', 'es', 'en', 'ws', 'wn' ];
+      for (const dirCombo of directionsArray) {
+         console.log(chalk.warning(`trying: ${dirCombo} `))
+         parcelizedAgc = parcelize(agcPayload, dirCombo); 
+         if (parcelizedAgc) {
+            if (!parcelizedAgc.properties.parcelization_metadata.is_inaccurate) {
+               break;
+            }
+         }
+      }
+      // const parcelizedAgc = parcelize(agcPayload);
 
       // PASS PARCELIZED AGC TO insertParcelizedAgc M.WARE.
-      if (await parcelizedAgc) {
+      // if (await parcelizedAgc) {
 
-         res.locals.parcelizedAgc = await parcelizedAgc;
+      //    res.locals.parcelizedAgc = await parcelizedAgc;
+
+      //    next();
+      if (parcelizedAgc) {
+
+         res.locals.parcelizedAgc = parcelizedAgc;
 
          next();
          
@@ -103,7 +121,7 @@ exports.parcelizeAgc = async (req, res, next) => {
 
       } else {
          
-         throw new Error(`PARCELIZATION OF [ ${req.file.originalname} ] FAILED.`)
+         throw new Error(`THIS PARCELIZATION ATTEMPT OF [ ${req.file.originalname} ] WAS NOT SUCCESSFUL. RECALIBRATING ALGO. & RE-TRYING WITH DIFF. PARAM. SET.`)
       }
 
    } catch (_err) {

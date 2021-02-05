@@ -1,12 +1,7 @@
-* {
-   /* margin: 0;
-   padding: 0;
-   box-sizing: border-box; */
-}
-
 .error-page-wrapper {
    margin: auto;
    width: 80%;
+   height: 100vh;
    background: white;
    /* background-color: rgba(43, 49, 55, 0.5); */
    font-family: 'Roboto', sans-serif;
@@ -14,41 +9,44 @@
    display: grid;
    grid-template-rows: 1fr auto 0.7fr;
    place-items: center;
-
-   /* display: flex;
-   flex-direction: column;
-   align-items: flex-start; */
 }
 
 .error-page-wrapper h1 {
    margin:0;
-   padding: 0;
-   /* padding: 10px; */
-   padding-left: 20px;
+   padding: 20px 30px;
 }
+
 
 .error-page-wrapper p {
    margin: 0;
-   padding: 5px 35px;
-   padding-bottom: 0;
-   font-weight: lighter;
+   padding: 0 35px;
+   font-weight: normal;
 }
 
-.error-page-wrapper h1:first-of-type {
-   padding: 20px 35px;
-   padding: 0 30px;
-   font-size: 60px;
+.top-section {
+   padding-bottom: 20px;
 }
 
-.error-page-wrapper h1:last-of-type {
-   padding: 20px 30px;
+.top-section h1 {
    padding: 0 30px;
-   font-size: 20px;
-   line-height: 25px;
+   font-size: 55px;
+   line-height: 50px;
 }
+
+.bottom-section {
+   padding-top: 20px;
+   padding-bottom: 20px;
+}
+
+.bottom-section h1 {
+   padding-top: 0;
+   padding-bottom: 15px;
+   font-size: 25px;
+   line-height: 30px;
+}
+
 
 .page-graphic img {
-   /* background-color: grey; */
    background-color: #F4F4F4;
    width: 100%;
 }
@@ -60,12 +58,13 @@
       width: 30%;
    }
 
-   .error-page-wrapper h1:first-of-type {
-      padding: 20px 35px;
-      font-size: 45px;
+   .top-section h1 {
+      padding: 20px 35px 10px;
+      font-size: 50px;
    }
 
    .page-graphic img {
       width: 100%;
+      /* display: none; */
    }
 }
