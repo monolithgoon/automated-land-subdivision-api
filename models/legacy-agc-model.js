@@ -53,6 +53,10 @@ const featureSchema = new mongoose.Schema({
       plot_owner_bvn : {
          type: Number,
       },
+      plot_owner_base64: {
+         type: Array,
+         default: [],
+      }
    }
 });
 
