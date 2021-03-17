@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Style id="myPolygonStyle"> 
+<LineStyle> 
+<width>1</width> 
+</LineStyle> 
+<PolyStyle> 
+<color>8047A043</color> 
+</PolyStyle> 
+</Style> 
+<Placemark> 
+<name>myPolygon</name> 
+<styleUrl>#myPolygonStyle</styleUrl> 
+<Polygon> 
+<outerBoundaryIs> 
+<LinearRing>
+<coordinates>-122.44257817993167,37.80710430993863,0
+-122.4278153015137,37.804391739106606,0
+-122.4113358093262,37.80737556154185,0
+-122.40412603149417,37.80629054915071,0
+-122.38867650756839,37.78974213500372,0
+-122.38764653930667,37.74821914921608,0
+-122.45390783081058,37.74523293816564,0
+-122.4604309631348,37.78865686357955,0
+-122.44257817993167,37.80710430993863,0</coordinates> 
+</LinearRing> 
+</outerBoundaryIs> 
+</Polygon> 
+</Placemark> 
+</kml>

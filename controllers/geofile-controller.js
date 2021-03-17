@@ -2,7 +2,7 @@ const chalk = require('../utils/chalk-messages');
 const catchAsyncError = require('../utils/catch-async.js')
 const fs = require('fs');
 const multerFileUpload = require("../middleware/multer-file-upload.js");
-const { _geofileConverter } = require('../utils/geo-file-converter.js');
+const { _geofileConverter } = require('../utils/geofile-converter.js');
 const { _validateAllocationsArea } = require('../utils/utils.js');
 const GEO_CLUSTER_DETAILS_MODEL = require('../models/geo-cluster-details-model.js')
 
@@ -15,13 +15,15 @@ const uploadGeofile = async (req, res, next) => {
 
 	// const geofileUploadPath = `/resources/uploads/raw-geo-files/`
 	// const convertedGeofilePath = `/resources/converted-geo-files/`
+
+	// UPDATE THE REQUEST OBJECT WITH FILE PATH VARIABLES
 	req.__uploadpath = `/resources/uploads/raw-geo-files/`
 	req.__convertedpath = `/resources/converted-geo-files/`
 	
 	try {
 
 		// use Multer middleware function for file upload
-		// THIS SEEMS TO UPDATE THE req OBJECT..
+		// THIS CREATES A req.file OBJ. TAHT GIVES US ACCESS TO THE FILE BUFFER THAT WAS UPLOADED FROM THE CLIENT..
 		await multerFileUpload(req, res);
 
       // catch Multer error (in middleware function)
@@ -36,7 +38,7 @@ const uploadGeofile = async (req, res, next) => {
       // Handle Multer file size limit error
       if (_err.code == "LIMIT_FILE_SIZE") {
          return res.status(500).send({
-           message: "File size cannot be larger than 1MB!",
+           message: `The geofile size cannot be larger than 2MB!`,
          });
       }
 
@@ -57,6 +59,7 @@ const uploadGeofile = async (req, res, next) => {
 
 
 // CONVERT THE GEO FILE TO GeoJSON && SAVE
+// const convertGeofile = (req, res, next) => {
 const convertGeofile = async (req, res, next) => {
 
 	console.log(chalk.success(`CALLED THE [ convertGeofile ] CONTROLLER FN. `))
@@ -73,12 +76,17 @@ const convertGeofile = async (req, res, next) => {
 		const convertedGeofilePath = req.__convertedpath
 
 		// CONVERT THE GEO FILE TO GeoJSON && SAVE TO DISK
-		await _geofileConverter({completeFileName, geofileUploadPath, convertedGeofilePath});
+		try {
+			// IMPORTANT > THE FN. CALL BELOW MUST BE AWAITED IN ORDER TO HANDLE THE ERROR THROWN BY THE PROMISE-BASED shapefileConverter FN. IN geofileConverter.js
+			await _geofileConverter({completeFileName, geofileUploadPath, convertedGeofilePath});
+		} catch (_err) {
+			return next(new Error(`This file [ ${completeFileName} ] was successfully uploaded. ${_err.message}`))
+		};
 		
 		// CHECK IF THE FILE WAS SUCCESSFULLY CONVERTED & SAVED
 		fs.readFile(`${__approotdir}${req.__convertedpath}${fileName}.geojson`, "utf8", (_err, geojsonData) => {
 			if (_err) {
-				return next(new Error (`This file [ ${completeFileName} ] was successfully uploaded, but was NOT succesfully converted to GeoJSON. Check the geo-file-converter module. ${_err.message}`))
+				return next(new Error (`This file [ ${completeFileName} ] was successfully uploaded, and converted to a GeoJSON polygon, but there was a problem saving the file. ${_err.message}`))
 
 				// REMOVE > DEPRECATED > YOU DON'T WANT TO CALL next() IF CONVERSION FAILS 
 				// return next (new Error(`This file [ ${completeFileName} ] was successfully uploaded, but was NOT succesfully converted to GeoJSON. Check the geo-file-converter utility module. ${_err.message}`))
@@ -103,23 +111,23 @@ const convertGeofile = async (req, res, next) => {
 		
 	} catch (_err) {
 
-		if (completeFileName) {
-			res.status(500).send({
-				message: `This file [ ${completeFileName} ] was successfully uploaded, but was NOT succesfully converted to GeoJSON. Check the convertGeofile fn. in the file-controller module.`,
-				error_msg: _err.message,
-			});
-			// console.error(chalk.fail(_err.message))
-		} else {
-			res.status(500).send({
-				message: `You seem to be trying to convert a geofile that doesn't exist on this server.`,
-			});
-		}
-
-		// if (!completeFileName) {
+		// REMOVE > DEPRECATED > ALL POTENTIAL ERRS. HAVE BEEN ADEQUEATELY HANDLED ABOVE 
+		// if (completeFileName) {
 		// 	res.status(500).send({
-		// 		message: `You seem to be trying to convert a geofile that doesn't exist on this server.`
+		// 		message: `This file [ ${completeFileName} ] was successfully uploaded, but was NOT succesfully converted to GeoJSON. Check the convertGeofile fn. in the file-controller module.`,
+		// 		error_msg: _err.message,
+		// 	});
+		// } else {
+		// 	res.status(500).send({
+		// 		message: `You seem to be trying to convert a geofile that doesn't exist on this server.`,
 		// 	});
 		// }
+
+		if (!completeFileName) {
+			res.status(500).send({
+				message: `You seem to be trying to convert a geofile that has not been uploaded to this server.`
+			});
+		}
 	}
 };
 

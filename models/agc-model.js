@@ -128,9 +128,9 @@ const agcSchema = new mongoose.Schema({
    },
    features: {
       type: [featureSchema],
-      required: [true, `The featureCollection must have at least one feature, or an array of features`],
+      required: [true, `The FeatureCollection must have at least one feature, or an array of features`],
       // validate: (entry) => Array.isArray(entry) && entry.length > 0, // RETURNS true or false
-      validate: [(entry) => Array.isArray(entry) && entry.length > 0, `The AGC featureCollection must have at least one feature, or an array of features`],
+      validate: [(entry) => Array.isArray(entry) && entry.length > 0, `The AGC FeatureCollection must have at least one feature, or an array of features`],
    },
    properties: {
       agc_id: {
@@ -253,7 +253,7 @@ agcSchema.pre('save', function(next) {
 
 
 
-// INIT. THE AGC DATA MODEL
+// INIT. THE DATA MODEL
 const AGC_MODEL = mongoose.model('agcs', agcSchema);
 
 

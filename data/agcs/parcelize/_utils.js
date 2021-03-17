@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const turf = require('@turf/turf')
 const chalk = require('../../../utils/chalk-messages.js')
-const { EROFS } = require('constants')
+const { EROFS, SSL_OP_SSLEAY_080_CLIENT_DH_BUG } = require('constants')
 
 
 
@@ -130,7 +130,6 @@ function _generateRandomString(length, chars) {
 
 
 
-
 // CREATE A FOLDER WITH THE geofileID && SAVE THE PLOT OWNER PHOTOS INSIDE
 function savePlotOwnerPhoto({photosDirectory, geofileID, farmer, base64ImageStr}) {
 
@@ -166,7 +165,7 @@ function savePlotOwnerPhoto({photosDirectory, geofileID, farmer, base64ImageStr}
       fs.writeFile(path.resolve(`${photosDirectory}/${farmer.farmer_id}.jpg`), base64ImageStr, {encoding: 'base64'}, (_err, data) => {
          if(_err) {
             console.error(chalk.fail(_err.message));
-            throw new Error(`Could not create a URL to this PLOT OWNER'S ${farmer.first_name} ${farmer.last_name} photo..${_err.message}`)
+            throw new Error(`Could not create a URL to this PLOT OWNER'S ${farmer.first_name} ${farmer.last_name} photo. The Base64 image string might be invalid. ${_err.message}`)
             process.exit();
          } else {
             // console.log(chalk.success(`THE LOT OWNER PHOTOS FROM THIS SHAPEFILE ${geofileID} WERE SAVED TO FILE  `));
@@ -176,6 +175,18 @@ function savePlotOwnerPhoto({photosDirectory, geofileID, farmer, base64ImageStr}
    } 
 };
 
+
+
+// CHECK THAT THE C-M-F.js ALGO. RAN PROPERLY
+function _checkParity(landArea, totalAllocations, unparcelizedLandArea) {
+   const tolerance = 0.15
+   const unallocatedLandArea = landArea - totalAllocations
+   const error = unallocatedLandArea - unparcelizedLandArea
+   if (error < 0) throw new Error(`Your parcelization is way off. There is too much un-parcelized land.`)
+   // if (error < 0) return false
+   if (error/unallocatedLandArea <= tolerance) return true
+   else throw new Error(`Parcelization algo. is using up too much land.`)
+}
 
 
 
@@ -243,5 +254,6 @@ module.exports = {
    _toggleChunkifyDir,
    _analyzeGeojson,
    _generateRandomString,
+   _checkParity,
    _getAllocationsMetadata,
 }

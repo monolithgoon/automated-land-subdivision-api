@@ -58,6 +58,8 @@ API Deployment Checklist
       [ ] Deploy to repo: 
          RUN > npm run deploy
 
+   [ ] Get currently deployed app - RUN: git remote -v
+
 [ ] Deploy to Firebase >>
    [x] Install the Firebase CLI >> RUN: npm install -g firebase-tools
    [ ] Initialize Firebase in the project directory >> RUN: firebase init

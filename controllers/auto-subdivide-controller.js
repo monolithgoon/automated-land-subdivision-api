@@ -87,19 +87,13 @@ exports.parcelizeAgc = async (req, res, next) => {
          console.log(chalk.warning(`trying: ${dirCombo} `))
          parcelizedAgc = parcelize(agcPayload, dirCombo); 
          if (parcelizedAgc) {
-            if (!parcelizedAgc.properties.parcelization_metadata.is_inaccurate) {
+            if (parcelizedAgc.properties.parcelization_metadata.parity_ok) {
                break;
             }
          }
       }
-      // const parcelizedAgc = parcelize(agcPayload);
 
       // PASS PARCELIZED AGC TO insertParcelizedAgc M.WARE.
-      // if (await parcelizedAgc) {
-
-      //    res.locals.parcelizedAgc = await parcelizedAgc;
-
-      //    next();
       if (parcelizedAgc) {
 
          res.locals.parcelizedAgc = parcelizedAgc;

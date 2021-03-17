@@ -2,19 +2,19 @@ const chalk = require('../utils/chalk-messages.js')
 const path = require('path');
 const util = require("util");
 const multer = require("multer");
-const maxSize = 1 * 1024 * 1024; // Restrict file size with Multer
+const maxSize = 2 * 1024 * 1024; // Restrict file size with Multer
 
 
 
 // CONFIGURE multer TO USE Disk Storage ENGINE
-let storage = multer.diskStorage({
+let storageConfig = multer.diskStorage({
    // determines folder to store the uploaded files.
 	destination: (req, file, cb) => {
 		cb(null, __approotdir + "/resources/uploads/raw-geo-files");
    },
    //  determines the name of the file inside the destination folder.
 	filename: (req, file, cb) => {
-		console.log(chalk.highlight(JSON.stringify(file)));
+		console.log(chalk.result(JSON.stringify(file)));
 		cb(null, file.originalname);
 	},
 });
@@ -27,7 +27,7 @@ let fileFilter = (req, file, cb) => {
       cb(null, true);
    } else {
       cb(null, false);
-      return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+      return cb(new Error(`Only .png, .jpg and .jpeg format allowed!`));
    }
 }
 
@@ -47,9 +47,8 @@ let checkFileType = (req, file, cb) => {
       // console.log(chalk.warning(path.extname(file.originalname)))
    
       // ALLOWED EXTENSIONS REGEX
-      const fileTypes = /jpeg|jpg|png|gif/;
-      // const geoFileTypes = /gpx|kml|kmz|shp/; // TODO <
-      const geoFileTypes = /gpx|kml|kmz/;
+      // const fileTypes = /jpeg|jpg|png|gif/;
+      const geoFileTypes = /gpx|kml|kmz|shp/;
       // Check ext
       const extensionNameTest = geoFileTypes.test(path.extname(file.originalname).toLowerCase());
       // // Check mime
@@ -64,8 +63,7 @@ let checkFileType = (req, file, cb) => {
       } else {
          cb(null, false);
          // return cb(new Error(`Error: Upload .GPX, .KML, .KMZ or .SHP files only!`))
-         // cb(`Only .GPX, .KML, .KMZ or .SHP files are allowed!`); // TODO <
-         cb(`Only .GPX, .KML & .KMZ files are allowed!`); 
+         cb(`Only .GPX, .KML, .KMZ or .SHP files are allowed!`);
       }
    }
 }
@@ -74,7 +72,7 @@ let checkFileType = (req, file, cb) => {
 
 // INIT. MULTER
 let multerFileUpload = multer({
-	storage: storage,
+	storage: storageConfig,
    limits: { fileSize: maxSize },
    // fileFilter: fileFilter,
    fileFilter: checkFileType,

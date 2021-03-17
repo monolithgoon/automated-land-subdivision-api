@@ -171,16 +171,44 @@ const deleteAgc = async (agcID) => {
 
 
 // EXPLORE THE DATA IN THE PARCELIZED AGC COLLECTION
+// EXPLORE THE DATA IN THE PARCELIZED AGC COLLECTION
 const exploreData = async () => {
-   try {
-      await dbConnect();
-      const parcelizedAgcs = await PARCELIZED_AGC_MODEL.find()
-      console.log(parcelizedAgcs);
-   } catch(err) {
-      console.log(err.message);
-   }
-   process.exit();
-}
+	try {
+		await dbConnect();
+		const parcelizedGeoClusters = await PARCELIZED_AGC_MODEL.find();
+
+		switch (process.argv[3]) {
+			case `--props`:
+				for (const geoCluster of parcelizedGeoClusters) {
+					console.log(geoCluster.properties);
+				}
+				break;
+
+			case `--props-ids`:
+				for (const geoCluster of parcelizedGeoClusters) {
+					console.log(geoCluster.properties.agc_id);
+				}
+				break;
+
+			case `--props-ids-areas`:
+				for (const geoCluster of parcelizedGeoClusters) {
+					console.log(`${geoCluster.properties.agc_id} - ${(geoCluster.properties.agc_area).toFixed(2)} ha.`);
+				}
+				break;
+
+			default:
+				console.log(parcelizedGeoClusters);
+				break;
+		}
+
+		console.log(
+			chalk.highlight(`${parcelizedGeoClusters.length} PARCELIZED CLUSTERS `)
+		);
+	} catch (_err) {
+		console.log(_err.message);
+	}
+	process.exit();
+};
 
 
 
@@ -248,7 +276,6 @@ async function returnAllParcelizedAgcs() {
       
    } else if (process.argv[2] === '--explore') {
       exploreData();
-   
    } else if (process.argv[2] === '--wipe') {
       wipeParcelizedAgcCollection()
    } else if (process.argv[2] === '--delete' && process.argv[3]) {

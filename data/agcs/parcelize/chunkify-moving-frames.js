@@ -1,7 +1,7 @@
 // POLYGON CHUNKING v3.0 > BOUNDING BOX DECAY ALGORITHM
 const chalk = require('../../../utils/chalk-messages');
 const turf = require('@turf/turf')
-const { _getProps, _calcArea, _analyzeGeojson, _generateRandomString, _getAllocationsMetadata } = require('./_utils.js');
+const { _getProps, _calcArea, _analyzeGeojson, _generateRandomString, _checkParity, _getAllocationsMetadata } = require('./_utils.js');
 const { _getKatanaSlice } = require('./_getKatanaSlice.js');
 const { _chunkify } = require('./_chunkify.js');
 
@@ -165,7 +165,7 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
       
       
       // DEAL WITH ANY LEFTOVER LAND
-      let unallocatedLandArea = calcUnallocatedLandArea(workingShapefile, pendingShapefile, DISCARDED_KATANA_CHUNKS_AREAS);
+      const unallocatedLandArea = calcUnallocatedLandArea(workingShapefile, pendingShapefile, DISCARDED_KATANA_CHUNKS_AREAS);
 
 
       // CREATE A FEATURE COLLECTION OF ALL THE CHUNKS
@@ -185,7 +185,7 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
          'parcelization_metadata': {
             'katana_slice_dir': katanaSliceDirection,
             'moving_frames_dir': chunkifyDirection,
-            'is_inaccurate': this.unused_land_area <= (this.agc_area - this.total_allocation),
+            'land_parity_ok': _checkParity(),
          },
          'preview_map_url_hash': _generateRandomString(16, shapefileID),
       }
