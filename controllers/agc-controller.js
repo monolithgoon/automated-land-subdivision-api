@@ -208,7 +208,7 @@ exports.getAllAgcs = async (request, response) => {
 
 
 
-// TODO 
+// 
 exports.getAllLegacyAgcs = async (request, response, next) => {
 	try {
 
@@ -258,9 +258,10 @@ exports.getAllLegacyAgcs = async (request, response, next) => {
 
 
          // 4. LIMIT FIELDS IN EACH RESULT (aka: "PROJECTING")
-         // GET request: 127.0.0.1:9090/api/v1/tours?fields=name,price,ratingsAverage,summary
+         // GET request: http://127.0.0.1:9090/api/v1/tours?fields=name,price,ratingsAverage,summary
          if (request.query.fields) {
             const fields = request.query.fields.split(',').join(' ');
+            console.log(chalk.highlight(fields))
             dbQuery = dbQuery.select(fields) // mongoose format > .select('name price ratingsAverage')
          } else {
             dbQuery = dbQuery.select('-__v') // exclude the "__v" field (use the "-")

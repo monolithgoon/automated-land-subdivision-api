@@ -9,15 +9,55 @@ block api-guide
 		//- img(src="/assets/images/parcelized-agc-data-struc.png" alt="alt")
 
 		br
-		h2 Using the Farmland Parcelization API
+		h2 Using the AGC Farmland Parcelization API
 		//- p.last-update Updated 27 September 2020
-		p.last-update Updated 11 December 2020
+		p.last-update Updated 17 March 2021
 		br
 
 		.credentials-container
 			div.token-subtitle Public API Key 
 			br
 			div.token-code ADSS=23232AD=ASDIO293-MLK23290-23AD.235DS554S5_4409IODSO
+
+
+		br
+		h3 Retreive Legacy AGC Data
+			span New!
+
+		pre.embedded-code-snippet
+			code.language-javascript.
+				// To download all the data-
+				https://geoclusters.herokuapp.com/api/v2/legacy-agcs/
+
+				// To limit the fields in each call, use-
+				https://geoclusters.herokuapp.com/api/v2/legacy-agcs/?fields=properties.geo_cluster_id,properties.geo_cluster_name,features.properties.plot_owner_bvn,
+
+
+		br
+		h3 Returning a Processed Legacy AGC
+			span New!
+		p To return back legacy AGC data that has been successfully processed (ie., the farmer photos have been acquired), send a POST request to-
+		pre.embedded-code-snippet
+			code.language-javascript.
+				https://geoclusters.herokuapp.com/api/v2/legacy-agcs/processed/
+
+		p To return legacy AGCs that were NOT successfully processed for whatever reason (for eg. inconsistent BVNs, etc), send a POST request to the endpoint below, and update this field #[strong #[em validation_failed_reason]] with a brief description of why the failure happened. #[strong When uploading to this URL, this field cannot be empty].
+		pre.embedded-code-snippet
+			code.language-javascript.
+				https://geoclusters.herokuapp.com/api/v2/legacy-agcs/validation-failed/
+
+		p.important-note(style="display: flex; align-items: center;")
+			span(style="padding-right: 20px; font-size: 25px; font-weight: 100;")
+				i.fas.fa-exclamation-triangle
+			span Note that the POST request will fail if the #[em geo_cluster_id], and/or #[em geo_cluster_name] fields are missing from the payload, or if another legacy AGC with those credentials already exist in the DB. Also, the #[em plot_owners] array cannot be empty.
+
+		br
+		h3 Returned Legacy AGC JSON Data Structure
+			span New!
+		p Use this data structure when uploading successful or failed legacy AGC JSON data back to us.
+		pre.agc-json-data-ex
+			include _legacy-agc-json-example
+
 
 		br
 		h3 Retreive A Single Parcelized AGC
@@ -72,10 +112,10 @@ block api-guide
 
 		br
 		h3 Render the Parcelized Plots Preview Map
-			span New!
+			//- span New!
 
 		p Each subsequent parcelized AGC payload retreived from the endpoint will now contain a unique string hash that is required to construct a URL that renders the preview map. 
-		
+
 		p Get that string by reading the #[strong "properties.preview_map_url_hash"] field. Here's a sample JSON snippet from an API call to the parcelized AGCs endpoint-
 
 		pre.embedded-code-snippet
@@ -148,7 +188,7 @@ block api-guide
 		h3 Sample AGC JSON Data Structure
 		p Each AGC payload is a GEOJSON #[em #[strong FeatureCollection]], that contains just ONE #[em Feature].
 		//- div IMPORTANT
-		p.important-note The DB insertion will fail if the 'agc_id', 'extended_name', 'location', and/or 'farmers' fields are missing from the JSON payload, or if an AGC with the same 'agc_id', 'extended_name', and/or coordinates already exists in the database. Those first 4 fields in 'properties' are REQUIRED.
+		p.important-note The DB insertion will fail if the 'agc_id', 'extended_name', 'location', and/or 'farmers' fields are missing from the JSON payload, or if another AGC with the same 'agc_id', 'extended_name', and/or coordinates already exists in the database. Those first 4 fields in 'properties' are REQUIRED.
 		p.important-note The total hectares allocated to the farmers must not exceed the AGC land area.
 		pre.agc-json-data-ex
 			include _agc-json-data-example
