@@ -289,11 +289,23 @@ exports.getAllLegacyAgcs = async (request, response, next) => {
       const returnedLegacyAgcData = await dbQuery
 
 
+      // COMPUTE THE NUMBER OF FEATURES PER. GEO-CLUSTER
+      const featsLengths = [];
+      returnedLegacyAgcData.forEach(geoCluster => {
+         console.log(geoCluster);
+         if (geoCluster.properties.geo_cluster_total_features) {
+            featsLengths.push(geoCluster.properties.geo_cluster_total_features)
+         };
+      })
+      let totalFeatures = featsLengths.reduce((sum, numFeats) => sum + numFeats);
+
+
       // SEND RESPONSE
-		response.status(200).json({
+      response.status(200).json({
 			status: "success",
 			requested_at: request.requestTime, // using the custom property from our custom middleware in app.js
 			num_legacy_agcs: returnedLegacyAgcData.length,
+         num_plot_owners: totalFeatures,
 		   legacy_agcs: returnedLegacyAgcData,
       })
       

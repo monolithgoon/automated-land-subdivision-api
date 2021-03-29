@@ -18,6 +18,36 @@ const polygonSchema = new mongoose.Schema({
 
 
 
+// 
+const geometrySchema = new mongoose.Schema({
+   type: {
+      type: String,
+      enum: [ 'Point', 'MultiPoint', 'LineString', 'MultiLineString', 'Polygon', 'MultiPolygon'],
+      default: 'Polygon',
+      // FIXME > CUSTOM VALIDATION DOES NOT SEEM TO BE WORKING 
+      // vallidate: {
+      //    validateFn: function(geometryType) {
+      //       console.log(`VALIDATING ...`);
+      //       // if (geometryType === 'Point') { 
+      //       //    return pointSchema
+      //       // }
+      //       let schema;
+      //       schema = geometryType === "Point" ? pointSchema : polygonSchema
+      //       schema = geometryType === "Polygon" ? polygonSchema : polygonSchema;
+      //       return schema;
+      //    }
+      // },
+      required: [true, `A geometry type needs to be specified`],
+   },
+   coordinates: {
+      type: [Array],
+      required: [true, `This AGC shapefile is missing its coordinates`],
+      unique: [true, `An AGC with these coordinates already exists in the database`]
+   }
+})
+
+
+
 // PLOT OWNERS' FEATURE SCHEMA
 const featureSchema = new mongoose.Schema({
    _id: {
@@ -30,7 +60,7 @@ const featureSchema = new mongoose.Schema({
          default: "Feature",
          required: true
       },
-   geometry: polygonSchema,
+   geometry: geometrySchema,
    properties: {
       plot_owner_varst_id : {
          type: String,
@@ -89,6 +119,48 @@ const legacyAgcSchema = new mongoose.Schema({
          type: String,
          required: [true, `The name of the geo. cluster must be specified.`],
          unique: [true, `A geo. cluster with this name [ ${this.geo_cluster_name} ] already exists in the database`]
+      },
+
+      geo_cluster_total_features: {
+         type: Number,
+         required: [true, `A geo. cluster must have 1 or more features.`]
+      },
+
+      geo_cluster_total_allocations_area: {
+         type: Number,
+      },
+
+      geo_cluster_delineated_area: {
+         type: Number,
+      },
+
+      file_parse_metadata: {
+         orginal_records_len: {
+            type: Number,
+            required: true,
+         },
+         cluster_feats_len: {
+            type: Number,
+            required: true,
+         },
+         geojson_area_parity: {
+            type: Number,
+            default: 0,
+            required: true,
+         },
+         records_discrepancy_perc: {
+            type: Number,
+            defalult: 0,
+            required: true,
+         },
+         records_discrepancy_num: {
+            type: Number,
+            default: 0,
+            required: true
+         },
+         records_discrepancy_ok: {
+            type: Boolean,
+         },
       },
 
       geo_cluster_governance_structure: {
