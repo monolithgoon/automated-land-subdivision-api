@@ -218,7 +218,7 @@ function saveGeojson(baseFileName, saveFilePath, geojsonPolygon) {
 		});
 
 	} catch (_err) {
-		throw new Error(`The GeoJSON polygon constructed from the geofile could not be saved to file for some reason. You might have run out of storage space.`)
+		throw new Error(`The GeoJSON polygon constructed from the geofile could not be saved to file for some reason. You might have run out of storage space, or the converted GeoJSON is not valid. ${_err.message}`)
 	}		
 }
 
@@ -252,7 +252,14 @@ exports._geofileConverter = async function({completeFileName, geofileUploadPath,
 
 			// CONVERT THE KML TO GEOJSON
 			try {
-				convertedGeojson = toGeojsonConverter(fileContent, fileExtension)
+				
+				convertedGeojson = toGeojsonConverter(fileContent, fileExtension);
+
+				// SAVE THE CONVERTED GEOJSON ... {OPTIONAL}
+				fs.writeFile(`${__approotdir}${geofileUploadPath}${completeFileName}`, JSON.stringify(convertedGeojson), (_err) => {
+					if (_err) throw new Error(_err);
+				});
+		
 			} catch (_err) {
 				console.error(_err.message)
 			}
@@ -261,7 +268,6 @@ exports._geofileConverter = async function({completeFileName, geofileUploadPath,
 			const constructedPolygon = constructPolygon(convertedGeojson);
 
 			// WRITE GEOJSON POLYGON TO FILE
-			// saveGeojson(baseFileName, convertedGeojson);
 			saveGeojson(baseFileName, convertedGeofilePath, constructedPolygon);
 
 			break;

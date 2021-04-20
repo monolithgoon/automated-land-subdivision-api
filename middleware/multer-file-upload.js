@@ -2,7 +2,7 @@ const chalk = require('../utils/chalk-messages.js')
 const path = require('path');
 const util = require("util");
 const multer = require("multer");
-const maxSize = 2 * 1024 * 1024; // Restrict file size with Multer
+const maxFileSize = 200 * 1024 * 1024; // Restrict file size with Multer
 
 
 
@@ -73,7 +73,7 @@ let checkFileType = (req, file, cb) => {
 // INIT. MULTER
 let multerFileUpload = multer({
 	storage: storageConfig,
-   limits: { fileSize: maxSize },
+   limits: { fileSize: maxFileSize },
    // fileFilter: fileFilter,
    fileFilter: checkFileType,
 }).single("file");

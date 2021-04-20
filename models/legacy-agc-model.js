@@ -183,8 +183,11 @@ const legacyAgcSchema = new mongoose.Schema({
             type: String,
          },
          lga: {
-            type: String,
-         }
+            type: [String],
+         },
+         ward: {
+            type: [String],
+         },
       },
 
       db_insert_timestamp: {

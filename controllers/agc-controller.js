@@ -2,7 +2,9 @@
 const chalk = require('../utils/chalk-messages');
 const { _getNextPayload } = require('../utils/utils.js')
 const AGC_MODEL = require('../models/agc-model.js')
-const LEGACY_AGC_MODEL = require('../models/legacy-agc-model.js')
+const LEGACY_AGC_MODEL = require('../models/legacy-agc-model.js');
+const LEGACY_AGC_FARMERS_MODEL = require('../models/legacy-agc-farmers-model.js');
+const catchAsyncError = require('../utils/catch-async');
 
 
 
@@ -365,7 +367,7 @@ exports.insertAgc = async (req, res, next) => {
 
 
 
-// TODO 
+// 
 exports.insertLegacyAgc = async (req, res, next) => {
 	console.log(chalk.success(`CALLED THE insertLegacyAgc CONTROLLER FN. `))
    
@@ -403,14 +405,46 @@ exports.insertLegacyAgc = async (req, res, next) => {
          error_msg: err.message,
       });
    }
-
 }
 
 
 
-// TODO 
-exports.insertProcessedLegacyAgc = async (req, res, next) => {
+// INSERT FARMERS WHOSE BVNs HAVE BEEN VALIDATED
+exports.insertProcessedFarmers = async (req, res, next) => {
+	console.log(chalk.success(`CALLED THE insertProcessedFarmers CONTROLLER FN. `))
+   
+   // GET PAYLOAD FROM PREV. M.WARE. (res.locals.appendedGeojson) VS. API CALL PARAM (req.body)
+   const processedFarmersPayload = _getNextPayload(res.locals.appendedGeojson, req.body);
+   
+   console.log(processedFarmersPayload);
 
+   try {
+      
+      // CREATE A NEW AGC DOCUMENT _MTD 2
+      // const newProcessedFarmersDoc = await AGC_MODEL.create(req.body) // "model.create" returns a promise
+      const newProcessedFarmersDoc = await LEGACY_AGC_FARMERS_MODEL.create(processedFarmersPayload) // "model.create" returns a promise
+
+      // SERVER RESPONSE
+      res.status(201).json({
+         status: 'success',
+         inserted_at: req.requestTime,
+         data: newProcessedFarmersDoc
+      });
+      
+      // next();
+
+   } catch (_err) { 
+      res.status(400).json({ // 400 => bad request
+         status: 'fail',
+         error_msg: `That POST request failed. Check your JSON data payload. ${_err}`,
+      });
+   }
+}
+
+
+
+//
+exports.insertProcessedLegacyAgc = async (req, res, next) => {
 }
 
 
