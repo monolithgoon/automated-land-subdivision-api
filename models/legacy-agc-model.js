@@ -41,8 +41,8 @@ const geometrySchema = new mongoose.Schema({
    },
    coordinates: {
       type: [Array],
-      required: [true, `This AGC shapefile is missing its coordinates`],
-      unique: [true, `An AGC with these coordinates already exists in the database`]
+      required: [true, `This plot is missing its coordinates`],
+      unique: [true, `A plot with these coordinates already exists in the database`]
    }
 })
 
@@ -126,37 +126,33 @@ const legacyAgcSchema = new mongoose.Schema({
          required: [true, `A geo. cluster must have 1 or more features.`]
       },
 
-      geo_cluster_total_allocations_area: {
-         type: Number,
-      },
-
       geo_cluster_delineated_area: {
          type: Number,
       },
 
       file_parse_metadata: {
-         orginal_records_len: {
+         original_records_len: {
             type: Number,
-            required: true,
+            required: [true, `This field is required`],
          },
          cluster_feats_len: {
             type: Number,
-            required: true,
+            required: [true, `This field is required`],
          },
          geojson_area_parity: {
             type: Number,
             default: 0,
-            required: true,
+            required: [true, `This field is required`],
          },
          records_discrepancy_perc: {
             type: Number,
             defalult: 0,
-            required: true,
+            required: [true, `This field is required`],
          },
          records_discrepancy_num: {
             type: Number,
             default: 0,
-            required: true
+            required: [true, `This field is required`]
          },
          records_discrepancy_ok: {
             type: Boolean,
@@ -177,8 +173,13 @@ const legacyAgcSchema = new mongoose.Schema({
          },
       },
 
-      // agc_details: agcDetailsSchema,
       geo_cluster_details: {
+         total_allocations_area: {
+            type: Number,
+         },
+         delineated_area: {
+            type: Number,
+         },
          primary_crop: {
             type: String,
          },

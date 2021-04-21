@@ -275,9 +275,15 @@ exports.getAllLegacyAgcs = async (request, response, next) => {
          // 1-10 => page 1, 11-20 => page 2, 21-30 => page 3
          const page = request.query.page * 1 || 1; // page num. (default > page 1)
          const limit = request.query.limit * 1 || 100; // num. results per page (default > 100)
+         
+         // MTD. 1
          const skippedResults = (page - 1) * limit; // num. results to skip 
          dbQuery = dbQuery.skip(skippedResults).limit(limit)
 
+         // MTD. 2
+         const resultsStartIndex = (page - 1) * limit;
+         const resultsEndIndex = page * limit;
+         
          // DONT SKIP IF ...
          if (request.query.page) {
             const numLegacyAgcs = await LEGACY_AGC_MODEL.countDocuments();
@@ -371,8 +377,7 @@ exports.insertAgc = async (req, res, next) => {
 exports.insertLegacyAgc = async (req, res, next) => {
 	console.log(chalk.success(`CALLED THE insertLegacyAgc CONTROLLER FN. `))
    
-   // GET PAYLOAD FROM PREV. M.WARE. (res.locals.appendedGeojson) VS. API CALL PARAM (req.body)
-   const legacyAgcPayload = _getNextPayload(res.locals.appendedGeojson, req.body);
+   const legacyAgcPayload = req.body;
    
    console.log(legacyAgcPayload);
 
@@ -413,8 +418,7 @@ exports.insertLegacyAgc = async (req, res, next) => {
 exports.insertProcessedFarmers = async (req, res, next) => {
 	console.log(chalk.success(`CALLED THE insertProcessedFarmers CONTROLLER FN. `))
    
-   // GET PAYLOAD FROM PREV. M.WARE. (res.locals.appendedGeojson) VS. API CALL PARAM (req.body)
-   const processedFarmersPayload = _getNextPayload(res.locals.appendedGeojson, req.body);
+   const processedFarmersPayload = req.body;
    
    console.log(processedFarmersPayload);
 
