@@ -62,7 +62,10 @@ const featureSchema = new mongoose.Schema({
       },
    geometry: geometrySchema,
    properties: {
-      plot_owner_varst_id : {
+      // plot_owner_varst_id : { // REMOVE > DEPRE.
+      //    type: String,
+      // },
+      plot_id : {
          type: String,
       },
       plot_owner_first_name : {
@@ -77,7 +80,13 @@ const featureSchema = new mongoose.Schema({
       plot_owner_gender : {
          type: String,
       },
-      plot_owner_land_allocation : {
+      // plot_owner_land_allocation : { // REMOVE > DEPRE.
+      //    type: Number,
+      // },
+      plot_owner_allocation_size : {
+         type: Number,
+      },
+      plot_owner_calc_allocation_size : {
          type: Number,
       },
       plot_owner_bvn : {
@@ -123,7 +132,7 @@ const legacyAgcSchema = new mongoose.Schema({
 
       geo_cluster_total_features: {
          type: Number,
-         required: [true, `A geo. cluster must have 1 or more features.`]
+         required: [true, `THIS FIELD IS REQUIRED`]
       },
 
       geo_cluster_delineated_area: {
@@ -133,26 +142,26 @@ const legacyAgcSchema = new mongoose.Schema({
       file_parse_metadata: {
          original_records_len: {
             type: Number,
-            required: [true, `This field is required`],
+            required: [true, `THIS FIELD IS REQUIRED`],
          },
          cluster_feats_len: {
             type: Number,
-            required: [true, `This field is required`],
+            required: [true, `THIS FIELD IS REQUIRED`],
          },
          geojson_area_parity: {
             type: Number,
             default: 0,
-            required: [true, `This field is required`],
+            required: [true, `THIS FIELD IS REQUIRED`],
          },
          records_discrepancy_perc: {
             type: Number,
             defalult: 0,
-            required: [true, `This field is required`],
+            required: [true, `THIS FIELD IS REQUIRED`],
          },
          records_discrepancy_num: {
             type: Number,
             default: 0,
-            required: [true, `This field is required`]
+            required: [true, `THIS FIELD IS REQUIRED`]
          },
          records_discrepancy_ok: {
             type: Boolean,
@@ -167,7 +176,7 @@ const legacyAgcSchema = new mongoose.Schema({
             middle_name: {
                type: String,
             },
-            president_last_name: {
+            last_name: {
                type: String,
             },   
          },
@@ -202,7 +211,8 @@ const legacyAgcSchema = new mongoose.Schema({
 
 
 // INIT. THE DATA MODEL
-const LEGACY_AGC_MODEL = mongoose.model('legacy_agcs', legacyAgcSchema);
+// const LEGACY_AGC_MODEL = mongoose.model('legacy_agcs', legacyAgcSchema);
+const LEGACY_AGC_MODEL = mongoose.model('legacy_agcs_v2', legacyAgcSchema);
 
 
 

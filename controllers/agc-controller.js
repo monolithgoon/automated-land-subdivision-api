@@ -179,8 +179,13 @@ exports.getAllAgcs = async (request, response) => {
          // DONT SKIP IF ...
          if (request.query.page) {
             const numParceledAgcs = await AGC_MODEL.countDocuments();
-            if( skippedResults >= numParceledAgcs) {
-               throw new Error('That number of pages does not exist..')
+            if (skippedResults >= numParceledAgcs) {
+               // throw new Error(`That page [page: ${page}] or number of pages does not exist..`);
+               response.status(404).json({
+                  status: "fail",
+                  message: err,
+                  console_message: `That page [page: ${page}] or number of pages does not exist..`,
+               });
             }
          }
 
@@ -287,25 +292,30 @@ exports.getAllLegacyAgcs = async (request, response, next) => {
          // DONT SKIP IF ...
          if (request.query.page) {
             const numLegacyAgcs = await LEGACY_AGC_MODEL.countDocuments();
-            if( skippedResults >= numLegacyAgcs) {
-               throw new Error('That number of pages does not exist..')
+            if (skippedResults >= numLegacyAgcs) {
+               throw new Error(`That page [ page: ${page} ] does not exist..`);
             }
          }
 
 
       // EXECUTE THE QUERY
-      const returnedLegacyAgcData = await dbQuery
+      const returnedLegacyAgcData = await dbQuery;
 
 
       // COMPUTE THE NUMBER OF FEATURES PER. GEO-CLUSTER
       const featsLengths = [];
+      let totalFeatures = 0;
+
       returnedLegacyAgcData.forEach(geoCluster => {
          console.log(geoCluster);
          if (geoCluster.properties.geo_cluster_total_features) {
             featsLengths.push(geoCluster.properties.geo_cluster_total_features)
          };
-      })
-      let totalFeatures = featsLengths.reduce((sum, numFeats) => sum + numFeats);
+      });
+      
+      if (featsLengths.length > 0) {
+         totalFeatures = featsLengths.reduce((sum, numFeats) => sum + numFeats);
+      };
 
 
       // SEND RESPONSE
@@ -315,15 +325,14 @@ exports.getAllLegacyAgcs = async (request, response, next) => {
 			num_legacy_agcs: returnedLegacyAgcData.length,
          num_plot_owners: totalFeatures,
 		   legacy_agcs: returnedLegacyAgcData,
-      })
+      });
+
       
-	} catch (err) {
-		console.log(err);
+	} catch (_err) {
 		response.status(404).json({
-			// 400 => bad request
 			status: "fail",
-			message: err,
-			console_message: "That GET request failed.",
+			console_msg: `That GET request failed.`,
+         error_msg: _err.message,
 		});
 	}
 }
