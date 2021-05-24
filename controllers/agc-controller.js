@@ -4,7 +4,6 @@ const { _getNextPayload } = require('../utils/utils.js')
 const AGC_MODEL = require('../models/agc-model.js')
 const LEGACY_AGC_MODEL = require('../models/legacy-agc-model.js');
 const LEGACY_AGC_FARMERS_MODEL = require('../models/legacy-agc-farmers-model.js');
-const catchAsyncError = require('../utils/catch-async');
 
 
 
@@ -37,7 +36,7 @@ exports.getAgc = async (req, res) => {
       console.log(queryObj);
       const dbQuery = AGC_MODEL.find(queryObj)
 
-      const agc = await dbQuery
+      const agc = await dbQuery;
       console.log(agc);
       
       res.status(200).json({
@@ -46,8 +45,8 @@ exports.getAgc = async (req, res) => {
          agcData: agc[0]
       })
       
-   } catch (err) {
-      console.log(chankError(err));
+   } catch (getAGCErr) {
+      console.log(`${getAGCErr.message}`);
    }
 }
 
@@ -57,7 +56,7 @@ exports.getAgc = async (req, res) => {
 exports.getLegacyAgc = async (req, res) => {
    try {
       
-		console.log(chalk.success("YOU SUCCESSFULLY CALLED THE getLegacyAgc CONTROLLER FN. "));
+		console.log(chalk.success("YOU SUCCESSFULLY CALLED THE [ getLegacyAgc ] CONTROLLER FN. "));
 
       // EXTRACT THE agc_id FROM THE QUERY OBJ.
       let queryObj = { ...req.query }
@@ -93,7 +92,7 @@ exports.getAllAgcs = async (request, response) => {
 
 	try {
 
-		console.log(chalk.success("YOU SUCCESSFULLY CALLED THE getAllAgcs CONTROLLER FN. "));
+		console.log(chalk.success("YOU SUCCESSFULLY CALLED THE [ getAllAgcs ] CONTROLLER FN. "));
 
       // FILTER _EXAMPLE 1
       // GET TOURS DATA FROM DATABASE > 
@@ -134,7 +133,7 @@ exports.getAllAgcs = async (request, response) => {
                let queryStr = JSON.stringify(queryObj);
                let formattedQueryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`) // add the '$' sign to the operator
                
-               console.log(`formattedQueryStr: ${formattedQueryStr}`);
+               console.log(chalk.warning(`formattedQueryStr: ${formattedQueryStr}`));
                
                
          // BUILD THE QUERY
@@ -219,7 +218,7 @@ exports.getAllAgcs = async (request, response) => {
 exports.getAllLegacyAgcs = async (request, response, next) => {
 	try {
 
-		console.log(chalk.success("YOU SUCCESSFULLY CALLED THE getAllLegacyAgcs CONTROLLER FN. "));
+		console.log(chalk.success("YOU SUCCESSFULLY CALLED THE [ getAllLegacyAgcs ] CONTROLLER FN. "));
       
       // BUILDING THE QUERY
       
@@ -240,7 +239,7 @@ exports.getAllLegacyAgcs = async (request, response, next) => {
                let queryStr = JSON.stringify(queryObj);
                let formattedQueryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`) // add the '$' sign to the operator
                
-               console.log(`formattedQueryStr: ${formattedQueryStr}`);
+               console.log(chalk.warning(`formattedQueryStr: ${formattedQueryStr}`));
                
                
          // BUILD THE QUERY
@@ -268,7 +267,7 @@ exports.getAllLegacyAgcs = async (request, response, next) => {
          // GET request: http://127.0.0.1:9090/api/v1/tours?fields=name,price,ratingsAverage,summary
          if (request.query.fields) {
             const fields = request.query.fields.split(',').join(' ');
-            console.log(chalk.highlight(fields))
+            console.log(chalk.highlight(`fields: ${fields}`))
             dbQuery = dbQuery.select(fields) // mongoose format > .select('name price ratingsAverage')
          } else {
             dbQuery = dbQuery.select('-__v') // exclude the "__v" field (use the "-")
@@ -307,7 +306,8 @@ exports.getAllLegacyAgcs = async (request, response, next) => {
       let totalFeatures = 0;
 
       returnedLegacyAgcData.forEach(geoCluster => {
-         console.log(geoCluster);
+         // console.log(geoCluster);
+         console.log(chalk.console(`retreived legacy geocluster`));
          if (geoCluster.properties.geo_cluster_total_features) {
             featsLengths.push(geoCluster.properties.geo_cluster_total_features)
          };
@@ -384,6 +384,7 @@ exports.insertAgc = async (req, res, next) => {
 
 // 
 exports.insertLegacyAgc = async (req, res, next) => {
+
 	console.log(chalk.success(`CALLED THE insertLegacyAgc CONTROLLER FN. `))
    
    const legacyAgcPayload = req.body;
@@ -425,7 +426,8 @@ exports.insertLegacyAgc = async (req, res, next) => {
 
 // INSERT FARMERS WHOSE BVNs HAVE BEEN VALIDATED
 exports.insertProcessedFarmers = async (req, res, next) => {
-	console.log(chalk.success(`CALLED THE insertProcessedFarmers CONTROLLER FN. `))
+
+	console.log(chalk.success(`CALLED THE [ insertProcessedFarmers ] CONTROLLER FN. `))
    
    const processedFarmersPayload = req.body;
    

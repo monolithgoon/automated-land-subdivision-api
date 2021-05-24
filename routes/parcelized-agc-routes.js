@@ -26,7 +26,6 @@ const PARCELIZED_AGC_CONTROLLER = require('../controllers/parcelized-agc-control
 
 
 
-
 // ROUTES
 // ROUTER.get('/', getAllTours) // GET ALL TOURS ROUTE
 // ROUTER.get('/:id', getTour) // GET ROUTE WITH VARIABLES (PARAMETERS)

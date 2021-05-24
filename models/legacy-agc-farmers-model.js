@@ -46,7 +46,7 @@ const legacyAgcFarmersSchema = new mongoose.Schema({
    },
    farmers: {
       type: [farmersSchema],
-      required: [true, `Each Legacy AGC document must contain at least one farmer, or an array of farmers`],
+      required: [true, `Each Legacy AGC farmers document must contain at least one farmer, or an array of farmers`],
       validate: [(entry => Array.isArray(entry) && entry.length > 0), `Each Legacy AGC document must contain at least one farmer, or an array of farmers`]
    },
    num_farmers: {

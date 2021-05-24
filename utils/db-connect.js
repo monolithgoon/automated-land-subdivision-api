@@ -18,12 +18,12 @@ async function DB_CONNECT() {
       const database = process.env.ATLAS_DB_STRING.replace('<PASSWORD>', process.env.ATLAS_DB_PASSOWRD) // REPLACE THE PLACEHOLDER TEXT IN THE CONNECTION STRING
    
       mongoose.connect(database, {
-      // handle mongoDB deprecation warnings
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
-      useUnifiedTopology: true
-   })
+         // handle mongoDB deprecation warnings
+         useNewUrlParser: true,
+         useCreateIndex: true,
+         useFindAndModify: false,
+         useUnifiedTopology: true
+      })
       .then(connectionObject => {
          // console.log((connectionObject))
          console.log(chalk.connected('YOU CONNECTED TO THE ATLAS DATABASE SUCCESSFULLY '));

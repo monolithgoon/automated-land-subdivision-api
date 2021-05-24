@@ -115,9 +115,10 @@ const legacyAgcSchema = new mongoose.Schema({
       type: [featureSchema],
       required: [true, `The FeatureCollection must have at least one feature, or an array of features`],
       validate: [(entry) => Array.isArray(entry) && entry.length > 0, `The legacy AGC FeatureCollection must have at least one feature, or an array of features`],
-   }, 
+   },
 
    properties: {
+      
       geo_cluster_id: {
          type: String,
          required: [true, `Each geo. cluster must have an ID`],

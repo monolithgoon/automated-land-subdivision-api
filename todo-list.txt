@@ -53,10 +53,8 @@ API Deployment Checklist
       [x] RUN: heroku config:set ATLAS_DB_PASSOWRD=dooksie
 
    [ ] Deploy existing git repo. to new Heroku app
-      [ ] Change remote directory to deploy to: 
-         RUN: heroku git:remote -a [HEROKU_APP_NAME]
-      [ ] Deploy to repo: 
-         RUN > npm run deploy
+      [ ] RUN: heroku git:remote -a [HEROKU_APP_NAME]
+      [ ] RUN > npm run deploy
 
    [ ] Get currently deployed app - RUN: git remote -v
 

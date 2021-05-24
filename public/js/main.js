@@ -131,7 +131,7 @@ leaflet_map
 
 
 
-   // GET DATA FROM BACKEND VIA HTML DATASET ATTRIBUTE
+   // RETREIVE DATA FROM BACKEND VIA HTML DATASET ATTRIBUTE ('parcelilzed-agc-render.pug')
    function GET_PARCELIZED_AGC_API_DATA() {
       const dataStream = document.getElementById('api_data_stream').dataset.parcelizedagc
       return dataStream

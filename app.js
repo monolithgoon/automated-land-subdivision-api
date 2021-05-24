@@ -1,7 +1,5 @@
 "use-strict";
 
-
-
 const path = require('path');
 const express = require('express')
 const EXPRESS_APP = express()
@@ -13,16 +11,9 @@ const AppError = require('./utils/app-error.js')
 const globalErrorHandler = require('./controllers/error-controller.js')
 
 // APPEND THE APP BASE DIR. TO THE GLOBAL OBJ.
-// Node HAS A GLOBAL NAMESPACE OBJECT CALLED "global" — 
+// Node HAS A GLOBAL NAMESPACE OBJECT CALLED "global"
 // ANYTHING THAT YOU ATTACH TO THIS OBJ. WILL BE AVAIL. EVERYWHERE IN YOUR APP
 global.__approotdir = __dirname;
-
-// REMOVE > NOT WORKING ON HEROKU 
-// const chalk = require('chalk');
-// const error = chalk.bold.red
-// const warning = chalk.keyword('orange');
-// const allGood = chalk.bold.green;
-// const highlight = chalk.white.bgBlue.bold
 
 
 

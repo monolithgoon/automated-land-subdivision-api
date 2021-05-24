@@ -25,4 +25,4 @@ dbConnect();
 const port = process.env.PORT || 8080
 EXPRESS_APP.listen(port, () => {
    console.log(chalk.running(`EXPRESS IS RUNNING server.js ON PORT: ${port} `))
-}) 
+});

@@ -69,7 +69,7 @@ exports.getAllParcelizedAgcs = async (request, response) => {
 
 	try {
 
-		console.log(chalk.success("YOU SUCCESSFULLY CALLED THE [ getAllParcelizedAgcs ] CONTROLLER"));
+		console.log(chalk.success("YOU SUCCESSFULLY CALLED THE [ getAllParcelizedAgcs ] CONTROLLER FN."));
       console.log(request.query);
 
       // FILTER _EXAMPLE 1
@@ -111,7 +111,7 @@ exports.getAllParcelizedAgcs = async (request, response) => {
                let queryStr = JSON.stringify(queryObj);
                let formattedQueryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`) // add the '$' sign to the operator
                
-               console.log(`formattedQueryStr: ${formattedQueryStr}`);
+               console.log(chalk.warning(`formattedQueryStr: ${formattedQueryStr}`));
                
                
          // BUILD THE QUERY
