@@ -40,15 +40,16 @@ function calcUnallocatedLandArea(unusedKatanaSlice, unusedShapefile, discardedCh
 
 
 // ALGORITHM STARTING POINT
-exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHAPEFILE, FARMERS_DATA, {katanaSliceDirection, chunkifyDirection}) {
+exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHAPEFILE, PLOT_OWNERS_DATA, {katanaSliceDirection, chunkifyDirection}) {
    
    try {
 
       // GET SHAPEFILE METADATA
       const shapefileMetadata = _analyzeGeojson(SELECTED_SHAPEFILE)
-      const shapefileID = shapefileMetadata.sfID
-      const shapefileName = shapefileMetadata.sfName
-      const shapefileLocation = shapefileMetadata.sfLocation
+      const shapefileID = shapefileMetadata.sfID;
+      const shapefileName = shapefileMetadata.sfName;
+      const shapefileLocation = shapefileMetadata.sfLocation;
+      const shapefileArea = shapefileMetadata.sfArea;
 
 
       // SAVE THE PROCESSED GEOJSON CHUNKS FROM "CHUNKIFY"
@@ -57,7 +58,7 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
 
       // GET THE TOTAL ALLOC. HECTARES
       const hectarageAllocations = [];
-      FARMERS_DATA.forEach(farmer=>hectarageAllocations.push(farmer.allocation));
+      PLOT_OWNERS_DATA.forEach(farmer=>hectarageAllocations.push(farmer.allocation));
       const allocationTotal = hectarageAllocations.reduce((allocation, sum) => sum + allocation);
 
 
@@ -91,7 +92,7 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
       let newChunkifyDir;
 
 
-      for (let idx = 0; idx < FARMERS_DATA.length; idx++) {
+      for (let idx = 0; idx < PLOT_OWNERS_DATA.length; idx++) {
 
 
          // CHUNKING BASELINE VARIABLES
@@ -100,7 +101,7 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
 
          
          // KEEP TRACK OF THE FARMER/FARM DATA
-         const allocationMetadata = _getAllocationsMetadata(shapefileID, FARMERS_DATA, idx)
+         const allocationMetadata = _getAllocationsMetadata(shapefileID, PLOT_OWNERS_DATA, idx)
          
             
          // INIT. THE START POSITION OF THE MOVING BBOX. POLYGON
@@ -123,14 +124,14 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
 
 
          // DID THIS LOOP ELEMENT FAIL TO BE ALLOCATED?? PUSH IT BACK INTO THE ARRAY..
-         let failedAlloc = FARMERS_DATA[chunkifyData.failedAllocIdx];
+         let failedAlloc = PLOT_OWNERS_DATA[chunkifyData.failedAllocIdx];
          
          // if (chunkifyData.failedAllocIdx) { // THIS CHECK WON'T WORK IF THE idx === 0
          if (chunkifyData.failedAllocIdx !== null) {
 
             if (chunkifyData.failedAllocIdx !== undefined) {
 
-               FARMERS_DATA.push(failedAlloc)
+               PLOT_OWNERS_DATA.push(failedAlloc)
                // console.log(chalk.highlight(failedAlloc.first_name))
             }
          } 
@@ -185,7 +186,7 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
          'parcelization_metadata': {
             'katana_slice_dir': katanaSliceDirection,
             'moving_frames_dir': chunkifyDirection,
-            'land_parity_ok': _checkParity(),
+            'land_parity_ok': _checkParity(shapefileArea, allocationTotal, unallocatedLandArea),
          },
          'preview_map_url_hash': _generateRandomString(16, shapefileID),
       }

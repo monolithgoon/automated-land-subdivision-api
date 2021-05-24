@@ -87,7 +87,7 @@ exports.parcelizeAgc = async (req, res, next) => {
          console.log(chalk.warning(`trying: ${dirCombo} `))
          parcelizedAgc = parcelize(agcPayload, dirCombo); 
          if (parcelizedAgc) {
-            if (parcelizedAgc.properties.parcelization_metadata.parity_ok) {
+            if (parcelizedAgc.properties.parcelization_metadata.land_parity_ok) {
                break;
             }
          }

@@ -84,9 +84,9 @@ const convertGeofile = async (req, res, next) => {
 		};
 		
 		// CHECK IF THE FILE WAS SUCCESSFULLY CONVERTED & SAVED
-		fs.readFile(`${__approotdir}${req.__convertedpath}${fileName}.geojson`, "utf8", (_err, geojsonData) => {
-			if (_err) {
-				return next(new Error (`This file [ ${completeFileName} ] was successfully uploaded, and converted to a GeoJSON polygon, but there was a problem saving the file. ${_err.message}`))
+		fs.readFile(`${__approotdir}${req.__convertedpath}${fileName}.geojson`, "utf8", (saveGeojsonFileErr, geojsonData) => {
+			if (saveGeojsonFileErr) {
+				return next(new Error (`This file [ ${completeFileName} ] was successfully uploaded, and converted to a GeoJSON polygon, but there was a problem saving the file. ${saveGeojsonFileErr.message}`))
 
 				// REMOVE > DEPRECATED > YOU DON'T WANT TO CALL next() IF CONVERSION FAILS 
 				// return next (new Error(`This file [ ${completeFileName} ] was successfully uploaded, but was NOT succesfully converted to GeoJSON. Check the geo-file-converter utility module. ${_err.message}`))
@@ -109,13 +109,13 @@ const convertGeofile = async (req, res, next) => {
 			}
 		});
 		
-	} catch (_err) {
+	} catch (convertGeofileErr) {
 
 		// REMOVE > DEPRECATED > ALL POTENTIAL ERRS. HAVE BEEN ADEQUEATELY HANDLED ABOVE 
 		// if (completeFileName) {
 		// 	res.status(500).send({
 		// 		message: `This file [ ${completeFileName} ] was successfully uploaded, but was NOT succesfully converted to GeoJSON. Check the convertGeofile fn. in the file-controller module.`,
-		// 		error_msg: _err.message,
+		// 		error_msg: convertGeofileErr.message,
 		// 	});
 		// } else {
 		// 	res.status(500).send({
@@ -125,7 +125,8 @@ const convertGeofile = async (req, res, next) => {
 
 		if (!completeFileName) {
 			res.status(500).send({
-				message: `You seem to be trying to convert a geofile that has not been uploaded to this server.`
+				message: `You seem to be trying to convert a geofile that has not been uploaded to this server.`,
+				err_msg: `convertGeofileErr: ${convertGeofileErr}`
 			});
 		}
 	}

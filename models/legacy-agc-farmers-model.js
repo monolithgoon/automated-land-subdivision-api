@@ -16,11 +16,11 @@ const farmersSchema = new mongoose.Schema({
    },
    farmer_first_name: {
       type: String,
-      required: [true, `The farmer's first name must be specified`]
+      required: [true, `The farmer's first name must be specified`],
    },
    farmer_last_name: {
       type: String,
-      required: [true, `The farmer's last name must be specified`]
+      required: [true, `The farmer's last name must be specified`],
    },
    farmer_photo_base64: {
       type: Array,
@@ -52,6 +52,11 @@ const legacyAgcFarmersSchema = new mongoose.Schema({
       type: Number,
       required: [true],
       default: 0,
+   },
+   processing_metadata: {
+      unprocessed_farmers: {
+         type: [String],
+      },
    }
 });
 

@@ -92,6 +92,8 @@ function _analyzeGeojson(shapefile) {
    const genericName = `AGC`
    const baseLocation = `Nigeria`
 
+   const sfArea = _calcArea(shapefile);
+
    if (shapefile.type === 'FeatureCollection' && shapefile.properties) {
       sfID = shapefile.properties.agc_id || randomSfID
       sfName = shapefile.properties.extended_name || genericName
@@ -112,6 +114,7 @@ function _analyzeGeojson(shapefile) {
       sfID,
       sfName,
       sfLocation,
+      sfArea,
    }
 }
 
@@ -182,6 +185,9 @@ function _checkParity(landArea, totalAllocations, unparcelizedLandArea) {
    const tolerance = 0.15
    const unallocatedLandArea = landArea - totalAllocations
    const error = unallocatedLandArea - unparcelizedLandArea
+   console.log(landArea)
+   console.log(unallocatedLandArea)
+   console.log(unparcelizedLandArea)
    if (error < 0) throw new Error(`Your parcelization is way off. There is too much un-parcelized land.`)
    // if (error < 0) return false
    if (error/unallocatedLandArea <= tolerance) return true

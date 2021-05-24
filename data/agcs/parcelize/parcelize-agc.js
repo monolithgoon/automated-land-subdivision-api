@@ -13,7 +13,7 @@ exports.PARCELIZE_AGC = function parcelizeAgc (agc, directionsCode) {
 
       // GET THE FARM HA. ALLOCATIONS
       const farmerAllocations = [];
-      const farmersData = agc.properties.farmers;
+      const plotOwnersData = agc.properties.plot_owners;
       agc.properties.farmers.forEach(farmer=>farmerAllocations.push(farmer.allocation));
    
       const dirOptionsMap = {
@@ -59,7 +59,7 @@ exports.PARCELIZE_AGC = function parcelizeAgc (agc, directionsCode) {
 
       // PARCELIZE
       // const parcelizedShapefile = await PARCELIZE_SHAPEFILE(selectedShapefile, farmerAllocations, dirComboConfigObj)
-      const parcelizedShapefile = PARCELIZE_SHAPEFILE(selectedShapefile, farmersData, dirComboConfigObj)
+      const parcelizedShapefile = PARCELIZE_SHAPEFILE(selectedShapefile, plotOwnersData, dirComboConfigObj)
 
       return parcelizedShapefile;
 
