@@ -149,7 +149,7 @@ const appendJSONProperties = async (req, res, next) => {
 		// search the plot allocations collection for alloc. with properties.geofile_id === geofileID
 		// const queryObj = { "properties.geofile_id": geofileID };
 		// TODO > CHANGE TO properties.geofile_id > 
-		const queryObj = { "properties.agc_id": geofileID };
+		const queryObj = { "properties.geo_cluster_id": geofileID };
 		
 	// if (await AGC_MODEL.countDocuments(queryObj) !==0 ) {  // REMOVE < DEPRECATED 
 		if (await GEO_CLUSTER_DETAILS_MODEL.countDocuments(queryObj) !==0 ) {
@@ -166,7 +166,7 @@ const appendJSONProperties = async (req, res, next) => {
          // res.status(200).json({
          //    status: 'success',
          //    data: {
-         //       // The query using 'agc_id' returns an array with only one element; deal with it..
+         //       // The query using 'geo_cluster_id' returns an array with only one element; deal with it..
          //       agcData: geoClusterDetailsJSON[0]
          //    }
 			// })
