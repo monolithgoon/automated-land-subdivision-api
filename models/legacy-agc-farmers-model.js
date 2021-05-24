@@ -13,7 +13,7 @@ const farmersSchema = new mongoose.Schema({
    farmer_bvn: {
       type: String,
       required: [true, `The farmer's BVN must be specified`],
-      required: [true, `The farmer's BVN must be unique`],
+      unique: [true, `The farmer's BVN must be unique`],
    },
    farmer_first_name: {
       type: String,
@@ -42,7 +42,7 @@ const legacyAgcFarmersSchema = new mongoose.Schema({
    agc_name: {
          type: String,
          required: [true, `The name of the Legacy AGC is required`],
-         unique: [false]
+         unique: [false],
    },
    farmers: {
       type: [farmersSchema],
