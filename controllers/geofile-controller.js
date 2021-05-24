@@ -172,11 +172,9 @@ const appendJSONProperties = async (req, res, next) => {
 			// })
 
 			// COMPARE THE LAND AREA TO THE SUM OF THE ALLOCATIONS
-			// TODO > CHANGE "farmers" TO "plot_owners" > 
-			_validateAllocationsArea(convertedGeojson, geoClusterDetailsJSON[0].properties.farmers, res.locals.geojsonFileName); 
+			_validateAllocationsArea(convertedGeojson, geoClusterDetailsJSON[0].properties.plot_owners, res.locals.geojsonFileName); 
 			
 			// COPY THE PROPS. FROM CLUSTER DETAILS JSON TO THE CONVERTED GEOJSON
-			// TODO > CHANGE "farmers" TO "plot_owners" > 
 			convertedGeojson.properties = geoClusterDetailsJSON[0].properties; 
 
 			// PASS THE UPDATED/APPENDED GEOJSON TO THE NEXT M.WARE
@@ -186,7 +184,7 @@ const appendJSONProperties = async (req, res, next) => {
 	
       } else {
 			
-			// NO FARMERS' ALLOCATIONS JSON WITH THAT ID EXISTS IN THE DB.
+			// NO PLOT OWNERS' ALLOCATIONS JSON WITH THAT ID EXISTS IN THE DB.
 			throw new Error(`Our database DOES NOT have a JSON record of a geo-cluster document whose 'geofile_id' matches this file's name: [ ${geofileID} ]. The db. query in the appendJSONProperties fn. in the file-controller failed. `);
 
 			// REMOVE > DEPRECATED 
@@ -195,12 +193,12 @@ const appendJSONProperties = async (req, res, next) => {
          // });
       };
 		
-   } catch (_err) {
+   } catch (appendJSONPropsErr) {
 
       res.status(404).json({
          staus: 'fail',
          message: `[ ${req.file.originalname} ] was successfully uploaded to the server, and converted to a GeoJSON polygon.`,
-         error_msg: _err.message,
+         error_msg: `appendJSONPropsErr: ${appendJSONPropsErr.message}`
       })
    }
 };
