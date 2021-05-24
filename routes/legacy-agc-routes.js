@@ -1,6 +1,7 @@
 const express = require("express");
 const ROUTER = express.Router();
 const agcController = require('../controllers/agc-controller.js');
+const legacyAgcController = require('../controllers/legacy-agc-controller.js');
 
 
 ROUTER.route('/')
@@ -14,8 +15,7 @@ ROUTER.route('/agc/')
 
 ROUTER.route('/processed-farmers/')
    .post(agcController.checkID, agcController.insertProcessedFarmers)
-   // TODO >
-   // .update(legacyAgcController.checkID, legacyAgcController.updateProcessedFarmers)
+   .patch(legacyAgcController.checkID, legacyAgcController.updateProcessedFarmers)
 
 
 ROUTER.route('/processed/')
