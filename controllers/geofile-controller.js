@@ -149,7 +149,7 @@ const appendJSONProperties = async (req, res, next) => {
 		// search the plot allocations collection for alloc. with properties.geofile_id === geofileID
 		// const queryObj = { "properties.geofile_id": geofileID };
 		// TODO > CHANGE TO properties.geofile_id > 
-		const queryObj = { "properties.geo_cluster_id": geofileID };
+		const queryObj = { "properties.agc_id": geofileID };
 		
 	// if (await AGC_MODEL.countDocuments(queryObj) !==0 ) {  // REMOVE < DEPRECATED 
 		if (await GEO_CLUSTER_DETAILS_MODEL.countDocuments(queryObj) !==0 ) {
@@ -166,15 +166,17 @@ const appendJSONProperties = async (req, res, next) => {
          // res.status(200).json({
          //    status: 'success',
          //    data: {
-         //       // The query using 'geo_cluster_id' returns an array with only one element; deal with it..
+         //       // The query using 'agc_id' returns an array with only one element; deal with it..
          //       agcData: geoClusterDetailsJSON[0]
          //    }
 			// })
 
 			// COMPARE THE LAND AREA TO THE SUM OF THE ALLOCATIONS
-			_validateAllocationsArea(convertedGeojson, geoClusterDetailsJSON[0].properties.plot_owners, res.locals.geojsonFileName); 
+			// TODO > CHANGE "farmers" TO "plot_owners" > 
+			_validateAllocationsArea(convertedGeojson, geoClusterDetailsJSON[0].properties.farmers, res.locals.geojsonFileName); 
 			
 			// COPY THE PROPS. FROM CLUSTER DETAILS JSON TO THE CONVERTED GEOJSON
+			// TODO > CHANGE "farmers" TO "plot_owners" > 
 			convertedGeojson.properties = geoClusterDetailsJSON[0].properties; 
 
 			// PASS THE UPDATED/APPENDED GEOJSON TO THE NEXT M.WARE
@@ -184,7 +186,7 @@ const appendJSONProperties = async (req, res, next) => {
 	
       } else {
 			
-			// NO PLOT OWNERS' ALLOCATIONS JSON WITH THAT ID EXISTS IN THE DB.
+			// NO FARMERS' ALLOCATIONS JSON WITH THAT ID EXISTS IN THE DB.
 			throw new Error(`Our database DOES NOT have a JSON record of a geo-cluster document whose 'geofile_id' matches this file's name: [ ${geofileID} ]. The db. query in the appendJSONProperties fn. in the file-controller failed. `);
 
 			// REMOVE > DEPRECATED 

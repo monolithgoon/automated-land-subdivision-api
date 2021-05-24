@@ -4,43 +4,7 @@ const mongoose = require("mongoose");
 
 
 // PLOT OWNER SCHEMA
-const plotOwnerSchemaV1 = new mongoose.Schema({
-   farmer_id: {
-      type: String,
-      required: [true, `The farmer must have a global ID`],
-      unique: [true, `A farmer with this ID: ${this.farmer_id} already exists in the database`]
-   },
-   first_name: {
-      type: String,
-      required: [true, `The farmer's first name must be specified`]
-   },
-   last_name: {
-      type: String,
-      required: [true, `The farmer's last name must be specified`]
-   },
-   farmer_photo: Array,
-   // farmer_photo: {
-   //    type: Buffer,
-   //    unique: [true, `Each farmer's Base64 string must be unique`]
-   // },
-   // farmer_photo: {
-   //    type: Array,
-   //    required: true
-   // },
-   // farmer_photo_base64: Buffer,
-   farmer_photo_url: {
-      type: String,
-      // FIXME > CHANGE THESE TO "true" 
-      required: false,
-      unique: [false,`This photo url ${this.farmer_photo_url} is already linked to another farmer in the database`]
-   },
-   allocation: {
-      type: Number,
-      required: [true, `This farmer's (${this.farmer_id}) land allocation size must be specified`]
-   }
-});
-
-const plotOwnerSchemaV2 = new mongoose.Schema({
+const plotOwnerSchema = new mongoose.Schema({
    plot_owner_id: {
       type: String,
       required: [true, `The plot owner must have a global ID`],
@@ -71,7 +35,7 @@ const plotOwnerSchemaV2 = new mongoose.Schema({
    // },
    allocation: {
       type: Number,
-      required: [true, `This farmer's (${this.plot_owner_id}) land allocation size must be specified`]
+      required: [true, `This plot owner's (${this.plot_owner_id}) land allocation size must be specified`]
    }
 });
 
@@ -80,9 +44,6 @@ const plotOwnerSchemaV2 = new mongoose.Schema({
 // CLUSTER ALLOCATIONS SCHEMA
 const clusterDetailsSchema = new mongoose.Schema({
    properties: {
-   //    geo_cluster_id: { // TODO < CHANGE TO: geo_cluster_id
-
-   //    },
    //    extended_name: {
 
    //    },
@@ -95,31 +56,22 @@ const clusterDetailsSchema = new mongoose.Schema({
    //    cluster_details: {
 
    //    },
-   //    farmers: { // TODO> CHANGE TO: plot_owners 
-
-   //    }
    // }
-      agc_id: {
+      geo_cluster_id: {
          type: String,
          required: [true, `This cluster details JSON document must have a reference to a geofile (eg., 'AGCABU000002').`],
-         unique: [true, `A JSON document with this geo_cluster_id: [ ${this.agc_id} ] already exists in the database.`]
+         unique: [true, `A JSON document with this geo_cluster_id: [ ${this.geo_cluster_id} ] already exists in the database.`]
       },
-      extended_name: { // TODO > CHANGE TO: extended_cluster_name 
-         // extended_cluster_name: {
+      geo_cluster_name: {
             type: String,
             required: [true],
             unique: [true]
       },
-      farmers: {
-         type: [plotOwnerSchemaV1],
-         required: [true, `Each cluster must have at least one farmer's allocation, or an array of allocations.`],
-         validate: [(entry => Array.isArray(entry) && entry.length > 0), `The cluster must have at least one farmer's allocation, or an array of allocations.`]
+      plot_owners: {
+         type: [plotOwnerSchema],
+         required: [true, `Each cluster must have at least one plot owner allocation, or an array of allocations.`],
+         validate: [(entry => Array.isArray(entry) && entry.length > 0), `The cluster must have at least one plot owner allocation, or an array of allocations.`]
       },
-      // plot_owners: {
-      //    type: [plotOwnerSchemaV2],
-      //    required: [true, `Each cluster must have at least one plot owner allocation, or an array of allocations.`],
-      //    validate: [(entry => Array.isArray(entry) && entry.length > 0), `The cluster must have at least one plot owner allocation, or an array of allocations.`]
-      // },
       allocations_total: {
          type: Number,
          required: [true],
@@ -148,8 +100,8 @@ clusterDetailsSchema.pre('save', function(next) {
 
 // DON'T SAVE JSON WHOSE geofile_ids HAS SPACES
 clusterDetailsSchema.pre('save', function(next) {
-   if (/ /.test(this.agc_id)) {
-      return next(new Error(`Spaces are not allowed in the agc_id.`));
+   if (/ /.test(this.geo_cluster_id)) {
+      return next(new Error(`Spaces are not allowed in the geo_cluster_id`));
    }
    return next();
 })
@@ -159,7 +111,7 @@ clusterDetailsSchema.pre('save', function(next) {
 // CALCULATE THE TOTAL. AREA OF ALLOCATIONS & SAVE TO A NEW PROP.
 clusterDetailsSchema.pre('save', function(next) {
    const allocations = [];
-   this.properties.farmers.forEach(farmer=>allocations.push(farmer.allocation));
+   this.properties.plot_owners.forEach(plot_owner=>allocations.push(plot_owner.allocation));
    const totalAllocArea = allocations.reduce((alloc, sum) => alloc + sum);
    if (totalAllocArea > 0) {
       this.properties.allocations_total = totalAllocArea;
