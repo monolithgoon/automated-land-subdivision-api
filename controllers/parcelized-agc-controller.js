@@ -160,16 +160,19 @@ exports.getAllParcelizedAgcs = async (request, response) => {
 
 
       // EXECUTE THE QUERY
-      const returnedAgcData = await dbQuery
+      const returnedAGCData = await dbQuery
 
 
       // SEND RESPONSE
 		response.status(200).json({
 			status: "success",
 			requested_at: request.requestTime, // using the custom property from our custom middleware in app.js
-			num_parcelized_agcs: returnedAgcData.length,
+			num_parcelized_agcs: returnedAGCData.length,
 			data: {
-				parcelized_agcs: returnedAgcData,
+				parcelized_agcs: returnedAGCData,
+
+            collection_data: returnedAGCData,
+            collection_name: `parcelized-agcs`,
 			},
       })
       

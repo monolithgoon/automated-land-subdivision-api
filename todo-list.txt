@@ -39,21 +39,32 @@ API Deployment Checklist
 
 [ ] Remove all the console.logs
 
+[ ] Push to GitHub { ** OPTIONAL ** }
+   [ ] Create a project repo. on GitHub.com
+   [ ] Initialize git on local working directory: "git init"
+   [ ] Stage and commit the files in the local repo: git add -A && git commit -m 'Initial commit'
+   [ ] Copy the remote repo's URL from GitHub.com
+   [ ] Connect the remote repo: "git remote add origin https://github.com/monolithgoon/avg-dashboard.git
+      [ ] To remove origin from git repo: "git remote rm origin"
+   [ ] Push to the remote repo: "git push -u origin master"
+
 [x] Deploy to Heroku >>
-   [ ] Crete a 'start' script in packgage.json > "start": "node server.js"
+   [ ] Create a 'start' script in packgage.json > "start": "node server.js"
+   [ ] If app entry-point (server.js) is not in root dir, create a Procfile at app root dir. containing:
+      [ ] web: node server/server.js
    [x] Create a new Heroku project > RUN: "heroku create [app name]"
       [..] To change default name of Heroku app > RUN: heroku apps:rename [newname]
    [x] Connect to GitHub repo > On Heroku dashboard, select "Deploy" && click on "Connect to GitHub"
    [x] Upload files from "master" repository to Heroku > 
       [x] RUN: "git push heroku master"
       [x] Verify this works, and confirm the remote repos > RUN: git remote -v
-   [x] Set environment variables on Heroku (needed b/cos config.eng is excluded from git) > 
-      [x] RUN: "heroku config:set NODE_ENV=production"
+   [x] ******Set environment variables on Heroku (needed b/cos config.env  is excluded from git) > 
+      [x] RUN: heroku config:set NODE_ENV=production
       [x] RUN: heroku config:set ATLAS_DB_STRING="mongodb+srv://monkey-paw:<PASSWORD>@monkey-paw-cluster-cwcff.gcp.mongodb.net/nirsal_agcs?retryWrites=true&w=majority"
       [x] RUN: heroku config:set ATLAS_DB_PASSOWRD=dooksie
 
-   [ ] Deploy existing git repo. to new Heroku app
-      [ ] RUN: heroku git:remote -a [HEROKU_APP_NAME]
+   [ ] Deploy existing git repo. to a new Heroku app
+      [ ] RUN: heroku git:remote -a <NEW_HEROKU_APP_NAME>
       [ ] RUN > npm run deploy
 
    [ ] Get currently deployed app - RUN: git remote -v

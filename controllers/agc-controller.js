@@ -80,7 +80,7 @@ exports.getLegacyAgc = async (req, res) => {
          agcData: agc[0]
       })
       
-   } catch (getLegacyAgcsErr) {
+   } catch (getLegacyAgcErr) {
       console.error(chalk.fail(getLegacyAgcErr.message))
    }
 };
@@ -298,14 +298,14 @@ exports.getAllLegacyAgcs = async (request, response, next) => {
 
 
       // EXECUTE THE QUERY
-      const returnedLegacyAgcData = await dbQuery;
+      const returnedLegacyAGCData = await dbQuery;
 
 
       // COMPUTE THE NUMBER OF FEATURES PER. GEO-CLUSTER
       const featsLengths = [];
       let totalFeatures = 0;
 
-      returnedLegacyAgcData.forEach(geoCluster => {
+      returnedLegacyAGCData.forEach(geoCluster => {
          // console.log(geoCluster);
          console.log(chalk.console(`retreived legacy geocluster`));
          if (geoCluster.properties.geo_cluster_total_features) {
@@ -322,9 +322,14 @@ exports.getAllLegacyAgcs = async (request, response, next) => {
       response.status(200).json({
 			status: "success",
 			requested_at: request.requestTime, // using the custom property from our custom middleware in app.js
-			num_legacy_agcs: returnedLegacyAgcData.length,
+			num_legacy_agcs: returnedLegacyAGCData.length,
          num_plot_owners: totalFeatures,
-		   legacy_agcs: returnedLegacyAgcData,
+		   legacy_agcs: returnedLegacyAGCData,
+
+         data: {
+            collection_data: returnedLegacyAGCData,
+            collection_name: `legacy-agcs`,
+         }
       });
 
       
