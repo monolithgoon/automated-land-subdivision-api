@@ -173,7 +173,7 @@ exports.getAllParcelizedAgcs = async (request, response) => {
 
             collection_data: returnedAGCData,
             collection_name: `parcelized-agcs`,
-            collection_length: returnedLegacyAGCData.length,
+            docs_count: returnedAGCData.length,
 			},
       })
       
