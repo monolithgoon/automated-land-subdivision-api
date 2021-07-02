@@ -329,6 +329,7 @@ exports.getAllLegacyAgcs = async (request, response, next) => {
          data: {
             collection_data: returnedLegacyAGCData,
             collection_name: `legacy-agcs`,
+            collection_length: returnedLegacyAGCData.length,
          }
       });
 

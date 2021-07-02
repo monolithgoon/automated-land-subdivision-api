@@ -61,9 +61,9 @@ API Deployment Checklist
    [x] ******Set environment variables on Heroku (needed b/cos config.env  is excluded from git) > 
       [x] RUN: heroku config:set NODE_ENV=production
       [x] RUN: heroku config:set ATLAS_DB_STRING="mongodb+srv://monkey-paw:<PASSWORD>@monkey-paw-cluster-cwcff.gcp.mongodb.net/nirsal_agcs?retryWrites=true&w=majority"
-      [x] RUN: heroku config:set ATLAS_DB_PASSOWRD=dooksie
+      [x] RUN: heroku config:set ATLAS_DB_PASSOWRD=*******
 
-   [ ] Deploy existing git repo. to a new Heroku app
+   [ ] Deploy local git repo. to a new/different Heroku app/dyno
       [ ] RUN: heroku git:remote -a <NEW_HEROKU_APP_NAME>
       [ ] RUN > npm run deploy
 
