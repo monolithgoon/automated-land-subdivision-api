@@ -193,6 +193,9 @@ const legacyAgcSchema = new mongoose.Schema({
          primary_crop: {
             type: String,
          },
+         state: {
+            type: String,
+         },
          lga: {
             type: [String],
          },
