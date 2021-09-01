@@ -11,7 +11,7 @@ async function returnAllAgcs() {
       
       const axiosRequest = axios({
          method: 'get',
-         url: `https://agcfarmlands.herokuapp.com/api/v1/agcs/`,
+         url: `https://geoclusters.herokuapp.com/api/v1/agcs/`,
          // url: `http://127.0.0.1:9090/api/v1/agcs`,
          crossDomain: true,
          responseType: 'application/json',
@@ -42,7 +42,7 @@ async function returnAllAgcs() {
       fs.writeFile(`./data/bulk-data/agcs-${requestTimeStr}.geojson`, agcsData, (err, data) => {
 
          if(err) {
-            console.log(chalk.error(err.message))
+            console.log(chalk.fail(err.message))
             process.exit();
          } else {
             console.log(chalk.success(`All the returned AGCs (${numAgcs}) were saved to file.. `));
@@ -64,7 +64,7 @@ async function returnAgc(agc_id) {
       
       const axiosRequest = axios({
          method: 'get',
-         // url: `https://agcfarmlands.herokuapp.com/api/v1/agcs/?${agc_id}`,
+         // url: `https://geoclusters.herokuapp.com/api/v1/agcs/?${agc_id}`,
          url: `http://127.0.0.1:9090/api/v1/agcs/agc/?${agc_id}`,
          crossDomain: true,
          responseType: 'application/json',
@@ -88,7 +88,7 @@ async function returnAgc(agc_id) {
       fs.writeFile(`./data/${agc_id.toLowerCase()}.geojson`, agcDataString, (err, data) => {
 
          if(err) {
-            console.log(chalk.error(err.message))
+            console.log(chalk.fail(err.message))
             process.exit();
          } else {
             console.log(chalk.success('The returned AGC data was saved to file.. '))

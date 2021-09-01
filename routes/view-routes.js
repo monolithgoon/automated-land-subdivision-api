@@ -4,8 +4,8 @@ const viewsController = require('../controllers/view-controller.js')
 
 
 
-ROUTER.get('/', viewsController.renderLandingPage); // FOR > agfarmplots.com
-// ROUTER.get('/', viewsController.renderOnlyAgcs); // FOR > agcfarmlands.com
+ROUTER.get('/', viewsController.renderLandingPage); // FOR > agfarmplots.com ** MAIN DOMAIN
+// ROUTER.get('/', viewsController.renderOnlyAgcs); // FOR LIMITED ACCESS ALTERNATE DOMAIN
 
 ROUTER.get('/agcs-overview', viewsController.renderOnlyAgcs);
 ROUTER.get('/api-guide', viewsController.renderAPIGuide);

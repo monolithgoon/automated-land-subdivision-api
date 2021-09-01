@@ -3,7 +3,7 @@ nav.navbar-wrapper.is-fixed-top(role='navigation' aria-label='main navigation')
    .navbar
 
       .navbar-brand-wrapper
-         a.u__links.branding(href="https://agcfarmlands.herokuapp.com")
+         a.u__links.branding(href="/")
             img(src="/assets/icons/kagawa-japan-flag.svg" alt="Parcelized AGCs Logo")
             span agFarmPlots
 
@@ -14,13 +14,13 @@ nav.navbar-wrapper.is-fixed-top(role='navigation' aria-label='main navigation')
                   //- span Parcelization Demo
                   //- i.fi.fi-angle-right
             li(aria-hidden='true')
-               a.u__links(href="https://agcfarmlands.herokuapp.com/api-guide") API Guide
-            li(aria-hidden='true')
-               a.u__links(href="#") Signup
-               //- a.u__links(href="https://agcfarmlands.herokuapp.com/signup") Signup
+               a.u__links(href="/api-guide") API Guide
+            //- li(aria-hidden='true')
+               //- a.u__links(href="#") Signup
+               //- a.u__links(href="/signup") Signup
             li(aria-hidden='true')
                a.u__links(href="#") Login
-               //- a.u__links(href="https://agcfarmlands.herokuapp.com/login") Login
+               //- a.u__links(href="/login") Login
 
       .burger-wrapper
          input.toggler#menu_toggler(type='checkbox' aria-label='menu' aria-expanded='false')

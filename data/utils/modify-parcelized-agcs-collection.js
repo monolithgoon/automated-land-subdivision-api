@@ -219,7 +219,7 @@ async function returnAllParcelizedAgcs() {
       
       const axiosRequest = axios({
          method: 'get',
-         url: `https://agcfarmlands.herokuapp.com/api/v1/parcelized-agcs/`,
+         url: `https://geoclusters.herokuapp.com/api/v1/parcelized-agcs/`,
          crossDomain: true,
          responseType: 'application/json',
          headers: {
@@ -246,10 +246,10 @@ async function returnAllParcelizedAgcs() {
 
       
       // WRITE RESULT TO NEW FILE
-      fs.writeFile(`../data/parcelized-agcs/bulk-data/parcelized-agcs-${requestTimeStr}.geojson`, parcelizedAgcsData, (err, data) => {
+      fs.writeFile(`../parcelized-agcs/bulk-data/parcelized-agcs-${requestTimeStr}.geojson`, parcelizedAgcsData, (err, data) => {
 
          if(err) {
-            console.log(chalk.error(err.message))
+            console.log(chalk.fail(err.message))
             process.exit();
          } else {
             console.log(chalk.success(`All the returned parcelized AGCs (${numAgcs}) were saved to file.. `));

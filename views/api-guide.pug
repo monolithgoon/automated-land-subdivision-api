@@ -35,7 +35,6 @@ block api-guide
 
 		br
 		h3 Returning a Processed Legacy AGC
-			span New!
 		p To return back legacy AGC data that has been successfully processed (ie., the farmer photos have been acquired), send a POST request to-
 		pre.embedded-code-snippet
 			code.language-javascript.
@@ -53,7 +52,7 @@ block api-guide
 
 		br
 		h3 Returned Legacy AGC JSON Data Structure
-			span New!
+			span
 		p Use this data structure when uploading successful or failed legacy AGC JSON data back to us.
 		pre.agc-json-data-ex
 			include _legacy-agc-json-example
@@ -69,7 +68,7 @@ block api-guide
 				// Set up the API call function
 				async function getParcelizedAgc(agcID) {
 					try {
-						const apiResponse = await fetch(`https://agcfarmlands.herokuapp.com/api/v1/parcelized-agcs/parcelized-agc/?${agcID}`);
+						const apiResponse = await fetch(`https://geoclusters.herokuapp.com/api/v1/parcelized-agcs/parcelized-agc/?${agcID}`);
 						const data = await apiResponse.json();
 						return data;
 					} 
@@ -94,7 +93,7 @@ block api-guide
 				// Set up the API call function
 				async function getAllParcelizedAgcs() {
 					try {
-						const apiResponse = await fetch(`https://agcfarmlands.herokuapp.com/api/v1/parcelized-agcs/`);
+						const apiResponse = await fetch(`https://geoclusters.herokuapp.com/api/v1/parcelized-agcs/`);
 						const data = await apiResponse.json();
 						return data;
 					} 
@@ -112,7 +111,6 @@ block api-guide
 
 		br
 		h3 Render the Parcelized Plots Preview Map
-			//- span New!
 
 		p Each subsequent parcelized AGC payload retreived from the endpoint will now contain a unique string hash that is required to construct a URL that renders the preview map. 
 
@@ -152,9 +150,9 @@ block api-guide
 
 		pre.embedded-code-snippet
 			code.language-javascript.
-				// `https://agcfarmlands.herokuapp.com/parcelized-agc/?${preview_map_url_hash}`
+				// `https://geoclusters.herokuapp.com/parcelized-agc/?${preview_map_url_hash}`
 
-				https://agcfarmlands.herokuapp.com/parcelized-agc/?XAWXEACGEBVLGDRACUGOZYBSZTCKHMMDHOYVAPRWKXRNJVWXHXZHUMXTYTILBBMY
+				https://geoclusters.herokuapp.com/parcelized-agc/?XAWXEACGEBVLGDRACUGOZYBSZTCKHMMDHOYVAPRWKXRNJVWXHXZHUMXTYTILBBMY
 
 		p.important-note(style="display: flex; align-items: center;")
 			span(style="padding-right: 20px; font-size: 25px; font-weight: 100;")

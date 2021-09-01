@@ -1,4 +1,4 @@
-const chalk = require('../utils/chalk-messages')
+const chalk = require('../utils/chalk-messages');
 const mongoose = require("mongoose");
 
 
@@ -44,7 +44,7 @@ const geometrySchema = new mongoose.Schema({
       required: [true, `This plot is missing its coordinates`],
       unique: [true, `A plot with these coordinates already exists in the database`]
    }
-})
+});
 
 
 
@@ -62,9 +62,6 @@ const featureSchema = new mongoose.Schema({
       },
    geometry: geometrySchema,
    properties: {
-      // plot_owner_varst_id : { // REMOVE > DEPRE.
-      //    type: String,
-      // },
       plot_id : {
          type: String,
       },

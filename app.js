@@ -81,27 +81,17 @@ EXPRESS_APP.use(compression());
 
 
 
-// REMOVE > 
-// LOAD THE ROUTES
-// const TOURS_ROUTE = require('./routes/tour-routes.js')
-// const USERS_ROUTE = require('./routes/user-routes.js')
-
-// LOAD THE ROUTERS/ROUTES
+// LOAD THE ROUTERS
 const parcelizedAgcsRouter = require('./routes/parcelized-agc-routes.js');
 const agcsRouter = require('./routes/agc-routes.js');
-const userRouter = require('./routes/user-routes.js');
+const usersRouter = require('./routes/user-routes.js');
 const viewRouter = require('./routes/view-routes.js');
 const geoClustersRouter = require('./routes/geo-cluster-routes.js');
 const geofilesRouter = require('./routes/geofile-routes.js');
 const legacyAgcsRouter = require('./routes/legacy-agc-routes.js');
+const pmroRouter = require('./routes/pmro-routes.js');
 
 
-
-// REMOVE > 
-// MOUNTING THE ROUTERS
-// EXPRESS_APP.use('/', TOURS_ROUTE)
-// EXPRESS_APP.use('/api/v1/tours', TOURS_ROUTE)
-// EXPRESS_APP.use('/api/v1/users', USERS_ROUTE)
 
 // MOUNTING THE ROUTERS
 EXPRESS_APP.use('/', viewRouter);
@@ -109,9 +99,10 @@ EXPRESS_APP.use('/api/demo/', viewRouter);
 EXPRESS_APP.use('/api/v1/agcs/', agcsRouter);
 EXPRESS_APP.use('/api/v2/geo-clusters/', geoClustersRouter);
 EXPRESS_APP.use('/api/v1/parcelized-agcs/', parcelizedAgcsRouter);
-EXPRESS_APP.use('/api/v1/users/', userRouter);
-EXPRESS_APP.use('/api/v2/geofiles/', geofilesRouter)
-EXPRESS_APP.use('/api/v2/legacy-agcs', legacyAgcsRouter);
+EXPRESS_APP.use('/api/v1/users/', usersRouter);
+EXPRESS_APP.use('/api/v2/geofiles/', geofilesRouter);
+EXPRESS_APP.use('/api/v2/legacy-agcs/', legacyAgcsRouter);
+EXPRESS_APP.use(`/api/v2/pmros/`, pmroRouter);
 
 
 

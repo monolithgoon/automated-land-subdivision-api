@@ -1,29 +1,28 @@
 const express = require("express");
 const ROUTER = express.Router();
-const agcController = require('../controllers/agc-controller.js');
 const legacyAgcController = require('../controllers/legacy-agc-controller.js');
 
 
 ROUTER.route('/')
-   .get(agcController.getAllLegacyAgcs)
-   .post(agcController.insertLegacyAgc);
+   .get(legacyAgcController.getAllLegacyAgcs)
+   .post(legacyAgcController.insertLegacyAgc);
 
    
 ROUTER.route('/agc/')
-   .get(agcController.checkID, agcController.getLegacyAgc);
+   .get(legacyAgcController.checkID, legacyAgcController.getLegacyAgc);
 
 
 ROUTER.route('/processed-farmers/')
-   .post(agcController.checkID, agcController.insertProcessedFarmers)
+   .post(legacyAgcController.checkID, legacyAgcController.insertProcessedFarmers)
    .patch(legacyAgcController.checkID, legacyAgcController.updateProcessedFarmers)
 
 
 ROUTER.route('/processed/')
-   .post(agcController.checkID, agcController.insertProcessedLegacyAgc);
+   .post(legacyAgcController.checkID, legacyAgcController.insertProcessedLegacyAgc);
 
 
 ROUTER.route('/failed/')
-   .get(agcController.checkID, agcController.getAllFailedLegacyAgcs);
+   .get(legacyAgcController.checkID, legacyAgcController.getAllFailedLegacyAgcs);
 
 
 module.exports = ROUTER;
