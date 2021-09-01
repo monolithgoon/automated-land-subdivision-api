@@ -7,7 +7,7 @@
     "exportdb": "cd ./data && node export-fs-data-to-db.js --export",
     "deploy": "git push && git push heroku master",
     "deploy:open": "git push && git push heroku master && heroku open",
-    "deploy:default": "git add --all && git commit -m `stable-commit` && git push heroku master && heroku open",
+    "deploy:default": "git add --all && git commit -m `stable-commit` && git push && git push heroku master && heroku open",
     "start": "node server.js",
     "start:dev": "nodemon server.js",
     "start:prod": "NODE_ENV=production nodemon server.js"
