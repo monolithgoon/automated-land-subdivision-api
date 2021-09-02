@@ -272,6 +272,24 @@ exports.updateProcessedFarmers = async (req, res, next) => {
 };
 
 
+exports.getProcessedLegacyAgcFarmers = async (req, res, next) => {
+   
+   console.log(chalk.success("SUCCESSFULLY CALLED THE [ getProcessedFarmers ] CONTROLLER FN. "));
+
+   const docs = await getAllDocuments(req, LEGACY_AGC_FARMERS_MODEL);
+
+   res.status(200).json({
+      status: `success`,
+      requested_at: req.requestTime,
+      data: {
+         collection_name: `processed-legacy-agc-farmers`,
+         collection_docs: docs,
+         docs_count: docs.length,
+      },
+   });
+};
+
+
 // TODO
 exports.insertProcessedLegacyAgc = async (req, res, next) => {
    // nothing here
@@ -279,9 +297,20 @@ exports.insertProcessedLegacyAgc = async (req, res, next) => {
 
 
 exports.getAllProcessedLegacyAgcs = async (req, res, next) => {
+   
    console.log(chalk.success("SUCCESSFULLY CALLED THE [ getAllProcessedLegacyAgcs ] CONTROLLER FN. "));
+
    const processedLegacyAgcs = await getAllDocuments(req, LEGACY_AGC_MODEL);
-   console.log({processedLegacyAgcs});
+
+   res.status(200).json({
+      status: `success`,
+      requested_at: req.requestTime,
+      data: {
+         collection_name: `processed-legacy-agcs`,
+         collection_docs: processedLegacyAgcs,
+         docs_count: processedLegacyAgcs.length,
+      },
+   });
 };
 
 

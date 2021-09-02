@@ -12,10 +12,13 @@ ROUTER.route('/legacy-agc/')
    .get(legacyAgcController.checkID, legacyAgcController.getLegacyAgc);
 
 
-// 
 ROUTER.route('/legacy-agc/processed-farmers/')
    .post(legacyAgcController.checkID, legacyAgcController.insertProcessedFarmers)
    .patch(legacyAgcController.checkID, legacyAgcController.updateProcessedFarmers);
+
+
+ROUTER.route('/processed-farmers/')
+   .get(legacyAgcController.getProcessedLegacyAgcFarmers);
    
    
    // TODO
@@ -23,7 +26,6 @@ ROUTER.route('/legacy-agc/processed-farmers/')
       .post(legacyAgcController.checkID, legacyAgcController.insertProcessedLegacyAgc);
 
 
-// TODO
 ROUTER.route('/processed/')
 .get(legacyAgcController.getAllProcessedLegacyAgcs);
 
