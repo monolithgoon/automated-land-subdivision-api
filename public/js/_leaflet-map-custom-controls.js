@@ -78,24 +78,43 @@ export function ACTIVATE_CUSTOM_CONTROLS() {
 };
 
 function toggleLeafletMapHeight() {
-   const sectionWrapper_div = document.getElementById('section_wrapper');
+
+   const plotsDetailSection = document.getElementById(`plots_detail_section`);
+   console.log({plotsDetailSection})
+
+   const clusterSummaryEl = document.getElementById(`cluster_summary_container`);
+   const clusterCoordsListingEl = document.getElementById(`cluster_coords_listing_container`);
+   
    const leafletMap_div = document.getElementById('leaflet_map');
    const mapResizeIcon = document.querySelector('.custom-control-btn i');
    const mapResizeLabel = document.querySelector('.custom-control-btn-label.map-resize-label')   
 
-   sectionWrapper_div.classList.toggle("hide-element"); // HIDE THE COORDS.
-   leafletMap_div.classList.toggle("farm-detail-map-expanded"); // INCREASE THE LEAFLET MAP HEIGHT
+   leafletMap_div.classList.toggle("expanded");
+
+   if (leafletMap_div.classList.contains("expanded")) {
+      if (plotsDetailSection) plotsDetailSection.style.gridTemplateRows = "1fr";
+      if (clusterSummaryEl) clusterSummaryEl.style.display = "none";
+      if (clusterCoordsListingEl) clusterCoordsListingEl.style.display = "none";
+      if(leafletMap_div) leafletMap_div.style.height = "100%"; // INCREASE THE LEAFLET MAP HEIGHT
+   } else {
+      if (plotsDetailSection) plotsDetailSection.style.gridTemplateRows = "0.1fr auto 1fr";
+      if (clusterSummaryEl) clusterSummaryEl.style.display = "grid";
+      if (clusterCoordsListingEl) clusterCoordsListingEl.style.display = "block";
+      if(leafletMap_div) leafletMap_div.style.height = "auto"; // INCREASE THE LEAFLET MAP HEIGHT
+   };
    
    // TOGGLE THE FONT AWE. CLASSES
-   mapResizeIcon.classList.toggle("fa-expand"); // TOGGLE THE ICON TO EXPAND
-   mapResizeIcon.classList.toggle("fa-compress"); // TOGGLE THE TO COMPRESS
+   if (mapResizeIcon){
+      mapResizeIcon.classList.toggle("fa-expand"); // TOGGLE THE ICON TO EXPAND
+      mapResizeIcon.classList.toggle("fa-compress"); // TOGGLE THE TO COMPRESS
+   };
    
-   // // TOGGLE THE INNER TEXT OF THE CONTRL LABEL
-   // if (mapResizeLabel.innerText === "Expand Map") {
-   //    mapResizeLabel.innerText = 'Compress Map'
-   // } else {
-   //    mapResizeLabel.innerText = "Expand Map"
-   // }
+   // TOGGLE THE INNER TEXT OF THE CONTROL LABEL
+   if (mapResizeLabel.innerText === "Expand Map") {
+      mapResizeLabel.innerText = 'Compress Map'
+   } else {
+      mapResizeLabel.innerText = "Expand Map"
+   }
 }
 
 // TODO > 

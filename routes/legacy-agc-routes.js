@@ -8,17 +8,24 @@ ROUTER.route('/')
    .post(legacyAgcController.insertLegacyAgc);
 
    
-ROUTER.route('/agc/')
+ROUTER.route('/legacy-agc/')
    .get(legacyAgcController.checkID, legacyAgcController.getLegacyAgc);
 
 
-ROUTER.route('/processed-farmers/')
+// 
+ROUTER.route('/legacy-agc/processed-farmers/')
    .post(legacyAgcController.checkID, legacyAgcController.insertProcessedFarmers)
-   .patch(legacyAgcController.checkID, legacyAgcController.updateProcessedFarmers)
+   .patch(legacyAgcController.checkID, legacyAgcController.updateProcessedFarmers);
+   
+   
+   // TODO
+   ROUTER.route('/legacy-agc/processed/')
+      .post(legacyAgcController.checkID, legacyAgcController.insertProcessedLegacyAgc);
 
 
+// TODO
 ROUTER.route('/processed/')
-   .post(legacyAgcController.checkID, legacyAgcController.insertProcessedLegacyAgc);
+.get(legacyAgcController.getAllProcessedLegacyAgcs);
 
 
 ROUTER.route('/failed/')

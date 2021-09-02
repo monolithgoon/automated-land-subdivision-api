@@ -1,6 +1,7 @@
 const chalk = require("../utils/chalk-messages");
 const LEGACY_AGC_MODEL = require("../models/legacy-agc-model.js");
 const LEGACY_AGC_FARMERS_MODEL = require("../models/legacy-agc-farmers-model.js");
+const { getAllDocuments } = require("./handler-factory");
 
 
 // CHECK THAT THE agc_id IS VALID BEFORE RUNNING getAgc()
@@ -173,7 +174,7 @@ exports.getAllLegacyAgcs = async (request, response, next) => {
          error_msg: _err.message,
 		});
 	}
-}
+};
 
 
 exports.insertLegacyAgc = async (req, res, next) => {
@@ -271,11 +272,20 @@ exports.updateProcessedFarmers = async (req, res, next) => {
 };
 
 
+// TODO
 exports.insertProcessedLegacyAgc = async (req, res, next) => {
+   // nothing here
+};
+
+
+exports.getAllProcessedLegacyAgcs = async (req, res, next) => {
+   console.log(chalk.success("SUCCESSFULLY CALLED THE [ getAllProcessedLegacyAgcs ] CONTROLLER FN. "));
+   const processedLegacyAgcs = await getAllDocuments(req, LEGACY_AGC_MODEL);
+   console.log({processedLegacyAgcs});
 };
 
 
 // TODO
 exports.getAllFailedLegacyAgcs = async (req, res, next) => {
-
+   // nothing here
 };

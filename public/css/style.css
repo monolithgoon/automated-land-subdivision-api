@@ -45,11 +45,6 @@
 
 }
 
-/* HIDE / SHOW ELEMENT TOGGLES */
-.hide-element {
-	display: none;
-}
-
 .show-element {
 	display: block;
 }
@@ -1039,7 +1034,7 @@ input:focus {
 
 	body {
 		font-size: 12px;
-		overflow: auto;
+		overflow: hidden;
 	}
 
 	.navbar-wrapper {
@@ -1214,11 +1209,7 @@ input:focus {
 	}
 
 	.farm-detail-map {
-		height: 62vh;
-	}
-
-	.farm-detail-map-expanded {
-		height: 100%;
+		height: auto;
 	}
 }
 

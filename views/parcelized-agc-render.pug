@@ -28,10 +28,10 @@ block parcelized-agc-preview-map
             svg.events-none.icon.color-lighten75.color-white-on-hover(role='presentation' focusable='false' style='width: 18px; height: 18px;')
                use(xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#icon-close')
 
-      section.section-2-container
+      section#plots_detail_section.section-2-container
 
          //- SUMMARIZED AGC INFO.
-         .summaries
+         #cluster_summary_container.summaries
             .num-farmers
                div Num. Farmers
                #num_farmers.aggr-data= parcelizedAgcData.properties.num_farmers
@@ -59,7 +59,7 @@ block parcelized-agc-preview-map
                   #shapefile_area.aggr-data -
 
          //- CHUNK COORDS. LISTING
-         .coords-listing-container
+         #cluster_coords_listing_container.coords-listing-container
 
             #coords_listing_header_wrapper.coords-listing--header-wrapper   
                div Parcelized Plots&apos; Coordinates
@@ -89,5 +89,5 @@ block parcelized-agc-preview-map
             #leaflet_map_overlay.leaflet-map-overlay Nigeria 6.1816&deg;N, 6.5303&deg;E
                #leaflet_map_overlay_extended.leaflet-map-overlay-extended Walking turn-by-turn directions for selected farm plot..
 
-         //- script(src='/js/main.js' type='module')
-         script(src='/jquery-min.js' type='module')
+         script(src='/js/main.js' type='module')
+         //- script(src='/jquery-min.js' type='module')
