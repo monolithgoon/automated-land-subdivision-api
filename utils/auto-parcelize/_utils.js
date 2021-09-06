@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const turf = require('@turf/turf')
-const chalk = require('../../../utils/chalk-messages.js')
+const chalk = require('../chalk-messages.js')
 const { EROFS, SSL_OP_SSLEAY_080_CLIENT_DH_BUG } = require('constants')
 
 

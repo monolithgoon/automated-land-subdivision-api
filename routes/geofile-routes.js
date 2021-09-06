@@ -2,7 +2,7 @@ const express = require("express");
 const ROUTER = express.Router();
 const geofileController = require("../controllers/geofile-controller.js");
 const geoClusterController = require('../controllers/geo-cluster-controller.js');
-const parcelizeController = require('../controllers/auto-subdivide-controller.js')
+const subdivideController = require('../controllers/auto-subdivide-controller.js')
 const parcelizedAgcController = require('../controllers/parcelized-agc-controller.js');
 
 
@@ -31,10 +31,10 @@ ROUTER.route('/geofile/upload/')
    .post(
       geofileController.uploadGeofile, 
       geofileController.convertGeofile, 
-      geofileController.appendJSONProperties,
+      geofileController.appendGeoJSONProperties,
       geoClusterController.insertGeoCluster,
-      parcelizeController.parcelizeAgc,
-      parcelizedAgcController.insertParcelizedAgc,
+      subdivideController.subdivideGeofile,
+      parcelizedAgcController.insertParcelizedGeofile,
    );
 
 

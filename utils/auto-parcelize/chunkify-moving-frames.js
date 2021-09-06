@@ -1,5 +1,5 @@
 // POLYGON CHUNKING v3.0 > BOUNDING BOX DECAY ALGORITHM
-const chalk = require('../../../utils/chalk-messages');
+const chalk = require('../chalk-messages');
 const turf = require('@turf/turf')
 const { _getProps, _calcArea, _analyzeGeojson, _generateRandomString, _checkParity, _getAllocationsMetadata } = require('./_utils.js');
 const { _getKatanaSlice } = require('./_getKatanaSlice.js');

@@ -1,6 +1,5 @@
 // CONTAINS THE ROUTE HANDLING FUNCTIONS USED BY agc-routes.js
 const chalk = require('../utils/chalk-messages');
-const { _getNextPayload } = require('../utils/utils.js');
 const AGC_MODEL = require('../models/agc-model.js');
 
 
@@ -177,10 +176,9 @@ exports.insertAgc = async (req, res, next) => {
 
 	console.log(chalk.success(`CALLED THE insertAgc CONTROLLER FN. `))
    
-   // GET PAYLOAD FROM PREV. M.WARE. (res.locals.appendedGeojson) VS. API CALL PARAM (req.body)
-   const agcPayload = _getNextPayload(res.locals.appendedGeojson, req.body);
+   const agcPayload = req.body;
    
-   console.log(agcPayload);
+   console.log({agcPayload});
 
    try {
       
@@ -210,5 +208,5 @@ exports.insertAgc = async (req, res, next) => {
          message: 'That POST request failed. Check your JSON data payload.',
          error_msg: err.message,
       });
-   }
+   };
 };

@@ -102,7 +102,7 @@ const convertGeofile = async (req, res, next) => {
 				// PASS GEOJSON FILE DATA to the next middleware using next()
 				// Setting variables directly on the request object (ie. req.geojsonData) is not supported or documented. 
 				// res.locals is guaranteed to hold state over the life of a request.
-				res.locals.geojsonFileData = geojsonData;
+				res.locals.geofileGeoJSONPolygon = geojsonData;
 				res.locals.geojsonFileName = fileName;
 				
 				next();
@@ -136,16 +136,16 @@ const convertGeofile = async (req, res, next) => {
 
 
 // APPEND THE FARMER ALLOCATIONS JSON RECORD TO THE DELIN. LAND GEOJSON
-const appendJSONProperties = async (req, res, next) => {
+const appendGeoJSONProperties = async (req, res, next) => {
 
-	console.log(chalk.success(`CALLED THE [ appendJSONProperties ] CONTROLLER FN. `))
+	console.log(chalk.success(`CALLED THE [ appendGeoJSONProperties ] CONTROLLER FN. `))
 
-	const convertedGeojson = JSON.parse(res.locals.geojsonFileData);
+	const convertedGeojson = JSON.parse(res.locals.geofileGeoJSONPolygon);
 	const geofileID = res.locals.geojsonFileName;
 	
    try {
 		
-		console.log(chalk.working(`QUERYING PLOT ALLOCS. COLLECTION FOR ${geofileID}. WAITING FOR RESPONSE .. `))
+		console.log(chalk.working(`QUERYING GEO-CLUSTER DETAILS COLLECTION TO CHECK IF A DOC. FOR ${geofileID} EXISTS. WAITING FOR RESPONSE .. `))
 
 		// search the plot allocations collection for alloc. with properties.geofile_id === geofileID
 		// const queryObj = { "properties.geofile_id": geofileID };
@@ -181,14 +181,14 @@ const appendJSONProperties = async (req, res, next) => {
 			convertedGeojson.properties = geoClusterDetailsJSON[0].properties; 
 
 			// PASS THE UPDATED/APPENDED GEOJSON TO THE NEXT M.WARE
-			res.locals.appendedGeojson = convertedGeojson;
+			res.locals.appendedGeofileGeoJSON = convertedGeojson;
 
 			next();
 	
       } else {
 			
 			// NO FARMERS' ALLOCATIONS JSON WITH THAT ID EXISTS IN THE DB.
-			throw new Error(`Our database DOES NOT have a JSON record of a geo-cluster document whose 'geofile_id' matches this file's name: [ ${geofileID} ]. The db. query in the appendJSONProperties fn. in the file-controller failed. `);
+			throw new Error(`Our database DOES NOT have a JSON record of a geo-cluster document whose 'geofile_id' matches this file's name: [ ${geofileID} ]. The db. query in the appendGeoJSONProperties fn. in the file-controller failed. `);
 
 			// REMOVE > DEPRECATED 
          // res.status(404).json({
@@ -200,7 +200,7 @@ const appendJSONProperties = async (req, res, next) => {
 
       res.status(404).json({
          staus: 'fail',
-         message: `[ ${req.file.originalname} ] was successfully uploaded to the server, and converted to a GeoJSON polygon.`,
+         message: `[ ${req.file.originalname} ] was successfully uploaded to the server, and converted to a GeoJSON polygon. Please send the geo-file upload request again to proceed with auto sub-division.`,
          error_msg: `appendJSONPropsErr: ${appendJSONPropsErr.message}`
       })
    }
@@ -209,7 +209,7 @@ const appendJSONProperties = async (req, res, next) => {
 
 
 
-//  read all files in raw-geo-files folder, return list of files’ informationn (name, url)
+//  read all files in raw-geo-files folder, return list of files’ info. (name, url)
 const getListFiles = (req, res) => {
 
 	const directoryPath = `${__approotdir}/${geofileUploadPath}`
@@ -260,5 +260,5 @@ module.exports = {
 	downloadFile,
 	uploadGeofile,
 	convertGeofile,
-	appendJSONProperties,
+	appendGeoJSONProperties,
 };

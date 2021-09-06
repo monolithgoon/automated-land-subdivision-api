@@ -67,3 +67,14 @@ exports.getAllDocuments = async function (request, model) {
 
    return retreivedDocs;
 };
+
+
+exports.findOneDocument = async (model, queryObj) => {
+   console.log({queryObj})
+   try {
+      if (await model.count(queryObj) !==0) return true;
+      else return false;
+   } catch (findDocErr) {
+      console.log(chalk.fail(`findDocErr: ${findDocErr.message}`))
+   };
+};

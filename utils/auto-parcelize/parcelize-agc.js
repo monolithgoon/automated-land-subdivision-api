@@ -2,7 +2,7 @@ const chalk = require("../../../utils/chalk-messages");
 const { PARCELIZE_SHAPEFILE } = require("./chunkify-moving-frames.js");
 
 
-exports.PARCELIZE_AGC = function parcelizeAgc (agc, directionsCode) {
+exports.PARCELIZE_AGC = function subdividePolygon (agc, directionsCode) {
    
    try {
       

@@ -23,7 +23,6 @@ block api-guide
 
 		br
 		h3 Retreive Legacy AGC Data
-			span New
 
 		pre.embedded-code-snippet
 			code.language-javascript.
@@ -73,8 +72,7 @@ block api-guide
 						const apiResponse = await fetch(`https://geoclusters.herokuapp.com/api/v1/parcelized-agcs/parcelized-agc/?${agcID}`);
 						const data = await apiResponse.json();
 						return data;
-					} 
-					catch (error) {
+					} catch (error) {
 						console.error(error.message);
 					};
 				};
@@ -98,8 +96,7 @@ block api-guide
 						const apiResponse = await fetch(`https://geoclusters.herokuapp.com/api/v1/parcelized-agcs/`);
 						const data = await apiResponse.json();
 						return data;
-					} 
-					catch (error) {
+					} catch (error) {
 						console.error(error.message);
 					};
 				};
@@ -114,9 +111,9 @@ block api-guide
 		br
 		h3 Render the Parcelized Plots Preview Map
 
-		p Each parcelized AGC payload retreived from the endpoint contains a unique string hash, which is required to construct a URL that renders the preview map. 
+		p Each parcelized AGC GeoJSON payload retreived from the #[strong /parcelized-agcs] endpoint contains a unique string hash, which is required to construct URL, that in turn displays a preview map showing  the parcelized plots to the user. 
 
-		p Get that string by reading the #[strong "properties.preview_map_url_hash"] field of the GeoJSON payload. Here's a sample JSON snippet from an API call to the parcelized AGCs endpoint-
+		p Get that unique string by reading the #[strong "properties.preview_map_url_hash"] field of the GeoJSON payload. Here's a sample JSON snippet from an API call to the parcelized AGCs endpoint-
 
 		pre.embedded-code-snippet
 			code.language-javascript.
@@ -163,8 +160,8 @@ block api-guide
 			span Please note that for all the previously parcelized test AGCs, the preview map URLs that included the AGC IDs have now all been deprecated, and will therefore no longer work.
 
 		br
-		h3 Sending AGC data to the GeoClusters API (using the Fetch API)
-		p The snippet below shows how to persist AGC GeoJSON data to the AGC database using an asynchronous POST request.
+		h3 Sending AGC data to the Database (using the Fetch API) - Mtd. 1
+		p The snippet below shows how to persist AGC GeoJSON data to the database using a Fetch API POST request.
 
 		pre
 			//- .devsite-code-buttons-container
@@ -176,8 +173,8 @@ block api-guide
 			br
 
 		br
-		h3 Sending AGC data to the Database (using an XML HTTP Request)
-		p The snippet below shows an alternate method to persist AGC GeoJSON data to the database using XMLHttpRequest().
+		h3 Sending AGC data to the Database (using an XML HTTP Request) - Mtd. 2
+		p The snippet below shows an alternate method to persist AGC GeoJSON data to the database using an XMLHttpRequest().
 
 		pre
 			include _xml-request-snippet
@@ -187,8 +184,12 @@ block api-guide
 		br
 		h3 Sample AGC GeoJSON Data Structure
 		p Each AGC payload is a GeoJSON #[em #[strong FeatureCollection]], that contains just ONE #[em Feature].
-		//- div IMPORTANT
-		p.important-note The DB insertion will fail if the 'agc_id', 'extended_name', 'location', and/or 'farmers' fields are missing from the JSON payload, or if another AGC with the same 'agc_id', 'extended_name', and/or coordinates already exists in the database. Those first 4 fields in 'properties' are REQUIRED.
-		p.important-note The total hectares allocated to the farmers must not exceed the AGC land area.
+		p.important-note The database insertion will fail if the 'agc_id', 'extended_name', 'location', and/or 'farmers' fields are missing from the 'properties' object of the GeoJSON payload, or if another AGC with the same 'agc_id', 'extended_name', and/or coordinates already exists in the database. Those first 4 fields in 'properties' are REQUIRED.
+		p.important-note Finally, insertion will fail if the sum of the total number of hectares allocated to the farmers exceeds the delineated AGC land area. 
 		pre.agc-json-data-ex
 			include _agc-json-data-example
+
+
+		br
+		h3 Upload & Parcelize a Geo-file (.kml / .kmz / .shp / .gpx file)
+		p Follow these steps to upload the geo-file belonging to an AGC

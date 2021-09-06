@@ -5,11 +5,11 @@ const legacyAgcController = require('../controllers/legacy-agc-controller.js');
 
 ROUTER.route('/')
    .get(legacyAgcController.getAllLegacyAgcs)
-   .post(legacyAgcController.insertLegacyAgc);
 
    
 ROUTER.route('/legacy-agc/')
-   .get(legacyAgcController.checkID, legacyAgcController.getLegacyAgc);
+   .get(legacyAgcController.checkID, legacyAgcController.getLegacyAgc)
+   .post(legacyAgcController.insertLegacyAgc);
 
 
 ROUTER.route('/legacy-agc/processed-farmers/')

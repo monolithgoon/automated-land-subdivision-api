@@ -43,7 +43,7 @@ const PARCELIZED_AGC_CONTROLLER = require('../controllers/parcelized-agc-control
 
 ROUTER.route('/')
    .get(PARCELIZED_AGC_CONTROLLER.getAllParcelizedAgcs)
-   .post(PARCELIZED_AGC_CONTROLLER.checkBody, PARCELIZED_AGC_CONTROLLER.insertParcelizedAgc);
+   .post(PARCELIZED_AGC_CONTROLLER.checkBody, PARCELIZED_AGC_CONTROLLER.insertParcelizedGeoCluster);
 
 
 

@@ -59,8 +59,8 @@ function validateQuery(queryResult, response) {
          status: 'failed',
          message: 'That was an invalid ID.'
       })
-   }
-}
+   };
+};
 
 
 
@@ -289,12 +289,12 @@ exports.getParcelizedAgc = async (req, res, next) => {
 
 
 // CREATE/INSERT A NEW PARCELIZED AGC (POST REQUEST) HANDLER FN.
-exports.insertParcelizedAgc = async (req, res) => {
+exports.insertParcelizedGeofile = async (req, res) => {
 
    try {
 
-      // GET PAYLOAD FROM PREV. M.WARE. (res.locals.appendedGeojson) VS. API CALL PARAM (req.body)
-      const parcelizedAgcPayload = _getNextPayload(res.locals.parcelizedAgc, req.body);
+      // GET PAYLOAD FROM PREV. M.WARE. > auto-subdivide-controller > subdivideGeofile fn.
+      const parcelizedAgcPayload = res.locals.parcelizedGeofile;
       
       // CREATE A NEW PARCELIZED AGC DOCUMENT _MTD 1
       // const newAgc = new TOUR_MODEL(req.body)
@@ -317,29 +317,41 @@ exports.insertParcelizedAgc = async (req, res) => {
       res.status(400).json({ // 400 => bad request
          status: 'fail',
          // message: 'That POST request failed.',
-         message: `[ ${req.file.originalname} ] was successfully uploaded to the server, converted to a GeoJSON polygon, updated with the farmer allocations JSON, and parcelized.`,
+         message: `[ ${req.file.originalname} ] was successfully uploaded to the database, and converted to a GeoJSON polygon document. The properties of that GeoJSON was updated with the farmer allocations' JSON, and finally, the polygon's geometry was successfully parcelized.`,
          error_msg: `Failed to insert the parcelized AGC into the database. ${err.message}`,
       })
-   }
+   };
 };
 
 
-// .. insertParcelizedAgc USING GLOBAL catchAsyncError HANDLER
-// exports.insertParcelizedAgc = catchAsyncError(async (req, res, next) => {
-   
-//    // GET PAYLOAD FROM PREV. M.WARE. (res.locals.appendedGeojson) VS. API CALL PARAM (req.body)
-//    const parcelizedAgcPayload = _getNextPayload(res.locals.parcelizedAgc, req.body);
-   
-//    // CREATE A NEW PARCELIZED AGC DOCUMENT _MTD 2
-//    // const newParcelizedAgc = await PARCELIZED_AGC_MODEL.create(req.body) // "model.create" returns a promise
-//    const newParcelizedAgc = await PARCELIZED_AGC_MODEL.create(parcelizedAgcPayload) // "model.create" returns a promise > resolve with "await"
 
-//    res.status(201).json({
-//       status: 'success',
-//       message: `$[ {req.file.originalname} ] was successfully uploaded to the server, converted to a GeoJSON polygon, and parcelized.`,
-//       inserted_at: req.requestTime,
-//       data: {
-//          parcelizedAgc: newParcelizedAgc
-//       }
-//    })   
-// });
+// CREATE/INSERT A NEW PARCELIZED AGC (POST REQUEST) HANDLER FN.
+exports.insertParcelizedGeoCluster = async (req, res) => {
+
+   try {
+
+      // SELECT A PAYLOAD > GET THE CLUSTER GEOJSON
+      // ... EITHER FROM PREV. M.WARE. > auto-subdivide-controller > subdivideGeoClusterGJ fn.
+      // ... DIRECTRLY FROM req.body (OFFLINE/MANUAL PARCELIZATION)
+      const parcelizedAgcPayload = _getNextPayload(res.locals.parcelizedGeoCluster, req.body);
+      
+      const newParcelizedAgc = await PARCELIZED_AGC_MODEL.create(parcelizedAgcPayload) // "model.create" returns a promise > resolve with "await"
+
+      res.status(201).json({
+         status: 'success',
+         message: `[ The Geo-cluster was successfully uploaded, sub-divided, and inserted into the database.`,
+         inserted_at: req.requestTime,
+         data: {
+            parcelizedAgc: newParcelizedAgc
+         }
+      });
+      
+   } catch (err) { 
+      res.status(400).json({ // 400 => bad request
+         status: 'fail',
+         // message: 'That POST request failed.',
+         message: `[ The Geo-cluster was successfully uploaded and sub-divided.`,
+         error_msg: `Failed to insert the GeoJSON of the sub-divided Geo-cluster into the database. ${err.message}`,
+      })
+   };
+};

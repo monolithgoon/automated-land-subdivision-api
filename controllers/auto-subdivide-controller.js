@@ -1,7 +1,6 @@
 const turf = require('@turf/turf');
 const chalk = require('../utils/chalk-messages.js');
-const { PARCELIZE_SHAPEFILE } = require('../data/agcs/parcelize/chunkify-moving-frames.js');
-const { _getNextPayload } = require('../utils/utils.js');
+const { PARCELIZE_SHAPEFILE } = require('../utils/auto-parcelize/chunkify-moving-frames.js');
 
 
 
@@ -62,46 +61,44 @@ function parcelize(agc, dirCombo) {
    } catch (err) {
       console.log(chalk.fail(err.message));
    }
-}
+};
 
 
 
-// PARCELIZE THE NEW AGC AND INSERT INTO DB.
-exports.parcelizeAgc = async (req, res, next) => {
+// PARCELIZE THE NEW AGC GEO-FILE AND INSERT INTO DB.
+exports.subdivideGeofile = async (req, res, next) => {
 
-	console.log(chalk.success(`CALLED THE [ parcelizeAgc ] CONTROLLER FN. `))
+	console.log(chalk.success(`CALLED THE [ parcelizeAGCGeofile ] CONTROLLER FN. `))
 
    try {
 
-      // SELECT PAYLOAD > 
-      // EITHER FROM PARAM FROM PREV. M.WARE. (res.locals.appendedGeojson) VS. API CALL PARAM (req.body)
-      const agcPayload = _getNextPayload(res.locals.appendedGeojson, req.body);
+      const agcPayload = res.locals.appendedGeofileGeoJSON;
 
-      console.log(agcPayload);
+      console.log(chalk.console(agcPayload.properties));
       
       // PARCELIZE THE NEW AGC
-      // const parcelizedAgc = await parcelize(res.locals.appendedGeojson); // IMPORTANT < DON'T USE await HERE < 
-      let parcelizedAgc; // TODO > CHANGE TO parcelizedGeoCluster 
+      // const parcelizedGeofile = await parcelize(res.locals.appendedGeofileGeoJSON); // IMPORTANT < DON'T USE await HERE < 
+      let parcelizedGeofile;
       const directionsArray = [ 'nw', 'ne', 'sw', 'se', 'es', 'en', 'ws', 'wn' ];
       for (const dirCombo of directionsArray) {
-         console.log(chalk.warning(`trying: ${dirCombo} `))
-         parcelizedAgc = parcelize(agcPayload, dirCombo); 
-         if (parcelizedAgc) {
-            if (parcelizedAgc.properties.parcelization_metadata.land_parity_ok) {
+         console.log(chalk.warning(`trying: ${dirCombo} dir. combo.`))
+         parcelizedGeofile = parcelize(agcPayload, dirCombo); 
+         if (parcelizedGeofile) {
+            if (parcelizedGeofile.properties.parcelization_metadata.land_parity_ok) {
                break;
             }
          }
       }
 
       // PASS PARCELIZED AGC TO insertParcelizedAgc M.WARE.
-      if (parcelizedAgc) {
+      if (parcelizedGeofile) {
 
-         res.locals.parcelizedAgc = parcelizedAgc;
+         res.locals.parcelizedGeofile = parcelizedGeofile;
 
          next();
          
-         // REMOVE > DEPRECATED > NOW PASSING parcelizedAgc TO NEXT M.WARE 
-         // const insertedAgc = await PARCELIZED_AGC_MODEL.create(parcelizedAgc) // "model.create" returns a promise
+         // REMOVE > DEPRECATED > NOW PASSING parcelizedGeofile TO NEXT M.WARE 
+         // const insertedAgc = await PARCELIZED_AGC_MODEL.create(parcelizedGeofile) // "model.create" returns a promise
 
          // if (insertedAgc) {
          //    // SERVER RESPONSE
@@ -114,9 +111,8 @@ exports.parcelizeAgc = async (req, res, next) => {
          // }
 
       } else {
-         
          throw new Error(`THIS PARCELIZATION ATTEMPT OF [ ${req.file.originalname} ] WAS NOT SUCCESSFUL. RECALIBRATING ALGO. & RE-TRYING WITH DIFF. PARAM. SET.`)
-      }
+      };
 
    } catch (_err) {
       res.status(400).json({ // 400 => bad request
@@ -125,4 +121,52 @@ exports.parcelizeAgc = async (req, res, next) => {
          error_msg: _err.message,
       });
    }
-}
+};
+
+
+
+// PARCELIZE THE GEO-CLUSTER GEOJSON AND INSERT INTO DB.
+exports.subdivideGeoClusterGJ = async (req, res, next) => {
+
+	console.log(chalk.success(`CALLED THE [ subdivideGeoClusterGJ ] CONTROLLER FN. `))
+
+   const agcPayload = res.locals.appendedClusterGeoJSON;
+
+   console.log(chalk.console(agcPayload.properties));
+
+   try {
+      
+      let parcelizedGeoCluster;
+      
+      const directionsArray = [ 'nw', 'ne', 'sw', 'se', 'es', 'en', 'ws', 'wn' ];
+      
+      for (const dirCombo of directionsArray) {
+         console.log(chalk.warning(`trying: ${dirCombo} `))
+         // PARCELIZE THE GEO CLUSTER
+         parcelizedGeoCluster = parcelize(agcPayload, dirCombo); 
+         if (parcelizedGeoCluster) {
+            if (parcelizedGeoCluster.properties.parcelization_metadata.land_parity_ok) {
+               break;
+            }
+         }
+      }
+
+      // PASS PARCELIZED AGC TO insertParcelizedAgc M.WARE.
+      if (parcelizedGeoCluster) {
+
+         res.locals.parcelizedGeoCluster = parcelizedGeoCluster;
+
+         next();
+         
+      } else {
+         throw new Error(`THIS PARCELIZATION ATTEMPT OF THE GEO-CLUSTER FAILED. RECALIBRATING ALGO. & RE-TRYING WITH DIFF. PARAM. SET. QUERY THE API WITH THE agc_id FOR THE PARCELIZATION RESULT LATER.`)
+      };
+
+   } catch (_err) {
+      res.status(400).json({ // 400 => bad request
+         status: 'fail',
+         message: `The Geo-cluster GeoJSON was successfully uploaded. Parcelization failed. Contact auto-parcelization service Admin.`,
+         error_msg: _err.message,
+      });
+   };
+};

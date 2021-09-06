@@ -27,6 +27,7 @@ async function DB_CONNECT() {
       .then(connectionObject => {
          // console.log((connectionObject))
          console.log(chalk.connected('YOU CONNECTED TO THE ATLAS DATABASE SUCCESSFULLY '));
+         return connectionObject;
       })
       .catch(_err => {
          console.log(chalk.fail(`ERROR CONNECTING TO THE REMOTE DATABASE. CHECK YOUR INTERNET CONNECTION. `))

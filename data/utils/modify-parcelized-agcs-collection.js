@@ -6,8 +6,11 @@ const axios = require("axios");
 const dotenv = require('dotenv') // read the data from the config file. and use them as env. variables in NODE
 dotenv.config({path: '../../config.env'}) // CONFIGURE ENV. VARIABLES BEFORE CALL THE APP
 
-const PARCELIZED_AGC_MODEL = require('../../models/parcelized-agc-model.js')
 const AGC_MODEL = require('../../models/agc-model.js')
+const PARCELIZED_AGC_MODEL = require('../../models/parcelized-agc-model.js')
+const LEGACY_AGC_MODEL = require('../../models/legacy-agc-model.js')
+
+const { findOneDocument } = require('../../controllers/handler-factory.js')
 
 
 
@@ -91,15 +94,19 @@ const exportAgcs = async () => {
 
 
 
+// TODO
 const exportAgc = async (agcFileName) => {
    // const parcelizedAgc = JSON.parse(fs.readFileSync(`./${agcFileName}.geojson', 'utf-8`));
-}
+};
 
 
 
 // DELETE ONE PARCELIZED AGC
-const deleteAgc = async (agcID) => {
+const deleteOneAGC = async (agcID) => {
 
+   // CONNECT TO THE DB..
+   await dbConnect();
+   
    try {
       
       // INIT A 'readline' INTERFACE
@@ -113,30 +120,48 @@ const deleteAgc = async (agcID) => {
          console.log(chalk.warning('Exiting interaction.. '));
          readline.close();
          process.exit();
-      }
+      };
+         
+         // INITIATE USER INTERACTION
+         readline.question(chalk.interaction(`Are you sure you want to delete this AGC: ${agcID}? [ y / yes / Y ]: `), async (answer) => {
    
-      // INITIATE USER INTERACTION
-      readline.question(chalk.interaction(`Are you sure you want to delete this AGC: ${agcID}? [ y / yes / Y ]: `), async (answer) => {
+            if (answer === 'y' || answer === 'yes' || answer === 'Y') {
+   
+               readline.question(chalk.interaction('Type the name of the collection you want to erase from: '), async (name) => {
+   
+                  let dbModel, mongoQueryObj;
 
-         if (answer === 'y' || answer === 'yes' || answer === 'Y') {
+                  switch (true) {
+                     
+                     case name === 'agcs' || name === 'AGCS':
+                        dbModel = AGC_MODEL;
+                        mongoQueryObj = {'properties.agc_id': agcID};
+                        break;
 
-            readline.question(chalk.interaction('Type the name of the collection you want to erase from: '), async (name) => {
+                     case name === 'parcelized-agcs' || name === 'PARCELIZED-AGCS' || name === 'pagcs':
+                        dbModel = PARCELIZED_AGC_MODEL;
+                        mongoQueryObj = {'properties.agc_id': agcID};
+                        break;
 
-               if (name === 'parcelized-agcs' || name === 'PARCELIZED-AGCS' || 'pagcs') {
-
-                  // CONNECT TO THE DB..
-                  await dbConnect();
-
+                     case name === 'legacy-agcs' || name === 'LEGACY-AGCS' || name === 'lagcs' || name === 'LAGCS':
+                        dbModel = LEGACY_AGC_MODEL;
+                        mongoQueryObj = {'properties.geo_cluster_id': agcID};
+                        break;
+                  
+                     default:
+                        endInteraction();
+                        break;
+                  };
+                        
                   // CHECK IF THAT PARTICULAR AGC ID EXISTS                  
-                  // if (await PARCELIZED_AGC_MODEL.count({'properties.agc_id': agcID}, limit = 1) !==0) {
-                  if (await PARCELIZED_AGC_MODEL.countDocuments({'properties.agc_id': agcID}) !==0) {
+                  if (await findOneDocument(dbModel, mongoQueryObj)) {
 
                      // DELETE THE DOCUMENT THAT PARTICULAR AGC ID
-                     await PARCELIZED_AGC_MODEL.deleteOne({"properties.agc_id": agcID}, (err, daa) => {
+                     await dbModel.deleteOne(mongoQueryObj, (err, data) => {
 
                         if (!err) {
 
-                           console.log(chalk.success(`The AGC ${agcID} was successfully deleted from the ATLAS database `));
+                           console.log(chalk.success(`The AGC ${agcID} was successfully deleted from the ${name} db. collection `));
                            endInteraction();
 
                         } else {
@@ -147,25 +172,20 @@ const deleteAgc = async (agcID) => {
                      });
                      
                   } else {
-
-                     console.log(chalk.warning(`That AGC ID does not belong to any AGC in the database `));
+                     console.log(chalk.warning(`That AGC ID does not belong to any AGC in the ${name} db. collection `));
                      endInteraction();
-                  }
-                                    
-               } else {
-                  endInteraction();
-               }
-            })
-         } else {
-            endInteraction();
-         }
-      });
+                  };                                       
+               });
 
-   } catch (err) {
+            } else {
+               endInteraction();
+            };
+         });
 
-      console.error(chalk.fail(err.message));
-      
-   }
+   } catch (deleteOneAGCErr) {
+      console.error(chalk.fail(deleteOneAGCErr.message));
+      process.exit();
+   };
 };
 
 
@@ -279,7 +299,7 @@ async function returnAllParcelizedAgcs() {
    } else if (process.argv[2] === '--wipe') {
       wipeParcelizedAgcCollection()
    } else if (process.argv[2] === '--delete' && process.argv[3]) {
-      deleteAgc(process.argv[3])
+      deleteOneAGC(process.argv[3]) // agcId
    } else if (process.argv[2] === '--import--all') {
       returnAllParcelizedAgcs();
    }
