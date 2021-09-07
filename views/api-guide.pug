@@ -35,7 +35,6 @@ block api-guide
 
 		br
 		h3 Returning a Processed Legacy AGC
-			span Updated 2-Sept-2021
 		p To return back legacy AGC data that has been successfully processed (ie., the farmer photos have been acquired), send a POST request to-
 		pre.embedded-code-snippet
 			code.language-javascript.
@@ -191,5 +190,8 @@ block api-guide
 
 
 		br
-		h3 Upload & Parcelize a Geo-file (.kml / .kmz / .shp / .gpx file)
+		h3 Upload & Parcelize a Geo-file
 		p Follow these steps to upload the geo-file belonging to an AGC
+		p 1. Get the agc_id
+		p 2. Upload the geo-file in either of these formats: .kml / .kmz / .shp / .gpx; ensure the file name matches exactly the agc_id
+		p 2. Upload a JSON file 

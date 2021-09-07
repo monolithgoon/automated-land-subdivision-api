@@ -1034,7 +1034,7 @@ input:focus {
 
 	body {
 		font-size: 12px;
-		overflow: hidden;
+		/* overflow: hidden; */
 	}
 
 	.navbar-wrapper {
