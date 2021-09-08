@@ -14,12 +14,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Nova+Mono&display=swap');
 
 
-@font-face {
-	font-family: "Duolingo";
-	font-style: normal;
-	src: url('fonts/DulingoNextRoundedLTPro-Regular.woff2') format('woff2');
-}
-
 
 * {
 	/* margin: 0;
@@ -559,7 +553,6 @@ main {
 .api-guide-container {
 	font-family: Roboto, sans-serif;
 	background: white;
-	overflow-x: hidden;
 }
 
 .inline-code {
@@ -578,7 +571,7 @@ main {
 .api-guide-toc {
 	position: -webkit-sticky;
 	position: sticky;
-	top: 0;
+	top: 5vh;
 	align-self: start;
 	font-size: 0.75rem;
 }

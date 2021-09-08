@@ -6,6 +6,7 @@ block api-guide
 
 	main.api-guide-container
 
+
 		nav.api-guide-toc
 			ol
 				li
@@ -353,10 +354,12 @@ block api-guide
 				p If parcelization is successful, you'll get a success message from the API. However, if land size validation fails, or any other validation fails, you'll get an informative message of why it failed.
 
 		script(type="text/javascript").
+
 			window.addEventListener('DOMContentLoaded', () => {
 
 				const observer = new IntersectionObserver(entries => {
 					entries.forEach(entry => {
+						console.log(entry.target)
 						const id = entry.target.getAttribute('id');
 						if (entry.intersectionRatio > 0) {
 							document.querySelector(`nav li a[href="#${id}"]`).parentElement.classList.add('active');
