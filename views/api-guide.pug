@@ -8,27 +8,36 @@ block api-guide
 
 
 		nav.api-guide-toc
+
 			ol
 				li
 					a(href="#api_credentials") API Credentials
+					ul
+						li
+							a(href="#public_api_key") Public API Key
+							//- a(href="#return_processed_legacy_agc") POST Processed Legacy AGC
+				li
 					a(href="#legacy_agcs") Legacy AGCs
 					ul
 						li
 							a(href="#retreive_legacy_agc") GET Legacy AGCs
 							a(href="#return_processed_legacy_agc") POST Processed Legacy AGC
 							a(href="#processed_legacy_agc_json") Processed Legacy AGC Payload
+				li
 					a(href="#_agcs") AGCs
 					ul
 						li
 							a(href="#post_agc_mtd1") POST AGC - Mtd. 1
 							a(href="#post_agc_mtd2") POST AGC - Mtd. 2
 							a(href="#sample_agc_geojson_payload") AGC Payload Example
+				li
 					a(href="#parcelized_agcs") Parcelized AGCs
 					ul
 						li
 							a(href="#get_one_parcelized_agc") GET Parcelized AGC
 							a(href="#get_all_parcelized_agcs") GET All Parcelized AGCs
 							a(href="#plots_preview_map") Plots Preview Map
+				li
 					a(href="#geo_files") Geo-files
 					ul
 						li
@@ -358,14 +367,22 @@ block api-guide
 			window.addEventListener('DOMContentLoaded', () => {
 
 				const observer = new IntersectionObserver(entries => {
+
 					entries.forEach(entry => {
-						console.log(entry.target)
+
 						const id = entry.target.getAttribute('id');
+
+						console.log(entry.intersectionRatio)
 						if (entry.intersectionRatio > 0) {
+
+							console.log(document.querySelector(`nav li a[href="#${id}"]`))
+							console.log(document.querySelector(`nav li a[href="#${id}"]`).parentElement)
+
 							document.querySelector(`nav li a[href="#${id}"]`).parentElement.classList.add('active');
+
 						} else {
 							document.querySelector(`nav li a[href="#${id}"]`).parentElement.classList.remove('active');
-						}
+						};
 					});
 				});
 

@@ -576,11 +576,6 @@ main {
 	font-size: 0.75rem;
 }
 
-.api-guide-toc ol, ul {
-	display: grid;
-	place-items: center;
-}
-
 .api-guide-toc li {
 	margin-left: 1rem;
 }
@@ -594,7 +589,7 @@ main {
 	text-decoration: none;
 	display: block;
 	color: #808080;
-	transition: all 50ms ease-in-out; /* 💡 This small transition makes setting of the active state smooth */
+	/* transition: all 50ms ease-in-out; 💡 This small transition makes setting of the active state smooth */
 }
 
 .api-guide-toc a:hover,
@@ -604,7 +599,7 @@ main {
 
 .api-guide-toc li.active > a {
 	color: black;
-	font-weight: 500;
+	font-weight: bolder;
 }
 
 .api-guide-content {
