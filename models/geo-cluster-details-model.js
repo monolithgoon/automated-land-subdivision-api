@@ -18,7 +18,7 @@ const plotOwnerSchemaV1 = new mongoose.Schema({
       type: [Number, `The farmer's BVN must be a number`],
       required: [true, `The farmer's BVN must be specified`],
       unique: [true, `The farmer's BVN must be unique`],
-      minLength: [11, `The farmer's BVN cannot be fewer than 11 numbers`]
+      minLength: [11, `The farmer's BVN cannot be fewer than 11 digits`],
    },
    first_name: {
       type: String,

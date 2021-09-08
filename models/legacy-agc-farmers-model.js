@@ -10,9 +10,10 @@ const farmersSchema = new mongoose.Schema({
       unique: [true, `Another farmer with this ID: ${this.farmer_id} already exists in the database`]
    },
    farmer_bvn: {
-      type: String,
+      type: Number,
       required: [true, `The farmer's BVN must be specified`],
       unique: [true, `The farmer's BVN must be unique`],
+      minLength: [11, `The farmer's BVN cannot be fewer than 11 digits`],
    },
    farmer_first_name: {
       type: String,
