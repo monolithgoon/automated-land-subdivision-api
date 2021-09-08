@@ -74,7 +74,7 @@ exports.subdivideGeofile = async (req, res, next) => {
 
       const agcPayload = res.locals.appendedGeofileGeoJSON;
 
-      console.log(chalk.console(agcPayload.properties));
+      console.log((agcPayload.properties));
       
       // PARCELIZE THE NEW AGC
       // const parcelizedGeofile = await parcelize(res.locals.appendedGeofileGeoJSON); // IMPORTANT < DON'T USE await HERE < 
@@ -132,7 +132,7 @@ exports.subdivideGeoClusterGJ = async (req, res, next) => {
 
    const agcPayload = res.locals.appendedClusterGeoJSON;
 
-   console.log(chalk.console(agcPayload.properties));
+   console.log((agcPayload.properties));
 
    try {
       

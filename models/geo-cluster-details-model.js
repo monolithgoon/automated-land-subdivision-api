@@ -14,6 +14,12 @@ const plotOwnerSchemaV1 = new mongoose.Schema({
       required: [true, `The farmer must have a global ID`],
       unique: [true, `A farmer with this ID: ${this.farmer_id} already exists in the database`]
    },
+   farmer_bvn: {
+      type: [Number, `The farmer's BVN must be a number`],
+      required: [true, `The farmer's BVN must be specified`],
+      unique: [true, `The farmer's BVN must be unique`],
+      minLength: [11, `The farmer's BVN cannot be fewer than 11 numbers`]
+   },
    first_name: {
       type: String,
       required: [true, `The farmer's first name must be specified`],

@@ -141,17 +141,20 @@ const agcSchema = new mongoose.Schema({
    properties: {
       agc_id: {
          type: String,
-         required: [true, 'Each AGC must have an ID'],
-         unique: [true, `An AGC with this ID: ${this.agc_id} already exists in the database`]
+         required: [true, `Each AGC must have an valid string agc_id`],
+         unique: [true, `An AGC with this ID: ${this.agc_id} already exists in the database.`],
+         minLength: [10, `The agc_id cannot be fewer than 10 characters.`],
+         validate: [(entry => !entry || !/^\s*$/.test(entry)), `The agc_id cannot be an empty string.`],
+         validate: [entry => !/^[\+\-]?\d*\.?\d+(?:[Ee][\+\-]?\d+)?$/.test(+entry), `The agc_id cannot be just a string of numbers.`],
       },
       extended_name: {
          type: String,
-         required: [true, 'The name of the AGC must be specified'],
+         required: [true, `The name of the AGC must be specified`],
          unique: [true, `An AGC with this extended_name (${this.extended_name}) already exists in the database`]
       },
       location: {
          type: String,
-         required: [true, 'The location of the AGC must be specified']
+         required: [true, `The location of the AGC must be specified`]
       },
       // address: agcAddrSchema,
       // governance_structure: agcGovSchema,

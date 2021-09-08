@@ -64,6 +64,7 @@ body {
 	background: var(--grey-background-primary);
 	color: #4a4a4a;
 	color: black;
+	overflow-x: hidden;
 }
 
 ul, ol {
