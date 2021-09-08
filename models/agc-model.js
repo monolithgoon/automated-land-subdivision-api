@@ -82,6 +82,10 @@ const featureSchema = new mongoose.Schema({
 
 // FARMER SCHEMA
 const farmerSchema = new mongoose.Schema({
+   _id: {
+      type: String,
+      unique: [true, `A farmer with this object _id: ${this._id} already exists in the database`]
+   },
    farmer_id: {
       type: String,
       required: [true, `The farmer must have a global ID`],
@@ -89,11 +93,13 @@ const farmerSchema = new mongoose.Schema({
    },
    first_name: {
       type: String,
-      required: [true, `The farmer's first name must be specified`]
+      required: [true, `The farmer's first name must be specified`],
+      validate: [(entry => !entry || /^\s*$/.test(entry)), `The farmer's first name cannot be an empty string.`]
    },
    last_name: {
       type: String,
-      required: [true, `The farmer's last name must be specified`]
+      required: [true, `The farmer's last name must be specified`],
+      validate: [(entry => !entry || /^\s*$/.test(entry)), `The farmer's last name cannot be an empty string.`]
    },
    farmer_photo: Array,
    // farmer_photo: {

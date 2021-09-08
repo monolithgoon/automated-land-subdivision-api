@@ -51,6 +51,7 @@
 
 html {
 	-webkit-font-smoothing: antialiased;
+	scroll-behavior: smooth;
 }
 
 body {
@@ -63,6 +64,12 @@ body {
 	background: var(--grey-background-primary);
 	color: #4a4a4a;
 	color: black;
+}
+
+ul, ol {
+	list-style: none;
+	margin: 0;
+	padding: 0;
 }
 
 /* LIGATURE ICONS VIA ICON FONTS */
@@ -101,6 +108,7 @@ h3 {
 }
 
 p {
+	margin: 13px 0;
 	padding: 15px 35px 0 35px;
 	font-size: 15px;
 	line-height: 1.4;
@@ -137,11 +145,25 @@ p.last-update {
 	font-weight: 200;
 }
 
-p.important-note {
+p.important-note, p.info-note {
 	padding: 8px 35px !important;
 	font-weight: bold;
 	color: var(--material-red);
 	background-color: var(--light-red-background);
+	display: flex;
+	align-items: center;
+}
+
+/* p.important-note span > i, 
+p.info-note span > i {
+	padding-right: 20px;
+	font-size: 25px;
+	font-weight: 100;
+} */
+
+p.info-note {
+	color: var(--navy-blue);
+	background-color: lightyellow;
 }
 
 a.u__links {
@@ -149,6 +171,7 @@ a.u__links {
 	font-size: 17px;
 	font-weight: light;
 	text-decoration: none;
+	letter-spacing: -0.5px;
 }
 
 header {
@@ -179,7 +202,7 @@ header {
 
 .navbar-wrapper {
 	padding: 20px;
-	position: sticky;
+	position: static;
 	top: 0;
 	width: 100%;
 	background-color: #2e2e2e;
@@ -530,44 +553,105 @@ main {
 	color: black;
 }
 
+/* API GUIDE */
+
 .api-guide-container {
 	font-family: Roboto, sans-serif;
 	background: white;
 	overflow-x: hidden;
 }
 
-.api-guide-container h2 {
-	padding: 5px 35px;
+.inline-code {
+	margin: 0 4px 0 0;
+	padding: 1px 5px 3px 5px;
+	border: 1px solid lightgrey;
+	background-color: #F4F4F4;
+	color: var(--material-red);
+	border-radius: 3px;
+	font-weight: bold;
+	font-size: small;
+	font-family: "Roboto Mono";
+	letter-spacing: -0.6px;
 }
 
-.api-guide-container h3 {
+.api-guide-toc {
+	position: -webkit-sticky;
+	position: sticky;
+	top: 0;
+	align-self: start;
+	font-size: 0.75rem;
+}
+
+.api-guide-toc ol, ul {
+	display: grid;
+	place-items: center;
+}
+
+.api-guide-toc li {
+	margin-left: 1rem;
+}
+
+.api-guide-toc ol > li > a {
+	margin-top: 0.5rem;
+}
+
+.api-guide-toc a {
+	padding: 0.25rem 0;
+	text-decoration: none;
+	display: block;
+	color: #808080;
+	transition: all 50ms ease-in-out; /* 💡 This small transition makes setting of the active state smooth */
+}
+
+.api-guide-toc a:hover,
+.api-guide-toc a:focus {
+	color: black;
+}
+
+.api-guide-toc li.active > a {
+	color: black;
+	font-weight: 500;
+}
+
+.api-guide-content {
+	background-color: white;
+}
+
+.api-guide-content h1 {
+	padding: 5px 35px;
+	padding-bottom: 0;
+}
+
+.api-guide-content h2 {
+	margin-bottom: 0;
+	padding: 5px 35px;
+	color: var(--navy-blue);
+	border-left: 5px solid var(--navy-blue);
+}
+
+.api-guide-content h3 {
 	font-size: 16px;
 }
 
-.api-guide-container h3 > span {
+.api-guide-content h3 > span {
 	margin: 0 10px;
 	padding: 5px;
-	border-radius: 5px;
+	/* border-radius: 5px; */
 	color: var(--material-red);
 	background-color: #feefe3;
 }
 
-.api-guide-container p {
+.api-guide-content p {
 	padding: 0 35px;
 }
 
-.agcs-overview-container {
-	font-family: Roboto, sans-serif;
+.api-guide-content ol {
+	padding:  0 35px;
 }
 
-.agcs-overview-container p {
-	margin: 0 15px;
-}
-
-.agc-json-data-ex {
-	font-size: 10px !important;
-	/* height: 400px; */
-	overflow-y: auto;
+.api-guide-content ol > li {
+	padding: 5px 20px;
+	font-size: 14px;
 }
 
 .credentials-container {
@@ -585,6 +669,29 @@ main {
 .token-code {
 	font-size: medium;
 	color: var(--blue-google-text);
+}
+
+p#geofile_postman_upload_example {
+	padding: 0 10px;
+}
+
+#geofile_postman_upload_example > img {
+	/* background-image: url("/assets/images/geofile-upload-postman.png"); */
+	border: 7px solid #f2f2f2;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	width: 100%;
+}
+ 
+/* AGCS CARD LIST */
+
+.agcs-overview-container {
+	font-family: Roboto, sans-serif;
+}
+
+.agcs-overview-container p {
+	margin: 0 15px;
 }
 
 h2.subtitle {
@@ -1034,11 +1141,11 @@ input:focus {
 
 	body {
 		font-size: 12px;
-		/* overflow: hidden; */
 	}
 
 	.navbar-wrapper {
-		margin-bottom: 25px;
+		/* margin-bottom: 25px; */
+		margin-bottom: 0;
 	}
 
 	.nav-links {
@@ -1071,6 +1178,7 @@ input:focus {
 	}
 
 	.hero-wrapper {
+		padding-top: 25px;
 		width: 80vw;
 		display: flex;
 		align-items: flex-start;
@@ -1102,7 +1210,11 @@ input:focus {
 
 	.api-guide-container {
 		margin: auto;
-		width: 65vw;
+		width: 100vw;
+		display: grid;
+		grid-template-columns: 25vw 60vw;
+		/* grid-template-columns: 17.5vw 65vw; */
+		background-color: #F4F4F4;
 	}
 
 	.agcs-overview-container {

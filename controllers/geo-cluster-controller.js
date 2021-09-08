@@ -15,6 +15,10 @@ exports.insertGeoCluster = async (req, res, next) => {
 exports.insertGeoClusterGJ = async (req, res, next) => {
 
 	console.log(chalk.success(`CALLED THE [ insertGeoClusterGJ ] CONTROLLER FN.`))
+
+   // REMOVE
+   // res.locals.appendedClusterGeoJSON = req.body
+   // next();
    
    try {
       

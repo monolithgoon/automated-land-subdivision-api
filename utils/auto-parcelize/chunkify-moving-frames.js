@@ -47,6 +47,7 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
       // GET SHAPEFILE METADATA
       const shapefileMetadata = _analyzeGeojson(SELECTED_SHAPEFILE)
       const shapefileID = shapefileMetadata.sfID;
+      console.log(_generateRandomString(16, shapefileID))
       const shapefileName = shapefileMetadata.sfName;
       const shapefileLocation = shapefileMetadata.sfLocation;
       const shapefileArea = shapefileMetadata.sfArea;

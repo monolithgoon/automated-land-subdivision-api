@@ -4,194 +4,346 @@ block api-guide
 
 	include __navbar.pug
 
-	.api-guide-container
+	main.api-guide-container
 
-		//- img(src="/assets/images/parcelized-agc-data-struc.png" alt="alt")
+		nav.api-guide-toc
+			ol
+				li
+					a(href="#api_credentials") API Credentials
+					a(href="#legacy_agcs") Legacy AGCs
+					ul
+						li
+							a(href="#retreive_legacy_agc") GET Legacy AGCs
+							a(href="#return_processed_legacy_agc") POST Processed Legacy AGC
+							a(href="#processed_legacy_agc_json") Processed Legacy AGC Payload
+					a(href="#_agcs") AGCs
+					ul
+						li
+							a(href="#post_agc_mtd1") POST AGC - Mtd. 1
+							a(href="#post_agc_mtd2") POST AGC - Mtd. 2
+							a(href="#sample_agc_geojson_payload") AGC Payload Example
+					a(href="#parcelized_agcs") Parcelized AGCs
+					ul
+						li
+							a(href="#get_one_parcelized_agc") GET Parcelized AGC
+							a(href="#get_all_parcelized_agcs") GET All Parcelized AGCs
+							a(href="#plots_preview_map") Plots Preview Map
+					a(href="#geo_files") Geo-files
+					ul
+						li
+							a(href="#upload_geofile_workflow") Upload Workflow
+							a(href="#upload_farmer_details_json") POST Farmer Details JSON
+							a(href="#farmer_details_json_ex") Farmer Details JSON Example
+							//- a(href="#select_geofile") Select the Geo-file
+							//- a(href="#upload_geofile") Upload the Geo-file
+							a(href="#geofile_postman_upload_example") Postman Upload Example
+							a(href="#geofile_parcelization_response") Upload Response
 
-		br
-		h2 Using the AGC Farmland Parcelization API
-		//- p.last-update Updated 27 September 2020
-		//- p.last-update Updated 17 March 2021
-		p.last-update Updated 31 August 2021
-		br
+		.api-guide-content
 
-		.credentials-container
-			div.token-subtitle Public API Key 
+			//- img(src="/assets/images/parcelized-agc-data-struc.png" alt="alt")
+
 			br
-			div.token-code ADSS=23232AD=ASDIO293-MLK23290-23AD.235DS554S5_4409IODSO
+			h1 Using the Land Auto-Parcelization API
+			//- p.last-update Updated 27 September 2020
+			//- p.last-update Updated 17 March 2021
+			//- p.last-update Updated 31 August 2021
+			p.last-update Updated 7 September 2021
+			br
+
+			#api_credentials.credentials-container
+				div.token-subtitle Public API Key 
+				br
+				div.token-code ADSS=23232AD=ASDIO293-MLK23290-23AD.235DS554S5_4409IODSO
 
 
-		br
-		h3 Retreive Legacy AGC Data
+			br
+			h2#legacy_agcs #[strong #[em Legacy AGCs]]
 
-		pre.embedded-code-snippet
-			code.language-javascript.
-				// To download all the data-
-				https://geoclusters.herokuapp.com/api/v2/legacy-agcs/
+			h3#retreive_legacy_agc Retreive Legacy AGC Data
 
-				// To limit the fields in each call, use-
-				https://geoclusters.herokuapp.com/api/v2/legacy-agcs/?fields=properties.geo_cluster_id,properties.geo_cluster_name,features.properties.plot_owner_bvn,
+			pre.embedded-code-snippet
+				code.language-javascript.
+					// To download all the data-
+					https://geoclusters.herokuapp.com/api/v2/legacy-agcs/
 
-
-		br
-		h3 Returning a Processed Legacy AGC
-		p To return back legacy AGC data that has been successfully processed (ie., the farmer photos have been acquired), send a POST request to-
-		pre.embedded-code-snippet
-			code.language-javascript.
-				https://geoclusters.herokuapp.com/api/v2/legacy-agcs/legacy-agc/processed/
-
-		p To return legacy AGCs that were NOT successfully processed for whatever reason (for eg. inconsistent BVNs, etc), send a POST request to the endpoint below, and update this field #[strong #[em validation_failed_reason]] with a brief description of why the failure happened. #[strong When uploading to this URL, this field cannot be empty].
-		pre.embedded-code-snippet
-			code.language-javascript.
-				https://geoclusters.herokuapp.com/api/v2/legacy-agcs/validation-failed/
-
-		p.important-note(style="display: flex; align-items: center;")
-			span(style="padding-right: 20px; font-size: 25px; font-weight: 100;")
-				i.fas.fa-exclamation-triangle
-			span Note that the POST request will fail if the #[em geo_cluster_id], and/or #[em geo_cluster_name] fields are missing from the payload, or if another legacy AGC with those credentials already exist in the DB. Also, the #[em plot_owners] array cannot be empty.
-
-		br
-		h3 Returned Legacy AGC JSON Data Structure
-			span New
-		p Use this data structure when uploading successful or failed legacy AGC JSON data back to us.
-		pre.agc-json-data-ex
-			include _legacy-agc-json-example
+					// To limit the fields in each call, use-
+					https://geoclusters.herokuapp.com/api/v2/legacy-agcs/?fields=properties.geo_cluster_id,properties.geo_cluster_name,features.properties.plot_owner_bvn,
 
 
-		br
-		h3 Retreive A Single Parcelized AGC
-		p The code snippet below shows how to retreive data for a single parcelized AGC from the database using asynchronous GET request. It is implemented in ES6/ES2017 JavaScript. 
-		p By passing the #[strong agcID] as an argument, it returns a single parcelized AGC from the database in a promise. 
+			br
+			h3#return_processed_legacy_agc Returning a Processed Legacy AGC
+			p To return back legacy AGC data that has been successfully processed (ie., the farmer photos have been acquired), send a POST request to-
+			pre.embedded-code-snippet
+				code.language-javascript.
+					https://geoclusters.herokuapp.com/api/v2/legacy-agcs/legacy-agc/processed/
 
-		pre.embedded-code-snippet
-			code.language-javascript.
-				// Set up the API call function
-				async function getParcelizedAgc(agcID) {
-					try {
-						const apiResponse = await fetch(`https://geoclusters.herokuapp.com/api/v1/parcelized-agcs/parcelized-agc/?${agcID}`);
-						const data = await apiResponse.json();
-						return data;
-					} catch (error) {
-						console.error(error.message);
+			p To return legacy AGCs that were #[em NOT] successfully processed for whatever reason (for eg. too many BVNs failed, etc), send a POST request to the endpoint below. Create the following field 
+				span.inline-code validation_failed_reason
+				span , and populate it a brief description of why the failure happened. 
+			p #[strong When POSTing to this URL, that field cannot be empty].
+			pre.embedded-code-snippet
+				code.language-javascript.
+					https://geoclusters.herokuapp.com/api/v2/legacy-agcs/validation-failed/
+
+			p.important-note(style="display: flex; align-items: center;")
+				span(style="padding-right: 20px; font-size: 25px; font-weight: 100;")
+					i.fas.fa-exclamation-triangle
+				span Note that the POST request will fail if the 
+					span.inline-code geo_cluster_id
+					span , and/or 
+					span.inline-code geo_cluster_name
+					span fields are missing from the payload, or if another legacy AGC with those credentials already exist in the DB. Also, the 
+					span.inline-code plot_owners
+					span array cannot be empty.
+
+			br
+			h3#processed_legacy_agc_json Processed Legacy AGC JSON Data Structure
+				//- span New
+			p 
+				span After acquring the farmers' Base64 strings, use the following JSON structure to return a successfully processed legacy AGC back to our database. 
+			p Populate the 
+				span.inline-code unprocessed_farmers
+				span array with BVNs for farmers whose Base64 strings you were unable to acquire.
+			pre.agc-json-data-ex
+				include _legacy-agc-json-example
+
+
+			br
+			h2#_agcs #[em AGCs]
+
+			p.info-note(style="display: flex; align-items: center;")
+				span(style="padding-right: 20px; font-size: 25px; font-weight: 100;")
+					i.fas.fa-info-circle
+					//- i.fas.fa-exclamation-circle
+				span These endpoints for uploading AGC GeoJSON data to the server for auto-parcelization will soon be deprecated. We have retained them for now to allow ease of testing with simple GeoJSON payloads.
+
+			h3#post_agc_mtd1 Sending AGC data to the Database (using the Fetch API) - Mtd. 1
+				span Updated
+			p The snippet below shows how to persist AGC GeoJSON data to the database using a Fetch API POST request.
+
+			pre
+				//- .devsite-code-buttons-container
+				//- 	button.gc-analytics-event.material-icons.devsite-icon-code-dark.devsite-toggle-dark(type='button' data-category='Site-Wide Custom Events' data-label='Dark Code Toggle' track-type='exampleCode' track-name='darkCodeToggle' aria-label='Dark code theme' data-title='Dark code theme')
+				//- 	button.gc-analytics-event.material-icons.devsite-icon-code-light.devsite-toggle-light(type='button' data-category='Site-Wide Custom Events' data-label='Light Code Toggle' track-type='exampleCode' track-name='lightCodeToggle' aria-label='Light code theme' data-title='Light code theme')
+				//- 	button.gc-analytics-event.material-icons.devsite-icon-copy(type='button' data-category='Site-Wide Custom Events' data-label='Click To Copy' track-type='exampleCode' track-name='clickToCopy' aria-label='Copy code sample to clipboard' data-title='Copy code sample to clipboard')
+
+				include _fetch-request-snippet
+				br
+
+			br
+			h3#post_agc_mtd2 Sending AGC data to the Database (using an XML HTTP Request) - Mtd. 2
+				span Updated
+			p The snippet below shows an alternate method to persist AGC GeoJSON data to the database using an XMLHttpRequest().
+
+			pre
+				include _xml-request-snippet
+				br
+
+
+			br
+			h3#sample_agc_geojson_payload Sample AGC GeoJSON Payload Structure
+			p Each AGC payload is a GeoJSON #[em #[strong FeatureCollection]], that contains just ONE #[em Feature].
+			p.important-note(style="display: flex; align-items: center;")
+				span(style="padding-right: 20px; font-size: 25px; font-weight: 100;")
+					i.fas.fa-exclamation-triangle
+				//- span For security, the url hash string might change periodically. Therefore, before presenting the preview map link to the user, ALWAYS query the API to obtain the most recent hash string. #[u #[strong Do not save the string in a variable and expect it to work at a later date]].
+				span The database insertion will fail if the 
+					span.inline-code agc_id
+					span , 
+					span.inline-code extended_name
+					span , 
+					span.inline-code location
+					span , and/or 
+					span.inline-code farmers 
+					span array fields are missing from the 
+					span.inline-code properties 
+					span object of the GeoJSON payload.
+			p.important-note
+				span(style="padding-right: 20px; font-size: 25px; font-weight: 100;")
+					i.fas.fa-exclamation-triangle
+				span The following fields must be unique 
+					span.inline-code _id
+					span , 
+					span.inline-code agc_id
+					span , 
+					span.inline-code extended_name
+					span , 
+					span.inline-code coordinates
+					span , 
+					span.inline-code farmers.farmer._id
+			p.important-note(style="display: flex; align-items: center;") 
+				span(style="padding-right: 20px; font-size: 25px; font-weight: 100;")
+					i.fas.fa-exclamation-triangle
+				span Finally, insertion will fail if the sum of the total number of hectares allocated to the farmers exceeds the delineated AGC land area. 
+			pre.agc-json-data-ex
+				include _agc-json-data-example
+
+
+			br
+			h2#parcelized_agcs #[em Parcelized AGCs]
+
+
+			br
+			h3#get_one_parcelized_agc Retreive A Single Parcelized AGC
+			p The code snippet below shows how to retreive data for a single parcelized AGC from the database using asynchronous GET request. It is implemented in ES6/ES2017 JavaScript. 
+			p By passing the 
+				span.inline-code agcID 
+				span as an argument, it returns a single parcelized AGC from the database in a promise. 
+
+			pre.embedded-code-snippet
+				code.language-javascript.
+					// Set up the API call function
+					async function getParcelizedAgc(agcID) {
+						try {
+							const apiResponse = await fetch(`https://geoclusters.herokuapp.com/api/v1/parcelized-agcs/parcelized-agc/?${agcID}`);
+							const data = await apiResponse.json();
+							return data;
+						} catch (error) {
+							console.error(error.message);
+						};
 					};
-				};
 
-				// Execute the API call
-				getParcelizedAgc('AGCABI000010')
-					.then(function(data) {
-						console.log(JSON.stringify(data));
-						}
-					);
+					// Execute the API call
+					getParcelizedAgc('AGCABI000010')
+						.then(function(data) {
+							console.log(JSON.stringify(data));
+							}
+						);
 
-		br
-		h3 Retreive All the Parcelzied AGCs
-		br
+			br
+			h3#get_all_parcelized_agcs Retreive All the Parcelzied AGCs
+			br
 
-		pre.embedded-code-snippet
-			code.language-javascript.
-				// Set up the API call function
-				async function getAllParcelizedAgcs() {
-					try {
-						const apiResponse = await fetch(`https://geoclusters.herokuapp.com/api/v1/parcelized-agcs/`);
-						const data = await apiResponse.json();
-						return data;
-					} catch (error) {
-						console.error(error.message);
+			pre.embedded-code-snippet
+				code.language-javascript.
+					// Set up the API call function
+					async function getAllParcelizedAgcs() {
+						try {
+							const apiResponse = await fetch(`https://geoclusters.herokuapp.com/api/v1/parcelized-agcs/`);
+							const data = await apiResponse.json();
+							return data;
+						} catch (error) {
+							console.error(error.message);
+						};
 					};
-				};
 
-				// Execute the API call
-				getAllParcelizedAgcs()
-					.then(function(data) {
-						console.log(JSON.stringify(data));
-						}
-					);
+					// Execute the API call
+					getAllParcelizedAgcs()
+						.then(function(data) {
+							console.log(JSON.stringify(data));
+							}
+						);
 
-		br
-		h3 Render the Parcelized Plots Preview Map
+			br
+			h3#plots_preview_map Render the Parcelized Plots Preview Map
 
-		p Each parcelized AGC GeoJSON payload retreived from the #[strong /parcelized-agcs] endpoint contains a unique string hash, which is required to construct URL, that in turn displays a preview map showing  the parcelized plots to the user. 
+			p Each parcelized AGC GeoJSON payload retreived from the 
+				span.inline-code /parcelized-agcs
+				span endpoint contains a unique string hash, which is required to construct URL, that in turn displays a preview map showing  the parcelized plots to the user. 
 
-		p Get that unique string by reading the #[strong "properties.preview_map_url_hash"] field of the GeoJSON payload. Here's a sample JSON snippet from an API call to the parcelized AGCs endpoint-
+			p Get that unique string by reading the 
+				span.inline-code properties.preview_map_url_hash 
+				span field of the GeoJSON payload. Here's a sample JSON snippet from an API call to the parcelized AGCs endpoint-
 
-		pre.embedded-code-snippet
-			code.language-javascript.
-				{
-					"status": "success",
-					"data": {
-						"parcelizedAgcData": {
-							"properties": {
-								"agc_id": "AGCABI000010",
-								"agc_extended_name": "Agc Nosa 7",
-								"agc_location": "ABA,Aba South,Abia",
-								"num_farmers": 10,
-								"agc_area": 50.6404559187225,
-								"total_allocation": 45,
-								"unused_land_area": 4.417271065696374,
-								"preview_map_url_hash": "XAWXEACGEBVLGDRACUGOZYBSZTCKHMMDHOYVAPRWKXRNJVWXHXZH..."
-							},
-							"type": "FeatureCollection",
-							"_id": "5fce88c3071dac0c0c924f7d",
-							"features": [ ... ]
+			pre.embedded-code-snippet
+				code.language-javascript.
+					{
+						"status": "success",
+						"data": {
+							"parcelizedAgcData": {
+								"properties": {
+									"agc_id": "AGCABI000010",
+									"agc_extended_name": "Agc Nosa 7",
+									"agc_location": "ABA,Aba South,Abia",
+									"num_farmers": 10,
+									"agc_area": 50.6404559187225,
+									"total_allocation": 45,
+									"unused_land_area": 4.417271065696374,
+									"preview_map_url_hash": "XAWXEACGEBVLGDRACUGOZYBSZTCKHMMDHOYVAPRWKXRNJVWXHXZH..."
+								},
+								"type": "FeatureCollection",
+								"_id": "5fce88c3071dac0c0c924f7d",
+								"features": [ ... ]
+							}
 						}
 					}
-				}
 
-		//- p.important-note(data-icon='warning') For security, the url hash string might change periodically. Therefore, before presenting the preview map link to the user, always query the API for the most recent hash string. #[u #[strong Do not save the string in a variable and expect it to work at a later date]].
-		p.important-note(style="display: flex; align-items: center;")
-			span(style="padding-right: 20px; font-size: 25px; font-weight: 100;")
-				i.fas.fa-exclamation-triangle
-			span For security, the url hash string might change periodically. Therefore, before presenting the preview map link to the user, ALWAYS query the API to obtain the most recent hash string. #[u #[strong Do not save the string in a variable and expect it to work at a later date]].
+			//- p.important-note(data-icon='warning') For security, the url hash string might change periodically. Therefore, before presenting the preview map link to the user, always query the API for the most recent hash string. #[u #[strong Do not save the string in a variable and expect it to work at a later date]].
+			p.important-note(style="display: flex; align-items: center;")
+				span(style="padding-right: 20px; font-size: 25px; font-weight: 100;")
+					i.fas.fa-exclamation-triangle
+				span For security, the url hash string might change periodically. Therefore, before presenting the preview map link to the user, ALWAYS query the API to obtain the most recent hash string. #[u #[strong Do not save the string in a variable and expect it to work at a later date]].
 
 
-		p Construct the preview map url using the hash string like so-
+			p Construct the preview map url using the hash string like so-
 
-		pre.embedded-code-snippet
-			code.language-javascript.
-				// `https://geoclusters.herokuapp.com/parcelized-agc/?${preview_map_url_hash}`
+			pre.embedded-code-snippet
+				code.language-javascript.
+					// `https://geoclusters.herokuapp.com/parcelized-agc/?${preview_map_url_hash}`
 
-				https://geoclusters.herokuapp.com/parcelized-agc/?XAWXEACGEBVLGDRACUGOZYBSZTCKHMMDHOYVAPRWKXRNJVWXHXZHUMXTYTILBBMY
+					https://geoclusters.herokuapp.com/parcelized-agc/?XAWXEACGEBVLGDRACUGOZYBSZTCKHMMDHOYVAPRWKXRNJVWXHXZHUMXTYTILBBMY
 
-		p.important-note(style="display: flex; align-items: center;")
-			span(style="padding-right: 20px; font-size: 25px; font-weight: 100;")
-				i.fas.fa-info-circle
-				//- i.fas.fa-exclamation-circle
-			span Please note that for all the previously parcelized test AGCs, the preview map URLs that included the AGC IDs have now all been deprecated, and will therefore no longer work.
+			p.info-note(style="display: flex; align-items: center;")
+				span(style="padding-right: 20px; font-size: 25px; font-weight: 100;")
+					i.fas.fa-info-circle
+					//- i.fas.fa-exclamation-circle
+				span Note that for all the previously parcelized test AGCs, the preview map URLs that included the AGC IDs have now all been deprecated, and will therefore no longer work.
 
-		br
-		h3 Sending AGC data to the Database (using the Fetch API) - Mtd. 1
-		p The snippet below shows how to persist AGC GeoJSON data to the database using a Fetch API POST request.
 
-		pre
-			//- .devsite-code-buttons-container
-			//- 	button.gc-analytics-event.material-icons.devsite-icon-code-dark.devsite-toggle-dark(type='button' data-category='Site-Wide Custom Events' data-label='Dark Code Toggle' track-type='exampleCode' track-name='darkCodeToggle' aria-label='Dark code theme' data-title='Dark code theme')
-			//- 	button.gc-analytics-event.material-icons.devsite-icon-code-light.devsite-toggle-light(type='button' data-category='Site-Wide Custom Events' data-label='Light Code Toggle' track-type='exampleCode' track-name='lightCodeToggle' aria-label='Light code theme' data-title='Light code theme')
-			//- 	button.gc-analytics-event.material-icons.devsite-icon-copy(type='button' data-category='Site-Wide Custom Events' data-label='Click To Copy' track-type='exampleCode' track-name='clickToCopy' aria-label='Copy code sample to clipboard' data-title='Copy code sample to clipboard')
-
-			include _fetch-request-snippet
 			br
+			h2#geo_files #[em Geo-files]
 
-		br
-		h3 Sending AGC data to the Database (using an XML HTTP Request) - Mtd. 2
-		p The snippet below shows an alternate method to persist AGC GeoJSON data to the database using an XMLHttpRequest().
 
-		pre
-			include _xml-request-snippet
 			br
+			h3#upload_geofile_workflow Geo-file Upload Workflow
+			p Follow these 3 simple steps to upload & auto sub-divide a geo-file belonging to an AGC
+			ol 
+				li #[strong _1 ] POST the AGC farmer details JSON to the database.
+				li #[strong _2 ] Separately upload a geo-file; #[em its filename must exactly match the ]
+					span.inline-code agc_id 
+					span #[em in the JSON payload from Step 1.] 
+				li #[strong _3 ] Wait for a parcelization response.
 
+			h3#upload_farmer_details_json Upload AGC Farmer Details JSON
+			p Send a POST request containing the AGC details JSON (see example below) to this endpoint-
+			pre.embedded-code-snippet
+				code.language-javascript.
+					https://geoclusters.herokuapp.com/api/v2/geo-clusters/geo-cluster/details/
 
-		br
-		h3 Sample AGC GeoJSON Data Structure
-		p Each AGC payload is a GeoJSON #[em #[strong FeatureCollection]], that contains just ONE #[em Feature].
-		p.important-note The database insertion will fail if the 'agc_id', 'extended_name', 'location', and/or 'farmers' fields are missing from the 'properties' object of the GeoJSON payload, or if another AGC with the same 'agc_id', 'extended_name', and/or coordinates already exists in the database. Those first 4 fields in 'properties' are REQUIRED.
-		p.important-note Finally, insertion will fail if the sum of the total number of hectares allocated to the farmers exceeds the delineated AGC land area. 
-		pre.agc-json-data-ex
-			include _agc-json-data-example
+			p#farmer_details_json_ex AGC Farmer Details JSON Example
+			pre.agc-farmer-details-json-ex
+				include _agc-farmer-details-json
 
+			h3#select_geofile Select the Geo-file
+			p Select a geofile in any of these 4 formats 
+				span.inline-code .kml / .kmz / .gpx / .shp
+				span . Ensure that the name of the file #[strong exactly matches] the 
+				span.inline-code agc_id 
+				span value in the JSON payload that was just previously POSTed. ie., if the 
+				span.inline-code agc_id 
+				span is AGC_0001A", then the file name must be: 
+				span.inline-code AGC_0001A.kml
+				span or 
+				span.inline-code AGC_0001A.kmz
+				span .
 
-		br
-		h3 Upload & Parcelize a Geo-file
-		p Follow these steps to upload the geo-file belonging to an AGC
-		p 1. Get the agc_id
-		p 2. Upload the geo-file in either of these formats: .kml / .kmz / .shp / .gpx; ensure the file name matches exactly the agc_id
-		p 2. Upload a JSON file 
+			h3#upload_geofile Upload the Geo-file
+			p Using Postman, set the 
+				span.inline-code form-data
+				span key value to 
+				span.inline-code file
+				span (see the graphic below).
+
+			p#geofile_postman_upload_example
+				img(src="/assets/images/geofile-upload-postman.png" alt="Geo-file Postman Upload Example")
+				//- img
+
+			p
+				span Send a POST request to - 
+				pre.embedded-code-snippet
+					code.language-javascript.
+						https://geoclusters.herokuapp.com/api/v2/geofiles/geofile/upload/
+
+			h3#geofile_parcelization_response Geo-file Parcelization Response
+			p If parcelization is successful, you'll get a success message from the API. However, if land size validation fails, or any other validation fails, you'll get an informative message of why it failed.
