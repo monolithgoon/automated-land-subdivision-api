@@ -94,12 +94,12 @@ const farmerSchema = new mongoose.Schema({
    first_name: {
       type: String,
       required: [true, `The farmer's first name must be specified`],
-      validate: [(entry => !entry || /^\s*$/.test(entry)), `The farmer's first name cannot be an empty string.`]
+      validate: [(entry => !entry || !/^\s*$/.test(entry)), `The farmer's first name cannot be an empty string.`]
    },
    last_name: {
       type: String,
       required: [true, `The farmer's last name must be specified`],
-      validate: [(entry => !entry || /^\s*$/.test(entry)), `The farmer's last name cannot be an empty string.`]
+      validate: [(entry => !entry || !/^\s*$/.test(entry)), `The farmer's last name cannot be an empty string.`]
    },
    farmer_photo: Array,
    // farmer_photo: {
