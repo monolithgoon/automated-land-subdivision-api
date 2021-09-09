@@ -2,10 +2,13 @@ extends index
 
 block api-guide
 
-	include __navbar.pug
+	header.api-guide-header-wrapper
+		.section-1
+			include __navbar.pug
+		.section-2
+			.empty-space
 
 	main.api-guide-container
-
 
 		nav.api-guide-toc
 
@@ -16,13 +19,6 @@ block api-guide
 						li
 							a(href="#public_api_key") Public API Key
 							//- a(href="#return_processed_legacy_agc") POST Processed Legacy AGC
-				li
-					a(href="#legacy_agcs") Legacy AGCs
-					ul
-						li
-							a(href="#retreive_legacy_agc") GET Legacy AGCs
-							a(href="#return_processed_legacy_agc") POST Processed Legacy AGC
-							a(href="#processed_legacy_agc_json") Processed Legacy AGC Payload
 				li
 					a(href="#_agcs") AGCs
 					ul
@@ -48,6 +44,13 @@ block api-guide
 							//- a(href="#upload_geofile") Upload the Geo-file
 							a(href="#geofile_postman_upload_example") Postman Upload Example
 							a(href="#geofile_parcelization_response") Upload Response
+				li
+					a(href="#legacy_agcs") Legacy AGCs
+					ul
+						li
+							a(href="#retreive_legacy_agc") GET Legacy AGCs
+							a(href="#return_processed_legacy_agc") POST Processed Legacy AGC
+							a(href="#processed_legacy_agc_json") Processed Legacy AGC Payload
 
 		.api-guide-content
 
@@ -59,65 +62,13 @@ block api-guide
 			//- p.last-update Updated 17 March 2021
 			//- p.last-update Updated 31 August 2021
 			p.last-update Updated 7 September 2021
-			br
 
-			#api_credentials.credentials-container
+
+			br
+			section#api_credentials.credentials-container
 				div.token-subtitle Public API Key 
 				br
 				div.token-code ADSS=23232AD=ASDIO293-MLK23290-23AD.235DS554S5_4409IODSO
-
-
-			br
-			section#legacy_agcs
-				h2 #[strong #[em Legacy AGCs]]
-
-				h3#retreive_legacy_agc Retreive Legacy AGC Data
-
-				pre.embedded-code-snippet
-					code.language-javascript.
-						// To download all the data-
-						https://geoclusters.herokuapp.com/api/v2/legacy-agcs/
-
-						// To limit the fields in each call, use-
-						https://geoclusters.herokuapp.com/api/v2/legacy-agcs/?fields=properties.geo_cluster_id,properties.geo_cluster_name,features.properties.plot_owner_bvn,
-
-
-				br
-				h3#return_processed_legacy_agc Returning a Processed Legacy AGC
-				p To return back legacy AGC data that has been successfully processed (ie., the farmer photos have been acquired), send a POST request to-
-				pre.embedded-code-snippet
-					code.language-javascript.
-						https://geoclusters.herokuapp.com/api/v2/legacy-agcs/legacy-agc/processed/
-
-				p To return legacy AGCs that were #[em NOT] successfully processed for whatever reason (for eg. too many BVNs failed, etc), send a POST request to the endpoint below. Create the following field 
-					span.inline-code validation_failed_reason
-					span , and populate it a brief description of why the failure happened. 
-				p #[strong When POSTing to this URL, that field cannot be empty].
-				pre.embedded-code-snippet
-					code.language-javascript.
-						https://geoclusters.herokuapp.com/api/v2/legacy-agcs/validation-failed/
-
-				p.important-note(style="display: flex; align-items: center;")
-					span(style="padding-right: 20px; font-size: 25px; font-weight: 100;")
-						i.fas.fa-exclamation-triangle
-					span Note that the POST request will fail if the 
-						span.inline-code geo_cluster_id
-						span , and/or 
-						span.inline-code geo_cluster_name
-						span fields are missing from the payload, or if another legacy AGC with those credentials already exist in the DB. Also, the 
-						span.inline-code plot_owners
-						span array cannot be empty.
-
-				br
-				h3#processed_legacy_agc_json Processed Legacy AGC JSON Data Structure
-					//- span New
-				p 
-					span After acquring the farmers' Base64 strings, use the following JSON structure to return a successfully processed legacy AGC back to our database. 
-				p Populate the 
-					span.inline-code unprocessed_farmers
-					span array with BVNs for farmers whose Base64 strings you were unable to acquire.
-				pre.agc-json-data-ex
-					include _legacy-agc-json-example
 
 
 			br
@@ -311,7 +262,7 @@ block api-guide
 
 				br
 				h3#upload_geofile_workflow Geo-file Upload Workflow
-				p Follow these 3 simple steps to upload & auto sub-divide a geo-file belonging to an AGC
+				p Follow these 3 steps to upload & auto sub-divide a geo-file belonging to an AGC
 				ol 
 					li #[strong _1 ] POST the AGC farmer details JSON to the database.
 					li #[strong _2 ] Separately upload a geo-file; #[em its filename must exactly match the ]
@@ -319,6 +270,7 @@ block api-guide
 						span #[em in the JSON payload from Step 1.] 
 					li #[strong _3 ] Wait for a parcelization response.
 
+				br
 				h3#upload_farmer_details_json Upload AGC Farmer Details JSON
 				p Send a POST request containing the AGC details JSON (see example below) to this endpoint-
 				pre.embedded-code-snippet
@@ -329,6 +281,7 @@ block api-guide
 				pre.agc-farmer-details-json-ex
 					include _agc-farmer-details-json
 
+				br
 				h3#select_geofile Select the Geo-file
 				p Select a geofile in any of these 4 formats 
 					span.inline-code .kml / .kmz / .gpx / .shp
@@ -342,6 +295,7 @@ block api-guide
 					span.inline-code AGC_0001A.kmz
 					span .
 
+				br
 				h3#upload_geofile Upload the Geo-file
 				p Using Postman, set the 
 					span.inline-code form-data
@@ -359,8 +313,66 @@ block api-guide
 						code.language-javascript.
 							https://geoclusters.herokuapp.com/api/v2/geofiles/geofile/upload/
 
+				br
 				h3#geofile_parcelization_response Geo-file Parcelization Response
 				p If parcelization is successful, you'll get a success message from the API. However, if land size validation fails, or any other validation fails, you'll get an informative message of why it failed.
+
+
+			br
+			section#legacy_agcs
+
+				h2 #[strong #[em Legacy AGCs]]
+
+				section#retreive_legacy_agc
+					h3 Retreive Legacy AGC Data
+
+					pre.embedded-code-snippet
+						code.language-javascript.
+							// To download all the data-
+							https://geoclusters.herokuapp.com/api/v2/legacy-agcs/
+
+							// To limit the fields in each call, use-
+							https://geoclusters.herokuapp.com/api/v2/legacy-agcs/?fields=properties.geo_cluster_id,properties.geo_cluster_name,features.properties.plot_owner_bvn
+
+				br
+				section#return_processed_legacy_agc
+					h3 Returning a Processed Legacy AGC
+					p To return back legacy AGC data that has been successfully processed (ie., the farmer photos have been acquired), send a POST request to-
+					pre.embedded-code-snippet
+						code.language-javascript.
+							https://geoclusters.herokuapp.com/api/v2/legacy-agcs/legacy-agc/processed/
+
+					p To return legacy AGCs that were #[em NOT] successfully processed for whatever reason (for eg. too many BVNs failed, etc), send a POST request to the endpoint below. Create the following field 
+						span.inline-code validation_failed_reason
+						span , and populate it a brief description of why the failure happened. 
+					p #[strong When POSTing to this URL, that field cannot be empty].
+					pre.embedded-code-snippet
+						code.language-javascript.
+							https://geoclusters.herokuapp.com/api/v2/legacy-agcs/validation-failed/
+
+					p.important-note(style="display: flex; align-items: center;")
+						span(style="padding-right: 20px; font-size: 25px; font-weight: 100;")
+							i.fas.fa-exclamation-triangle
+						span Note that the POST request will fail if the 
+							span.inline-code geo_cluster_id
+							span , and/or 
+							span.inline-code geo_cluster_name
+							span fields are missing from the payload, or if another legacy AGC with those credentials already exist in the DB. Also, the 
+							span.inline-code plot_owners
+							span array cannot be empty.
+
+				br
+				section#processed_legacy_agc_json
+					h3 Processed Legacy AGC JSON Data Structure
+						//- span New
+					p 
+						span After acquring the farmers' Base64 strings, use the following JSON structure to return a successfully processed legacy AGC back to our database. 
+					p Populate the 
+						span.inline-code unprocessed_farmers
+						span array with BVNs for farmers whose Base64 strings you were unable to acquire.
+					pre.agc-json-data-ex
+						include _legacy-agc-json-example
+
 
 		script(type="text/javascript").
 

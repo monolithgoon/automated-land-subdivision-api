@@ -196,12 +196,12 @@ header {
 } */
 
 .navbar-wrapper {
-	padding: 20px;
-	position: static;
-	top: 0;
+	/* padding: 20px; */
+	padding: 10px 20px;
 	width: 100%;
 	background-color: #2e2e2e;
-	background: transparent;
+	background-color: #F4F4F4;
+	background-color: transparent
 }
 
 .navbar {
@@ -211,7 +211,6 @@ header {
 }
 
 .navbar.scrolled {
-	
 }
 
 .branding {
@@ -550,6 +549,18 @@ main {
 
 /* API GUIDE */
 
+header.api-guide-header-wrapper {
+	position: sticky;
+	top: 0;
+	align-self: start;
+	z-index: 99;
+	background-color: transparent;
+}
+
+header .section-1 {
+	background-color: #283142;
+}
+
 .api-guide-container {
 	font-family: Roboto, sans-serif;
 	background: white;
@@ -569,15 +580,12 @@ main {
 }
 
 .api-guide-toc {
-	position: -webkit-sticky;
-	position: sticky;
-	top: 5vh;
-	align-self: start;
+	padding-top: 10px;
 	font-size: 0.75rem;
 }
 
 .api-guide-toc ol {
-	margin-left: 4rem;
+	margin-left: 6rem;
 }
 
 /* .api-guide-toc ol {
@@ -1138,6 +1146,7 @@ input:focus {
 
 	body {
 		font-size: 12px;
+		position: relative;
 	}
 
 	.navbar-wrapper {
@@ -1175,7 +1184,7 @@ input:focus {
 	}
 
 	.hero-wrapper {
-		padding-top: 25px;
+		padding-top: 35px;
 		width: 80vw;
 		display: flex;
 		align-items: flex-start;
@@ -1205,14 +1214,51 @@ input:focus {
 		font-size: 36px;
 	}
 
+	/* API GUIDE */
+
+	header.api-guide-header-wrapper {
+		height: 25vh;
+		display: grid;
+		grid-template-rows: auto 1fr;
+	}
+
+	header .section-1 {
+		position: sticky;
+		top: 0;
+		align-self: start;
+		z-index: 99;
+		background-color: #283142;
+	}
+
+	header .section-2 {
+		background-color: transparent;
+	}
+
 	.api-guide-container {
 		margin: auto;
 		width: 100vw;
 		display: grid;
 		grid-template-columns: 25vw 60vw;
-		/* grid-template-columns: 17.5vw 65vw; */
 		background-color: #F4F4F4;
+
+		position: absolute;
+		top: 0;	
 	}
+	
+	.api-guide-toc {
+		position: sticky;
+		align-self: start;
+		top: 10vh;
+	}
+
+	.api-guide-toc ol {
+		margin-left: 4rem;
+	}
+
+	.api-guide-content {
+		padding-top: 10vh;
+	}
+	
 
 	.agcs-overview-container {
 		margin: auto;
