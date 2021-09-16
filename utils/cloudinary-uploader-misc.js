@@ -86,7 +86,7 @@ cloudinary.uploader.upload(
 		tags: "farmer",
 		use_filename: true,
       unique_filename: false,
-		folder: "nirsal/parcelized-agcs/farmer-photos",
+		folder: "nirsal/parcelized-agcs/farmer-photos/",
 	},
 	function (err, image) {
 		if (err) {

@@ -1,7 +1,7 @@
 const turf = require('@turf/turf');
 const chalk = require('../utils/chalk-messages.js');
+const cloudinary = require("cloudinary").v2;
 const { PARCELIZE_SHAPEFILE } = require('../utils/auto-parcelize/chunkify-moving-frames.js');
-
 
 
 // AUTO-SUBDIVIDE / AUTO-PARCELIZATION LOGIC FN.
@@ -13,10 +13,11 @@ function parcelize(agc, dirCombo) {
       // INIT. PARCELIZATION VARIABLES
       const selectedShapefile = agc
 
-      // GET THE FARM HA. ALLOCATIONS
-      const farmerAllocations = [];
       const farmers_data = agc.properties.farmers;
       // console.log(chalk.highlight(farmers_data))
+      
+      // GET THE FARM HA. ALLOCATIONS
+      const farmerAllocations = [];
       agc.properties.farmers.forEach(farmer=>farmerAllocations.push(farmer.allocation));
    
       const dirOptionsMap = {
@@ -54,7 +55,7 @@ function parcelize(agc, dirCombo) {
       const dirComboConfigObj = dirOptionsMap[dirCombo];
 
       // PARCELIZE
-      const parcelizedShapefile = PARCELIZE_SHAPEFILE(selectedShapefile, farmers_data, dirComboConfigObj)
+      const parcelizedShapefile = PARCELIZE_SHAPEFILE(selectedShapefile, farmers_data, dirComboConfigObj);
 
       return parcelizedShapefile;
 
@@ -62,6 +63,71 @@ function parcelize(agc, dirCombo) {
       console.log(chalk.fail(err.message));
    }
 };
+
+
+
+// UPLOAD IMAGE TO CLOUD
+async function cloudinaryBase64Upload(geoCluster) {
+
+   const UPLOAD_URL_MAPS = [];
+
+	// CONFIG
+	cloudinary.config({
+		cloud_name: "dmvx8fnuz",
+		api_key: "476581483278117",
+		api_secret: "yIptwJZ4ahB36DNXebOI_UsXUTM",
+		secure: true,
+	});
+   
+   try {
+
+      const geoClusterId = geoCluster.properties.agc_id;
+      const plotsAdmins = geoCluster.properties.farmers;
+
+      if (plotsAdmins) {
+
+         for (let idx = 0; idx < plotsAdmins.length; idx++) {
+         
+            const plotAdmin = plotsAdmins[idx];
+            const plotAdminId = plotAdmin.farmer_id;
+            const base64ImageStr = plotAdmin.farmer_photo;
+
+            // UPLOAD OPTIONS
+            uploadOptions = {
+               public_id: plotAdminId,
+               folder: `/nirsal/parcelized-agcs/farmer-photos/${geoClusterId}/`,
+               use_filename: true,
+               unique_filename: false,
+            };
+            
+            // UPLOAD BASE64 IMAGE URI TO EXISTING OR RECURSIVELY CREATED FOLDER
+            if (JSON.stringify(base64ImageStr) !== `[""]`) {
+
+               await cloudinary.uploader.upload(`data:image/jpg;base64,${base64ImageStr}`, uploadOptions,
+                  function (cloudUploadErr, cloudUploadResult) {
+                     if (cloudUploadErr) {
+                        console.warn(chalk.fail(cloudUploadErr.message));
+                     } else {
+                        console.log(chalk.highlight(cloudUploadResult.secure_url));
+                        // console.log(chalk.console(JSON.stringify(cloudUploadResult)));
+                        // waitForAllUploads("pizza", cloudUploadErr, cloudUploadResult);
+                        plotAdmin.farmer_photo_url = cloudUploadResult.secure_url;
+                     };
+                  }
+               );
+
+            } else {
+               plotAdmin.farmer_photo_url = undefined;
+               console.error(chalk.warning(`This PLOT OWNER ${farmer.first_name} ${farmer.last_name} does not have a base64ImageStr..`))
+            };
+         };
+
+         return geoCluster;   
+      };
+   } catch (savePhotosErr) {
+     console.error(chalk.fail(`savePhotosErr: ${savePhotosErr.message}`));
+   };
+};      
 
 
 
@@ -75,20 +141,29 @@ exports.subdivideGeofile = async (req, res, next) => {
       const agcPayload = res.locals.appendedGeofileGeoJSON;
 
       console.log((agcPayload.properties));
+
+      // SANDBOX > SAVE THE PLOT ADMIN PHOTOS
+      await cloudinaryBase64Upload(agcPayload);
       
       // PARCELIZE THE NEW AGC
+
       // const parcelizedGeofile = await parcelize(res.locals.appendedGeofileGeoJSON); // IMPORTANT < DON'T USE await HERE < 
       let parcelizedGeofile;
+
       const directionsArray = [ 'nw', 'ne', 'sw', 'se', 'es', 'en', 'ws', 'wn' ];
+      
       for (const dirCombo of directionsArray) {
-         console.log(chalk.warning(`trying: ${dirCombo} dir. combo.`))
-         parcelizedGeofile = parcelize(agcPayload, dirCombo); 
+
+         console.log(chalk.warning(`trying: ${dirCombo} dir. combo.`));
+
+         parcelizedGeofile = parcelize(agcPayload, dirCombo);
+         
          if (parcelizedGeofile) {
             if (parcelizedGeofile.properties.parcelization_metadata.land_parity_ok) {
                break;
-            }
-         }
-      }
+            };
+         };
+      };
 
       // PASS PARCELIZED AGC TO insertParcelizedAgc M.WARE.
       if (parcelizedGeofile) {
@@ -130,9 +205,12 @@ exports.subdivideGeoClusterGJ = async (req, res, next) => {
 
 	console.log(chalk.success(`CALLED THE [ subdivideGeoClusterGJ ] CONTROLLER FN. `))
 
-   const agcPayload = res.locals.appendedClusterGeoJSON;
+   let agcPayload = res.locals.appendedClusterGeoJSON;
 
    console.log((agcPayload.properties));
+
+   // SANDBOX > SAVE THE PLOT ADMIN PHOTOS
+   agcPayload = await cloudinaryBase64Upload(agcPayload);
 
    try {
       
@@ -144,12 +222,13 @@ exports.subdivideGeoClusterGJ = async (req, res, next) => {
          console.log(chalk.warning(`trying: ${dirCombo} `))
          // PARCELIZE THE GEO CLUSTER
          parcelizedGeoCluster = parcelize(agcPayload, dirCombo); 
+         // CONFIM THE SUB-DIVISION WENT OK
          if (parcelizedGeoCluster) {
             if (parcelizedGeoCluster.properties.parcelization_metadata.land_parity_ok) {
                break;
-            }
-         }
-      }
+            };
+         };
+      };
 
       // PASS PARCELIZED AGC TO insertParcelizedAgc M.WARE.
       if (parcelizedGeoCluster) {

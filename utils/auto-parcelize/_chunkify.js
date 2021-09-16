@@ -250,7 +250,7 @@ exports._chunkify = function(allocationMetadata, {
       pendingShapefile,   
       percentIngress,
       failedAllocIdx,
-      discardedKatanaChunk,      
+      discardedKatanaChunk,
       discardedKatanaChunkArea,      
    };
 }

@@ -1,8 +1,8 @@
-const fs = require('fs')
-const path = require('path')
-const turf = require('@turf/turf')
-const chalk = require('../chalk-messages.js')
-const { EROFS, SSL_OP_SSLEAY_080_CLIENT_DH_BUG } = require('constants')
+`use strict`
+const fs = require('fs');
+const path = require('path');
+const turf = require('@turf/turf');
+const chalk = require('../chalk-messages.js');
 
 
 
@@ -67,7 +67,7 @@ function _moveBboxPolygon(dist, bboxPolygon, bearing) {
 
    let movedBboxPolygon = turf.transformTranslate(bboxPolygon, dist, bearings[bearing], {units: 'kilometers'});
    
-   return movedBboxPolygon
+   return movedBboxPolygon;
 }
 
 
@@ -182,61 +182,68 @@ function savePlotOwnerPhoto({photosDirectory, geofileID, farmer, base64ImageStr}
 
 // CHECK THAT THE C-M-F.js ALGO. RAN PROPERLY
 function _checkParity(landArea, totalAllocations, unparcelizedLandArea) {
-   const tolerance = 0.15
-   const unallocatedLandArea = landArea - totalAllocations
-   const error = unallocatedLandArea - unparcelizedLandArea
-   console.log(landArea)
-   console.log(unallocatedLandArea)
-   console.log(unparcelizedLandArea)
+
+   // landArea > org. size of geoCluster;
+   // totalAllocations => sum of all the allocs.
+   // unparcelizedLandArea => leftover land area after parcelization algo. runs
+
+   const tolerance = 0.15;
+   const unallocatedLandArea = landArea - totalAllocations;
+   const error = unallocatedLandArea - unparcelizedLandArea; // after the algo. runs, if there's more un sub-divided land than there is unalloc. land, something went wrong
+   console.log({landArea})
+   console.log({unallocatedLandArea})
+   console.log({unparcelizedLandArea})
    if (error < 0) throw new Error(`Your parcelization is way off. There is too much un-parcelized land.`)
    // if (error < 0) return false
    if (error/unallocatedLandArea <= tolerance) return true
    else throw new Error(`Parcelization algo. is using up too much land.`)
-}
+};
 
 
 
 // ...
 function _getAllocationsMetadata(geofileID, plotOwnersData, plotOwnerIndex) {
 
-   // VARIABLE TO HOLD URL TO DECODED PHOTO
-   let ownerPhotoUrl;
+   // REMOVE > DEPRC.
 
-   
    // DECODE THE BASE64 IMAGES AN SAVE TO FILE
    const farmer = plotOwnersData[plotOwnerIndex];
 
-
-   // TODO > STRIP OFF THE META HEADERS FROM THE Base64 STRING 
-   // const base64String = apiResponse.data.agcData.properties.farmers[4].farmer_photo
-   // const base64Image = base64String.replace(/^data:image\/\w+;base64,/, '');
-   const base64ImageStr = farmer.farmer_photo;
+   // // TODO > STRIP OFF THE META HEADERS FROM THE Base64 STRING 
+   // // const base64String = apiResponse.data.agcData.properties.farmers[4].farmer_photo
+   // // const base64Image = base64String.replace(/^data:image\/\w+;base64,/, '');
+   // const base64ImageStr = farmer.farmer_photo;
    
-
-   // DECODE & SAVE LOT OWNER'S Base64 PHOTOGRAPH TO FILE
-   if (JSON.stringify(base64ImageStr) !== `[""]`) {
-
-      // RELATIVE PATH TO PHOTOS DIRECTORY WITH geofileID
-      const relPhotosPath = `assets/images/farmer-photos/${geofileID}`
-
-      // ABSOLUTE PATH TO PHOTOS DIRECTORY WITH geofileID
-      const photosDirectory = path.resolve(`${__approotdir}/public/${relPhotosPath}`);
-
-      // CREATE A FOLDER WITH THE geofileID && SAVE THE PLOT OWNER PHOTOS INSIDE
-      savePlotOwnerPhoto({photosDirectory, geofileID, farmer, base64ImageStr});
-
-      // URL FROM WHICH FRONTEND CODE RENDERS THE PLOT OWNER'S PHOTO
-      // ownerPhotoURL = `/assets/farmer-photos/${farmer.farmer_id}.jpg` // REMOVE < DEPRECATED 
-      ownerPhotoURL = `/${relPhotosPath}/${farmer.farmer_id}.jpg`
-      console.log(chalk.highlight(ownerPhotoURL));    
-
-   } else {
-
-      ownerPhotoURL = undefined;
+   // // DECODE & SAVE LOT OWNER'S Base64 PHOTOGRAPH TO FILE
+   // if (JSON.stringify(base64ImageStr) !== `[""]`) {
       
-      console.error(chalk.warning(`This PLOT OWNER ${farmer.first_name} ${farmer.last_name} does not have a base64ImageStr..`))
-   }
+   //    // VARIABLE TO HOLD URL TO DECODED PHOTO
+   //    let ownerPhotoUrl;
+   
+   //    // RELATIVE PATH TO PHOTOS DIRECTORY WITH geofileID
+   //    const relPhotosPath = `assets/images/farmer-photos/${geofileID}`
 
+   //    // ABSOLUTE PATH TO PHOTOS DIRECTORY WITH geofileID
+   //    const photosDirectory = path.resolve(`${__approotdir}/public/${relPhotosPath}`);
+
+   //    // CREATE A FOLDER WITH THE geofileID && SAVE THE PLOT OWNER PHOTOS INSIDE
+   //    savePlotOwnerPhoto({photosDirectory, geofileID, farmer, base64ImageStr});      
+
+   //    // URL FROM WHICH FRONTEND CODE RENDERS THE PLOT OWNER'S PHOTO
+   //    // ownerPhotoURL = `/assets/farmer-photos/${farmer.farmer_id}.jpg` // REMOVE < DEPRECATED 
+   //    // ownerPhotoURL = `/${relPhotosPath}/${farmer.farmer_id}.jpg`;
+   //    ownerPhotoURL = `https://res.cloudinary.com/dmvx8fnuz/image/upload/v1631779990/nirsal/parcelized-agcs/farmer-photos/${geofileID}/${farmer.farmer_id}.jpg`
+   //    console.log(chalk.highlight(ownerPhotoURL));    
+
+   // } else {
+
+   //    ownerPhotoURL = undefined;
+      
+   //    console.error(chalk.warning(`This PLOT OWNER ${farmer.first_name} ${farmer.last_name} does not have a base64ImageStr..`))
+   // }
+
+   const plotAdminPhotoUrl = plotOwnersData[plotOwnerIndex].farmer_photo_url;
+   console.log(chalk.console(plotAdminPhotoUrl));
 
    const allocationsMetadata = {
       agcID: geofileID,
@@ -244,8 +251,9 @@ function _getAllocationsMetadata(geofileID, plotOwnersData, plotOwnerIndex) {
       allocSize: plotOwnersData[plotOwnerIndex].allocation,
       firstName: plotOwnersData[plotOwnerIndex].first_name,
       lastName: plotOwnersData[plotOwnerIndex].last_name,
-      ownerPhotoURL
-   }
+      ownerPhotoURL: plotOwnersData[plotOwnerIndex].farmer_photo_url,
+      // ownerPhotoURL
+   };
    
    return allocationsMetadata
 }
