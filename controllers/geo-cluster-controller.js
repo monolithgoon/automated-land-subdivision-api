@@ -2,6 +2,7 @@
 const chalk = require('../utils/chalk-messages');
 const AGC_MODEL = require('../models/agc-model.js');
 const GEO_CLUSTER_DETAILS_MODEL = require('../models/geo-cluster-details-model.js');
+const { findOneDocument } = require('./handler-factory.js');
 
 
 
@@ -15,21 +16,25 @@ exports.insertGeoCluster = async (req, res, next) => {
 exports.insertGeoClusterGJ = async (req, res, next) => {
 
 	console.log(chalk.success(`CALLED THE [ insertGeoClusterGJ ] CONTROLLER FN.`))
-
-   // REMOVE
-   // res.locals.appendedClusterGeoJSON = req.body;
-   // next();
    
    try {
+
+      const clusterId = req.body.properties.agc_id;
+
+      if (!(await findOneDocument(AGC_MODEL, {"properties.agc_id": clusterId}))) {
+
+         // CREATE A NEW AGC DOCUMENT _MTD 2
+         const newGeoCluster = await AGC_MODEL.create(req.body); // "model.create" returns a promise
       
-      // CREATE A NEW AGC DOCUMENT _MTD 2
-      const newGeoCluster = await AGC_MODEL.create(req.body); // "model.create" returns a promise
+         // APPEND GEOJSON DATA TO LOCAL VARS.
+         if (newGeoCluster) {
+            res.locals.appendedClusterGeoJSON = newGeoCluster;
+            next();
+         };
 
-      // console.log({newGeoCluster});
-
-      // APPEND GEOJSON DATA TO LOCAL VARS.
-      if (newGeoCluster) {
-         res.locals.appendedClusterGeoJSON = newGeoCluster;
+      } else {
+         console.log(chalk.warning(`The GeoJSON for [ ${clusterId} ] already exists in the database. Proceeding with auto pacelization .. `));
+         res.locals.appendedClusterGeoJSON = req.body;
          next();
       };
 
@@ -49,18 +54,27 @@ exports.insertGeoClusterDetails = async (req, res, next) => {
 
    console.log(chalk.success(`CALLED THE [ insertGeoClusterDetails ] CONTROLLER FN. `));
    
-   const geoClusterDetailsJSON = req.body;
-
    try {
 
-      const newPlotAllocations = await GEO_CLUSTER_DETAILS_MODEL.create(geoClusterDetailsJSON);
+      const clusterId = req.body.properties.agc_id;
 
-      res.status(201).json({
-         status: `success`,
-         inserted_at: req.requestTime,
-         data: newPlotAllocations,
-      })
-      
+      if (!(await findOneDocument(GEO_CLUSTER_DETAILS_MODEL, {"properties.agc_id": clusterId}))) {
+
+         const clusterAllocations = await GEO_CLUSTER_DETAILS_MODEL.create(req.body);
+   
+         res.status(201).json({
+            status: `success`,
+            inserted_at: req.requestTime,
+            data: clusterAllocations,
+         });
+
+      } else {
+         res.status(201).json({
+            status: 'success',
+            message: `The allocaiton details for [ ${clusterId} ] already exists in the database. Proceed to upload the geo-file for auto parcelization.`
+         });
+      };
+
    } catch (_err) {
       res.status(400).json({ 
          status: `fail`,

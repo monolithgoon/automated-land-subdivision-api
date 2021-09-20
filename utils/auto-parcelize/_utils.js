@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const turf = require('@turf/turf');
 const chalk = require('../chalk-messages.js');
+const crypto = require('crypto');
 
 
 
@@ -120,19 +121,7 @@ function _analyzeGeojson(shapefile) {
 
 
 
-function _generateRandomString(length, chars) {
-   var mask = '';
-   if (chars.indexOf('a') > -1) mask += 'abcdefghijklmnopqrstuvwxyz';
-   if (chars.indexOf('A') > -1) mask += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-   if (chars.indexOf('#') > -1) mask += '0123456789';
-   if (chars.indexOf('!') > -1) mask += '~`!@#$%^&*()_+-={}[]:";\'<>?,./|\\';
-   var result = '';
-   for (var i = length; i > 0; --i) result += mask[Math.floor(Math.random() * mask.length)];
-   return result;
-}
-
-
-
+// REMOVE > DEPRC.
 // CREATE A FOLDER WITH THE geofileID && SAVE THE PLOT OWNER PHOTOS INSIDE
 function savePlotOwnerPhoto({photosDirectory, geofileID, farmer, base64ImageStr}) {
 
@@ -256,8 +245,21 @@ function _getAllocationsMetadata(geofileID, plotOwnersData, plotOwnerIndex) {
    };
    
    return allocationsMetadata
-}
+};
 
+
+
+function _generateRandomString(baseString) {
+
+   const unencryptedString = crypto.randomBytes(20).toString('hex');
+   return crypto.createHash('sha256').update(unencryptedString).digest('hex');
+   
+   // const clusterId = parcelizedGeoCluster.properties.agc_id;
+   // const cipher = crypto.createCipheriv("aes-128-ccm", "Unique Cluster Id", crypto.randomBytes(20).toString('hex'));
+   // const encryptedCipher = cipher.update(String(clusterId), "utf-8", "hex");
+   // const encryptedString = encryptedCipher + cipher.final("hex");
+   // parcelizedGeoCluster.properties["preview_map_url_hash"] = encryptedString;
+};
 
 
 
@@ -267,7 +269,7 @@ module.exports = {
    _moveBboxPolygon,
    _toggleChunkifyDir,
    _analyzeGeojson,
-   _generateRandomString,
    _checkParity,
    _getAllocationsMetadata,
+   _generateRandomString,
 }

@@ -1,7 +1,7 @@
 // POLYGON CHUNKING v3.0 > BOUNDING BOX DECAY ALGORITHM
 const chalk = require('../chalk-messages');
 const turf = require('@turf/turf')
-const { _getProps, _calcArea, _analyzeGeojson, _generateRandomString, _checkParity, _getAllocationsMetadata } = require('./_utils.js');
+const { _getProps, _calcArea, _analyzeGeojson, _checkParity, _getAllocationsMetadata } = require('./_utils.js');
 const { _getKatanaSlice } = require('./_getKatanaSlice.js');
 const { _chunkify } = require('./_chunkify.js');
 
@@ -50,10 +50,6 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
       const shapefileName = shapefileMetadata.sfName;
       const shapefileLocation = shapefileMetadata.sfLocation;
       const shapefileArea = shapefileMetadata.sfArea;
-
-
-      // REMOVE
-      console.log(`preview_map_hash:`, _generateRandomString(16, shapefileID));
 
 
       // SAVE THE PROCESSED GEOJSON CHUNKS FROM "CHUNKIFY"
@@ -192,9 +188,7 @@ exports.PARCELIZE_SHAPEFILE = function RENDER_MOVING_FRAMES_CHUNKS (SELECTED_SHA
             'moving_frames_dir': chunkifyDirection,
             'land_parity_ok': _checkParity(shapefileArea, allocationTotal, unallocatedLandArea),
          },
-         'preview_map_url_hash': _generateRandomString(16, shapefileID),
-      }
-      console.log(CHUNKS_COLLECTION);
+      };
 
 
       // RETURN THE PARCELIZATION RESULT

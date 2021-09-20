@@ -1,35 +1,25 @@
-const turf = require('@turf/turf');
 const chalk = require('../utils/chalk-messages.js');
 const cloudinary = require("cloudinary").v2;
 const { PARCELIZE_SHAPEFILE } = require('../utils/auto-parcelize/chunkify-moving-frames.js');
+const { _generateRandomString } = require('../utils/auto-parcelize/_utils.js');
 
 
 // AUTO-SUBDIVIDE / AUTO-PARCELIZATION LOGIC FN.
-// async function parcelize(agc, dirCombo) { // FIXME > THIS SHOULDN'T BE AN ASYNC FN.
-function parcelize(agc, dirCombo) {
+function autoParcelizeGJ(agc) {
    
    try {
       
       // INIT. PARCELIZATION VARIABLES
-      const selectedShapefile = agc
-
-      const farmers_data = agc.properties.farmers;
-      // console.log(chalk.highlight(farmers_data))
+      const selectedShapefile = agc;
       
-      // GET THE FARM HA. ALLOCATIONS
+      // REMOVE 
+      // GET THE PLOT OWNER ALLOCATIONS
       const farmerAllocations = [];
       agc.properties.farmers.forEach(farmer=>farmerAllocations.push(farmer.allocation));
-   
-      const dirOptionsMap = {
-         se: { katanaSliceDirection: "south", chunkifyDirection: "east" },
-         sw: { katanaSliceDirection: "south", chunkifyDirection: "west" },
-         ne: { katanaSliceDirection: "north", chunkifyDirection: "east" },
-         nw: { katanaSliceDirection: "north", chunkifyDirection: "west" },
-         es: { katanaSliceDirection: "east", chunkifyDirection: "south" },
-         en: { katanaSliceDirection: "east", chunkifyDirection: "north" },
-         ws: { katanaSliceDirection: "west", chunkifyDirection: "south" },
-         wn: { katanaSliceDirection: "west", chunkifyDirection: "north" },
-      }
+      
+      // GET THE PLOT OWNER ALLOCATIONS
+      const PLOT_OWNERS_DATA = agc.properties.farmers;
+      
       const dirOptionsArray = [
          { katanaSliceDirection: "south", chunkifyDirection: "east" },
          { katanaSliceDirection: "south", chunkifyDirection: "west" },
@@ -39,31 +29,34 @@ function parcelize(agc, dirCombo) {
          { katanaSliceDirection: "east", chunkifyDirection: "north" },
          { katanaSliceDirection: "west", chunkifyDirection: "south" },
          { katanaSliceDirection: "west", chunkifyDirection: "north" },
-      ]
-      // for (let idx = 0; idx < dirOptionsArray.length; idx++) {
-      //    const directionsObj = dirOptionsArray[idx];
-      //    const parcelizedAgcGeojson = await PARCELIZE_SHAPEFILE(selectedShapefile, farmerAllocations, agcID, agcLocation, directionsObj)
-      //    if (parcelizedAgcGeojson) {
-      //       await saveToFile(parcelizedAgcGeojson, agcID, idx);
-      //    }
-      // }
+      ];
 
-      // GET CHUNKIFY DIRECTIONS
-      // const dirComboConfigObj = dirOptionsMap.wn;
-      // const dirComboConfigObj = dirOptionsMap.ws;
-      // const dirComboConfigObj = dirOptionsMap.sw;
-      const dirComboConfigObj = dirOptionsMap[dirCombo];
+      for (let idx = 0; idx < dirOptionsArray.length; idx++) {
 
-      // PARCELIZE
-      const parcelizedShapefile = PARCELIZE_SHAPEFILE(selectedShapefile, farmers_data, dirComboConfigObj);
+         const directionsObj = dirOptionsArray[idx];
+         
+         console.log(chalk.interaction(`trying: ${JSON.stringify(directionsObj)} dir. combo.`));
 
-      return parcelizedShapefile;
+         const parcelizedClusterGJ = PARCELIZE_SHAPEFILE(selectedShapefile, PLOT_OWNERS_DATA, directionsObj)
 
-   } catch (err) {
-      console.log(chalk.fail(err.message));
+         if (parcelizedClusterGJ) {
+
+            if (parcelizedClusterGJ.properties.parcelization_metadata.land_parity_ok) {
+
+               // GET A PREVIEW MAP URL HASH
+               parcelizedClusterGJ.properties["preview_map_url_hash"] = _generateRandomString();
+               
+               console.log({parcelizedClusterGJ});
+
+               return parcelizedClusterGJ;
+            };
+         };
+      };
+
+   } catch (autoParcelizeErr) {
+      console.log(chalk.fail(`autoParcelizeErr: ${autoParcelizeErr.message}`));
    }
 };
-
 
 
 // UPLOAD IMAGE TO CLOUD
@@ -111,6 +104,8 @@ async function cloudinaryBase64Upload(geoCluster) {
                         console.log(chalk.highlight(cloudUploadResult.secure_url));
                         // console.log(chalk.console(JSON.stringify(cloudUploadResult)));
                         // waitForAllUploads("pizza", cloudUploadErr, cloudUploadResult);
+
+                        //IMPORTANT > UPDATE THE farmer_photo_url FIELD
                         plotAdmin.farmer_photo_url = cloudUploadResult.secure_url;
                      };
                   }
@@ -118,7 +113,7 @@ async function cloudinaryBase64Upload(geoCluster) {
 
             } else {
                plotAdmin.farmer_photo_url = undefined;
-               console.error(chalk.warning(`This PLOT OWNER ${farmer.first_name} ${farmer.last_name} does not have a base64ImageStr..`))
+               console.error(chalk.warning(`This PLOT OWNER ${plotAdminId} does not have a base64ImageStr..`))
             };
          };
 
@@ -127,8 +122,7 @@ async function cloudinaryBase64Upload(geoCluster) {
    } catch (savePhotosErr) {
      console.error(chalk.fail(`savePhotosErr: ${savePhotosErr.message}`));
    };
-};      
-
+};
 
 
 // PARCELIZE THE NEW AGC GEO-FILE AND INSERT INTO DB.
@@ -138,32 +132,15 @@ exports.subdivideGeofile = async (req, res, next) => {
 
    try {
 
-      const agcPayload = res.locals.appendedGeofileGeoJSON;
+      let clusterGJPayload = res.locals.appendedGeofileGeoJSON;
 
-      console.log((agcPayload.properties));
+      console.log((clusterGJPayload.properties));
 
-      // SANDBOX > SAVE THE PLOT ADMIN PHOTOS
-      await cloudinaryBase64Upload(agcPayload);
+      // SAVE THE PLOT ADMIN PHOTOS
+      clusterGJPayload = await cloudinaryBase64Upload(clusterGJPayload);
       
-      // PARCELIZE THE NEW AGC
-
-      // const parcelizedGeofile = await parcelize(res.locals.appendedGeofileGeoJSON); // IMPORTANT < DON'T USE await HERE < 
-      let parcelizedGeofile;
-
-      const directionsArray = [ 'nw', 'ne', 'sw', 'se', 'es', 'en', 'ws', 'wn' ];
-      
-      for (const dirCombo of directionsArray) {
-
-         console.log(chalk.warning(`trying: ${dirCombo} dir. combo.`));
-
-         parcelizedGeofile = parcelize(agcPayload, dirCombo);
-         
-         if (parcelizedGeofile) {
-            if (parcelizedGeofile.properties.parcelization_metadata.land_parity_ok) {
-               break;
-            };
-         };
-      };
+      // AUTO-PARCELIZE THE CLUSTER
+      const parcelizedGeofile = autoParcelizeGJ(clusterGJPayload);
 
       // PASS PARCELIZED AGC TO insertParcelizedAgc M.WARE.
       if (parcelizedGeofile) {
@@ -172,21 +149,8 @@ exports.subdivideGeofile = async (req, res, next) => {
 
          next();
          
-         // REMOVE > DEPRECATED > NOW PASSING parcelizedGeofile TO NEXT M.WARE 
-         // const insertedAgc = await PARCELIZED_AGC_MODEL.create(parcelizedGeofile) // "model.create" returns a promise
-
-         // if (insertedAgc) {
-         //    // SERVER RESPONSE
-         //    res.status(201).json({
-         //       status: 'success',
-         //       // status: 'This file [ ${req.file.originalname} ] was successfully uploaded, converted to GeoJSON, parcelized & saved to the database.',
-         //       inserted_at: req.requestTime,
-         //       data: insertedAgc
-         //    })
-         // }
-
       } else {
-         throw new Error(`THIS PARCELIZATION ATTEMPT OF [ ${req.file.originalname} ] WAS NOT SUCCESSFUL. RECALIBRATING ALGO. & RE-TRYING WITH DIFF. PARAM. SET.`)
+         throw new Error(`The auto-parcelization of [ ${req.file.originalname} ] is taking longer than usual. In 30 minutes, query the parcelized clusters API endpoint using the agc_id to retreive the parcelization result. If this fails, the polyon derived from the geo-file might have holes, and therefore cannot be parcelized.`)
       };
 
    } catch (_err) {
@@ -199,36 +163,24 @@ exports.subdivideGeofile = async (req, res, next) => {
 };
 
 
-
 // PARCELIZE THE GEO-CLUSTER GEOJSON AND INSERT INTO DB.
 exports.subdivideGeoClusterGJ = async (req, res, next) => {
 
 	console.log(chalk.success(`CALLED THE [ subdivideGeoClusterGJ ] CONTROLLER FN. `))
 
-   let agcPayload = res.locals.appendedClusterGeoJSON;
+   let clusterGJPayload = res.locals.appendedClusterGeoJSON;
 
-   console.log((agcPayload.properties));
+   console.log((clusterGJPayload.properties));
 
-   // SANDBOX > SAVE THE PLOT ADMIN PHOTOS
-   agcPayload = await cloudinaryBase64Upload(agcPayload);
+   // SAVE THE PLOT ADMIN PHOTOS TO CLOUD
+   clusterGJPayload = await cloudinaryBase64Upload(clusterGJPayload);
+
+   // TODO > GENERATE URL HASH HERE
 
    try {
       
-      let parcelizedGeoCluster;
-      
-      const directionsArray = [ 'nw', 'ne', 'sw', 'se', 'es', 'en', 'ws', 'wn' ];
-      
-      for (const dirCombo of directionsArray) {
-         console.log(chalk.warning(`trying: ${dirCombo} `))
-         // PARCELIZE THE GEO CLUSTER
-         parcelizedGeoCluster = parcelize(agcPayload, dirCombo); 
-         // CONFIM THE SUB-DIVISION WENT OK
-         if (parcelizedGeoCluster) {
-            if (parcelizedGeoCluster.properties.parcelization_metadata.land_parity_ok) {
-               break;
-            };
-         };
-      };
+      // AUTO-PARCELIZE THE CLUSTER
+      const parcelizedGeoCluster = autoParcelizeGJ(clusterGJPayload);
 
       // PASS PARCELIZED AGC TO insertParcelizedAgc M.WARE.
       if (parcelizedGeoCluster) {
@@ -238,7 +190,7 @@ exports.subdivideGeoClusterGJ = async (req, res, next) => {
          next();
          
       } else {
-         throw new Error(`THIS PARCELIZATION ATTEMPT OF THE GEO-CLUSTER FAILED. RECALIBRATING ALGO. & RE-TRYING WITH DIFF. PARAM. SET. QUERY THE API WITH THE agc_id FOR THE PARCELIZATION RESULT LATER.`)
+         throw new Error(`The auto-parcelization algo. is taking longer than usual. In 30 minutes, query the parcelized clusters API endpoint using the agc_id to retreive the parcelization result. If this fails, the geo-cluster polygon might have holes, and therefore cannot be parcelized.`)
       };
 
    } catch (_err) {
