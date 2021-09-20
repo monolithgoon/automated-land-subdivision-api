@@ -5,7 +5,7 @@ const { _generateRandomString } = require('../utils/auto-parcelize/_utils.js');
 
 
 // AUTO-SUBDIVIDE / AUTO-PARCELIZATION LOGIC FN.
-function autoParcelizeGJ(agc) {
+function autoSubdivideGJ(agc) {
    
    try {
       
@@ -18,7 +18,7 @@ function autoParcelizeGJ(agc) {
       agc.properties.farmers.forEach(farmer=>farmerAllocations.push(farmer.allocation));
       
       // GET THE PLOT OWNER ALLOCATIONS
-      const PLOT_OWNERS_DATA = agc.properties.farmers;
+      const PLOT_ADMINS = agc.properties.farmers;
       
       const dirOptionsArray = [
          { katanaSliceDirection: "south", chunkifyDirection: "east" },
@@ -37,7 +37,7 @@ function autoParcelizeGJ(agc) {
          
          console.log(chalk.interaction(`trying: ${JSON.stringify(directionsObj)} dir. combo.`));
 
-         const parcelizedClusterGJ = PARCELIZE_SHAPEFILE(selectedShapefile, PLOT_OWNERS_DATA, directionsObj)
+         const parcelizedClusterGJ = PARCELIZE_SHAPEFILE(selectedShapefile, PLOT_ADMINS, directionsObj)
 
          if (parcelizedClusterGJ) {
 
@@ -60,9 +60,7 @@ function autoParcelizeGJ(agc) {
 
 
 // UPLOAD IMAGE TO CLOUD
-async function cloudinaryBase64Upload(geoCluster) {
-
-   const UPLOAD_URL_MAPS = [];
+async function cloudinaryBase64Upload(docId, uploadFolder, base64ImageStr) {
 
 	// CONFIG
 	cloudinary.config({
@@ -74,55 +72,71 @@ async function cloudinaryBase64Upload(geoCluster) {
    
    try {
 
-      const geoClusterId = geoCluster.properties.agc_id;
-      const plotsAdmins = geoCluster.properties.farmers;
-
-      if (plotsAdmins) {
-
-         for (let idx = 0; idx < plotsAdmins.length; idx++) {
-         
-            const plotAdmin = plotsAdmins[idx];
-            const plotAdminId = plotAdmin.farmer_id;
-            const base64ImageStr = plotAdmin.farmer_photo;
-
-            // UPLOAD OPTIONS
-            uploadOptions = {
-               public_id: plotAdminId,
-               folder: `/nirsal/parcelized-agcs/farmer-photos/${geoClusterId}/`,
-               use_filename: true,
-               unique_filename: false,
-            };
-            
-            // UPLOAD BASE64 IMAGE URI TO EXISTING OR RECURSIVELY CREATED FOLDER
-            if (JSON.stringify(base64ImageStr) !== `[""]`) {
-
-               await cloudinary.uploader.upload(`data:image/jpg;base64,${base64ImageStr}`, uploadOptions,
-                  function (cloudUploadErr, cloudUploadResult) {
-                     if (cloudUploadErr) {
-                        console.warn(chalk.fail(cloudUploadErr.message));
-                     } else {
-                        console.log(chalk.highlight(cloudUploadResult.secure_url));
-                        // console.log(chalk.console(JSON.stringify(cloudUploadResult)));
-                        // waitForAllUploads("pizza", cloudUploadErr, cloudUploadResult);
-
-                        //IMPORTANT > UPDATE THE farmer_photo_url FIELD
-                        plotAdmin.farmer_photo_url = cloudUploadResult.secure_url;
-                     };
-                  }
-               );
-
-            } else {
-               plotAdmin.farmer_photo_url = undefined;
-               console.error(chalk.warning(`This PLOT OWNER ${plotAdminId} does not have a base64ImageStr..`))
-            };
-         };
-
-         return geoCluster;   
+      // UPLOAD OPTIONS
+      uploadOptions = {
+         public_id: docId,
+         folder: uploadFolder,
+         use_filename: true,
+         unique_filename: false,
       };
-   } catch (savePhotosErr) {
-     console.error(chalk.fail(`savePhotosErr: ${savePhotosErr.message}`));
+      
+      const cloudResponse = await cloudinary.uploader.upload(`data:image/jpg;base64,${base64ImageStr}`, uploadOptions,
+         function (cloudUploadErr, cloudUploadResult) {
+            if (cloudUploadErr) {
+               console.warn(chalk.fail(cloudUploadErr.message));
+            } else {
+               // waitForAllUploads("pizza", cloudUploadErr, cloudUploadResult);
+               // console.log(chalk.console(JSON.stringify(cloudUploadResult)));
+               return cloudUploadResult;
+            };
+         }
+      );
+      
+      const secureUrl = cloudResponse.secure_url;
+
+      console.log("secureUrl:", chalk.highlight(JSON.stringify(secureUrl)));
+
+      return secureUrl;
+
+   } catch (cloudUploadErr) {
+     console.error(chalk.fail(`cloudUploadErr: ${cloudUploadErr.message}`));
    };
 };
+
+
+
+async function uploadPlotAdminPhotos(geoCluster) {
+
+   const geoClusterId = geoCluster.properties.agc_id;
+   const uploadFolder = `/nirsal/parcelized-agcs/farmer-photos/${geoClusterId}/`;
+   let plotsAdmins = geoCluster.properties.farmers;
+
+   if (plotsAdmins) {
+
+      for (let idx = 0; idx < plotsAdmins.length; idx++) {
+         const plotAdmin = plotsAdmins[idx];
+         const plotAdminId = plotAdmin.farmer_id;
+         const base64ImageStr = plotAdmin.farmer_photo;
+
+         // UPLOAD BASE64 IMAGE URI TO RECURSIVELY CREATED FOLDER
+         if (JSON.stringify(base64ImageStr) !== `[""]`) {
+
+            plotAdmin.farmer_photo_url = await cloudinaryBase64Upload(plotAdminId, uploadFolder, base64ImageStr)
+
+         } else {
+
+            console.error(chalk.warning(`This plot admin. [ ${plotAdminId} ] does not have a base64ImageStr..`))
+            plotAdmin.farmer_photo_url = null;
+
+         };
+      };
+   };
+
+   geoCluster.properties.farmers = plotsAdmins;
+
+   return geoCluster; 
+};
+
 
 
 // PARCELIZE THE NEW AGC GEO-FILE AND INSERT INTO DB.
@@ -137,10 +151,10 @@ exports.subdivideGeofile = async (req, res, next) => {
       console.log((clusterGJPayload.properties));
 
       // SAVE THE PLOT ADMIN PHOTOS
-      clusterGJPayload = await cloudinaryBase64Upload(clusterGJPayload);
+      clusterGJPayload = await uploadPlotAdminPhotos(clusterGJPayload);
       
       // AUTO-PARCELIZE THE CLUSTER
-      const parcelizedGeofile = autoParcelizeGJ(clusterGJPayload);
+      const parcelizedGeofile = autoSubdivideGJ(clusterGJPayload);
 
       // PASS PARCELIZED AGC TO insertParcelizedAgc M.WARE.
       if (parcelizedGeofile) {
@@ -173,14 +187,12 @@ exports.subdivideGeoClusterGJ = async (req, res, next) => {
    console.log((clusterGJPayload.properties));
 
    // SAVE THE PLOT ADMIN PHOTOS TO CLOUD
-   clusterGJPayload = await cloudinaryBase64Upload(clusterGJPayload);
-
-   // TODO > GENERATE URL HASH HERE
+   clusterGJPayload = await uploadPlotAdminPhotos(clusterGJPayload);
 
    try {
       
       // AUTO-PARCELIZE THE CLUSTER
-      const parcelizedGeoCluster = autoParcelizeGJ(clusterGJPayload);
+      const parcelizedGeoCluster = autoSubdivideGJ(clusterGJPayload);
 
       // PASS PARCELIZED AGC TO insertParcelizedAgc M.WARE.
       if (parcelizedGeoCluster) {
