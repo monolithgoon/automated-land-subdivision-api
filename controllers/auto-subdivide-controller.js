@@ -12,10 +12,10 @@ function autoSubdivideGJ(agc) {
       // INIT. PARCELIZATION VARIABLES
       const selectedShapefile = agc;
       
-      // REMOVE 
-      // GET THE PLOT OWNER ALLOCATIONS
-      const farmerAllocations = [];
-      agc.properties.farmers.forEach(farmer=>farmerAllocations.push(farmer.allocation));
+      // REMOVE > DEPRC.
+      // // GET THE PLOT OWNER ALLOCATIONS
+      // const farmerAllocations = [];
+      // agc.properties.farmers.forEach(farmer=>farmerAllocations.push(farmer.allocation));
       
       // GET THE PLOT OWNER ALLOCATIONS
       const PLOT_ADMINS = agc.properties.farmers;
@@ -37,7 +37,7 @@ function autoSubdivideGJ(agc) {
          
          console.log(chalk.interaction(`trying: ${JSON.stringify(directionsObj)} dir. combo.`));
 
-         const parcelizedClusterGJ = PARCELIZE_SHAPEFILE(selectedShapefile, PLOT_ADMINS, directionsObj)
+         const parcelizedClusterGJ = PARCELIZE_SHAPEFILE(selectedShapefile, PLOT_ADMINS, directionsObj);
 
          if (parcelizedClusterGJ) {
 

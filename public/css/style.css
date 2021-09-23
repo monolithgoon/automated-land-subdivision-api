@@ -158,7 +158,7 @@ p.info-note span > i {
 
 p.info-note {
 	color: var(--navy-blue);
-	background-color: lightyellow;
+	background-color: #ffdd0040;
 }
 
 a.u__links {
