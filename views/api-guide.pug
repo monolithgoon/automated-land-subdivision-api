@@ -58,6 +58,7 @@ block api-guide
 							a(href="#retreive_legacy_agc") GET Legacy AGCs
 							a(href="#return_processed_legacy_agc") POST Processed Legacy AGC
 							a(href="#processed_legacy_agc_json") Processed Legacy AGC Payload
+								span.highlight UPDATED
 
 		.api-guide-content
 
@@ -344,7 +345,7 @@ block api-guide
 				br
 				section#return_processed_legacy_agc
 					h3 Returning a Processed Legacy AGC
-					p To return back legacy AGC data that has been successfully processed (ie., the farmer photos have been acquired), send a POST request to-
+					p To return back legacy AGC data that has been successfully processed (ie., the farmer base64 image strings, and other biometric info. has been acquired from NIBBS), send a POST request to-
 					pre.embedded-code-snippet
 						code.language-javascript.
 							https://geoclusters.herokuapp.com/api/v2/legacy-agcs/legacy-agc/processed/
@@ -371,12 +372,12 @@ block api-guide
 				br
 				section#processed_legacy_agc_json
 					h3 Processed Legacy AGC JSON Data Structure
-						//- span New
+						span Updated
 					p 
-						span After acquring the farmers' Base64 strings, use the following JSON structure to return a successfully processed legacy AGC back to our database. 
+						span After acquring the farmers' base64 image strings, use the following JSON structure to return a successfully processed legacy AGC back to our database. 
 					p Populate the 
 						span.inline-code unprocessed_farmers
-						span array with BVNs for farmers whose Base64 strings you were unable to acquire.
+						span array with BVNs for farmers whose base64 image strings you were unable to acquire.
 					pre.agc-json-data-ex
 						include _legacy-agc-json-example
 

@@ -77,9 +77,6 @@ const featureSchema = new mongoose.Schema({
       plot_owner_gender : {
          type: String,
       },
-      // plot_owner_land_allocation : { // REMOVE > DEPRE.
-      //    type: Number,
-      // },
       plot_owner_allocation_size : {
          type: Number,
       },
@@ -89,10 +86,11 @@ const featureSchema = new mongoose.Schema({
       plot_owner_bvn : {
          type: Number,
       },
-      plot_owner_base64: {
-         type: Array,
-         default: [],
-      }
+      // REMOVE > DEPRC.
+      // plot_owner_base64: {
+      //    type: Array,
+      //    default: [],
+      // }
    }
 });
 
@@ -130,7 +128,7 @@ const legacyAgcSchema = new mongoose.Schema({
 
       geo_cluster_total_features: {
          type: Number,
-         required: [true, `THIS FIELD IS REQUIRED`]
+         required: [true, `THIS FIELD IS REQUIRED`],
       },
 
       geo_cluster_delineated_area: {

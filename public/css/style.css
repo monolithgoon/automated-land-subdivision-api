@@ -149,13 +149,6 @@ p.important-note, p.info-note {
 	align-items: center;
 }
 
-/* p.important-note span > i, 
-p.info-note span > i {
-	padding-right: 20px;
-	font-size: 25px;
-	font-weight: 100;
-} */
-
 p.info-note {
 	color: var(--navy-blue);
 	background-color: #ffdd0040;
@@ -222,8 +215,7 @@ header {
 .branding span {
 	font-family: 'Syne', sans-serif;	
 	font-size: 20px;
-	letter-spacing: -1px;
-	/* font-weight: 900 */
+	letter-spacing: -1.5px;
 }
 
 .branding img {
@@ -551,7 +543,7 @@ main {
 
 header.api-guide-header-wrapper {
 	position: sticky;
-	top: 0;
+	top: 0px;
 	align-self: start;
 	z-index: 99;
 	background-color: transparent;
@@ -641,9 +633,17 @@ header .section-1 {
 .api-guide-content h3 > span {
 	margin: 0 10px;
 	padding: 5px;
-	/* border-radius: 5px; */
 	color: var(--material-red);
 	background-color: #feefe3;
+}
+
+span.highlight {
+	margin: 0 5px;
+	padding: 3px;
+	font-size: 0.5rem;
+	color: var(--material-red);
+	background-color: #feefe3;
+	border: 1px solid var(--material-red);
 }
 
 .api-guide-content p {
@@ -1223,11 +1223,16 @@ input:focus {
 	}
 
 	header .section-1 {
-		position: sticky;
-		top: 0;
-		align-self: start;
 		z-index: 99;
 		background-color: #283142;
+
+		/* FIXME > NOT WORKING */
+		position: sticky;
+		top: 0px;
+		align-self: start;
+		
+		/* position: fixed;
+		width: 100%;	 */
 	}
 
 	header .section-2 {

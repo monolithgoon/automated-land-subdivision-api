@@ -27,7 +27,37 @@ const farmersSchema = new mongoose.Schema({
       type: Array,
       required: [true, `The farmer must have a Base64 image string`],
       unique: [true, `The farmer's Base64 image string must be unique`],
-   }
+   },
+   farmer_dob: {
+      type: Date,
+      required: [true, `The farmer's date of birth must be specified`],
+   },
+   farmer_id_document_type: {
+      type: String,
+      enum: ["International Passport", "Voters Card", "Natinoal Identity Card", "Drivers License"],
+      required: [true, `The farmer's identification document type must be specified`]
+   },
+   farmer_id_document_no: {
+      type: String,
+      required: [true, `The farmer's identification document number must be specified`],
+      unique: [true, `Another farmer with this identification document number: ${this.farmer_id_document_no} already exists in the database`]
+   },
+   farmer_country_origin: {
+      type: String,
+
+   }, 
+   farmer_state_origin: {
+      type: String,
+
+   },
+   farmer_lga_origin: {
+      type: String,
+
+   },
+   farmer_home_address: {
+      type: String,
+
+   },
 });
 
 
