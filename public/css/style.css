@@ -644,7 +644,7 @@ span.highlight {
 	color: var(--material-red);
 	background-color: #feefe3;
 	border: 1px solid var(--material-red);
-	border-radius: 5px;
+	/* border-radius: 5px; */
 }
 
 .api-guide-content p {
