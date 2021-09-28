@@ -153,6 +153,7 @@ exports.getAllLegacyAgcs = async (request, response, next) => {
 
       // SEND RESPONSE
       response.status(200).json({
+
 			status: "success",
 			requested_at: request.requestTime, // using the custom property from our custom middleware in app.js
 			num_legacy_agcs: returnedLegacyAGCData.length,
@@ -160,7 +161,7 @@ exports.getAllLegacyAgcs = async (request, response, next) => {
 		   legacy_agcs: returnedLegacyAGCData,
 
          data: {
-            collection_data: returnedLegacyAGCData,
+            collection_docs: returnedLegacyAGCData,
             collection_name: `legacy-agcs`,
             docs_count: returnedLegacyAGCData.length,
          }

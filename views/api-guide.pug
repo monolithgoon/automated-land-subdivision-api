@@ -339,7 +339,7 @@ block api-guide
 
 					pre.embedded-code-snippet
 						code.language-javascript.
-							// To download all the data-
+							// To download all the data, send a FETCH request to-
 							https://geoclusters.herokuapp.com/api/v2/legacy-agcs/
 
 							// To limit the fields in each call, use-
@@ -377,7 +377,7 @@ block api-guide
 					h3 Processed Legacy AGC JSON Data Structure
 						span Updated
 					p 
-						span After acquring the farmers' base64 image strings, use the following JSON structure to return a successfully processed legacy AGC back to our database. 
+						span After acquiring the farmers' biometric data from NIBBS, use the following JSON structure to return a successfully processed legacy AGC back to our database. 
 					p Populate the 
 						span.inline-code unprocessed_farmers
 						span array with BVNs for farmers whose base64 image strings you were unable to acquire for that particular legacy AGC.
