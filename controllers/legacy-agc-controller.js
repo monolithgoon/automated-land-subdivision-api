@@ -1,7 +1,8 @@
 const chalk = require("../utils/chalk-messages");
 const LEGACY_AGC_MODEL = require("../models/legacy-agc-model.js");
 const LEGACY_AGC_FARMERS_MODEL = require("../models/legacy-agc-farmers-model.js");
-const { getAllDocuments } = require("./handler-factory");
+const PROCESSED_LEGACY_AGC_MODEL = require("../models/processed-legacy-agc-model.js");
+const { getAllDocuments, insertOneDocument, findOneDocument, returnOneDocument } = require("./handler-factory");
 
 
 // CHECK THAT THE agc_id IS VALID BEFORE RUNNING getAgc()
@@ -14,41 +15,82 @@ exports.checkID = async (req, res, next) => {
 };
 
 
+exports.insertLegacyAgc = async (req, res, next) => {
+
+	console.log(chalk.success(`CALLED THE insertLegacyAgc CONTROLLER FN. `))
+   
+   const legacyAgcPayload = req.body;
+   
+   console.log({legacyAgcPayload});
+
+   try {
+      
+      // CREATE A NEW DOCUMENT
+      const newLegacyAgc = await LEGACY_AGC_MODEL.create(legacyAgcPayload) // "model.create" returns a promise
+
+      // SERVER RESPONSE
+      res.status(201).json({
+         status: 'success',
+         inserted_at: req.requestTime,
+         data: newLegacyAgc
+      });
+      
+   } catch (err) { 
+      res.status(400).json({ // 400 => bad request
+         status: 'fail',
+         message: "That POST request failed. Refer to the API documentation, and fix your JSON payload.",
+         error_msg: err.message,
+      });
+   };
+};
+
+
 // GET A SINGLE LEGACY AGC
 exports.getLegacyAgc = async (req, res) => {
+   
    try {
       
 		console.log(chalk.success("YOU SUCCESSFULLY CALLED THE [ getLegacyAgc ] CONTROLLER FN. "));
 
-      // EXTRACT THE agc_id FROM THE QUERY OBJ.
+      // EXTRACT THE geo_cluster_id FROM THE QUERY OBJ.
       let queryObj = { ...req.query }
       const queryObjKey = Object.keys(queryObj);
 
       // RE-BUILD THE QUERY OBJ.
       queryObj = {
-         "properties.agc_id" : queryObjKey[0]
-      }
+         "properties.geo_cluster_id" : queryObjKey[0]
+      };
 
-      // CONDUCT THE DB QUERY
-      console.log(queryObj);
-      const dbQuery = LEGACY_AGC_MODEL.find(queryObj)
+      let returnedDoc, apiMessage = "";
 
-      const agc = await dbQuery
-      console.log(agc);
-      
+      if (await findOneDocument(LEGACY_AGC_MODEL, queryObj)) {
+         returnedDoc = await returnOneDocument(LEGACY_AGC_MODEL, queryObj);
+         // The query using 'geo_cluster_id' returns an array with only one element; deal with it..
+         returnedDoc = returnedDoc[0];
+      } else {
+         returnedDoc = null;
+         apiMessage = `Could not find a legacy AGC document for: [ ${queryObjKey[0]} ]`;
+      };
+
       res.status(200).json({
          status: 'success',
-         // The query using 'agc_id' returns an array with only one element; deal with it..
-         agcData: agc[0]
-      })
+         collection_doc: returnedDoc,
+         message: apiMessage,
+      });
       
    } catch (getLegacyAgcErr) {
-      console.error(chalk.fail(getLegacyAgcErr.message))
-   }
+      console.error(chalk.fail(getLegacyAgcErr.message));
+      res.status(404).json({
+			status: "fail",
+			console_msg: `That GET request failed.`,
+         error_msg: getLegacyAgcErr.message,
+		});
+   };
 };
 
 
 exports.getAllLegacyAgcs = async (request, response, next) => {
+
 	try {
 
 		console.log(chalk.success("YOU SUCCESSFULLY CALLED THE [ getAllLegacyAgcs ] CONTROLLER FN. "));
@@ -178,36 +220,7 @@ exports.getAllLegacyAgcs = async (request, response, next) => {
 };
 
 
-exports.insertLegacyAgc = async (req, res, next) => {
-
-	console.log(chalk.success(`CALLED THE insertLegacyAgc CONTROLLER FN. `))
-   
-   const legacyAgcPayload = req.body;
-   
-   console.log(legacyAgcPayload);
-
-   try {
-      
-      // CREATE A NEW DOCUMENT
-      const newLegacyAgc = await LEGACY_AGC_MODEL.create(legacyAgcPayload) // "model.create" returns a promise
-
-      // SERVER RESPONSE
-      res.status(201).json({
-         status: 'success',
-         inserted_at: req.requestTime,
-         data: newLegacyAgc
-      });
-      
-   } catch (err) { 
-      res.status(400).json({ // 400 => bad request
-         status: 'fail',
-         message: 'That POST request failed. Check your JSON data payload.',
-         error_msg: err.message,
-      });
-   };
-};
-
-
+// REMOVE > DEPRC.
 // INSERT FARMERS WHOSE BVNs HAVE BEEN VALIDATED
 exports.insertProcessedFarmers = async (req, res, next) => {
 
@@ -241,6 +254,7 @@ exports.insertProcessedFarmers = async (req, res, next) => {
 };
 
 
+// REMOVE > DEPRC.
 exports.updateProcessedFarmers = async (req, res, next) => {
 
 	console.log(chalk.success(`Called the [ updateProcessedFarmers ] controller fn.`));
@@ -273,6 +287,7 @@ exports.updateProcessedFarmers = async (req, res, next) => {
 };
 
 
+// REMOVE > DEPRC.
 exports.getProcessedLegacyAgcFarmers = async (req, res, next) => {
    
    console.log(chalk.success("SUCCESSFULLY CALLED THE [ getProcessedFarmers ] CONTROLLER FN. "));
@@ -291,9 +306,8 @@ exports.getProcessedLegacyAgcFarmers = async (req, res, next) => {
 };
 
 
-// TODO
 exports.insertProcessedLegacyAgc = async (req, res, next) => {
-   // nothing here
+   insertOneDocument(req, res, PROCESSED_LEGACY_AGC_MODEL);
 };
 
 

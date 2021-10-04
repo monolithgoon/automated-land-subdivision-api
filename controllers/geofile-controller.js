@@ -3,7 +3,7 @@ const catchAsyncError = require('../utils/catch-async.js')
 const fs = require('fs');
 const multerFileUpload = require("../middleware/multer-file-upload.js");
 const { _geofileConverter } = require('../utils/geofile-converter.js');
-const { _validateAllocationsArea } = require('../utils/utils.js');
+const { _validateAllocationsArea } = require('../utils/helpers.js');
 const GEO_CLUSTER_DETAILS_MODEL = require('../models/geo-cluster-details-model.js')
 
 

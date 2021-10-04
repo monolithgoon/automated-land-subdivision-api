@@ -2,6 +2,16 @@ const turf = require("@turf/turf");
 const chalk = require('./chalk-messages.js');
 
 
+// DISABLLE SOME DEFAULT EXPRESS HEADERS
+const _customHeaders = (app, req, res, next) => {
+   app.disable(`x-powerd-by`);
+   res.setHeader(`X-Powered-By`, `Your Village People V9.31`);
+   res.removeHeader(`Access-Control-Allow-Origin`);
+   res.removeHeader(`Connection`);
+   next();
+};
+
+
 const _getNextPayload = (prevMiddlewareParam, apiReqBodyParam) => {
    let nextPayload;
    if (prevMiddlewareParam) {
@@ -27,6 +37,7 @@ function _validateAllocationsArea(geojson, allocationsArray, geofileName) {
 
 
 module.exports = {
+   _customHeaders,
    _getNextPayload,
    _validateAllocationsArea,
 }

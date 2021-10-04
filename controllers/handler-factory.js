@@ -69,6 +69,35 @@ exports.getAllDocuments = async function (request, model) {
 };
 
 
+exports.insertOneDocument = async function (request, response, model) {
+
+   const payload = request.body;
+
+   try {
+      
+      const newDoc = await model.create(payload);
+
+      if (newDoc) {
+         response.status(201).json({
+            status: "success",
+            inserted_at: request.requestTime,
+            data: newDoc,
+         });
+      };
+      
+   } catch (insertDocErr) {
+
+      console.log(chalk.fail(`insertDocErr: ${insertDocErr.message}`));
+
+      response.status(400).json({
+         status: "fail",                    
+         message: "That POST request failed. Refer to the API documentation, and fix your JSON payload.",
+         error_msg: insertDocErr.message,
+      })
+   };
+};
+
+
 exports.findOneDocument = async (model, queryObj) => {
    console.log({queryObj})
    try {
@@ -77,5 +106,16 @@ exports.findOneDocument = async (model, queryObj) => {
       else return false;
    } catch (findDocErr) {
       console.log(chalk.fail(`findDocErr: ${findDocErr.message}`))
+   };
+};
+
+
+exports.returnOneDocument = async (model, queryObj) => {
+   try {
+      const dbQuery = model.find(queryObj);
+      const doc = await dbQuery;
+      return doc;
+   } catch (returnDocErr) {
+      console.log(chalk.fail(`returnDocErr: ${returnDocErr.message}`));
    };
 };

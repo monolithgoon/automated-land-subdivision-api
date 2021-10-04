@@ -22,7 +22,7 @@ const polygonSchema = new mongoose.Schema({
 const geometrySchema = new mongoose.Schema({
    type: {
       type: String,
-      enum: [ 'Point', 'MultiPoint', 'LineString', 'MultiLineString', 'Polygon', 'MultiPolygon'],
+      enum: [ 'Point', 'Polygon', 'MultiPolygon'],
       default: 'Polygon',
       // FIXME > CUSTOM VALIDATION DOES NOT SEEM TO BE WORKING 
       // vallidate: {
@@ -41,8 +41,8 @@ const geometrySchema = new mongoose.Schema({
    },
    coordinates: {
       type: [Array],
-      required: [true, `This plot is missing its coordinates`],
-      unique: [true, `A plot with these coordinates already exists in the database`]
+      required: [true, `This farm plot is missing its coordinates`],
+      unique: [true, `A farm plot with these coordinates already exists in the database`]
    }
 });
 
@@ -86,18 +86,13 @@ const featureSchema = new mongoose.Schema({
       plot_owner_bvn : {
          type: Number,
       },
-      // REMOVE > DEPRC.
-      // plot_owner_base64: {
-      //    type: Array,
-      //    default: [],
-      // }
-   }
+   },
 });
 
 
 
-// LEGACY AGC SCHEMA
-const legacyAgcSchema = new mongoose.Schema({
+// LEGACY AGC SCHEMAS
+const legacyAgcSchemaV2 = new mongoose.Schema({
 
    type: {
       type: String,
@@ -116,14 +111,14 @@ const legacyAgcSchema = new mongoose.Schema({
       
       geo_cluster_id: {
          type: String,
-         required: [true, `Each geo. cluster must have an ID`],
-         unique: [true, `A geo. cluster with this ID [ ${this.geo_cluster_id} ] already exists in the database`]
+         required: [true, `Each legacy AGC must have a unique Id`],
+         unique: [true, `A legacy AGC with this ID [ ${this.geo_cluster_id} ] already exists in the database`]
       },
 
       geo_cluster_name: {
          type: String,
-         required: [true, `The name of the geo. cluster must be specified.`],
-         unique: [true, `A geo. cluster with this name [ ${this.geo_cluster_name} ] already exists in the database`]
+         required: [true, `The name of the legacy AGC must be specified.`],
+         unique: [true, `A legacy AGC with this name [ ${this.geo_cluster_name} ] already exists in the database`]
       },
 
       geo_cluster_total_features: {
@@ -211,7 +206,7 @@ const legacyAgcSchema = new mongoose.Schema({
 
 // INIT. THE DATA MODEL
 // const LEGACY_AGC_MODEL = mongoose.model('legacy_agcs', legacyAgcSchema);
-const LEGACY_AGC_MODEL = mongoose.model('legacy_agcs_v2', legacyAgcSchema);
+const LEGACY_AGC_MODEL = mongoose.model('legacy_agcs_v2', legacyAgcSchemaV2);
 
 
 

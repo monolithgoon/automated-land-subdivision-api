@@ -9,6 +9,7 @@ dotenv.config({path: '../../config.env'}) // CONFIGURE ENV. VARIABLES BEFORE CAL
 const AGC_MODEL = require('../../models/agc-model.js')
 const PARCELIZED_AGC_MODEL = require('../../models/parcelized-agc-model.js')
 const LEGACY_AGC_MODEL = require('../../models/legacy-agc-model.js')
+const PROCESSED_LEGACY_AGC_MODEL = require('../../models/processed-legacy-agc-model.js')
 
 const { findOneDocument } = require('../../controllers/handler-factory.js')
 
@@ -102,7 +103,7 @@ const exportAgc = async (agcFileName) => {
 
 
 // DELETE ONE PARCELIZED AGC
-const deleteOneAGC = async (agcID) => {
+const deleteOneAGC = async (docId) => {
 
    // CONNECT TO THE DB..
    await dbConnect();
@@ -123,7 +124,7 @@ const deleteOneAGC = async (agcID) => {
       };
          
          // INITIATE USER INTERACTION
-         readline.question(chalk.interaction(`Are you sure you want to delete this AGC: ${agcID}? [ y / yes / Y ]: `), async (answer) => {
+         readline.question(chalk.interaction(`Are you sure you want to delete this AGC: ${docId}? [ y / yes / Y ]: `), async (answer) => {
    
             if (answer === 'y' || answer === 'yes' || answer === 'Y') {
    
@@ -135,17 +136,22 @@ const deleteOneAGC = async (agcID) => {
                      
                      case name === 'agcs' || name === 'AGCS':
                         dbModel = AGC_MODEL;
-                        mongoQueryObj = {'properties.agc_id': agcID};
+                        mongoQueryObj = {'properties.agc_id': docId};
                         break;
 
                      case name === 'parcelized-agcs' || name === 'PARCELIZED-AGCS' || name === 'pagcs':
                         dbModel = PARCELIZED_AGC_MODEL;
-                        mongoQueryObj = {'properties.agc_id': agcID};
+                        mongoQueryObj = {'properties.agc_id': docId};
                         break;
 
                      case name === 'legacy-agcs' || name === 'LEGACY-AGCS' || name === 'lagcs' || name === 'LAGCS':
                         dbModel = LEGACY_AGC_MODEL;
-                        mongoQueryObj = {'properties.geo_cluster_id': agcID};
+                        mongoQueryObj = {'properties.geo_cluster_id': docId};
+                        break;
+                  
+                     case name === 'processed-legacy-agcs' || name === 'PROCESSED-LEGACY-AGCS' || name === 'proclagcs' || name === 'PROCLAGCS':
+                        dbModel = PROCESSED_LEGACY_AGC_MODEL;
+                        mongoQueryObj = {'properties.legacy_agc_id': docId};
                         break;
                   
                      default:
@@ -161,7 +167,7 @@ const deleteOneAGC = async (agcID) => {
 
                         if (!err) {
 
-                           console.log(chalk.success(`The AGC ${agcID} was successfully deleted from the ${name} db. collection `));
+                           console.log(chalk.success(`The AGC ${docId} was successfully deleted from the ${name} db. collection `));
                            endInteraction();
 
                         } else {

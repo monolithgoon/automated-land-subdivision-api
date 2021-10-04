@@ -2,13 +2,16 @@
 
 const path = require('path');
 const express = require('express')
-const EXPRESS_APP = express()
+const EXPRESS_APP = express();
 const Morgan = require('morgan'); // HTTP request logger
 const BodyParser = require('body-parser'); // GET THE CONTENTS OF request.body
 const compression = require('compression'); // server response compression
 const cors = require('cors'); // this will allow other websites access the api
-const AppError = require('./utils/app-error.js')
-const globalErrorHandler = require('./controllers/error-controller.js')
+const AppError = require('./utils/app-error.js');
+const globalErrorHandler = require('./controllers/error-controller.js');
+const { _customHeaders } = require('./utils/helpers.js');
+
+
 
 // APPEND THE APP BASE DIR. TO THE GLOBAL OBJ.
 // Node HAS A GLOBAL NAMESPACE OBJECT CALLED "global"
@@ -52,7 +55,7 @@ EXPRESS_APP.use(BodyParser.json({limit: '16mb'}))
 if (process.env.NODE_ENV === 'development') {
    // console.log(highlight(`Our node environment is currently: ${process.env.NODE_ENV} `))
    EXPRESS_APP.use(Morgan('dev'))
-}
+};
 
 
 
@@ -63,7 +66,7 @@ if (process.env.NODE_ENV === 'development') {
 EXPRESS_APP.use((request, response, next) => {
    // console.log(allGood('Hello from the 1st (custom) middleware in app.js..'));
    next();
-})
+});
 
 
 
@@ -78,6 +81,13 @@ EXPRESS_APP.use((request, response, next) => {
 
 // SERVER RESPONSE COMPRESSION MIDDLEWARE FOR ALL TEXT SENT TO CLIENTS
 EXPRESS_APP.use(compression());
+
+
+
+// DISABLE DEFAULT HEADERS
+EXPRESS_APP.use((req, res, next) => {
+   return _customHeaders(EXPRESS_APP, req, res, next);
+});
 
 
 

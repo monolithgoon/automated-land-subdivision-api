@@ -12,24 +12,26 @@ ROUTER.route('/legacy-agc/')
    .post(legacyAgcController.insertLegacyAgc);
 
 
+// REMOVE > DEPRC.
 ROUTER.route('/legacy-agc/processed-farmers/')
    .post(legacyAgcController.checkID, legacyAgcController.insertProcessedFarmers)
    .patch(legacyAgcController.checkID, legacyAgcController.updateProcessedFarmers);
 
 
+// REMOVE > DEPRC.
 ROUTER.route('/processed-farmers/')
    .get(legacyAgcController.getProcessedLegacyAgcFarmers);
    
    
-   // TODO
-   ROUTER.route('/legacy-agc/processed/')
-      .post(legacyAgcController.checkID, legacyAgcController.insertProcessedLegacyAgc);
+ROUTER.route('/legacy-agc/processed/')
+   .post(legacyAgcController.insertProcessedLegacyAgc);
 
 
 ROUTER.route('/processed/')
 .get(legacyAgcController.getAllProcessedLegacyAgcs);
 
 
+// TODO
 ROUTER.route('/failed/')
    .get(legacyAgcController.checkID, legacyAgcController.getAllFailedLegacyAgcs);
 

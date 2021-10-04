@@ -353,26 +353,28 @@ block api-guide
 						code.language-javascript.
 							https://geoclusters.herokuapp.com/api/v2/legacy-agcs/legacy-agc/processed/
 
-					p To return legacy AGCs that were #[em NOT] successfully processed for whatever reason (for eg. too many BVNs failed, etc), send a POST request to the endpoint below. Create the following field 
-						span.inline-code validation_failed_reason
-						span , and populate it a brief description of why the failure happened. 
-					p #[strong When POSTing to this URL, that field cannot be empty].
-					pre.embedded-code-snippet
-						code.language-javascript.
-							https://geoclusters.herokuapp.com/api/v2/legacy-agcs/validation-failed/
+					// REMOVE > DEPRC.
+					//- p To return legacy AGCs that were #[em NOT] successfully processed for whatever reason (for eg. too many BVNs failed, etc), send a POST request to the endpoint below. Create the following field 
+					//- 	span.inline-code validation_failed_reason
+					//- 	span , and populate it a brief description of why the failure happened. 
+					//- p #[strong When POSTing to this URL, that field cannot be empty].
+					//- pre.embedded-code-snippet
+					//- 	code.language-javascript.
+					//- 		https://geoclusters.herokuapp.com/api/v2/legacy-agcs/validation-failed/
 
-					p.important-note(style="display: flex; align-items: center;")
-						span(style="padding-right: 20px; font-size: 25px; font-weight: 100;")
-							i.fas.fa-exclamation-triangle
-						span Note that the POST request will fail if the 
-							span.inline-code geo_cluster_id
-							span , and/or 
-							span.inline-code geo_cluster_name
-							span fields are missing from the payload, or if another legacy AGC with those credentials already exist in the DB. Also, the 
-							span.inline-code plot_owners
-							span array cannot be empty.
+					//- p.important-note(style="display: flex; align-items: center;")
+					//- 	span(style="padding-right: 20px; font-size: 25px; font-weight: 100;")
+					//- 		i.fas.fa-exclamation-triangle
+					//- 	span Note that the POST request will fail if the 
+					//- 		span.inline-code geo_cluster_id
+					//- 		span , and/or 
+					//- 		span.inline-code geo_cluster_name
+					//- 		span fields are missing from the payload, or if another legacy AGC with those credentials already exist in the DB. Also, the 
+					//- 		span.inline-code plot_owners
+					//- 		span array cannot be empty.
 
 				br
+				// FIXME > CHANGE TO PROCESSED LEGACY AGC GEOJSON
 				section#processed_legacy_agc_json
 					h3 Processed Legacy AGC JSON Data Structure
 						span Updated

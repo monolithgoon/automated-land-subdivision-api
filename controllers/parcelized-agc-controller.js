@@ -2,7 +2,7 @@
 
 const chalk = require('../utils/chalk-messages.js')
 const catchAsyncError = require('../utils/catch-async.js')
-const { _getNextPayload } = require('../utils/utils.js');
+const { _getNextPayload } = require('../utils/helpers.js');
 const PARCELIZED_AGC_MODEL = require('../models/parcelized-agc-model.js')
 
 
@@ -171,7 +171,7 @@ exports.getAllParcelizedAgcs = async (request, response) => {
 			data: {
 				parcelized_agcs: returnedAGCData,
 
-            collection_data: returnedAGCData,
+            collection_docs: returnedAGCData,
             collection_name: `parcelized-agcs`,
             docs_count: returnedAGCData.length,
 			},
