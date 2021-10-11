@@ -57,7 +57,7 @@ const geometrySchema = new mongoose.Schema({
 });
 
 
-const farmerBiometricsSchema = new mongoose.Schema({
+const farmerBioDataSchema = new mongoose.Schema({
    farmer_id: {
       type: String,
       required: [true, `Each farmer must have a farmer_id.`],
@@ -108,7 +108,7 @@ const farmerBiometricsSchema = new mongoose.Schema({
 
 
 // PLOT OWNERS' FEATURE SCHEMA
-const featureSchema = new mongoose.Schema({
+const farmPlotSchema = new mongoose.Schema({
    _id: {
       type: String
       // type: Mongoose.isValidObjectId,
@@ -127,7 +127,7 @@ const featureSchema = new mongoose.Schema({
       plot_size: {
          type: Number,
       },
-      farmer_bio_data: farmerBiometricsSchema,
+      farmer_bio_data: farmerBioDataSchema,
    },
 });
 
@@ -143,7 +143,7 @@ const processedLegacyAgcSchema = new mongoose.Schema({
    },
 
    features: {
-      type: [featureSchema],
+      type: [farmPlotSchema],
       required: [true, `The FeatureCollection must have at least one feature, or an array of features`],
       validate: [(entry) => Array.isArray(entry) && entry.length > 0, `The legacy AGC FeatureCollection must have at least one feature, or an array of features`],
    },
@@ -197,6 +197,15 @@ const processedLegacyAgcSchema = new mongoose.Schema({
 
 // INIT. THE DATA MODEL
 const PROCESSED_LEGACY_AGC_MODEL = mongoose.model('processed_legacy_agcs', processedLegacyAgcSchema);
+
+
+//
+processedLegacyAgcSchema.pre("save", function(next) {
+   this.properties.features.forEach(farmPlot => {
+      let farmerGender = farmPlot.properties.farmer_bio_data.farmer_gender;
+      farmPlot.properties.farmer_bio_data.farmer_gender = farmerGender.toLowerCase();
+   })
+})
 
 
 // EXPORT THE MODEL

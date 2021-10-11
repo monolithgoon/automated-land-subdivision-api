@@ -159,6 +159,7 @@ const legacyAgcSchemaV2 = new mongoose.Schema({
          },
       },
 
+      // REMOVE > UN-USED
       geo_cluster_governance_structure: {
          president: {
             first_name: {
