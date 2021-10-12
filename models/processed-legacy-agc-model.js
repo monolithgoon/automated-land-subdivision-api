@@ -62,6 +62,7 @@ const farmerBioDataSchema = new mongoose.Schema({
       type: String,
       required: [true, `Each farmer must have a farmer_id.`],
       unique: [true, `The farmer's farmer_id must be unique.`],
+      spare: true, // ALLOW "null" VALUES
       minLength: 12,
    },
    farmer_photo_url: {
@@ -86,11 +87,12 @@ const farmerBioDataSchema = new mongoose.Schema({
    },
    farmer_id_document_type: {
       type: String,
-      enum: ["International Passport", "Voters Card", "NIN", "Drivers License"],
+      enum: ["International Passport", "voters card", "nin", "drivers license"],
    },
    farmer_id_document_no: {
       type: String,
-      unique: [true, `Another farmer with this identification document number: ${this.farmer_id_document_no} already exists in the database`]
+      // unique: [true, `Another farmer with this identification document number: ${this.farmer_id_document_no} already exists in the database`],
+      sparse: true, // ALLOW "null" VALUES
    },
    farmer_country_origin: {
       type: String,
@@ -197,15 +199,6 @@ const processedLegacyAgcSchema = new mongoose.Schema({
 
 // INIT. THE DATA MODEL
 const PROCESSED_LEGACY_AGC_MODEL = mongoose.model('processed_legacy_agcs', processedLegacyAgcSchema);
-
-
-//
-processedLegacyAgcSchema.pre("save", function(next) {
-   this.properties.features.forEach(farmPlot => {
-      let farmerGender = farmPlot.properties.farmer_bio_data.farmer_gender;
-      farmPlot.properties.farmer_bio_data.farmer_gender = farmerGender.toLowerCase();
-   })
-})
 
 
 // EXPORT THE MODEL
