@@ -315,7 +315,7 @@ exports.getAllProcessedLegacyAgcs = async (req, res, next) => {
    
    console.log(chalk.success("SUCCESSFULLY CALLED THE [ getAllProcessedLegacyAgcs ] CONTROLLER FN. "));
 
-   const processedLegacyAgcs = await getAllDocuments(req, LEGACY_AGC_MODEL);
+   const processedLegacyAgcs = await getAllDocuments(req, PROCESSED_LEGACY_AGC_MODEL);
 
    res.status(200).json({
       status: `success`,

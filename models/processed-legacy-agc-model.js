@@ -91,7 +91,7 @@ const farmerBioDataSchema = new mongoose.Schema({
    },
    farmer_id_document_no: {
       type: String,
-      // unique: [true, `Another farmer with this identification document number: ${this.farmer_id_document_no} already exists in the database`],
+      unique: [true, `Another farmer with this identification document number: ${this.farmer_id_document_no} already exists in the database`],
       sparse: true, // ALLOW "null" VALUES
    },
    farmer_country_origin: {
@@ -175,6 +175,9 @@ const processedLegacyAgcSchema = new mongoose.Schema({
             type: Number,
          },
          primary_crop: {
+            type: String,
+         },
+         country: {
             type: String,
          },
          state: {
