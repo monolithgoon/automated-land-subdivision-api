@@ -129,6 +129,15 @@ const farmPlotSchema = new mongoose.Schema({
       plot_size: {
          type: Number,
       },
+      plot_owner_first_name: {
+         type: String,
+      },
+      plot_owner_middle_name: {
+         type: String,
+      },
+      plot_owner_last_name: {
+         type: String,
+      },
       farmer_bio_data: farmerBioDataSchema,
    },
 });
