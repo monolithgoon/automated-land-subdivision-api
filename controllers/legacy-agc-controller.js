@@ -320,6 +320,7 @@ exports.getAllProcessedLegacyAgcs = async (req, res, next) => {
    res.status(200).json({
       status: `success`,
       requested_at: req.requestTime,
+      num_docs: processedLegacyAgcs.length,
       data: {
          collection_name: `processed-legacy-agcs`,
          collection_docs: processedLegacyAgcs,
