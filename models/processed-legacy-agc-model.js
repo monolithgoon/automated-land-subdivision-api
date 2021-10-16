@@ -62,7 +62,7 @@ const farmerBioDataSchema = new mongoose.Schema({
       type: String,
       // required: [true, `Each farmer must have a farmer_id.`],
       unique: [true, `The farmer's farmer_id must be unique.`],
-      spare: true, // ALLOW "null" VALUES
+      sparse: true, // ALLOW "null" VALUES
       minLength: 12,
    },
    farmer_photo_url: {
@@ -84,8 +84,9 @@ const farmerBioDataSchema = new mongoose.Schema({
    },
    farmer_gender: {
       type: String,
-      enum: ["m", "f", "male", "female"],
-      message: `{VALUE} is not a supported gender type.`
+      // enum: ["m", "f", "male", "female"],
+      message: `{VALUE} is not a supported gender type.`,
+      sparse: true,
    },
    farmer_age: {
       type: Number,
@@ -96,7 +97,8 @@ const farmerBioDataSchema = new mongoose.Schema({
    },
    farmer_id_document_type: {
       type: String,
-      enum: ["International Passport", "voters card", "nin", "drivers license"],
+      // enum: ["International Passport", "voters card", "nin", "drivers license"],
+      sparse: true,
    },
    farmer_id_document_no: {
       type: String,
