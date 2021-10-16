@@ -60,7 +60,7 @@ const geometrySchema = new mongoose.Schema({
 const farmerBioDataSchema = new mongoose.Schema({
    farmer_id: {
       type: String,
-      required: [true, `Each farmer must have a farmer_id.`],
+      // required: [true, `Each farmer must have a farmer_id.`],
       unique: [true, `The farmer's farmer_id must be unique.`],
       spare: true, // ALLOW "null" VALUES
       minLength: 12,
@@ -70,8 +70,17 @@ const farmerBioDataSchema = new mongoose.Schema({
    },
    farmer_names: {
       type: String,
-      required: [true, `Please specify this [ ${this.farmer_id} ] farmer's names`],
+      // required: [true, `Please specify this [ ${this.farmer_id} ] farmer's names`],
       message: `Received {VALUE}`
+   },
+   farmer_first_name: {
+      type: String,
+   },
+   farmer_middle_name: {
+      type: String,
+   },
+   farmer_last_name: {
+      type: String,
    },
    farmer_gender: {
       type: String,
@@ -106,7 +115,7 @@ const farmerBioDataSchema = new mongoose.Schema({
    farmer_home_address: {
       type: String,
    },
-})
+});
 
 
 // PLOT OWNERS' FEATURE SCHEMA
@@ -128,15 +137,6 @@ const farmPlotSchema = new mongoose.Schema({
       },
       plot_size: {
          type: Number,
-      },
-      plot_owner_first_name: {
-         type: String,
-      },
-      plot_owner_middle_name: {
-         type: String,
-      },
-      plot_owner_last_name: {
-         type: String,
       },
       farmer_bio_data: farmerBioDataSchema,
    },
