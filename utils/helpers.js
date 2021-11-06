@@ -6,7 +6,7 @@ const chalk = require('./chalk-messages.js');
 const _customHeaders = (app, req, res, next) => {
    app.disable(`x-powerd-by`);
    res.setHeader(`X-Powered-By`, `Your Village People V9.31`);
-   res.removeHeader(`Access-Control-Allow-Origin`);
+   // res.removeHeader(`Access-Control-Allow-Origin`);
    res.removeHeader(`Connection`);
    next();
 };

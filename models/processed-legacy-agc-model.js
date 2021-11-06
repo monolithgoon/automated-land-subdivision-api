@@ -61,7 +61,7 @@ const farmerBioDataSchema = new mongoose.Schema({
    farmer_id: {
       type: String,
       // required: [true, `Each farmer must have a farmer_id.`],
-      unique: [true, `The farmer's farmer_id must be unique.`],
+      // unique: [true, `The farmer's farmer_id must be unique.`],
       sparse: true, // ALLOW "null" VALUES
       minLength: 12,
    },
@@ -88,8 +88,8 @@ const farmerBioDataSchema = new mongoose.Schema({
       message: `{VALUE} is not a supported gender type.`,
       sparse: true,
    },
-   farmer_age: {
-      type: Number,
+   farmer_dob: {
+      type: String,
    },
    farmer_phone_number_1: {
       type: Number,
@@ -102,7 +102,7 @@ const farmerBioDataSchema = new mongoose.Schema({
    },
    farmer_id_document_no: {
       type: String,
-      unique: [true, `Another farmer with this identification document number: ${this.farmer_id_document_no} already exists in the database`],
+      // unique: [true, `Another farmer with this identification document number: ${this.farmer_id_document_no} already exists in the database`],
       sparse: true, // ALLOW "null" VALUES
    },
    farmer_country_origin: {

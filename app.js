@@ -33,16 +33,28 @@ EXPRESS_APP.use(express.static(path.join(__dirname, 'public')));
 
 
 // 3RD PARTY MIDDLEWARE > IMPLEMENT CORS
-// THIS ADDS "Access-cControl-Allow-Oriin *" TO THE RESPONSE HEADER
-EXPRESS_APP.use(cors());
+// THIS ADDS "Access-Control-Allow-Oriin" TO THE RESPONSE HEADER FOR THE SPECIFIED ORIGINS
+EXPRESS_APP.use(cors({
+   origin: 
+      [
+         // "http://127.0.0.1:1010",
+         // "https://avgmap.herokuapp.com", 
+         // "https://avg-dashboard.herokuapp.com",
+         "https://google.com"
+      ]
+}));
+
 // IF API IS @ api.natours.com; & FRONTEND IS @ natours.com
 // TO ENABLE CORS FOR ONLY natours.com >
    // EXPRESS_APP.use(cors({
    //    origin: 'https://www.natours.com'
    // }))
 
+
+
 // PRE-FLIGHT "OPTIONS" REQUEST RESPONSE(?)
 EXPRESS_APP.options('*', cors()); // enable cors pre-flight requests for all routes
+
 // EXPRESS_APP.options('/api/v1/parcelized-agcs/:id', cors()) // enable cors for complex requests (delete, patch, post) only on this specific route
 
 
@@ -122,7 +134,7 @@ EXPRESS_APP.use('*', (req, res, next) => {
    res.status(404).json({
       status: 'fail',
       message: `Can't find ${req.originalUrl} on this server.`
-   })
+   });
 
    // const err = new Error(`Can't find ${req.originalUrl} on this server.`);
 
@@ -134,12 +146,12 @@ EXPRESS_APP.use('*', (req, res, next) => {
    // next(err)
 
    // next(new AppError(`Can't find ${req.originalUrl} on this server.`, 404))
-})
+});
 
 
 
 // GLOBAL ERROR HANDLING M.WARE
-EXPRESS_APP.use(globalErrorHandler)
+EXPRESS_APP.use(globalErrorHandler);
 
 
 

@@ -283,7 +283,7 @@ exports.updateProcessedFarmers = async (req, res, next) => {
 		));
 	} catch (updateLegacyFarmersErr) {
 		console.log(chalk.fail(`${updateLegacyFarmersErr}`));
-	}
+	};
 };
 
 
