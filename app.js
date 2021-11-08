@@ -37,10 +37,10 @@ EXPRESS_APP.use(express.static(path.join(__dirname, 'public')));
 EXPRESS_APP.use(cors({
    origin: 
       [
-         // "http://127.0.0.1:1010",
-         // "https://avgmap.herokuapp.com", 
-         // "https://avg-dashboard.herokuapp.com",
-         "https://google.com"
+         "http://127.0.0.1:1010",
+         "https://avgmap.herokuapp.com", 
+         "https://avg-dashboard.herokuapp.com",
+         // "https://google.com"
       ]
 }));
 
