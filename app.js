@@ -40,7 +40,6 @@ EXPRESS_APP.use(cors({
          "http://127.0.0.1:1010",
          "https://avgmap.herokuapp.com", 
          "https://avg-dashboard.herokuapp.com",
-         // "https://google.com"
       ]
 }));
 
