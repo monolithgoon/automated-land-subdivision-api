@@ -205,7 +205,7 @@ exports.getParcelizedAgcsMetadata = async (request, response) => {
 
       for (let idx = 0; idx < parcelizedAgcs.length; idx++) {
          const parcelizedAgc = parcelizedAgcs[idx];
-         parcelizedAgcIds.push(parcelizedAgc.properties.agc_id);         
+         parcelizedAgcIds.push(parcelizedAgc.properties.agc_id.toLowerCase());         
       };
 
       // SEND RESPONSE
