@@ -160,7 +160,7 @@ exports.getAllParcelizedAgcs = async (request, response) => {
 
 
       // EXECUTE THE QUERY
-      const returnedAGCData = await dbQuery
+      const returnedAGCData = await dbQuery;
 
 
       // SEND RESPONSE
@@ -186,6 +186,50 @@ exports.getAllParcelizedAgcs = async (request, response) => {
 			console_message: "That GET request failed.",
 		});
 	}
+};
+
+
+
+// GET ALL FARM PARCELS ROUTE HANDLER FN.
+exports.getParcelizedAgcsMetadata = async (request, response) => {
+
+	try {
+
+		console.log(chalk.success("YOU SUCCESSFULLY CALLED THE [ getParcelizedAgcsMetadata ] CONTROLLER FN."));
+      console.log(request.query);
+
+      // EXECUTE THE QUERY
+      const parcelizedAgcs = await PARCELIZED_AGC_MODEL.find();
+
+      const parcelizedAgcIds = [];
+
+      for (let idx = 0; idx < parcelizedAgcs.length; idx++) {
+         const parcelizedAgc = parcelizedAgcs[idx];
+         parcelizedAgcIds.push(parcelizedAgc.properties.agc_id);         
+      };
+
+      // SEND RESPONSE
+		response.status(200).json({
+			status: "success",
+			requested_at: request.requestTime, // using the custom property from our custom middleware in app.js
+			data: {
+            collection_metadata: {
+               ids: parcelizedAgcIds,
+               docs_count: parcelizedAgcs.length,
+               collection_name: `parcelized-agcs`,
+            },
+			},
+      });
+      
+	} catch (err) {
+		console.log(err);
+		response.status(404).json({
+			// 400 => bad request
+			status: "fail",
+			message: err,
+			console_message: "That GET request failed.",
+		});
+	};
 };
 
 

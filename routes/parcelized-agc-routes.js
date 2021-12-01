@@ -47,6 +47,11 @@ ROUTER.route('/')
 
 
 
+ROUTER.route('/metadata')
+   .get(PARCELIZED_AGC_CONTROLLER.getParcelizedAgcsMetadata)
+
+
+
    // REMOVE > 
    // ROUTER.route("/:id")
    // 	.get(TOUR_CONTROLLER.checkID, TOUR_CONTROLLER.getTour)
