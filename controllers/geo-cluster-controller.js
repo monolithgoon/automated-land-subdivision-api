@@ -30,6 +30,7 @@ exports.insertGeoClusterGJ = async (req, res, next) => {
       
          // APPEND GEOJSON DATA TO LOCAL VARS.
          if (newGeoCluster) {
+            console.log(chalk.success(`A new AGC GeoJSON document was successfully created`));
             res.locals.appendedClusterGeoJSON = newGeoCluster;
             next();
          };
