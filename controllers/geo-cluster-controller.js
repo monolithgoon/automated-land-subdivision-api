@@ -7,7 +7,9 @@ const { findOneDocument } = require('./handler-factory.js');
 
 
 // TODO >
-// USES A SIMPLER VERSION OF THE AGC_MODEL WITH GeoJSON FEATURE I/OF FEAT. COLL.
+// USES A SIMPLER VERSION OF THE AGC_MODEL WITH GeoJSON FEATURE INSTEAD OF A FEAT. COLL.
+// DEFINING AN UN-PARCELIZED GEO-CLUSTER AS A FEATURE IS MORE APPROPRIATE
+// USE await GEO_CLUSTER_MODEL.create(req.body)
 exports.insertGeoCluster = async (req, res, next) => {
 	console.log(chalk.success(`CALLED THE [ insertGeoCluster ] CONTROLLER FN. `))
    next();

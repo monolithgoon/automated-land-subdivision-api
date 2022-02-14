@@ -48,6 +48,16 @@ API Deployment Checklist
       [ ] To remove origin from git repo: "git remote rm origin"
    [ ] Push to the remote repo: "git push -u origin master"
 
+   { ** 2021 UPDATE ** }
+      git init
+      gh repo create avg-dashboard --private
+      git remote add origin https://github.com/monolithgoon/avg-dashboard.git
+      git branch -M main
+      git pull origin main --allow-unrelated-histories
+      git add .
+      git commit -m "initial commit"   
+      git push -u origin main
+
 [x] Deploy to Heroku >>
    [ ] Create a 'start' script in packgage.json > "start": "node server.js"
    [ ] If app entry-point (server.js) is not in root dir, create a Procfile at app root dir. containing:
@@ -74,3 +84,12 @@ API Deployment Checklist
    [ ] Initialize Firebase in the project directory >> RUN: firebase init
 
 [ ] Open Heroku project > RUN: "heroku open"
+
+
+**GIT COMMANDS
+- REMOVE LOCAL GIT REPO AUTOMATICALLY CREATED BY REACT - rm -rf .git
+
+https://cloudsociety.microsoft.com/en/devopsacademy
+https://docs.microsoft.com/en-us/azure/app-service/quickstart-nodejs?tabs=windows&pivots=development-environment-cli
+https://www.atlassian.com/git/tutorials/setting-up-a-repository
+https://devreserve.com/

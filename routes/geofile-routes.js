@@ -32,7 +32,8 @@ ROUTER.route('/geofile/upload/')
       geofileController.uploadGeofile, 
       geofileController.convertGeofile, 
       geofileController.appendGeoJSONProperties,
-      geoClusterController.insertGeoCluster,
+      // geoClusterController.insertGeoCluster,
+      geoClusterController.insertGeoClusterGJ,
       subdivideController.subdivideGeofile,
       parcelizedAgcController.insertParcelizedGeofile,
    );
