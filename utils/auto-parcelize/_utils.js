@@ -170,7 +170,7 @@ function savePlotOwnerPhoto({photosDirectory, geofileID, farmer, base64ImageStr}
 
 
 // CHECK THAT THE C-M-F.js ALGO. RAN PROPERLY
-function _checkParity(landArea, totalAllocations, unparcelizedLandArea) {
+function _checkLandParity(landArea, totalAllocations, unparcelizedLandArea) {
 
    // landArea > org. size of geoCluster;
    // totalAllocations => sum of all the allocs.
@@ -269,7 +269,7 @@ module.exports = {
    _moveBboxPolygon,
    _toggleChunkifyDir,
    _analyzeGeojson,
-   _checkParity,
+   _checkLandParity,
    _getAllocationsMetadata,
    _generateRandomString,
 }

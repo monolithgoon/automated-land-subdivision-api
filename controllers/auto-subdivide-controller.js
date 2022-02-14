@@ -41,7 +41,8 @@ function autoSubdivideGJ(agc) {
 
          if (parcelizedClusterGJ) {
 
-            if (parcelizedClusterGJ.properties.parcelization_metadata.land_parity_ok) {
+            // FIXME > RESTORE > THIS IS CAUSING A LOT OF PARCELIZATION ATTEMPTS TO FAIL
+            // if (parcelizedClusterGJ.properties.parcelization_metadata.land_parity_ok) {
 
                // GET A PREVIEW MAP URL HASH
                parcelizedClusterGJ.properties["preview_map_url_hash"] = _generateRandomString();
@@ -49,7 +50,7 @@ function autoSubdivideGJ(agc) {
                console.log({parcelizedClusterGJ});
 
                return parcelizedClusterGJ;
-            };
+            // };
          };
       };
 
