@@ -30,10 +30,9 @@ ROUTER.route('/:file-name')
 ROUTER.route('/geofile/upload/')
    .post(
       geofileController.uploadGeofile, 
-      geofileController.convertGeofile, 
-      geofileController.appendGeoJSONProperties,
-      geoClusterController.insertGeoCluster,
-      // geoClusterController.insertGeoClusterGJ,
+      geofileController.convertGeofileToGeoJSON, 
+      geofileController.appendClusterDetails,
+      geoClusterController.insertGeofileGeoJSON,
       subdivideController.subdivideGeofile,
       parcelizedAgcController.insertParcelizedGeofile,
    );

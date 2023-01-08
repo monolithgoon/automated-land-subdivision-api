@@ -178,4 +178,4 @@ const PARCELIZED_AGC_MODEL = mongoose.model('parcelized_agcs', parcelizedAgcSche
 
 
 // EXPORT THE MODEL
-module.exports = PARCELIZED_AGC_MODEL
+module.exports = PARCELIZED_AGC_MODEL;

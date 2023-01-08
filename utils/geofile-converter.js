@@ -350,7 +350,7 @@ exports._geofileConverter = async function({completeFileName, geofileUploadPath,
 			// 		console.log(geofilePolygon);
 			// 		saveGeojson(baseFileName, convertedGeofilePath, geofilePolygon);
 			// 	})
-			// 	.catch(_err => { // FIXME < THIS MTD. FAILS TO PASS THE ERROR TO THE convertGeofile FN. IN geofile-controller.js 
+			// 	.catch(_err => { // FIXME < THIS MTD. FAILS TO PASS THE ERROR TO THE convertGeofileToGeoJSON FN. IN geofile-controller.js 
 			// 		console.log(chalk.fail(_err.message))
 			// 		throw new Error(`FUCK OGO OWO`)
 			// 	})

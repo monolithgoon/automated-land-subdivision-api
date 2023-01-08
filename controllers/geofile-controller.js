@@ -59,10 +59,10 @@ const uploadGeofile = async (req, res, next) => {
 
 
 // CONVERT THE GEO FILE TO GeoJSON && SAVE
-// const convertGeofile = (req, res, next) => {
-const convertGeofile = async (req, res, next) => {
+// const convertGeofileToGeoJSON = (req, res, next) => {
+const convertGeofileToGeoJSON = async (req, res, next) => {
 
-	console.log(chalk.success(`CALLED THE [ convertGeofile ] CONTROLLER FN. `))
+	console.log(chalk.success(`CALLED THE [ convertGeofileToGeoJSON ] CONTROLLER FN. `))
 	
 	// GET THE FILE DETAILS FROM THE MULTER MWRE. (INCLUDES THE EXTENSION)
 	const completeFileName = req.file.originalname;
@@ -114,7 +114,7 @@ const convertGeofile = async (req, res, next) => {
 		// REMOVE > DEPRECATED > ALL POTENTIAL ERRS. HAVE BEEN ADEQUEATELY HANDLED ABOVE 
 		// if (completeFileName) {
 		// 	res.status(500).send({
-		// 		message: `This file [ ${completeFileName} ] was successfully uploaded, but was NOT succesfully converted to GeoJSON. Check the convertGeofile fn. in the file-controller module.`,
+		// 		message: `This file [ ${completeFileName} ] was successfully uploaded, but was NOT succesfully converted to GeoJSON. Check the convertGeofileToGeoJSON fn. in the file-controller module.`,
 		// 		error_msg: convertGeofileErr.message,
 		// 	});
 		// } else {
@@ -136,9 +136,9 @@ const convertGeofile = async (req, res, next) => {
 
 
 // APPEND THE FARMER ALLOCATIONS JSON RECORD TO THE DELIN. LAND GEOJSON
-const appendGeoJSONProperties = async (req, res, next) => {
+const appendClusterDetails = async (req, res, next) => {
 
-	console.log(chalk.success(`CALLED THE [ appendGeoJSONProperties ] CONTROLLER FN. `))
+	console.log(chalk.success(`CALLED THE [ appendClusterDetails ] CONTROLLER FN. `))
 
 	const convertedGeojson = JSON.parse(res.locals.geofileGeoJSONPolygon);
 	const geofileID = res.locals.geojsonFileName;
@@ -180,6 +180,9 @@ const appendGeoJSONProperties = async (req, res, next) => {
 			// TODO > CHANGE "farmers" TO "plot_owners" > 
 			convertedGeojson.properties = geoClusterDetailsJSON[0].properties; 
 
+			// CREATE A STANDALONE GOFILE ID FIELD IN PROPS.
+			convertedGeojson.properties["geofile_id"] = geofileID;
+
 			// PASS THE UPDATED/APPENDED GEOJSON TO THE NEXT M.WARE
 			res.locals.appendedGeofileGeoJSON = convertedGeojson;
 
@@ -188,7 +191,7 @@ const appendGeoJSONProperties = async (req, res, next) => {
       } else {
 			
 			// NO FARMERS' ALLOCATIONS JSON WITH THAT ID EXISTS IN THE DB.
-			throw new Error(`Our database DOES NOT have a JSON record of a geo-cluster document whose 'geofile_id' matches this file's name: [ ${geofileID} ]. The db. query in the appendGeoJSONProperties fn. in the file-controller failed. `);
+			throw new Error(`Our database DOES NOT have a JSON record of a geo-cluster document whose 'geofile_id' matches this file's name: [ ${geofileID} ]. The db. query in the appendClusterDetails fn. in the file-controller failed. `);
 
 			// REMOVE > DEPRECATED 
          // res.status(404).json({
@@ -259,6 +262,6 @@ module.exports = {
 	getListFiles,
 	downloadFile,
 	uploadGeofile,
-	convertGeofile,
-	appendGeoJSONProperties,
+	convertGeofileToGeoJSON,
+	appendClusterDetails,
 };

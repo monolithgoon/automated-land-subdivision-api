@@ -58,7 +58,8 @@ API Deployment Checklist
       git commit -m "initial commit"   
       git push -u origin main
 
-[x] Deploy to Heroku >>
+
+IMPORTANT > DEPLOY NODE JS APP TO HEROKU
    [ ] Create a 'start' script in packgage.json > "start": "node server.js"
    [ ] If app entry-point (server.js) is not in root dir, create a Procfile at app root dir. containing:
       [ ] web: node server/server.js
@@ -68,7 +69,7 @@ API Deployment Checklist
    [x] Upload files from "master" repository to Heroku > 
       [x] RUN: "git push heroku master"
       [x] Verify this works, and confirm the remote repos > RUN: git remote -v
-   [x] ******Set environment variables on Heroku (needed b/cos config.env  is excluded from git) > 
+   [x] ******Set environment variables on Heroku (needed b/cos config.env  is excluded from git commits) > 
       [x] RUN: heroku config:set NODE_ENV=production
       [x] RUN: heroku config:set ATLAS_DB_STRING="mongodb+srv://monkey-paw:<PASSWORD>@monkey-paw-cluster-cwcff.gcp.mongodb.net/nirsal_agcs?retryWrites=true&w=majority"
       [x] RUN: heroku config:set ATLAS_DB_PASSOWRD=*******
@@ -78,6 +79,24 @@ API Deployment Checklist
       [ ] RUN > npm run deploy
 
    [ ] Get currently deployed app - RUN: git remote -v
+
+
+IMPORTANT > DEPLOY NODE.JS / REACT APP TO HEROKU
+   [ ] Create & run React "build" folder on server
+      [ ] Add following script to package.json
+         "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+            -- "NPM_CONFIG_PRODUCTION=false" temporarily removes the app from production mode, in order to execute "npm run build"
+            -- "npm install --prefix client" installs all the React client-side dependencies / folders 
+            -- "npm run build" creates a static production build and loads the index.html
+   [ ] RUN: heroku login
+   [ ] RUN: heroku create
+   [ ] RUN: git remote -v
+   [ ] Change default name of Heroku app > 
+      [ ] RUN: heroku apps:rename [newname]
+   [ ] (Redundant) Add Heroku as a remote repo >
+      [ ] RUN: heroku git:remote -a <HEROKU_APP_NAME> 
+   [ ] RUN: git push heroku master
+
 
 [ ] Deploy to Firebase >>
    [x] Install the Firebase CLI >> RUN: npm install -g firebase-tools
@@ -92,4 +111,3 @@ API Deployment Checklist
 https://cloudsociety.microsoft.com/en/devopsacademy
 https://docs.microsoft.com/en-us/azure/app-service/quickstart-nodejs?tabs=windows&pivots=development-environment-cli
 https://www.atlassian.com/git/tutorials/setting-up-a-repository
-https://devreserve.com/

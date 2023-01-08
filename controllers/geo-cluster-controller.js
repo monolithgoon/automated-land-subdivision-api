@@ -9,11 +9,16 @@ const { findOneDocument } = require('./handler-factory.js');
 // TODO >
 // USES A SIMPLER VERSION OF THE AGC_MODEL WITH GeoJSON FEATURE INSTEAD OF A FEAT. COLL.
 // DEFINING AN UN-PARCELIZED GEO-CLUSTER AS A FEATURE IS MORE APPROPRIATE
-// USE await GEO_CLUSTER_MODEL.create(req.body)
-exports.insertGeoCluster = async (req, res, next) => {
-	console.log(chalk.success(`CALLED THE [ insertGeoCluster ] CONTROLLER FN. `))
+// USE await GEOFILE_GEOJSON_MODEL.create(req.body)
+exports.insertGeofileGeoJSON = async (req, res, next) => {
+	console.log(chalk.success(`CALLED THE [ insertGeofileGeoJSON ] CONTROLLER FN. `))
+   const geofileId = req.body.properties.geofile_id;
+   console.log({geofileId});
    next();
-}
+};
+
+
+
 // INSERT A NEW AGC .. CALLS next() FOR AUTO-SUBDIVIDE
 exports.insertGeoClusterGJ = async (req, res, next) => {
 
