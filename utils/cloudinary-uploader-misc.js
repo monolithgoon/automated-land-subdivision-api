@@ -1,6 +1,6 @@
-// require("dotenv").config({ path: "../config.env" }); // IMPORTANT > CONFIGURE ENV. VARIABLES BEFORE U CALL THE APP > read the data from the config file. and use them as env. variables in NODE
+// require("dotenv").config({ path: "../default.env" }); // IMPORTANT > CONFIGURE ENV. VARIABLES BEFORE U CALL THE APP > read the data from the config file. and use them as env. variables in NODE
 const dotenv = require('dotenv');
-dotenv.config({path: '../config.env'}); // loads the cloudinary credentials stored in config.env
+dotenv.config({path: '../default.env'}); // loads the cloudinary credentials stored in default.env
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
 const multer = require("../middleware/multer-file-upload.js");

@@ -2,7 +2,7 @@ const chalk = require('./utils/chalk-messages');
 const dbConnect = require('./utils/db-connect.js')
 const EXPRESS_APP = require('./app.js')
 const dotenv = require('dotenv') // read the data from the config file. and use them as env. variables in NODE
-dotenv.config({path: './config.env'}) // IMPORTANT > CONFIGURE ENV. VARIABLES BEFORE U CALL THE APP 
+dotenv.config({path: './default.env'}) // IMPORTANT > CONFIGURE ENV. VARIABLES BEFORE U CALL THE APP 
 
 
 

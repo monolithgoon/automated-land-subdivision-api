@@ -4,7 +4,7 @@ const dbConnect = require('../../utils/db-connect.js')
 const fs = require('fs')
 const axios = require("axios");
 const dotenv = require('dotenv') // read the data from the config file. and use them as env. variables in NODE
-dotenv.config({path: '../../config.env'}) // CONFIGURE ENV. VARIABLES BEFORE CALL THE APP
+dotenv.config({path: '../../default.env'}) // CONFIGURE ENV. VARIABLES BEFORE CALL THE APP
 
 const AGC_MODEL = require('../../models/agc-model.js')
 const PARCELIZED_AGC_MODEL = require('../../models/parcelized-agc-model.js')

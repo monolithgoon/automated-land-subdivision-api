@@ -69,7 +69,7 @@ IMPORTANT > DEPLOY NODE JS APP TO HEROKU
    [x] Upload files from "master" repository to Heroku > 
       [x] RUN: "git push heroku master"
       [x] Verify this works, and confirm the remote repos > RUN: git remote -v
-   [x] ******Set environment variables on Heroku (needed b/cos config.env  is excluded from git commits) > 
+   [x] ******Set environment variables on Heroku (needed b/cos default.env  is excluded from git commits) > 
       [x] RUN: heroku config:set NODE_ENV=production
       [x] RUN: heroku config:set ATLAS_DB_STRING="mongodb+srv://monkey-paw:<PASSWORD>@monkey-paw-cluster-cwcff.gcp.mongodb.net/nirsal_agcs?retryWrites=true&w=majority"
       [x] RUN: heroku config:set ATLAS_DB_PASSOWRD=*******
