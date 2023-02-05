@@ -1,3 +1,6 @@
+// TODO > NOT YET IMPEMENTED
+
+
 const mongoose = require("mongoose");
 
 
@@ -72,6 +75,19 @@ const pointSchema = new mongoose.Schema({
 });
 
 
+const polygonSchema = new mongoose.Schema({
+   type: {
+      type: String,
+      enum: ["Polygon"],
+      required: true,
+   },
+   coordinates: {
+      type: [[[Number]]],
+      required: true
+   }
+});
+
+
 // A SIMPLIFIED SCHEMA WITH PRE-COMPUTED PROPERTIES FOR EASE OF RENDERING
 const parcelizedGeoClusterSchema = new monggoose.Schema({
 
@@ -90,71 +106,73 @@ const parcelizedGeoClusterSchema = new monggoose.Schema({
 
    properties: {
 
-      clusterID: {
+      geocluster_id: {
          type: String,
       },
 
-      clusterName: {
+      geocluster_title: {
          type: String,
       },
 
-      clusterCreatedDate: {
+      geocluster_created_date: {
          type: Date
       },
 
-      clusterFeatsNum: {
+      geocluster_feats_num: {
          type: Number,
       },
 
-      clusterArea: {
+      geocluster_area: {
          type: Number
       },
 
-      clusterUsedArea: {
+      geocluster_used_area: {
          type: Number,
       },
 
-      clusterUnusedArea: {
+      geocluster_unused_area: {
          type: Number,
       },
 
-      clusterCenterFeat: {
+      geocluster_center_point_feat: {
          type: pointSchema,
       },
 
-      clusterAdminLvl1: {
+      geocluster_admin_lvl1: {
          type: String,
       },
 
-      clusterAdminLvl2: {
+      geocluster_admin_lvl2: {
          type: String,
       },
 
-      clusterAdminLvl3: {
+      geocluster_admin_lvl3: {
          type: String,
       },
 
-      clusterAdminLvl4: {
+      geocluster_admin_lvl4: {
          type: String,
       },
 
-      clusterLocation: {
+      geocluster_location: {
          type: String,
       },
 
-      clusterRenderHash: {
+      geocluster_render_hash: {
          type: String,
       },
 
-      subdivideMetadata: {
-         type: Object,
+      geocluster_subdivistion_metadata: {
+         type: String,
+         required: true,
+         unique: true
       },
 
-      primaryCommodity: {
+      geocluster_primary_commodity: {
          type: String,
       },
 
-      clusterGovAdmin1: {
+      geocluster_gov_admin1: {
          type: {
             adminName1: {
                type: String,
@@ -168,7 +186,7 @@ const parcelizedGeoClusterSchema = new monggoose.Schema({
          },
       },
 
-      clusterGovAdmin2: {
+      geocluster_gov_admin2: {
          type: {
             adminName1: {
                type: String,
@@ -180,6 +198,11 @@ const parcelizedGeoClusterSchema = new monggoose.Schema({
                type: String,
             },
          },
+      },
+
+      geocluster_polygon: {
+         type: [polygonSchema],
+         required: [true, `The geocluster must have a renderable polygon`],
       },
 
    }
@@ -188,7 +211,7 @@ const parcelizedGeoClusterSchema = new monggoose.Schema({
 
 
 // PARCELIZED AGC DATA MODEL
-const PARCELIZED_GEO_CLUSTER_MODEL = mongoose.model('parcelized_agcs', parcelizedGeoClusterSchema);
+const PARCELIZED_GEO_CLUSTER_MODEL = mongoose.model('parcelized_geoclusters', parcelizedGeoClusterSchema);
 
 
 // EXPORT THE MODEL
