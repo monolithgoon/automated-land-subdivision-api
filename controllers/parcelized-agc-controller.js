@@ -64,7 +64,7 @@ function validateQuery(queryResult, response) {
 
 
 
-// GET ALL FARM PARCELS ROUTE HANDLER FN.
+// GET ALL PARCELIZED AGCS ROUTE HANDLER FN.
 exports.getAllParcelizedAgcs = async (request, response) => {
 
 	try {
@@ -190,7 +190,7 @@ exports.getAllParcelizedAgcs = async (request, response) => {
 
 
 
-// GET ALL FARM PARCELS ROUTE HANDLER FN.
+// GET ONLY THE METADATA FOR THE PARCELIZED AGCS
 exports.getParcelizedAgcsMetadata = async (request, response) => {
 
 	try {
@@ -205,7 +205,7 @@ exports.getParcelizedAgcsMetadata = async (request, response) => {
 
       for (let idx = 0; idx < parcelizedAgcs.length; idx++) {
          const parcelizedAgc = parcelizedAgcs[idx];
-         parcelizedAgcIds.push(parcelizedAgc.properties.agc_id.toLowerCase());         
+         parcelizedAgcIds.push(parcelizedAgc.properties.agc_id);         
       };
 
       // SEND RESPONSE
