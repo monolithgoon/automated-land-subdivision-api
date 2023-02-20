@@ -111,6 +111,7 @@ const geoClustersRouter = require('./routes/geo-cluster-routes.js');
 const geofilesRouter = require('./routes/geofile-routes.js');
 const legacyAgcsRouter = require('./routes/legacy-agc-routes.js');
 const pmroRouter = require('./routes/pmro-routes.js');
+const farmProgramsRouter = require(`./routes/farm-programs-routes.js`);
 
 
 
@@ -119,6 +120,7 @@ EXPRESS_APP.use('/', viewRouter);
 EXPRESS_APP.use('/api/demo/', viewRouter);
 EXPRESS_APP.use('/api/v1/agcs/', agcsRouter);
 EXPRESS_APP.use('/api/v2/geo-clusters/', geoClustersRouter);
+EXPRESS_APP.use(`/api/v3/farm-programs-clusters/`, farmProgramsRouter)
 EXPRESS_APP.use('/api/v1/parcelized-agcs/', parcelizedAgcsRouter);
 EXPRESS_APP.use('/api/v1/users/', usersRouter);
 EXPRESS_APP.use('/api/v2/geofiles/', geofilesRouter);
