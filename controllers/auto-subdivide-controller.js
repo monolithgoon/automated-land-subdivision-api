@@ -87,7 +87,7 @@ async function cloudinaryBase64Upload(docId, uploadFolder, base64ImageStr) {
                console.warn(chalk.fail(cloudUploadErr.message));
             } else {
                // waitForAllUploads("pizza", cloudUploadErr, cloudUploadResult);
-               // console.log(chalk.console(JSON.stringify(cloudUploadResult)));
+               // console.log(chalk.consoleY(JSON.stringify(cloudUploadResult)));
                return cloudUploadResult;
             };
          }

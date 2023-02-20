@@ -232,7 +232,7 @@ function _getAllocationsMetadata(geofileID, plotOwnersData, plotOwnerIndex) {
    // }
 
    const plotAdminPhotoUrl = plotOwnersData[plotOwnerIndex].farmer_photo_url;
-   console.log(chalk.console(plotAdminPhotoUrl));
+   console.log(chalk.consoleY(plotAdminPhotoUrl));
 
    const allocationsMetadata = {
       agcID: geofileID,

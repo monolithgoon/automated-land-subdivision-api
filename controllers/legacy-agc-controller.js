@@ -9,7 +9,7 @@ const { getAllDocuments, insertOneDocument, findOneDocument, returnOneDocument }
 // FIXME < COMPLETE THIS FN.
 exports.checkID = async (req, res, next) => {
 
-	console.log(chalk.console(`Checking the agc_id .. { DUMMY FN. }`));
+	console.log(chalk.consoleY(`Checking the agc_id .. { DUMMY FN. }`));
 
 	next();
 };
@@ -182,7 +182,7 @@ exports.getAllLegacyAgcs = async (request, response, next) => {
 
       returnedLegacyAGCData.forEach(geoCluster => {
          // console.log(geoCluster);
-         console.log(chalk.console(`retreived legacy geocluster`));
+         console.log(chalk.consoleY(`retreived legacy geocluster`));
          if (geoCluster.properties.geo_cluster_total_features) {
             featsLengths.push(geoCluster.properties.geo_cluster_total_features)
          };
