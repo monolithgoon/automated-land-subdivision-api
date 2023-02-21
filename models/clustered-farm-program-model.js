@@ -1,4 +1,5 @@
 `use strict`
+const mongoose = require(`mongoose`);
 
 function alphanumericValidator(val) {
   const regex = /^[a-zA-Z0-9]+$/;
@@ -12,7 +13,7 @@ const nameValidator = (fieldName) => {
         const regex = /^[a-zA-Z]+$/;
         return regex.test(value);
       },
-      message: `${value} is not a valid ${fieldName}; ${fieldName} must contain only contain letters, hyphens, or apostrophes.`,
+      message: `${fieldName} must contain only contain letters, hyphens, or apostrophes.`,
     },
     {
       validator: (value) => {
@@ -153,7 +154,7 @@ const farmerSchema = new mongoose.Schema(
               return value === mostFrequentUnit;
             }
           },
-          message: `The land size unit provided does not match the most frequently used land size unit is ${mostFrequentUnit} used sof far`
+          message: `The land size units provided does not match the most frequently used land size units that has been used so far`
         }
       },
       land_coordinates: {
