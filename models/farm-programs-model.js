@@ -217,7 +217,7 @@ const programDatesValidator = () => {
   return [
     {
       validator: function (value) {
-        const startDate = this.get("program_start_date");
+        const startDate = this.get("farm_program_start_date");
         if (!startDate) {
           return false;
         }
@@ -227,7 +227,7 @@ const programDatesValidator = () => {
     },
     {
       validator: function (endDate) {
-        const startDate = this.get("program_start_date");
+        const startDate = this.get("farm_program_start_date");
         if (!endDate || !startDate) {
           return true;
         }
@@ -240,16 +240,16 @@ const programDatesValidator = () => {
 
 function validateProgramTimeline() {
 
-  const startDate = this.get(`program_start_date`);
-  const endDate = this.get(`program_end_date`);
-  const timeline = this.get(`program_timeline`);
+  const startDate = this.get(`farm_program_start_date`);
+  const endDate = this.get(`farm_program_end_date`);
+  const timeline = this.get(`farm_program_timeline`);
 
-  // Check if program_start_date and program_end_date exist
+  // Check if farm_program_start_date and farm_program_end_date exist
   if (!startDate || !endDate) {
     return false;
   }
 
-  // Check if program_timeline exists
+  // Check if farm_program_timeline exists
   if (!timeline) {
     return false;
   }
@@ -286,57 +286,57 @@ const programTimelineSchema = new mongoose.Schema({
 
 const farmProgramSchema = new mongoose.Schema(
 	{
-		program_id: {
+		farm_program_id: {
 			type: String,
       required: [true, `The ${this.path} must be specified`],
       unique: [true, `The ${this.path} must be unique`],
       min: [12, `The program's unique ID must have at least 12 characters`],
 		},
-		program_title: {
+		farm_program_title: {
       type: String,
       required: [true, `The ${this.path} must be specified`],
       unique: [true, `The ${this.path} must be unique`],
       min: [10, `The program's unique title must have at least 12 characters`],
 		},
-		program_description: {
+		farm_program_description: {
 			type: String,
       required: [true, `The ${this.path} must be specified`],
 		},
-		program_start_date: {
+		farm_program_start_date: {
 			type: Date,
       required: [true, `The ${this.path} must be specified`],
 		},
-    program_end_date: {
+    farm_program_end_date: {
       type: Date,
       required: false,
       validate: programDatesValidator,
     },
-    program_state: {
+    farm_program_state: {
       type: String,
       required: false,
     },
-    program_manager: {
+    farm_program_manager: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'FarmProgramManager',
       required: false,
     },
-    program_budget: {
+    farm_program_budget: {
       type: Number,
       required: false,
     },
-    program_partners: {
+    farm_program_partners: {
       type: [String],
       required: false,
     },
-    program_objectives: {
+    farm_program_objectives: {
       type: String,
       required: false,
     },
-    program_impact_metrics: {
+    farm_program_impact_metrics: {
       type: [String],
       required: false,
     },
-    program_timeline: {
+    farm_program_timeline: {
       type: Map,
       of: [programTimelineSchema],
       validate: {
@@ -345,15 +345,15 @@ const farmProgramSchema = new mongoose.Schema(
       },
       required: false,
     },
-    program_training_materials: {
+    farm_program_training_materials: {
       type: [String],
       required: false,
     },
-    program_funding_sources: {
+    farm_program_funding_sources: {
       type: [String],
       required: false,
     },
-    program_evaluation_plan: {
+    farm_program_evaluation_plan: {
       type: String,
       required: false,
     },
