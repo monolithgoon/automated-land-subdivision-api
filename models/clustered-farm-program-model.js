@@ -1,5 +1,6 @@
 `use strict`
 const mongoose = require(`mongoose`);
+const ALLOWED_LAND_SIZE_UNITS = require("../utils/constants/land-size-units");
 
 function alphanumericValidator(val) {
   const regex = /^[a-zA-Z0-9]+$/;
@@ -69,9 +70,9 @@ const farmerSchema = new mongoose.Schema(
           return new Promise(async (resolve, reject) => {
             try {
               const count = await this.constructor.countDocuments({
-                "farmers.farmer_first_name": value.farmer_first_name,
-                "farmers.farmer_last_name": value.farmer_last_name,
-                "farmers.farmer_bvn": value.farmers[0].farmer_bvn,
+                "program_farmers.farmer_first_name": value.farmer_first_name,
+                "program_farmers.farmer_last_name": value.farmer_last_name,
+                "program_farmers.farmer_bvn": value.program_farmers[0].farmer_bvn,
                 _id: { $ne: this._id } // exclude current document from check
               });
               resolve(count === 0);
@@ -137,26 +138,34 @@ const farmerSchema = new mongoose.Schema(
         required: [true, `The ${this.path} must be specified`],
         min: [1, `The ${this.path} must be greater than zero`],
       },
+
+      /**
+       * The `land_size_units` field specifies the units of measurement for a piece of land.
+       * @typedef {Object} land_size_units
+       * @property {String} type - The data type for this field, which is a string.
+       * @property {Array} enum - An array of valid unit values for this field.
+       * @property {Boolean} required - Whether this field is required or not.
+       * @property {Function} validate - A validation function that checks whether the input value is valid or not.
+       * @property {String} validate.message - The error message to display if the input value is invalid.
+       * @property {Function} validate.validator - The validation function that determines if the input value is valid or not.
+       * @param {String} value - The input value to be validated.
+       * @returns {Boolean} - Returns true if the input value is valid, and false if it is not.
+       */
       land_size_units: {
         type: String,
-        enum: ['sqm', 'sqkm', 'acres', 'hectares', 'acres'],
-        required: [true, `The ${this.path} must be specified in either: sqm, sqkm, hectares or acres`],
-        validate: {
-          validator: function(value) {
-            const allowedUnits = ["sqm", "sqkm", "acres", "sqmiles"];
-            const validUnits = allowedUnits.filter(unit => unit === value);
-            if (validUnits.length === 0) {
-              return false;
-            } else if (validUnits.length === allowedUnits.length) {
-              return true;
-            } else {
-              const mostFrequentUnit = validUnits.sort((a, b) => validUnits.filter(v => v === a).length - validUnits.filter(v => v === b).length).pop();
-              return value === mostFrequentUnit;
-            }
+        enum: ALLOWED_LAND_SIZE_UNITS,
+        required: [true, `The ${this.path} must be specified in either: ${ALLOWED_LAND_SIZE_UNITS.join(", ")}`],
+        validate: [
+          {
+            validator: function(value) {
+              if(!(ALLOWED_LAND_SIZE_UNITS.includes(value))) {
+                return false;
+              }
+            },
+            message: `The ${this.path} must be specified in either: ${ALLOWED_LAND_SIZE_UNITS.join(", ")}`,
           },
-          message: `The land size units provided does not match the most frequently used land size units that has been used so far`
-        }
-      },
+        ],
+      },      
       land_coordinates: {
         type: [[Number]],
         required: [true, `The ${this.path} must be specified`],
@@ -358,31 +367,29 @@ const farmProgramSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    farmers: { type: [farmerSchema], required: true },
+    program_farmers: { type: [farmerSchema], required: true },
   }, 
   {timeStamps: true}
 );
 
-// REMOVE > DEPRECATED FOR VALIDATOR FN.
-// Check that every land size unit matches the unit of the first document
-// farmProgramSchema.path('farmers').validate(function (farmers) {
-//   const units = farmers.map(farmer => farmer.land_size_units);
-//   return units.every(unit => unit === units[0]);
-// }, 'All farmers must have the same land size units.');
-
+// Check that every land size unit matches the unit of the first farmer's farm
+farmProgramSchema.path('program_farmers').validate(function (farmers) {
+  const units = farmers.map(farmer => farmer.farmer_farm_details.land_size_units);
+  return units.every(unit => unit === units[0]);
+}, `All farms in this farm program document must have land size units that match the units for the first farm}`);
 
 /**
  * This function is added as a middleware to the programSchema using the pre method. The function is executed before a farm program is saved to the database.
- * The function checks if the farmers field has been modified, and if not, it simply calls the next middleware function in the chain. If the farmers field has been modified, it iterates over each farmer in the farmers array and sets the farmer_bvn field to undefined, effectively excluding it from being saved to the database.
+ * The function checks if the program_farmers field has been modified, and if not, it simply calls the next middleware function in the chain. If the program_farmers field has been modified, it iterates over each farmer in the program_farmers array and sets the farmer_bvn field to undefined, effectively excluding it from being saved to the database.
  */
 farmProgramSchema.pre('save', function (next) {
   const farmProgram = this;
-  if (!farmProgram.isModified('farmers')) {
+  if (!farmProgram.isModified('program_farmers')) {
     next();
   }
 
-  // Iterate over each farmer in the farmers array
-  farmProgramSchema.farmers.forEach((farmer) => {
+  // Iterate over each farmer in the program_farmers array
+  farmProgramSchema.program_farmers.forEach((farmer) => {
     // Exclude the farmer_bvn field
     farmer.farmer_bvn = undefined;
   });
