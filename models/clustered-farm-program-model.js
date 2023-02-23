@@ -370,6 +370,7 @@ const farmProgramSchema = new mongoose.Schema(
 		farm_program_partners: {
 			type: [String],
 			required: false,
+      default: [],
 		},
 		farm_program_objectives: {
 			type: [String],
