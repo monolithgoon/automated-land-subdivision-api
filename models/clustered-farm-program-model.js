@@ -360,6 +360,12 @@ const farmProgramSchema = new mongoose.Schema(
 		farm_program_budget: {
 			type: Number,
 			required: false,
+      validate: {
+        validator: (value) => {
+          return value >= 0
+        },
+        message: `The program budget cannot be less than 0`
+      }
 		},
 		farm_program_partners: {
 			type: [String],
