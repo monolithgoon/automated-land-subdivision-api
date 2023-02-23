@@ -1,9 +1,14 @@
 `use strict`
 const mongoose = require(`mongoose`);
-const ALLOWED_LAND_SIZE_UNITS = require("../utils/constants/land-size-units");
+const MONGOOSE_MODEL_ENUMS = require("../utils/constants/mongoose-model-enums");
 
 function alphanumericValidator(val) {
-  const regex = /^[a-zA-Z0-9]+$/;
+  /**
+   * In this pattern, the square brackets ([]) still contain the set of characters that are allowed in the string, including the underscore. 
+   * However, the asterisk (*) metacharacter after the brackets means that the preceding character class (i.e., the set of allowed characters) can appear zero or more times. 
+   * This allows for the possibility that the underscore may be absent from the string.
+   */
+  const regex = /^[a-zA-Z0-9_]*$/;
   return regex.test(val);
 };
 
@@ -39,7 +44,7 @@ const farmerSchema = new mongoose.Schema(
       min: [12, `The ${this.path} must have at least 12 characters`],
       validate: {
         validator: alphanumericValidator,
-        message: `The ${this.path} must be alphanumeric`
+        message: `Only numbers, letters or underscores are allowed for ${this.path}`
       }
     },
     farmer_last_name: {
@@ -57,38 +62,17 @@ const farmerSchema = new mongoose.Schema(
       required: [true, `The ${this.path} must be specified`],
       validate: {
         validator: function (bvn) {
+          console.log({bvn})
           return /\d{11}/.test(bvn);
         },
         message: "The farmer's BVN must be an 11-digit number",
-      },
-      validate: {
-        /**
-          * This validator uses this.constructor to get a reference to the model, and the countDocuments() method to check if there are any other documents in the collection that have the same combination of farmer_first_name, farmer_last_name, and farmer_bvn. 
-          * The _id: { $ne: this._id } part is necessary to exclude the current document from the check, because it's possible to update a document without changing these fields.
-          */
-        validator: function(value) {
-          return new Promise(async (resolve, reject) => {
-            try {
-              const count = await this.constructor.countDocuments({
-                "program_farmers.farmer_first_name": value.farmer_first_name,
-                "program_farmers.farmer_last_name": value.farmer_last_name,
-                "program_farmers.farmer_bvn": value.program_farmers[0].farmer_bvn,
-                _id: { $ne: this._id } // exclude current document from check
-              });
-              resolve(count === 0);
-            } catch (err) {
-              reject(err);
-            }
-          });
-        },
-        message: 'The combination of first name, last name and BVN must be unique'
       },
       unique: [true, `The farmer's BVN must be unique`]
     },
     farmer_gender: {
       type: String,
       required: [true, `The ${this.path} must be specified`],
-      enum: ["M", "F"],
+      enum: MONGOOSE_MODEL_ENUMS.GENDER,
     },
     farmer_dob: {
       type: Date,
@@ -138,7 +122,6 @@ const farmerSchema = new mongoose.Schema(
         required: [true, `The ${this.path} must be specified`],
         min: [1, `The ${this.path} must be greater than zero`],
       },
-
       /**
        * The `land_size_units` field specifies the units of measurement for a piece of land.
        * @typedef {Object} land_size_units
@@ -153,20 +136,22 @@ const farmerSchema = new mongoose.Schema(
        */
       land_size_units: {
         type: String,
-        enum: ALLOWED_LAND_SIZE_UNITS,
-        required: [true, `The ${this.path} must be specified in either: ${ALLOWED_LAND_SIZE_UNITS.join(", ")}`],
+        enum: MONGOOSE_MODEL_ENUMS.LAND_SIZE_UNITS,
+        required: [true, `The ${this.path} must be specified in either: ${MONGOOSE_MODEL_ENUMS.LAND_SIZE_UNITS.join(", ")}`],
         validate: [
           {
             validator: function(value) {
-              if(!(ALLOWED_LAND_SIZE_UNITS.includes(value))) {
+              const landSizeUnits = MONGOOSE_MODEL_ENUMS.LAND_SIZE_UNITS;
+              console.log({landSizeUnits})
+              if(!(MONGOOSE_MODEL_ENUMS.LAND_SIZE_UNITS.includes(value))) {
                 return false;
               }
             },
-            message: `The ${this.path} must be specified in either: ${ALLOWED_LAND_SIZE_UNITS.join(", ")}`,
+            message: `The ${this.path} must be specified in either: ${MONGOOSE_MODEL_ENUMS.LAND_SIZE_UNITS.join(", ")}`,
           },
         ],
       },      
-      land_coordinates: {
+      farm_coordinates: {
         type: [[Number]],
         required: [true, `The ${this.path} must be specified`],
         validate: {
@@ -190,15 +175,25 @@ const farmerSchema = new mongoose.Schema(
         }
       },          
       soil_type: {type: [String], required: false},
+      field_officer_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "FieldOfficer",
+        required: [true, `The ${this.path} must be specified`],
+        // REMOVE
+        default: new mongoose.Types.ObjectId(),
+      },  
     },
     farmer_farm_practice: {
       farming_experience: {
         type: Number,
         required: false,
-        enum: {
-          values: Array.from(Array(11).keys()), // creates an array of numbers from 0 to 10
-          message: `${this.path} must be a number between 0 and 10`
-        }
+        enum: Array.from(Array(11).keys()),
+        // REMOVE
+        // enum: {
+        //   values: Array.from(Array(11).keys()), // creates an array of numbers from 0 to 10
+        //   // message: `${this.path} must be a number between 0 and 10`
+        //   message: (props) => `${props.value} is not a valid value for ${props.path}. Must be a number between 0 and 10.`,
+        // }
       },
       crop_rotation_crops: { type: [String], required: false },
       has_access_to_market: { type: Boolean, required: false },
@@ -209,11 +204,6 @@ const farmerSchema = new mongoose.Schema(
         type: { type: String, required: false },
         amount: { type: String, required: false },
       },
-    },
-    field_officer_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "FieldOfficer",
-      required: [true, `The ${this.path} must be specified`],
     },
     farmer_funded_date: {
       type: Date,
@@ -276,45 +266,54 @@ function validateProgramTimeline() {
       return false;
     }
 
-    if (yearRangeEnd > progStartYear || yearRangeEnd < progStartYar) {
+    if (yearRangeEnd > progStartYear || yearRangeEnd < progStartYear) {
       return false;
     }
   }
   return true;
 }
 
-const programTimelineSchema = new mongoose.Schema({
-  year_range: {
-    type: String,
-    required: [true, 'The year of the timeline must be specified'],
-  },
-  activities: {
-    type: [String],
-    required: [true, 'The activities of the timeline must be specified'],
-  },
-});
-
 const farmProgramSchema = new mongoose.Schema(
 	{
 		farm_program_id: {
 			type: String,
-      required: [true, `The ${this.path} must be specified`],
-      unique: [true, `The ${this.path} must be unique`],
-      min: [12, `The program's unique ID must have at least 12 characters`],
+      required: true,
+      // required: {
+      //   validator: function(value) { return !!value },
+      //   message: function() { return `The ${this.path} is required` }.bind(this)
+      // },
+      // required: function() {{}
+      //   console.log(`Checking for field: ${this.path}`)
+      //   return true;
+      // },
+      // required: [true, `The ${JSON.stringify(this)} must be specified`],
+      // required: [true, function() {
+      //   console.log(this)
+      //   return `The ${this._path} must be specified`;
+      // }],
+      unique: [true, `The ${this._path} must be unique`],
+      min: [12, `The ${this._path} must have at least 12 characters`],
 		},
 		farm_program_title: {
       type: String,
-      required: [true, `The ${this.path} must be specified`],
+      required: [true, function() {
+        return `The ${this.path} must be specified`;
+      }.bind(this)],
       unique: [true, `The ${this.path} must be unique`],
       min: [10, `The program's unique title must have at least 12 characters`],
 		},
 		farm_program_description: {
 			type: String,
-      required: [true, `The ${this.path} must be specified`],
+      required: [true, function() {
+        return `The ${this.path} must be specified`;
+      }],
 		},
 		farm_program_start_date: {
 			type: Date,
-      required: [true, `The ${this.path} must be specified`],
+      required: [true, `The program start date must be specified`]
+      // required: [true, function() {
+      //   return `The ${this.path} must be specified`;
+      // }],
 		},
     farm_program_end_date: {
       type: Date,
@@ -329,6 +328,8 @@ const farmProgramSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'FarmProgramManager',
       required: false,
+      // REMOVE
+      default: new mongoose.Types.ObjectId(),
     },
     farm_program_budget: {
       type: Number,
@@ -339,7 +340,7 @@ const farmProgramSchema = new mongoose.Schema(
       required: false,
     },
     farm_program_objectives: {
-      type: String,
+      type: [String],
       required: false,
     },
     farm_program_impact_metrics: {
@@ -348,7 +349,10 @@ const farmProgramSchema = new mongoose.Schema(
     },
     farm_program_timeline: {
       type: Map,
-      of: [programTimelineSchema],
+      // of: [programTimelineSchema],
+      of: [{
+        type: String,
+      }],
       validate: {
         validator: validateProgramTimeline,
         message: 'The program timeline must fall between the program start date and end date'
@@ -367,29 +371,68 @@ const farmProgramSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    program_farmers: { type: [farmerSchema], required: true },
+    farm_program_farmers: { type: [farmerSchema], required: true },
   }, 
   {timeStamps: true}
 );
 
+/**
+  * This validator uses this.constructor to get a reference to the model, and the countDocuments() method to check if there are any other documents in the collection that have the same combination of farmer_first_name, farmer_last_name, and farmer_bvn. 
+  * The _id: { $ne: this._id } part is necessary to exclude the current document from the check, because it's possible to update a document without changing these fields.
+  */
+ /**
+ * Validator that checks if there are any other documents in the collection that have the same combination of farmer_first_name, farmer_last_name, and farmer_bvn. 
+ * The _id: { $ne: this._id } part is necessary to exclude the current document from the check, because it's possible to update a document without changing these fields.
+ * @param {Object} value - The value being validated.
+ * @returns {Promise<Boolean>} - A Promise that resolves to true if the combination of first name, last name and BVN is unique, or false otherwise.
+ */
+farmProgramSchema.pre('save', async function(next) {
+
+  try {
+    // console.log(this) -> "this" is the document being saved
+    // console.log(this.constructor) -> `this.constructor` is the `farmProgramSchema` mongoose model
+    
+    const docsCount = await this.constructor.countDocuments({
+      "farm_program_farmers.farmer_first_name": this.farmer_first_name,
+      "farm_program_farmers.farmer_last_name": this.farmer_last_name,
+      "farm_program_farmers.farmer_bvn": this.farm_program_farmers[0].farmer_bvn,
+      _id: { $ne: this._id } // exclude current document from check
+    });
+    
+    if (docsCount > 0) {
+      throw new Error('The combination of first name, last name and BVN must be unique');
+    }
+
+    next();
+
+  } catch (err) {
+    next(err);
+  }
+});
+
 // Check that every land size unit matches the unit of the first farmer's farm
-farmProgramSchema.path('program_farmers').validate(function (farmers) {
+farmProgramSchema.path('farm_program_farmers').validate(function (farmers) {
   const units = farmers.map(farmer => farmer.farmer_farm_details.land_size_units);
+  console.log({units})
   return units.every(unit => unit === units[0]);
 }, `All farms in this farm program document must have land size units that match the units for the first farm}`);
 
 /**
  * This function is added as a middleware to the programSchema using the pre method. The function is executed before a farm program is saved to the database.
- * The function checks if the program_farmers field has been modified, and if not, it simply calls the next middleware function in the chain. If the program_farmers field has been modified, it iterates over each farmer in the program_farmers array and sets the farmer_bvn field to undefined, effectively excluding it from being saved to the database.
+ * The function checks if the farm_program_farmers field has been modified, and if not, it simply calls the next middleware function in the chain. If the farm_program_farmers field has been modified, it iterates over each farmer in the farm_program_farmers array and sets the farmer_bvn field to undefined, effectively excluding it from being saved to the database.
  */
 farmProgramSchema.pre('save', function (next) {
+
   const farmProgram = this;
-  if (!farmProgram.isModified('program_farmers')) {
+
+  if (!farmProgram.isModified('farm_program_farmers')) {
     next();
   }
 
-  // Iterate over each farmer in the program_farmers array
-  farmProgramSchema.program_farmers.forEach((farmer) => {
+  // Iterate over each farmer in the farm_program_farmers array
+  console.log({farmProgram})
+  console.log({farmProgramSchema})
+  farmProgram.farm_program_farmers.forEach((farmer) => {
     // Exclude the farmer_bvn field
     farmer.farmer_bvn = undefined;
   });

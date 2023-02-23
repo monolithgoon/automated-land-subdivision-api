@@ -1,22 +1,28 @@
 `use strict`;
-
+const chalk = require(`../utils/chalk-messages.js`);
 const CLUSTERED_FARM_PROGRAM_MODEL = require("../models/clustered-farm-program-model");
 const catchAsyncServer = require("../utils/catch-async");
+const { findOneDocument } = require("./handler-factory");
 
 exports.insertFarmProgram = catchAsyncServer(async (req, res, next) => {
 	console.log(chalk.success(`CALLED THE [ insertFarmProgram ] CONTROLLER FN. `));
 	const programId = req.body.farm_program_id;
-	if (!(await findOneDocument(CLUSTERED_FARM_PROGRAM_MODEL, { "farm_program_id": clusterId }))) {
+	if (!(await findOneDocument(CLUSTERED_FARM_PROGRAM_MODEL, { "farm_program_id": programId }))) {
     const newFarmProgram = await CLUSTERED_FARM_PROGRAM_MODEL.create(req.body);
 		if (newFarmProgram) {
-			console.log(chalk.success(`A new clustered farm program document was successfully created`));
+			res.status(201).json({
+				status: `success`,
+				inserted_at: req.requestTime,
+				data: newFarmProgram,
+		 });
 			res.locals.appendedFarmProgram = newGeoCluster;
 			next();
 		}
 	} else {
-		console.log(chalk.warning(`A document with this [ ${programId} ] already exists in the database.`));
-		res.locals.appendedFarmProgram = req.body;
-		next();
+		res.status(201).json({
+			status: 'success',
+			message: `A document with matching [ ${programId} ] already exists in the database.`
+	 });
 	}
 }, `inertFarmProgram`);
 
