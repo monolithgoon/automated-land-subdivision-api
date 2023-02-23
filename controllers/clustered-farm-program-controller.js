@@ -10,8 +10,6 @@ exports.insertFarmProgram = catchAsyncServer(async (req, res, next) => {
 	if (!(await findOneDocument(CLUSTERED_FARM_PROGRAM_MODEL, { "farm_program_id": programId }))) {
     const newFarmProgram = await CLUSTERED_FARM_PROGRAM_MODEL.create(req.body);
 		if (newFarmProgram) {
-			console.log({req})
-			console.log(req.locals)
 			req.locals.appendedFarmProgram = newFarmProgram;
 			console.log(req.locals.appendedFarmProgram)
 			next();
