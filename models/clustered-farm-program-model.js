@@ -268,30 +268,23 @@ const programDatesValidator = () => {
 		{
 			validator: function (endDate) {
 				const startDate = this.get("farm_program_start_date");
+        console.log(this)
+        console.log({startDate})
 				if (!endDate || !startDate) {
-					return true;
+					return false;
 				}
 				return endDate > startDate;
 			},
-			message: `The ${this.path} must be after the program start date`,
+			message: `Invalid date. The end date must be set after the program's start date`,
 		},
 	];
 };
 
-function validateProgramTimeline() {
-	const startDate = this.get(`farm_program_start_date`);
+function programTimelineValidator() {
+  const startDate = this.get(`farm_program_start_date`);
+  console.log({startDate})
 	const endDate = this.get(`farm_program_end_date`);
 	const timeline = this.get(`farm_program_timeline`);
-
-	// Check if farm_program_start_date and farm_program_end_date exist
-	if (!startDate || !endDate) {
-		return false;
-	}
-
-	// Check if farm_program_timeline exists
-	if (!timeline) {
-		return false;
-	}
 
 	// Check if each year in the timeline is within the start and end dates
 	for (const [yearRange, events] of timeline.entries()) {
@@ -341,24 +334,17 @@ const farmProgramSchema = new mongoose.Schema(
 		},
 		farm_program_description: {
 			type: String,
-			required: [
-				true,
-				function () {
-					return `The ${this.path} must be specified`;
-				},
-			],
+      required: true,
+      validate: stringLengthValidator(10),
 		},
 		farm_program_start_date: {
 			type: Date,
-			required: [true, `The program start date must be specified`],
-			// required: [true, function() {
-			//   return `The ${this.path} must be specified`;
-			// }],
+      required: true
 		},
 		farm_program_end_date: {
 			type: Date,
 			required: false,
-			validate: programDatesValidator,
+			validate: programDatesValidator(),
 		},
 		farm_program_state: {
 			type: String,
@@ -389,16 +375,15 @@ const farmProgramSchema = new mongoose.Schema(
 		},
 		farm_program_timeline: {
 			type: Map,
-			// of: [programTimelineSchema],
 			of: [
 				{
 					type: String,
 				},
 			],
-			validate: {
-				validator: validateProgramTimeline,
-				message: "The program timeline must fall between the program start date and end date",
-			},
+			// validate: {
+			// 	validator: programTimelineValidator,
+			// 	message: `The program's timeline must fall between the program start date and end date`,
+			// },
 			required: false,
 		},
 		farm_program_training_materials: {
