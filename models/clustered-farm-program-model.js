@@ -1,6 +1,7 @@
 `use strict`;
 const mongoose = require(`mongoose`);
 const MONGOOSE_MODEL_ENUMS = require("../utils/constants/mongoose-model-enums");
+const NGA_STATES_NAMES = require("../utils/constants/nga-states-names");
 
 /** PROGRAM FARMER SCHEMA VALIDATORS */
 
@@ -348,14 +349,13 @@ const farmProgramSchema = new mongoose.Schema(
 		},
 		farm_program_state: {
 			type: String,
-			required: false,
+			required: true,
+      enum: NGA_STATES_NAMES,
 		},
 		farm_program_manager: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "FarmProgramManager",
-			required: false,
-			// REMOVE
-			default: new mongoose.Types.ObjectId(),
+			required: true,
 		},
 		farm_program_budget: {
 			type: Number,
