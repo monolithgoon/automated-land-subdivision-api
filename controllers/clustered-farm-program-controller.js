@@ -10,23 +10,28 @@ exports.insertFarmProgram = catchAsyncServer(async (req, res, next) => {
 	if (!(await findOneDocument(CLUSTERED_FARM_PROGRAM_MODEL, { "farm_program_id": programId }))) {
     const newFarmProgram = await CLUSTERED_FARM_PROGRAM_MODEL.create(req.body);
 		if (newFarmProgram) {
-			res.status(201).json({
-				status: `success`,
-				inserted_at: req.requestTime,
-				data: newFarmProgram,
-		 });
-			res.locals.appendedFarmProgram = newGeoCluster;
+			console.log({req})
+			console.log(req.locals)
+			req.locals.appendedFarmProgram = newFarmProgram;
+			console.log(req.locals.appendedFarmProgram)
 			next();
 		}
 	} else {
-		res.status(201).json({
-			status: 'success',
-			message: `A document with matching [ ${programId} ] already exists in the database.`
-	 });
+		throw new Error(`A document with this program_id [ ${programId} ] already exists in the database.`)
 	}
 }, `inertFarmProgram`);
 
-exports.normalizeFarmProgram = catchAsyncServer(async (req, res, next) => {}, `normalizeFarmProgram`);
+exports.normalizeFarmProgram = catchAsyncServer(async (req, res, next) => {
+	// TODO -> add normalization code here
+	const insertedFarmProgram = req.locals.appendedFarmProgram;
+	if (insertedFarmProgram) {
+		res.status(201).json({
+			status: `success`,
+			inserted_at: req.requestTime,
+			data: insertedFarmProgram,
+	 });
+	}
+}, `normalizeFarmProgram`);
 
 exports.getAllFarmPrograms = catchAsyncServer(async (req, res, next) => {}, `getAllFarmPrograms`);
 

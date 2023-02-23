@@ -73,9 +73,11 @@ if (process.env.NODE_ENV === 'development') {
 // CUSTOM MIDDLEWRE EXAMPLE #1
 // MW. IS PART OF THE REQ, RES CYCLE
 // MUST BE DEFINED BEFORE ALL THE ROUTE HANDLERS (OR ROUTERS) BELOW
-// OTHERWISE IT DOESN'T WORK because the routes WOULD terminte the req, res cycle BEFORE MW. RUNS
+// OTHERWISE IT DOESN'T WORK because the routes WOULD terminate the req, res cycle BEFORE MW. RUNS
 EXPRESS_APP.use((request, response, next) => {
-   // console.log(allGood('Hello from the 1st (custom) middleware in app.js..'));
+   // console.log('Hello from the 1st (custom) middleware in app.js..');
+   // IMPORTANT -> Initialize `request.locals` property
+   request.locals = {};
    next();
 });
 

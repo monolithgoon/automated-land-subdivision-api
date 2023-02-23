@@ -291,15 +291,13 @@ const farmProgramSchema = new mongoose.Schema(
       //   console.log(this)
       //   return `The ${this._path} must be specified`;
       // }],
-      unique: [true, `The ${this._path} must be unique`],
-      min: [12, `The ${this._path} must have at least 12 characters`],
+      unique: true,
+      min: 12,
 		},
 		farm_program_title: {
       type: String,
-      required: [true, function() {
-        return `The ${this.path} must be specified`;
-      }.bind(this)],
-      unique: [true, `The ${this.path} must be unique`],
+      required: true,
+      unique: true,
       min: [10, `The program's unique title must have at least 12 characters`],
 		},
 		farm_program_description: {
@@ -429,9 +427,10 @@ farmProgramSchema.pre('save', function (next) {
     next();
   }
 
+  // console.log({farmProgram})
+  // console.log({farmProgramSchema})
+  
   // Iterate over each farmer in the farm_program_farmers array
-  console.log({farmProgram})
-  console.log({farmProgramSchema})
   farmProgram.farm_program_farmers.forEach((farmer) => {
     // Exclude the farmer_bvn field
     farmer.farmer_bvn = undefined;
