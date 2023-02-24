@@ -6,18 +6,18 @@ const NGA_STATES_NAMES = require("../utils/constants/nga-states-names");
 /** PROGRAM FARMER SCHEMA VALIDATORS */
 
 function alphaNumericValidator() {
-  return {
-    validator: (val) =>  {
-      /**
-       * In this pattern, the square brackets ([]) still contain the set of characters that are allowed in the string, including the underscore.
-       * However, the asterisk (+) metacharacter after the brackets means that the preceding character class (i.e., the set of allowed characters) can appear one or more times.
-       * This allows for the possibility that the underscore may be absent from the string.
-       */
-      const regex = /^[a-zA-Z0-9_]+$/;
-      return regex.test(val);
-    }, 
-    message: `Only numbers, letters or underscores are allowed`
-  }
+	return {
+		validator: (val) => {
+			/**
+			 * In this pattern, the square brackets ([]) still contain the set of characters that are allowed in the string, including the underscore.
+			 * However, the asterisk (+) metacharacter after the brackets means that the preceding character class (i.e., the set of allowed characters) can appear one or more times.
+			 * This allows for the possibility that the underscore may be absent from the string.
+			 */
+			const regex = /^[a-zA-Z0-9_]+$/;
+			return regex.test(val);
+		},
+		message: `Only numbers, letters or underscores are allowed`,
+	};
 }
 
 const nameValidator = (fieldName) => {
@@ -235,26 +235,26 @@ const farmerSchema = new mongoose.Schema(
 
 /** FARM PROGRAM SCHEMA VALIDATORS */
 
-function stringLengthValidator(strLen) {
-  return {
-    validator: function (value) {
-      return value.length > strLen;
-    },
-    message: `Minimum of ${strLen} characters are required`,
-  }
-};
+function validateStringLength(strLen) {
+	return {
+		validator: function (value) {
+			return value.length > strLen;
+		},
+		message: `Minimum of ${strLen} characters are required`,
+	};
+}
 
-function programTitleValidator() {
-  return {
-    validator: function(title) {
-      const regex = /^[a-zA-Z0-9 _-]+$/;
-      return regex.test(title);
-    },
-    message: `Only numbers, letters, hyphens or underscores are allowed`
-  }
-};
+function validateProgramTitle() {
+	return {
+		validator: function (title) {
+			const regex = /^[a-zA-Z0-9 _-]+$/;
+			return regex.test(title);
+		},
+		message: `Only numbers, letters, hyphens or underscores are allowed`,
+	};
+}
 
-const programDatesValidator = () => {
+function validateProgramDates() {
 	return [
 		{
 			validator: function (value) {
@@ -269,8 +269,7 @@ const programDatesValidator = () => {
 		{
 			validator: function (endDate) {
 				const startDate = this.get("farm_program_start_date");
-        console.log(this)
-        console.log({startDate})
+				// console.log(this);
 				if (!endDate || !startDate) {
 					return false;
 				}
@@ -279,30 +278,85 @@ const programDatesValidator = () => {
 			message: `Invalid date. The end date must be set after the program's start date`,
 		},
 	];
+}
+
+/**
+ * @function parseYearRange
+ * @description Parses a year range string into its component years.
+ * @param {string} yearRange - The year range string in the format "start year - end year", for example "2001 - 2003".
+ * @returns {number[]} An array containing the start year and end year as numbers.
+ */
+const parseYearRange = (yearRange) => {
+  // Split the string into an array of two strings, "start year" and "end year".
+  // Apply the Number function to each string in the array, converting them to numbers.
+  // This is a more concise way to convert the strings to numbers than using parseInt.
+  // The result of the map function is an array of two numbers, which is then assigned
+  // to the yearRangeStart and yearRangeEnd variables using array destructuring.
+  const [yearRangeStart, yearRangeEnd] = yearRange.split('-').map(Number);
+
+  return [yearRangeStart, yearRangeEnd];
 };
 
-function programTimelineValidator() {
-  const startDate = this.get(`farm_program_start_date`);
-  console.log({startDate})
-	const endDate = this.get(`farm_program_end_date`);
-	const timeline = this.get(`farm_program_timeline`);
+function validateProgramTimeline() {
+	return [
+		{
+			validator: function () {
 
-	// Check if each year in the timeline is within the start and end dates
-	for (const [yearRange, events] of timeline.entries()) {
-		const progStartYear = new Date(startDate).getFullYear();
-		const progEndYear = new Date(endDate).getFullYear();
-		const yearRangeStart = parseInt(yearRange); // parseInt("2001 - 2003") -> 2001
-		const yearRangeEnd = yearRange.split("-");
+				const timeline = this.get("farm_program_timeline");
 
-		if (yearRangeStart < progStartYear || yearRangeStart > progEndYear) {
-			return false;
-		}
+					for (const [yearRange, events] of timeline.entries()) {
 
-		if (yearRangeEnd > progStartYear || yearRangeEnd < progStartYear) {
-			return false;
-		}
-	}
-	return true;
+					// Parse the year range string into its start and end years
+					const [yearRangeStart, yearRangeEnd] = parseYearRange(yearRange);
+
+					// Check if the start year is greater than the end year
+					if (yearRangeStart > yearRangeEnd) {
+						// The year range is invalid, return false
+						throw new Error(`Invalid years' sequence: ${yearRange}`)
+					}
+				}
+			},
+			message: `Invalid years' sequence`,
+		},
+		{
+			validator: function () {
+				/**
+				 * Validates if the timeline of a farm program is valid.
+				 * @returns {boolean} True if the timeline is valid, false otherwise.
+				 */
+				// Get the start date, end date, and timeline of the farm program
+				const startDate = this.get("farm_program_start_date");
+				const endDate = this.get("farm_program_end_date");
+				const timeline = this.get("farm_program_timeline");
+
+				// Get the start and end year of the farm program
+				const progStartYear = new Date(startDate).getFullYear();
+				const progEndYear = new Date(endDate).getFullYear();
+
+				// Iterate over each year range and its corresponding events in the timeline
+				for (const [yearRange, events] of timeline.entries()) {
+
+					// Parse the year range string into its start and end years
+					const [yearRangeStart, yearRangeEnd] = yearRange.split("-").map(Number);
+
+					// Check if the year range is outside the program's start and end years
+					if (
+						yearRangeStart < progStartYear ||
+						yearRangeStart > progEndYear ||
+						yearRangeEnd < progStartYear ||
+						yearRangeEnd > progEndYear
+					) {
+						// The year range is outside the program's timeline, return false
+						throw new Error (`Invalid timeline year range (${yearRange}): the range must fall between the program's start and end dates: ${startDate} - ${endDate}`)
+					}
+				}
+
+				// All year ranges are valid, return true
+				return true;
+			},
+			message: `Invalid timeline year range: the range must fall between the program's start and end dates`,
+		},
+	];
 }
 
 const farmProgramSchema = new mongoose.Schema(
@@ -310,7 +364,7 @@ const farmProgramSchema = new mongoose.Schema(
 		farm_program_id: {
 			type: String,
 			required: true,
-      // REMOVE
+			// REMOVE
 			// required: {
 			//   validator: function(value) { return !!value },
 			//   message: function() { return `The ${this.path} is required` }.bind(this)
@@ -321,36 +375,35 @@ const farmProgramSchema = new mongoose.Schema(
 			// },
 			// required: [true, `The ${JSON.stringify(this)} must be specified`],
 			// required: [true, function() {
-			//   console.log(this)
 			//   return `The ${this._path} must be specified`;
 			// }],
 			unique: true,
-			validate: [ stringLengthValidator(12), alphaNumericValidator() ],
+			validate: [validateStringLength(12), alphaNumericValidator()],
 		},
 		farm_program_title: {
 			type: String,
 			required: true,
 			unique: true,
-			validate: [ stringLengthValidator(10), programTitleValidator() ]
+			validate: [validateStringLength(10), validateProgramTitle()],
 		},
 		farm_program_description: {
 			type: String,
-      required: true,
-      validate: stringLengthValidator(10),
+			required: true,
+			validate: validateStringLength(10),
 		},
 		farm_program_start_date: {
 			type: Date,
-      required: true
+			required: true,
 		},
 		farm_program_end_date: {
 			type: Date,
 			required: false,
-			validate: programDatesValidator(),
+			validate: validateProgramDates(),
 		},
 		farm_program_state: {
 			type: String,
 			required: true,
-      enum: NGA_STATES_NAMES,
+			enum: NGA_STATES_NAMES,
 		},
 		farm_program_manager: {
 			type: mongoose.Schema.Types.ObjectId,
@@ -360,25 +413,28 @@ const farmProgramSchema = new mongoose.Schema(
 		farm_program_budget: {
 			type: Number,
 			required: false,
-      validate: {
-        validator: (value) => {
-          return value >= 0
-        },
-        message: `The program budget cannot be less than 0`
-      }
+			validate: {
+				validator: (value) => {
+					return value >= 0;
+				},
+				message: `The program budget cannot be less than 0`,
+			},
+			default: 0,
 		},
 		farm_program_partners: {
 			type: [String],
 			required: false,
-      default: [],
+			default: [],
 		},
 		farm_program_objectives: {
 			type: [String],
 			required: false,
+			default: [],
 		},
 		farm_program_impact_metrics: {
 			type: [String],
 			required: false,
+			default: [],
 		},
 		farm_program_timeline: {
 			type: Map,
@@ -387,10 +443,7 @@ const farmProgramSchema = new mongoose.Schema(
 					type: String,
 				},
 			],
-			// validate: {
-			// 	validator: programTimelineValidator,
-			// 	message: `The program's timeline must fall between the program start date and end date`,
-			// },
+			validate: validateProgramTimeline(),
 			required: false,
 		},
 		farm_program_training_materials: {
@@ -459,9 +512,6 @@ farmProgramSchema.pre("save", function (next) {
 	if (!farmProgram.isModified("farm_program_farmers")) {
 		next();
 	}
-
-	// console.log({farmProgram})
-	// console.log({farmProgramSchema})
 
 	// Iterate over each farmer in the farm_program_farmers array
 	farmProgram.farm_program_farmers.forEach((farmer) => {
