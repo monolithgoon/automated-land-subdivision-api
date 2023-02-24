@@ -209,7 +209,7 @@ const farmerSchema = new mongoose.Schema(
 				required: false,
 				enum: Array.from(Array(11).keys()),
 				validate: {
-					validator: () => {
+					validator: (value) => {
 						return value >= 0 && value <= 10; // Check if the value is within the range of the enum
 					},
 					message: "The farming_experience value must be between 0 and 10.",

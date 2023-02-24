@@ -1,0 +1,177 @@
+{
+  "farm_program_id": "NIRSAL_NASCOFA_KADUNA_001",
+  "farm_program_title": "NIRSAL-NASCOFA Rice Farmers Program",
+  "farm_program_description": "This program is a World Bank funded program for farmers in North Eastern Nigeria. Its goal is to improve the livelihoods of farmers in the region by providing them with support and resources to improve their agricultural practices and increase their crop yields.",
+  "farm_program_start_date": "2020-02-20T15:30:00.000Z",
+  "farm_program_end_date": "2025-02-20T15:30:00.000Z",
+  "farm_program_state": "Kaduna",
+  "farm_program_manager": "63f78efb5acc3a3da47c21a6",
+  "farm_program_budget": 500000000,
+  "farm_program_partners": [
+    "World Bank",
+    "Ministry of Agriculture",
+    "International Fund for Agricultural Development"
+  ],
+  "farm_program_objectives": [
+    "Increase crop yields",
+    "Improve farmers' access to markets",
+    "Strengthen local agricultural supply chains"
+  ],
+  "farm_program_impact_metrics": [
+    "Increase in crop yields",
+    "Number of farmers trained",
+    "Reduction in post-harvest losses"
+  ],
+  "farm_program_timeline": {
+    "2020-2021": [
+      "Farmer training and capacity building",
+      "Distribution of agricultural inputs and equipment"
+    ],
+    "2022-2024": [
+      "Monitoring and evaluation of program impact"
+    ]
+  },
+  "farm_program_training_materials": [
+    "Training manuals",
+    "Videos",
+    "Interactive modules"
+  ],
+  "farm_program_funding_sources": [
+    "World Bank",
+    "Ministry of Agriculture"
+  ],
+  "farm_program_evaluation_plan": "An independent evaluation team will conduct a randomized control trial to assess the impact of the program on crop yields, income, and food security. The evaluation will be conducted in collaboration with local stakeholders and will include a mixed-methods approach that combines quantitative surveys with qualitative interviews and focus group discussions.",
+  "farm_program_farmers": [
+    {
+      "farmer_last_name": "Angulu",
+      "farmer_first_name": "Emma",
+      "farmer_id": "NIRSAL_NASCOFA_KADUNA_001_F001",
+      "farmer_bvn": 222185422788,
+      "farmer_gender": "M",
+      "farmer_dob": "1990-07-15T00:00:00.000Z",
+      "farmer_phone_number": "+2341234567890",
+      "farmer_email_address": "emma.angulu@egmail.com",
+      "farmer_photo_base64": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5QsUEzIF1MpbwAAAD1JREFUOMtj/P//PwM6AFn0IMAAAB2AAJjLZAFIAAAAASUVORK5CYII=",
+      "farmer_photo_url": "https://res.cloudinary.com/your-cloud-name/image/upload/v1645436500/farmer-583.jpg",
+      "farmer_funded_date": "2020-03-01T00:00:00.000Z",
+      "land_size": 5.6,
+      "farmer_farm_details": {
+        "general_description": "The farmer's farm is located in a rural area of North Eastern Nigeria and primarily grows maize and cassava. Access to water is limited, and the farmer relies on rainwater for irrigation.",
+        "land_size": 5,
+        "land_size_units": "acres",
+        "soil_type": "Loamy",
+        "farm_coordinates": [
+          [
+            12.3456789,
+            67.8901234
+          ],
+          [
+            12.3467890,
+            67.8912345
+          ],
+          [
+            12.3478901,
+            67.8923456
+          ],
+          [
+            12.3489012,
+            67.8934567
+          ],
+          [
+            12.3490123,
+            67.8945678
+          ],
+          [
+            12.3501234,
+            67.8956789
+          ],
+          [
+            12.3512345,
+            67.8967901
+          ]
+        ]
+      },
+      "farmer_farm_practice": {
+        "farming_experience": 10,
+        "crop_rotation_crops": [
+          "maize",
+          "cassava",
+          "yams"
+        ],
+        "has_access_to_market": true,
+        "has_access_to_irrigation": true,
+        "has_access_to_power": true,
+        "has_storage_facilities": true,
+        "fertilizer_usage": {
+          "type": "NPK",
+          "amount": "50kg/ha"
+        }
+      }
+    },
+    {
+      "farmer_id": "NIRSAL_NASCOFA_KADUNA_002",
+      "farmer_last_name": "Ibrahim",
+      "farmer_first_name": "Aisha",
+      "farmer_bvn": 222185580802,
+      "farmer_gender": "F",
+      "farmer_dob": "1985-07-15T00:00:00.000Z",
+      "farmer_phone_number": "+2341234567890",
+      "farmer_email_address": "aisha.ibrahim@gmail.com",
+      "farmer_photo_base64": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5QsUEzIF1MpbwAAAD1JREFUOMtj/P//PwM6AFn0IMAAAB2AAJjLZAFIAAAAASUVORK5CYII=",
+      "farmer_photo_url": "https://res.cloudinary.com/your-cloud-name/image/upload/v1645436500/farmer-584.jpg",
+      "farmer_funded_date": "2021-03-01T00:00:00.000Z",
+      "farmer_farm_details": {
+        "general_description": "The farmer's farm is located in a rural area of North Eastern Nigeria and primarily grows yams and beans. Access to water is limited, and the farmer relies on a nearby river for irrigation.",
+        "land_size": 2.35,
+        "land_size_units": "acres",
+        "soil_type": "Clay",
+        "farm_coordinates": [
+          [
+            12.3523456,
+            67.8979012
+          ],
+          [
+            12.3534567,
+            67.8980123
+          ],
+          [
+            12.3545678,
+            67.8991234
+          ],
+          [
+            12.3556789,
+            67.9002345
+          ],
+          [
+            12.3567901,
+            67.9013456
+          ],
+          [
+            12.3579012,
+            67.9024567
+          ],
+          [
+            12.3590123,
+            67.9035678
+          ]
+        ],
+        "farmer_farm_practice": {
+          "farming_experience": 3,
+          "crop_rotation_crops": [
+            "beans",
+            "okra",
+            "watermelons"
+          ],
+          "has_access_to_market": true,
+          "has_access_to_irrigation": false,
+          "has_access_to_power": false,
+          "has_storage_facilities": false,
+          "fertilizer_usage": {
+            "type": "NPK",
+            "amount": "50kg/ha"
+          }
+        }
+      }
+    }
+  ]
+}
