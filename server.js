@@ -5,20 +5,8 @@ const dotenv = require('dotenv') // read the data from the config file. and use 
 dotenv.config({path: './default.env'}) // IMPORTANT > CONFIGURE ENV. VARIABLES BEFORE U CALL THE APP 
 
 
-
-
-// ENVIRONMENT VARIABLES
-console.log(process.env.SESSION_USER); // NODE environment variables
-console.log(process.env.SESSION_PASSWORD); // NODE environment variables
-console.log(EXPRESS_APP.get('env')); // express environment variables
-
-
-
-
 // CONNECT TO THE REMOTE DB
 dbConnect();
-
-
 
 
 // START THE SERVER
