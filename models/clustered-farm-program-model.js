@@ -208,12 +208,12 @@ const farmerSchema = new mongoose.Schema(
 				type: Number,
 				required: false,
 				enum: Array.from(Array(11).keys()),
-				// REMOVE
-				// enum: {
-				//   values: Array.from(Array(11).keys()), // creates an array of numbers from 0 to 10
-				//   // message: `${this.path} must be a number between 0 and 10`
-				//   message: (props) => `${props.value} is not a valid value for ${props.path}. Must be a number between 0 and 10.`,
-				// }
+				validate: {
+					validator: () => {
+						return value >= 0 && value <= 10; // Check if the value is within the range of the enum
+					},
+					message: "The farming_experience value must be between 0 and 10.",
+				},
 			},
 			crop_rotation_crops: { type: [String], required: false },
 			has_access_to_market: { type: Boolean, required: false },
@@ -287,32 +287,30 @@ function validateProgramDates() {
  * @returns {number[]} An array containing the start year and end year as numbers.
  */
 const parseYearRange = (yearRange) => {
-  // Split the string into an array of two strings, "start year" and "end year".
-  // Apply the Number function to each string in the array, converting them to numbers.
-  // This is a more concise way to convert the strings to numbers than using parseInt.
-  // The result of the map function is an array of two numbers, which is then assigned
-  // to the yearRangeStart and yearRangeEnd variables using array destructuring.
-  const [yearRangeStart, yearRangeEnd] = yearRange.split('-').map(Number);
+	// Split the string into an array of two strings, "start year" and "end year".
+	// Apply the Number function to each string in the array, converting them to numbers.
+	// This is a more concise way to convert the strings to numbers than using parseInt.
+	// The result of the map function is an array of two numbers, which is then assigned
+	// to the yearRangeStart and yearRangeEnd variables using array destructuring.
+	const [yearRangeStart, yearRangeEnd] = yearRange.split("-").map(Number);
 
-  return [yearRangeStart, yearRangeEnd];
+	return [yearRangeStart, yearRangeEnd];
 };
 
 function validateProgramTimeline() {
 	return [
 		{
 			validator: function () {
-
 				const timeline = this.get("farm_program_timeline");
 
-					for (const [yearRange, events] of timeline.entries()) {
-
+				for (const [yearRange, events] of timeline.entries()) {
 					// Parse the year range string into its start and end years
 					const [yearRangeStart, yearRangeEnd] = parseYearRange(yearRange);
 
 					// Check if the start year is greater than the end year
 					if (yearRangeStart > yearRangeEnd) {
 						// The year range is invalid, return false
-						throw new Error(`Invalid years' sequence: ${yearRange}`)
+						throw new Error(`Invalid years' sequence: ${yearRange}`);
 					}
 				}
 			},
@@ -335,7 +333,6 @@ function validateProgramTimeline() {
 
 				// Iterate over each year range and its corresponding events in the timeline
 				for (const [yearRange, events] of timeline.entries()) {
-
 					// Parse the year range string into its start and end years
 					const [yearRangeStart, yearRangeEnd] = yearRange.split("-").map(Number);
 
@@ -347,7 +344,9 @@ function validateProgramTimeline() {
 						yearRangeEnd > progEndYear
 					) {
 						// The year range is outside the program's timeline, return false
-						throw new Error (`Invalid timeline year range (${yearRange}): the range must fall between the program's start and end dates: ${startDate} - ${endDate}`)
+						throw new Error(
+							`Invalid timeline year range (${yearRange}): the range must fall between the program's start and end dates: ${startDate} - ${endDate}`
+						);
 					}
 				}
 
@@ -364,19 +363,6 @@ const farmProgramSchema = new mongoose.Schema(
 		farm_program_id: {
 			type: String,
 			required: true,
-			// REMOVE
-			// required: {
-			//   validator: function(value) { return !!value },
-			//   message: function() { return `The ${this.path} is required` }.bind(this)
-			// },
-			// required: function() {{}
-			//   console.log(`Checking for field: ${this.path}`)
-			//   return true;
-			// },
-			// required: [true, `The ${JSON.stringify(this)} must be specified`],
-			// required: [true, function() {
-			//   return `The ${this._path} must be specified`;
-			// }],
 			unique: true,
 			validate: [validateStringLength(12), alphaNumericValidator()],
 		},
@@ -449,16 +435,28 @@ const farmProgramSchema = new mongoose.Schema(
 		farm_program_training_materials: {
 			type: [String],
 			required: false,
+			default: [],
 		},
 		farm_program_funding_sources: {
 			type: [String],
 			required: false,
+			default: [],
 		},
 		farm_program_evaluation_plan: {
 			type: String,
 			required: false,
+			default: [],
 		},
-		farm_program_farmers: { type: [farmerSchema], required: true },
+		farm_program_farmers: {
+			type: [farmerSchema],
+			required: true,
+			validate: {
+				validator: (farmers) => {
+					if (farmers.length < 1) throw new Error(`The program must have at least 1 farmer`);
+				},
+				message: ``,
+			},
+		},
 	},
 	{ timeStamps: true }
 );
