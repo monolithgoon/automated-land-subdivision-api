@@ -43,6 +43,16 @@ const validateEmail = (email) => {
 	return emailRegex.test(email);
 };
 
+function validateUrl() {
+	return {
+		validator: (url) => {
+			const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*\/?$/;
+			if(!urlRegex.test(url)) throw new Error(`Invalid URL [ ${url} ]`);
+		},
+		message: ``
+	}
+}
+
 const farmerSchema = new mongoose.Schema(
 	{
 		farmer_id: {
@@ -195,13 +205,18 @@ const farmerSchema = new mongoose.Schema(
 				},
 			},
 			soil_type: { type: [String], required: false },
-			field_officer_id: {
-				type: mongoose.Schema.Types.ObjectId,
-				ref: "FieldOfficer",
-				required: [true, `The ${this.path} must be specified`],
-				// REMOVE
-				default: new mongoose.Types.ObjectId(),
+			field_officer_url: {
+				type: String,
+				required: true,
+				validate: validateUrl(),
 			},
+			// field_officer_id: {
+			// 	type: mongoose.Schema.Types.ObjectId,
+			// 	ref: "FieldOfficer",
+			// 	required: [true, `The ${this.path} must be specified`],
+			// 	// REMOVE
+			// 	default: new mongoose.Types.ObjectId(),
+			// },
 		},
 		farmer_farm_practice: {
 			farming_experience: {

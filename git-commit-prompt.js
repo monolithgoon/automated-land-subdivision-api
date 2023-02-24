@@ -252,7 +252,7 @@ async function executeCommitPrompts() {
 		}
 	} catch (error) {
 		console.error(chalk.fail(error.message));
-		// console.error(error);
+		console.error(chalk.consoleYlow(error));
 		if (error.message.toLowerCase().includes("command failed")) {
 			okForceCommitOrigin = await askCommitPrompt("Force push commit to remote origin? ( Y / N )", rl, "ORIGIN");
 			if (["yes", "y"].includes(okForceCommitOrigin.toLowerCase())) {

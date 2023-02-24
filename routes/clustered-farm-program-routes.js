@@ -6,6 +6,7 @@ const farmProgramController = require(`../controllers/clustered-farm-program-con
 router
 	.route("/")
 	.post(farmProgramController.insertFarmProgram, farmProgramController.normalizeFarmProgram)
+	.post(farmProgramController.insertFarmProgram, farmProgramController.normalizeFarmProgram)
 	.get(farmProgramController.getAllFarmPrograms);
 
 router
@@ -18,7 +19,11 @@ router
 	.get(farmProgramController.getAllProcessedFarmPrograms);
 
 router
-	.route("/processed/farm-program")
+	.route("/processed/farm-program/:id")
+	.get(farmProgramController.getProcessedFarmProgram);
+
+router
+	.route("/processed/farm-program/")
 	.get(farmProgramController.getProcessedFarmProgram);
 
 module.exports = router;
