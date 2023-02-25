@@ -122,12 +122,12 @@ EXPRESS_APP.use('/', viewRouter);
 EXPRESS_APP.use('/api/demo/', viewRouter);
 EXPRESS_APP.use('/api/v1/agcs/', agcsRouter);
 EXPRESS_APP.use('/api/v2/geo-clusters/', geoClustersRouter);
-EXPRESS_APP.use(`/api/v3/clustered-farm-program/`, farmProgramRouter)
 EXPRESS_APP.use('/api/v1/parcelized-agcs/', parcelizedAgcsRouter);
 EXPRESS_APP.use('/api/v1/users/', usersRouter);
 EXPRESS_APP.use('/api/v2/geofiles/', geofilesRouter);
 EXPRESS_APP.use('/api/v2/legacy-agcs/', legacyAgcsRouter);
 EXPRESS_APP.use(`/api/v2/pmros/`, pmroRouter);
+EXPRESS_APP.use(`/api/v3/clustered-farm-program/`, farmProgramRouter)
 
 
 

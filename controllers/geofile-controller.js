@@ -13,12 +13,12 @@ const uploadGeofile = async (req, res, next) => {
 	
 	console.log(chalk.success(`CALLED THE [ uploadGeofile ] CONTROLLER FN. `))
 
-	// const geofileUploadPath = `/resources/uploads/raw-geo-files/`
-	// const convertedGeofilePath = `/resources/converted-geo-files/`
+	// const geofileUploadPath = `/localdata/uploads/raw-geo-files/`
+	// const convertedGeofilePath = `/localdata/converted-geo-files/`
 
 	// UPDATE THE REQUEST OBJECT WITH FILE PATH VARIABLES
-	req.__uploadpath = `/resources/uploads/raw-geo-files/`
-	req.__convertedpath = `/resources/converted-geo-files/`
+	req.__uploadpath = `/localdata/uploads/raw-geo-files/`
+	req.__convertedpath = `/localdata/converted-geo-files/`
 	
 	try {
 
@@ -114,7 +114,7 @@ const convertGeofileToGeoJSON = async (req, res, next) => {
 		// REMOVE > DEPRECATED > ALL POTENTIAL ERRS. HAVE BEEN ADEQUEATELY HANDLED ABOVE 
 		// if (completeFileName) {
 		// 	res.status(500).send({
-		// 		message: `This file [ ${completeFileName} ] was successfully uploaded, but was NOT succesfully converted to GeoJSON. Check the convertGeofileToGeoJSON fn. in the file-controller module.`,
+		// 		message: `This file [ ${completeFileName} ] was successfully uploaded, but was NOT succesfully converted to GeoJSON. Check the convertGeofileToGeoJSON fn. in the geofile-controller module.`,
 		// 		error_msg: convertGeofileErr.message,
 		// 	});
 		// } else {
@@ -191,7 +191,7 @@ const appendClusterDetails = async (req, res, next) => {
       } else {
 			
 			// NO FARMERS' ALLOCATIONS JSON WITH THAT ID EXISTS IN THE DB.
-			throw new Error(`Our database DOES NOT have a JSON record of a geo-cluster document whose 'geofile_id' matches this file's name: [ ${geofileID} ]. The db. query in the appendClusterDetails fn. in the file-controller failed. `);
+			throw new Error(`Our database DOES NOT have a JSON record of a geo-cluster document whose 'geofile_id' matches this file's name: [ ${geofileID} ]. The db. query in the appendClusterDetails fn. in the geofile-controller failed. `);
 
 			// REMOVE > DEPRECATED 
          // res.status(404).json({

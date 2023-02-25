@@ -1,7 +1,7 @@
 `use strict`;
 const mongoose = require(`mongoose`);
-const MONGOOSE_MODEL_ENUMS = require("../utils/constants/mongoose-model-enums");
-const NGA_STATES_NAMES = require("../utils/constants/nga-states-names");
+const MONGOOSE_MODEL_ENUMS = require("../constants/mongoose-model-enums");
+const NGA_STATES_NAMES = require("../constants/nga-states-names");
 
 /** PROGRAM FARMER SCHEMA VALIDATORS */
 

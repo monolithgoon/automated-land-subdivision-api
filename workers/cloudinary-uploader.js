@@ -4,7 +4,7 @@ dotenv.config({path: '../default.env'}); // loads the cloudinary credentials sto
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
 const multer = require("../middleware/multer-file-upload.js");
-const chalk = require("./chalk-messages.js");
+const chalk = require("../utils/chalk-messages.js");
 // const streamifier = require('streamifier')
 
 

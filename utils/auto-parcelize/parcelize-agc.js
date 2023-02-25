@@ -1,4 +1,5 @@
-const chalk = require("../../../utils/chalk-messages");
+`use strict`
+const chalk = require("../../utils/chalk-messages.js");
 const { PARCELIZE_SHAPEFILE } = require("./chunkify-moving-frames.js");
 
 

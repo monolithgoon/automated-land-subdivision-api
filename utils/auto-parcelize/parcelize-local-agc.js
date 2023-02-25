@@ -1,4 +1,5 @@
-const chalk = require("../../../utils/chalk-messages");
+`use strict`
+const chalk = require("../../utils/chalk-messages");
 const fs = require("fs");
 const { PARCELIZE_AGC } = require("./parcelize-agc.js");
 

@@ -104,7 +104,6 @@ async function returnAgc(agc_id) {
 
 
 // A SIMPLE COMMAND LINE SCRIPT USING process.argv TO SELECTIVELY EXECUTE FUNCTIONS IN THIS FILE
-// EXECUTE IT BY TYPING: node export-fs-data-to-db.js --export/delete
 
 if (process.argv[2] === '--all') {
    returnAllAgcs();

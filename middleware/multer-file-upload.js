@@ -10,7 +10,7 @@ const maxFileSize = 200 * 1024 * 1024; // Restrict file size with Multer
 let storageConfig = multer.diskStorage({
    // determines folder to store the uploaded files.
 	destination: (req, file, cb) => {
-		cb(null, __approotdir + "/resources/uploads/raw-geo-files");
+		cb(null, __approotdir + "/localdata/uploads/raw-geo-files");
    },
    //  determines the name of the file inside the destination folder.
 	filename: (req, file, cb) => {
