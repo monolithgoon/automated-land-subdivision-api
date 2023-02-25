@@ -10,7 +10,7 @@ const getAllDocuments = async function (request, model) {
    excludedFields.forEach(el => delete queryObj[el]); // exclude those fields from the query obj.
 
    // RE-FORMAT A QUERY STRING TO MONGODB FILTER FORMAT
-   // GET request: 127.0.0.1:9090/api/v1/tours?difficulty=easy&price[lte]=500
+   // GET request: 127.0.0.1:9443/api/v1/tours?difficulty=easy&price[lte]=500
    // { difficulty: 'easy', price: { lte: 500} } // mongoDB filter query string obj. from above GET req.
    let queryStr = JSON.stringify(queryObj);
    let formattedQueryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`) // add the '$' sign to the operator
@@ -22,8 +22,8 @@ const getAllDocuments = async function (request, model) {
    console.log(chalk.working(`Waiting for DB. response .. `))
 
    // 3. SORTING
-   // GET request: 127.0.0.1:9090/api/v1/tours?difficulty=hard&sort=price,ratingsQuantity => ascending
-   // GET request: 127.0.0.1:9090/api/v1/tours?difficulty=hard&sort=-price,-ratingsQuantity => descending
+   // GET request: 127.0.0.1:9443/api/v1/tours?difficulty=hard&sort=price,ratingsQuantity => ascending
+   // GET request: 127.0.0.1:9443/api/v1/tours?difficulty=hard&sort=-price,-ratingsQuantity => descending
    if (request.query.sort) { // check if the query string obj. has a sort property
       const sortByCriteria = request.query.sort.split(',').join(' ');
       dbQuery = dbQuery.sort(sortByCriteria) // mongoose format > .sort('price ratingsQuality')
@@ -32,7 +32,7 @@ const getAllDocuments = async function (request, model) {
    };
 
    // 4. LIMIT FIELDS IN EACH RESULT (aka: "PROJECTING")
-   // GET request: http://127.0.0.1:9090/api/v1/tours?fields=name,price,ratingsAverage,summary
+   // GET request: http://127.0.0.1:9443/api/v1/tours?fields=name,price,ratingsAverage,summary
    if (request.query.fields) {
       const fields = request.query.fields.split(',').join(' ');
       dbQuery = dbQuery.select(fields) // mongoose format > .select('name price ratingsAverage')
@@ -41,7 +41,7 @@ const getAllDocuments = async function (request, model) {
    };
 
    // 5. PAGINATION
-   // GET request: 127.0.0.1:9090/api/v1/tours?limit=3&page=2
+   // GET request: 127.0.0.1:9443/api/v1/tours?limit=3&page=2
    // 1-10 => page 1, 11-20 => page 2, 21-30 => page 3
    const page = request.query.page * 1 || 1; // page num. (default > page 1)
    const limit = request.query.limit * 1 || 100; // num. results per page (default > 100)

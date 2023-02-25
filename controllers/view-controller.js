@@ -105,7 +105,7 @@ exports.renderOnlyAgcs = catchAsync(async (req, res, next) => {
 
 
 // DB QUERY USING QUERY OBJECT
-// http://127.0.0.1:9090/parcelized-agc?UNIQUE-AGC-ID-XXX-XXX-XXX
+// http://127.0.0.1:9443/parcelized-agc?UNIQUE-AGC-ID-XXX-XXX-XXX
 exports.renderParcelizedAgc = async (req, res) => {
 
    try {
@@ -114,7 +114,7 @@ exports.renderParcelizedAgc = async (req, res) => {
       let queryObj = { ...req.query }
       
       // IDEALLY, THE QUERY OBJECT IS SUPPOSED TO BE:
-      // http://127.0.0.1:9090/parcelized-agc?properties.agc_id=UNIQUE-AGC-ID-XXX-XXX-XXX
+      // http://127.0.0.1:9443/parcelized-agc?properties.agc_id=UNIQUE-AGC-ID-XXX-XXX-XXX
       // THE QUERY OBJ. IS NOW IN THE FORM { UNIQUE-AGC-ID-XXX-XXX-XXX: " " }
       
       // EXTRACT THE agc_id FROM THE QUERY OBJ.
@@ -176,7 +176,7 @@ exports.renderParcelizedAgc = async (req, res) => {
 
 
 // RENDER THE PARCELIZED AGC VIA THE STRING IN THE preview_map_url_hash FIELD
-// http://127.0.0.1:9090/parcelized-agc/?XAWXEACGEBVLGDRACUGOZYBSZTCKHMMDHOYVAPRWKXRNJVWXHXZHUMXTYTILBBMY
+// http://127.0.0.1:9443/parcelized-agc/?XAWXEACGEBVLGDRACUGOZYBSZTCKHMMDHOYVAPRWKXRNJVWXHXZHUMXTYTILBBMY
 exports.renderParcelizedAgcBySecretURL = async (req, res) => {
 
    try {
@@ -185,7 +185,7 @@ exports.renderParcelizedAgcBySecretURL = async (req, res) => {
       let queryObj = { ...req.query }
       
       // IDEALLY, THE QUERY OBJECT IS SUPPOSED TO BE:
-      // http://127.0.0.1:9090/parcelized-agc?properties.preview_map_url_hash=XAWXEACGEBVLGDRACUGOZYBSZTCKHMMDHOYVAPRWKXRNJVWXHXZHUMXTYTILBBMY
+      // http://127.0.0.1:9443/parcelized-agc?properties.preview_map_url_hash=XAWXEACGEBVLGDRACUGOZYBSZTCKHMMDHOYVAPRWKXRNJVWXHXZHUMXTYTILBBMY
       // THE QUERY OBJ. IS NOW IN THE FORM { "XAWXEACGEBVLGDRACUGOZYBSZTCKHMMDHOYVAPRWKXRNJVWXHXZHUMXTYTILBBMY": " " }
       
       // EXTRACT THE agc_id FROM THE QUERY OBJ.

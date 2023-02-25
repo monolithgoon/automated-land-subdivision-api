@@ -95,7 +95,7 @@ exports.getAllParcelizedAgcs = async (request, response) => {
       // BUILDING THE QUERY
       
          // 1. FILTERING _EXAMPLE 3
-         // GET request: 127.0.0.1:9090/api/v1/tours?difficulty=easy&page=2&sort=1&limit=10
+         // GET request: 127.0.0.1:9443/api/v1/tours?difficulty=easy&page=2&sort=1&limit=10
          // extract only db filters from the request query string object
             const queryObj = { ...request.query }; // make a copy of the request query string object
             const excludedFields = ['page', 'sort', 'limit', 'fields']; 
@@ -106,7 +106,7 @@ exports.getAllParcelizedAgcs = async (request, response) => {
             // RE-FORMAT A QUERY STRING TO MONGODB FILTER FORMAT
             // { difficulty: 'easy', duration: { $gte: 5} } // normal mongoDB filter string format
 
-            // GET request: 127.0.0.1:9090/api/v1/tours?difficulty=easy&price[lte]=500
+            // GET request: 127.0.0.1:9443/api/v1/tours?difficulty=easy&price[lte]=500
                // { difficulty: 'easy', price: { lte: 500} } // query string obj. from above GET req.
                let queryStr = JSON.stringify(queryObj);
                let formattedQueryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`) // add the '$' sign to the operator
@@ -120,8 +120,8 @@ exports.getAllParcelizedAgcs = async (request, response) => {
          
          
          // 3. SORTING
-         // GET request: 127.0.0.1:9090/api/v1/tours?difficulty=hard&sort=price,ratingsQuantity > ascending
-         // GET request: 127.0.0.1:9090/api/v1/tours?difficulty=hard&sort=-price,-ratingsQuantity > descending
+         // GET request: 127.0.0.1:9443/api/v1/tours?difficulty=hard&sort=price,ratingsQuantity > ascending
+         // GET request: 127.0.0.1:9443/api/v1/tours?difficulty=hard&sort=-price,-ratingsQuantity > descending
          // console.log(request.query.sort);
          if(request.query.sort) { // check if the query string obj. has a sort property
             const sortByCriteria = request.query.sort.split(',').join(' ');
@@ -133,7 +133,7 @@ exports.getAllParcelizedAgcs = async (request, response) => {
 
 
          // 4. LIMIT FIELDS IN EACH RESULT (aka: "PROJECTING")
-         // GET request: 127.0.0.1:9090/api/v1/tours?fields=name,price,ratingsAverage,summary
+         // GET request: 127.0.0.1:9443/api/v1/tours?fields=name,price,ratingsAverage,summary
          if (request.query.fields) {
             const fields = request.query.fields.split(',').join(' ');
             dbQuery = dbQuery.select(fields) // mongoose format > .select('name price ratingsAverage')
@@ -143,7 +143,7 @@ exports.getAllParcelizedAgcs = async (request, response) => {
 
 
          // 5. PAGINATION
-         // GET request: 127.0.0.1:9090/api/v1/tours?limit=3&page=2
+         // GET request: 127.0.0.1:9443/api/v1/tours?limit=3&page=2
          // 1-10 => page 1, 11-20 => page 2, 21-30 => page 3
          const page = request.query.page * 1 || 1; // page num. (default > page 1)
          const limit = request.query.limit * 1 || 100; // num. results per page (default > 100)
@@ -235,7 +235,7 @@ exports.getParcelizedAgcsMetadata = async (request, response) => {
 
 
 // GET A SINGLE FARM PARCEL - ROUTE HANDLER FN.
-// GET request: 127.0.0.1:9090/api/v1/parcelized-agcs/5ef5d303f3aea23050903c56
+// GET request: 127.0.0.1:9443/api/v1/parcelized-agcs/5ef5d303f3aea23050903c56
 exports.renderParcelizedAgcByID = async (request, response) => {
 
    try {
@@ -267,7 +267,7 @@ exports.renderParcelizedAgcByID = async (request, response) => {
 
 
 // DB QUERY USING QUERY OBJECT
-// http://127.0.0.1:9090/parcelized-agcs/parcelized-agc?UNIQUE-AGC-ID-XXX-XXX
+// http://127.0.0.1:9443/parcelized-agcs/parcelized-agc?UNIQUE-AGC-ID-XXX-XXX
 exports.getParcelizedAgc = async (req, res, next) => {
 
    console.log(chalk.success(`YOU SUCCESSFULLY CALLED THE [ getParcelizedAgc ] FN. `))
@@ -278,7 +278,7 @@ exports.getParcelizedAgc = async (req, res, next) => {
       let queryObj = { ...req.query }
       
       // IDEALLY, THE QUERY OBJECT IS SUPPOSED TO BE:
-      // http://127.0.0.1:9090/parcelized-agcs/parcelized-agc?properties.agc_id=UNIQUE-AGC-ID-XXX-XXX
+      // http://127.0.0.1:9443/parcelized-agcs/parcelized-agc?properties.agc_id=UNIQUE-AGC-ID-XXX-XXX
       // BUT NOW, THE QUERY OBJ. IS NOW IN THE FORM { UNIQUE-AGC-ID-XXX-XXX: " " }
       
       // EXTRACT THE agc_id FROM THE QUERY OBJ.

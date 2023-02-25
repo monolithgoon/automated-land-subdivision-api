@@ -3,7 +3,7 @@ const chalk = require('../../../utils/chalk-messages');
 const DB_CONNECT = require('../../../utils/db-connect.js');
 const AGC_MODEL = require('../../../models/agc-model.js')
 const PARCELIZED_AGC_MODEL = require('../../../models/parcelized-agc-model.js')
-const { PARCELIZE_AGC } = require("./parcelize-agc.js"); // IMPORT AGC PARCELIZATION SCRIPT
+const { PARCELIZE_AGC } = require("../parcelize-agc.js"); // IMPORT AGC PARCELIZATION SCRIPT
 
 
 
@@ -112,7 +112,7 @@ function saveToFile(parcelizedAgc) {
    const fileName = directionCode ? `${agcID.toLowerCase()}-${directionCode}` : `${agcID.toLowerCase()}`
 
    // SAVE TO FILE > APPEND agc_id && directionsCombo TO FILE NAME
-   fs.writeFile(`../../parcelized-agcs/data/${fileName}.geojson`, JSON.stringify(parcelizedAgc), (err, data) => {
+   fs.writeFile(`../../localdata/parcelized-agcs/data/${fileName}.geojson`, JSON.stringify(parcelizedAgc), (err, data) => {
       if(err) {
          console.log(chalk.fail(err.message))
       } else {

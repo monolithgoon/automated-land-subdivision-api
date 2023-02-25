@@ -58,13 +58,13 @@ ROUTER.route('/metadata')
    // 	.patch(TOUR_CONTROLLER.checkID, TOUR_CONTROLLER.updateTour);
    // 	.delete(TOUR_CONTROLLER.checkID, TOUR_CONTROLLER.deleteTour);
    
-// GET request: 127.0.0.1:9090/api/v1/parcelized-agcs/5f5698658580620c0c6fea6c
+// GET request: 127.0.0.1:9443/api/v1/parcelized-agcs/5f5698658580620c0c6fea6c
 ROUTER.route("/parcelized-agc/:id")
       .get(PARCELIZED_AGC_CONTROLLER.checkID, PARCELIZED_AGC_CONTROLLER.renderParcelizedAgcByID)
       
 
 
-// http://127.0.0.1:9090/parcelized-agcs/parcelized-agc?UNIQUE-AGC-ID-XXX-XXX
+// http://127.0.0.1:9443/parcelized-agcs/parcelized-agc?UNIQUE-AGC-ID-XXX-XXX
 ROUTER.route('/parcelized-agc/')
       .get(PARCELIZED_AGC_CONTROLLER.getParcelizedAgc)
 

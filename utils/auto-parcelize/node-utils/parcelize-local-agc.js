@@ -1,7 +1,7 @@
 `use strict`
-const chalk = require("../../utils/chalk-messages");
+const chalk = require("../../chalk-messages.js");
 const fs = require("fs");
-const { PARCELIZE_AGC } = require("./parcelize-agc.js");
+const { PARCELIZE_AGC } = require("../parcelize-agc.js");
 
 
 
@@ -14,7 +14,7 @@ global.__approotdir = `../../..`
 
 
 // IMPORT AGC FROM FILE
-fs.readFile("../data/temp-agcs/temp-agc.geojson", function read(err, data) {
+fs.readFile("../../../localdata/agcs/temp-agcs/temp-agc.geojson", function read(err, data) {
 
 	if (err) {
       // throw err;
@@ -54,7 +54,7 @@ function saveToFile(parcelizedAgc) {
       const fileName = directionCode ? `${agcID.toLowerCase()}-${directionCode}` : `${agcID.toLowerCase()}`
    
       // SAVE TO FILE > APPEND agc_id && directionsCombo TO FILE NAME
-      fs.writeFile(`../../parcelized-agcs/data/temp-agcs/${fileName}.geojson`, JSON.stringify(parcelizedAgc), (err, data) => {
+      fs.writeFile(`../../localdata/parcelized-agcs/data/temp-agcs/${fileName}.geojson`, JSON.stringify(parcelizedAgc), (err, data) => {
          if(err) {
             console.log(chalk.fail(err.message))
          } else {

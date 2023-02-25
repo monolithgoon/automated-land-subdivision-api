@@ -1,7 +1,5 @@
-const chalk = require('chalk');
-const chalkError = chalk.white.bgRed.bold
-const chalkSuccess = chalk.white.bgGreen.bold
-const chalkWarning = chalk.white.bgYellow.bold
+`use strict`
+const chalk = require("../../utils/chalk-messages.js")
 
 const fs = require("fs");
 const axios = require("axios");
@@ -38,14 +36,14 @@ const request = require("request");
 //       fs.writeFileSync('/agc-data.geojson', responseBody, (err, Data) => {
 
 //          if(err) {
-//             console.log(chalkError(err.message))
+//             console.log(chalk.fail(err.message))
 //          }
 
-//          console.log(chalkSuccess('The returned AGC data was saved to file..'))
+//          console.log(chalk.success('The returned AGC data was saved to file..'))
 //       });
 
 // 	} else {
-//       console.log(chalkError(error))
+//       console.log(chalk.fail(error))
 //    }
 // }
 
@@ -89,22 +87,22 @@ async function getAgcData() {
       fs.writeFileSync(`./agcs/agc-${Math.random()*99999}.geojson`, apiResponse, (err, data) => {
 
          if(err) {
-            console.log(chalkError(err.message))
+            console.log(chalk.fail(err.message))
          } else {
-            console.log(chalkSuccess('The returned AGC data was saved to file..'))
+            console.log(chalk.success('The returned AGC data was saved to file..'))
          }
       });
       
    } catch (apiReqErr) {
       
-      console.log(chalkError(apiReqErr.message));  
+      console.log(chalk.fail(apiReqErr.message));  
 
       fs.writeFile('./agcs/api-call-error-log.txt', apiReqErr, (err, data) => {
 
          if(err) {
-            console.log(chalkError(err.message))
+            console.log(chalk.fail(err.message))
          } else {
-            console.log(chalkWarning('The error from the API call was saved to the log file..'))
+            console.log(chalk.warning('The error from the API call was saved to the log file..'))
          }
       });
    }

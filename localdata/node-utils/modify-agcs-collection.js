@@ -64,7 +64,7 @@ const exportAgcs = async () => {
 
    try {
 
-      const parcelizedAgcs = JSON.parse(fs.readFileSync('../parcelized-agcs/bulk-data/parcelized-agcs.geojson', 'utf-8'));
+      const parcelizedAgcs = JSON.parse(fs.readFileSync('../parcelized-agcs/bulk-import-data/parcelized-agcs.geojson', 'utf-8'));
    
       await dbConnect();
    
@@ -95,8 +95,21 @@ const exportAgcs = async () => {
 
 
 // TODO
+// WIP
 const exportAgc = async (agcFileName) => {
-   // const parcelizedAgc = JSON.parse(fs.readFileSync(`./${agcFileName}.geojson', 'utf-8`));
+   
+   // READ THE JSON FILE
+   const agcs = JSON.parse(fs.readFileSync('../agcs/batch-imports/kuje-fct-agcs.geojson', 'utf-8'));
+   // const agcs = JSON.parse(fs.readFileSync(`../agcs/${agcFileName}.geojson', 'utf-8`));
+   
+   try {
+      await dbConnect();
+      await AGC_MODEL.create(agcs)
+      console.log(success('The AGC data was successfully written to the ATLAS database'));
+   } catch(err) {
+      console.error(error(err.message));
+   }
+   process.exit() // end the NODE process
 };
 
 
@@ -227,7 +240,7 @@ const exploreData = async () => {
 		}
 
 		console.log(
-			chalk.highlight(`${parcelizedGeoClusters.length} PARCELIZED CLUSTERS `)
+			chalk.success(`${parcelizedGeoClusters.length} PARCELIZED CLUSTERS `)
 		);
 	} catch (_err) {
 		console.log(_err.message);
@@ -271,7 +284,7 @@ async function returnAllParcelizedAgcs() {
 
       
       // WRITE RESULT TO NEW FILE
-      fs.writeFile(`../parcelized-agcs/bulk-data/parcelized-agcs-${requestTimeStr}.geojson`, parcelizedAgcsData, (err, data) => {
+      fs.writeFile(`../parcelized-agcs/bulk-import-data/parcelized-agcs-${requestTimeStr}.geojson`, parcelizedAgcsData, (err, data) => {
 
          if(err) {
             console.log(chalk.fail(err.message))
