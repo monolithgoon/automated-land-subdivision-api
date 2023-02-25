@@ -39,6 +39,7 @@ const COMMIT_TYPES = Object.freeze({
 	9: "PERF",
 	10: "CI",
 	11: "REVERT",
+	12: "DELETE",
 });
 
 /**

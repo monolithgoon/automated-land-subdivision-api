@@ -18,6 +18,10 @@ exports.insertFarmProgram = catchAsyncServer(async (req, res, next) => {
 	}
 }, `inertFarmProgram`);
 
+exports.storeFarmers = catchAsyncServer(async (req, res, next) => {
+	next();
+})
+
 exports.normalizeFarmProgram = catchAsyncServer(async (req, res, next) => {
 	// TODO -> add normalization code here
 	const insertedFarmProgram = req.locals.appendedFarmProgram;

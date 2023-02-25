@@ -43,14 +43,30 @@ const validateEmail = (email) => {
 	return emailRegex.test(email);
 };
 
+/**
+ * @description Returns a validator object for validating URLs.
+ * @function validateUrl
+ * @returns {Object} Validator object with a validator function and a message string.
+ */
 function validateUrl() {
-	return {
-		validator: (url) => {
-			const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*\/?$/;
-			if(!urlRegex.test(url)) throw new Error(`Invalid URL [ ${url} ]`);
-		},
-		message: ``
-	}
+  // Define a regular expression to match a URL.
+  const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*\/?$/;
+
+  // Return the validator object.
+  return {
+    /**
+     * @description Validates that a URL matches the defined regular expression.
+     * @function
+     * @param {string} url - The URL to validate.
+     * @throws {Error} If the URL does not match the regular expression.
+     */
+    validator: (url) => {
+      if (!urlRegex.test(url)) {
+        throw new Error(`Invalid URL [ ${url} ]`);
+      }
+    },
+    message: ''
+  };
 }
 
 const farmerSchema = new mongoose.Schema(
@@ -210,13 +226,6 @@ const farmerSchema = new mongoose.Schema(
 				required: true,
 				validate: validateUrl(),
 			},
-			// field_officer_id: {
-			// 	type: mongoose.Schema.Types.ObjectId,
-			// 	ref: "FieldOfficer",
-			// 	required: [true, `The ${this.path} must be specified`],
-			// 	// REMOVE
-			// 	default: new mongoose.Types.ObjectId(),
-			// },
 		},
 		farmer_farm_practice: {
 			farming_experience: {
@@ -244,6 +253,11 @@ const farmerSchema = new mongoose.Schema(
 			type: Date,
 			requered: false,
 		},
+		farmer_funded_timeline: {
+			type: Map,
+			of: Number,
+			required: false,
+		}
 	},
 	{ timestamps: true }
 );
@@ -482,6 +496,7 @@ const farmProgramSchema = new mongoose.Schema(
  */
 /**
  * Validator that checks if there are any other documents in the collection that have the same combination of farmer_first_name, farmer_last_name, and farmer_bvn.
+ * This is redundant as the farmer_bvn fields already have a unique indexs
  * The _id: { $ne: this._id } part is necessary to exclude the current document from the check, because it's possible to update a document without changing these fields.
  * @param {Object} value - The value being validated.
  * @returns {Promise<Boolean>} - A Promise that resolves to true if the combination of first name, last name and BVN is unique, or false otherwise.
