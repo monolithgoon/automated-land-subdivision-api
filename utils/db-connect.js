@@ -13,7 +13,7 @@ const mongoose = require('mongoose') // MongoDB driver that facilitates connecti
 
 
 // CONNECT TO THE REMOTE ATLAS DB
-async function DB_CONNECT() {
+async function dbConnect() {
    
    try {
       
@@ -47,4 +47,4 @@ async function DB_CONNECT() {
 
 
 
-module.exports = DB_CONNECT;
+module.exports = dbConnect;

@@ -70,7 +70,8 @@ exports.getAllParcelizedAgcs = async (request, response) => {
 	try {
 
 		console.log(chalk.success("YOU SUCCESSFULLY CALLED THE [ getAllParcelizedAgcs ] CONTROLLER FN."));
-      console.log(request.query);
+      let query = request.query
+      console.log({ query });
 
       // FILTER _EXAMPLE 1
       // GET TOURS DATA FROM DATABASE > 
