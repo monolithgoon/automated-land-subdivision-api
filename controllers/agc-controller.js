@@ -99,7 +99,7 @@ exports.getAllAgcs = async (request, response) => {
          let dbQuery = AGC_MODEL.find(JSON.parse(formattedQueryStr)); 
          
 
-         console.log(chalk.working(`Waiting for DB. response .. `))
+         console.log(chalk.working(`Querying database .. `))
          
          
          // 3. SORTING

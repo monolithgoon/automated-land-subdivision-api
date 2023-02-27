@@ -3,6 +3,7 @@ const LEGACY_AGC_MODEL = require("../models/legacy-agc-model.js");
 const LEGACY_AGC_FARMERS_MODEL = require("../models/legacy-agc-farmers-model.js");
 const PROCESSED_LEGACY_AGC_MODEL = require("../models/processed-legacy-agc-model.js");
 const { getAllDocuments, insertOneDocument, findOneDocument, returnOneDocument } = require("./handler-factory");
+const catchAsyncServer = require("../utils/catch-async");
 
 
 // CHECK THAT THE agc_id IS VALID BEFORE RUNNING getAgc()
@@ -122,7 +123,7 @@ exports.getAllLegacyAgcs = async (request, response, next) => {
          let dbQuery = LEGACY_AGC_MODEL.find(JSON.parse(formattedQueryStr)); 
          
 
-         console.log(chalk.working(`Waiting for DB. response .. `))
+         console.log(chalk.working(`Querying database .. `))
          
          
          // 3. SORTING
@@ -310,8 +311,7 @@ exports.insertProcessedLegacyAgc = async (req, res, next) => {
    insertOneDocument(req, res, PROCESSED_LEGACY_AGC_MODEL);
 };
 
-
-exports.getAllProcessedLegacyAgcs = async (req, res, next) => {
+exports.getAllProcessedLegacyAgcs = catchAsyncServer(async (req, res, next) => {
    
    console.log(chalk.success("SUCCESSFULLY CALLED THE [ getAllProcessedLegacyAgcs ] CONTROLLER FN. "));
 
@@ -319,7 +319,7 @@ exports.getAllProcessedLegacyAgcs = async (req, res, next) => {
 
    res.status(200).json({
       status: `success`,
-      requested_at: req.requestTime,
+      requested_at: req.requestTime,   
       num_docs: processedLegacyAgcs.length,
       data: {
          collection_name: `processed-legacy-agcs`,
@@ -327,7 +327,7 @@ exports.getAllProcessedLegacyAgcs = async (req, res, next) => {
          docs_count: processedLegacyAgcs.length,
       },
    });
-};
+}, `getAllProcessedLegacyAgcs`);
 
 
 // TODO
