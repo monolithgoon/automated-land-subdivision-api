@@ -20,7 +20,7 @@ function alphaNumericValidator() {
 	};
 }
 
-const nameValidator = (fieldName) => {
+function nameValidator (fieldName) {
 	return [
 		{
 			validator: (value) => {
@@ -38,7 +38,7 @@ const nameValidator = (fieldName) => {
 	];
 };
 
-const validateEmail = (email) => {
+const validateEmailAddress = (email) => {
 	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 	return emailRegex.test(email);
 };
@@ -49,6 +49,7 @@ const validateEmail = (email) => {
  * @returns {Object} Validator object with a validator function and a message string.
  */
 function validateUrl() {
+
   // Define a regular expression to match a URL.
   const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*\/?$/;
 
@@ -61,7 +62,7 @@ function validateUrl() {
      * @throws {Error} If the URL does not match the regular expression.
      */
     validator: (url) => {
-      if (!urlRegex.test(url)) {
+      if (!(urlRegex.test(url))) {
         throw new Error(`Invalid URL [ ${url} ]`);
       }
     },
@@ -76,7 +77,7 @@ const farmerSchema = new mongoose.Schema(
 			required: [true, `The ${this.path} must be specified`],
 			unique: [true, `The ${this.path} must be unique`],
 			min: [12, `The ${this.path} must have at least 12 characters`],
-			validate: alphaNumericValidator,
+			validate: alphaNumericValidator(),
 		},
 		farmer_last_name: {
 			type: String,
@@ -123,7 +124,7 @@ const farmerSchema = new mongoose.Schema(
 		farmer_email_address: {
 			type: String,
 			required: false,
-			validate: [validateEmail, `Provide a valid ${this.path}`],
+			validate: [validateEmailAddress, `Provide a valid ${this.path}`],
 		},
 		farmer_photo_base64: {
 			type: String,
@@ -178,7 +179,7 @@ const farmerSchema = new mongoose.Schema(
 						validator: function (value) {
 							const landSizeUnits = MONGOOSE_MODEL_ENUMS.LAND_SIZE_UNITS;
 							console.log({ landSizeUnits });
-							if (!MONGOOSE_MODEL_ENUMS.LAND_SIZE_UNITS.includes(value)) {
+							if (!(MONGOOSE_MODEL_ENUMS.LAND_SIZE_UNITS.includes(value))) {
 								return false;
 							}
 						},
@@ -224,7 +225,7 @@ const farmerSchema = new mongoose.Schema(
 			field_officer_url: {
 				type: String,
 				required: true,
-				validate: validateUrl(),
+				// validate: validateUrl(),
 			},
 		},
 		farmer_farm_practice: {
@@ -234,6 +235,7 @@ const farmerSchema = new mongoose.Schema(
 				enum: Array.from(Array(11).keys()),
 				validate: {
 					validator: (value) => {
+						console.log("FUCK YOU DIPSHIP IFEYINWA")
 						return value >= 0 && value <= 10; // Check if the value is within the range of the enum
 					},
 					message: "The farming_experience value must be between 0 and 10.",

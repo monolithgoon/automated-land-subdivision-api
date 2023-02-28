@@ -9,6 +9,7 @@ exports.insertFarmProgram = catchAsyncServer(async (req, res, next) => {
 	const programId = req.body.farm_program_id;
 	if (!(await findOneDocument(CLUSTERED_FARM_PROGRAM_MODEL, { "farm_program_id": programId }))) {
     const newFarmProgram = await CLUSTERED_FARM_PROGRAM_MODEL.create(req.body);
+		console.log({ newFarmProgram })
 		if (newFarmProgram) {
 			req.locals.appendedFarmProgram = newFarmProgram;
 			next();
@@ -18,21 +19,38 @@ exports.insertFarmProgram = catchAsyncServer(async (req, res, next) => {
 	}
 }, `inertFarmProgram`);
 
-exports.storeFarmers = catchAsyncServer(async (req, res, next) => {
+exports.uploadFarmerImagesToCloud = catchAsyncServer(async (req, res, next) => {
 	next();
 })
 
-exports.normalizeFarmProgram = catchAsyncServer(async (req, res, next) => {
-	// TODO -> add normalization code here
-	const insertedFarmProgram = req.locals.appendedFarmProgram;
-	if (insertedFarmProgram) {
+exports.storeFarmersData = catchAsyncServer(async (req, res, next) => {
+	next();
+})
+
+exports.convertFarmProgramToGeoJSON = catchAsyncServer(async (req, res, next) => {
+	next();
+})
+
+exports.appendFarmerUrlsToFarmProgram = catchAsyncServer(async (req, res, next) => {
+	next();
+})
+
+exports.convertFarmProgramToGeoJsonFormat = catchAsyncServer(async (req, res, next) => {
+	const farmProgram = req.locals.appendedFarmProgram;
+	if (!farmProgram) next(new ServerError(`Something went wrong`))
+	next();
+})
+
+exports.insertProcessedFarmProgram = catchAsyncServer(async (req, res, next) => {
+	const farmProgram = req.locals.appendedFarmProgram;
+	if (farmProgram) {
 		res.status(201).json({
 			status: `success`,
 			inserted_at: req.requestTime,
-			data: insertedFarmProgram,
+			data: farmProgram,
 	 });
 	}
-}, `normalizeFarmProgram`);
+}, `convertFarmProgramToGeoJSOn`);
 
 exports.getAllFarmPrograms = catchAsyncServer(async (req, res, next) => {
 	console.log(chalk.success(`Called the [ getAllFarmPrograms ] controller fn. `));
@@ -40,17 +58,20 @@ exports.getAllFarmPrograms = catchAsyncServer(async (req, res, next) => {
 	res.status(200).json({
 		status: `success`,
 		requested_at: req.requestTime,
+		num_docs: clusteredFarmPrograms.length,
 		data: {
 			collection_name: `clustered-farm-programs`,
 			collection_docs: clusteredFarmPrograms,
-			docus_count: clusteredFarmPrograms.length,
+			docs_count: clusteredFarmPrograms.length,
 		}
 	})
 }, `getAllFarmPrograms`);
 
 exports.getFarmProgram = catchAsyncServer(async (req, res, next) => {}, `getFarmProgram`);
 
-exports.insertProcessedFarmProgram = catchAsyncServer(async (req, res, next) => {},
+exports.insertProcessedFarmProgram = catchAsyncServer(async (req, res, next) => {
+	next();
+},
 `insertProcessedFarmProgram`);
 
 exports.getAllProcessedFarmPrograms = catchAsyncServer(async (req, res, next) => {},

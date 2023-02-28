@@ -1,5 +1,4 @@
 "use-strict";
-
 const path = require('path');
 const express = require('express')
 const EXPRESS_APP = express();
@@ -7,7 +6,7 @@ const Morgan = require('morgan'); // HTTP request logger
 const BodyParser = require('body-parser'); // GET THE CONTENTS OF request.body
 const compression = require('compression'); // server response compression
 const cors = require('cors'); // this will allow other websites access the api
-const AppError = require('./utils/app-error.js');
+const ServerError = require('./utils/server-error.js');
 const globalErrorHandler = require('./controllers/error-controller.js');
 const { _customHeaders } = require('./utils/helpers.js');
 
@@ -148,7 +147,7 @@ EXPRESS_APP.use('*', (req, res, next) => {
    // // ANY ARG. PASSED TO next() IS ASSUMED BY EXPRESS TO BE AN ERROR.
    // next(err)
 
-   // next(new AppError(`Can't find ${req.originalUrl} on this server.`, 404))
+   // next(new ServerError(`Can't find ${req.originalUrl} on this server.`, 404))
 });
 
 

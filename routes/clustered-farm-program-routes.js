@@ -5,24 +5,25 @@ const farmProgramController = require(`../controllers/clustered-farm-program-con
 
 router
 	.route("/")
-	.post(farmProgramController.insertFarmProgram, farmProgramController.storeFarmers, farmProgramController.normalizeFarmProgram)
+	.post(
+		farmProgramController.insertFarmProgram,
+		farmProgramController.uploadFarmerImagesToCloud,
+		farmProgramController.storeFarmersData,
+		farmProgramController.appendFarmerUrlsToFarmProgram,
+		farmProgramController.convertFarmProgramToGeoJsonFormat,
+		farmProgramController.insertProcessedFarmProgram
+	)
 	.get(farmProgramController.getAllFarmPrograms);
 
-router
-	.route("/farm-program/")
-	.get(farmProgramController.getFarmProgram);
+router.route("/farm-program/").get(farmProgramController.getFarmProgram);
 
 router
 	.route("/processed/")
-	.post(farmProgramController.insertProcessedFarmProgram)
+	// .post(farmProgramController.insertProcessedFarmProgram)
 	.get(farmProgramController.getAllProcessedFarmPrograms);
 
-router
-	.route("/processed/farm-program/:id")
-	.get(farmProgramController.getProcessedFarmProgram);
+router.route("/processed/farm-program/:id").get(farmProgramController.getProcessedFarmProgram);
 
-router
-	.route("/processed/farm-program/")
-	.get(farmProgramController.getProcessedFarmProgram);
+router.route("/processed/farm-program/").get(farmProgramController.getProcessedFarmProgram);
 
 module.exports = router;

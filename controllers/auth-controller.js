@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const USER_MODEL = require('../models/user-model.js')
+const ServerError = require("../utils/server-error.js")
 
 
 
@@ -87,7 +88,7 @@ exports.login = async (req, res, next) => {
 
       // 1. CHECK IF EMAIL && PASSWORD EXIST IN req.body
       if(!user_email || !user_password) {
-         newxt(new AppError(`Please provide an email and password..`, 400))
+         next(new ServerError(`Please provide an email and password..`, 400))
       }
 
       // 2. CHECK IF THE USER EXISTS && THEIR PASSWORD IS CORRECT

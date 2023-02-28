@@ -1,7 +1,7 @@
 // EXTEND THE Error CLASS TO INCLUDE A statuCode
 
 
-class AppError extends Error {
+class ServerError extends Error {
 
    constructor(message, statusCode) {
 
@@ -17,4 +17,4 @@ class AppError extends Error {
 }
 
 
-module.exports = AppError;
+module.exports = ServerError;
