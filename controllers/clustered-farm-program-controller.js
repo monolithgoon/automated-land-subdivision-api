@@ -2,7 +2,7 @@
 const chalk = require(`../utils/chalk-messages.js`);
 const CLUSTERED_FARM_PROGRAM_MODEL = require("../models/clustered-farm-program-model");
 const catchAsyncServer = require("../utils/catch-async");
-const { findOneDocument } = require("./handler-factory");
+const { findOneDocument, getAllDocuments } = require("./handler-factory");
 
 exports.insertFarmProgram = catchAsyncServer(async (req, res, next) => {
 	console.log(chalk.success(`CALLED THE [ insertFarmProgram ] CONTROLLER FN. `));
@@ -34,7 +34,19 @@ exports.normalizeFarmProgram = catchAsyncServer(async (req, res, next) => {
 	}
 }, `normalizeFarmProgram`);
 
-exports.getAllFarmPrograms = catchAsyncServer(async (req, res, next) => {}, `getAllFarmPrograms`);
+exports.getAllFarmPrograms = catchAsyncServer(async (req, res, next) => {
+	console.log(chalk.success(`Called the [ getAllFarmPrograms ] controller fn. `));
+	const clusteredFarmPrograms = await getAllDocuments(req, CLUSTERED_FARM_PROGRAM_MODEL);
+	res.status(200).json({
+		status: `success`,
+		requested_at: req.requestTime,
+		data: {
+			collection_name: `clustered-farm-programs`,
+			collection_docs: clusteredFarmPrograms,
+			docus_count: clusteredFarmPrograms.length,
+		}
+	})
+}, `getAllFarmPrograms`);
 
 exports.getFarmProgram = catchAsyncServer(async (req, res, next) => {}, `getFarmProgram`);
 

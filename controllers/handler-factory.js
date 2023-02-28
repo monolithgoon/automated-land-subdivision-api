@@ -19,7 +19,7 @@ exports.getAllDocuments = async function (request, model) {
    // model.find() returns a Query obj., and you can chain more Query class mtds. (like .sort()) to it.
    let dbQuery = model.find(JSON.parse(formattedQueryStr)); 
 
-   console.log(chalk.consoleB(`Querying database .. `))
+   console.log(chalk.consoleGy(`Querying database .. `))
 
    // 3. SORTING
    // GET request: 127.0.0.1:9443/api/v1/tours?difficulty=hard&sort=price,ratingsQuantity => ascending
@@ -65,7 +65,7 @@ exports.getAllDocuments = async function (request, model) {
    // EXECUTE THE QUERY
    const retreivedDocs = await dbQuery;
 
-   // console.log({ retreivedDocs });
+   console.log(chalk.consoleGy(`Query complete `))
 
    return retreivedDocs;
 };

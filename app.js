@@ -127,7 +127,7 @@ EXPRESS_APP.use('/api/v1/users/', usersRouter);
 EXPRESS_APP.use('/api/v2/geofiles/', geofilesRouter);
 EXPRESS_APP.use('/api/v2/legacy-agcs/', legacyAgcsRouter);
 EXPRESS_APP.use(`/api/v2/pmros/`, pmroRouter);
-EXPRESS_APP.use(`/api/v3/clustered-farm-program/`, farmProgramRouter)
+EXPRESS_APP.use(`/api/v3/clustered-farm-programs/`, farmProgramRouter)
 
 
 
