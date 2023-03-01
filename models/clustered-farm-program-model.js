@@ -20,23 +20,23 @@ function alphaNumericValidator() {
 	};
 }
 
-function nameValidator (fieldName) {
+function nameValidator() {
 	return [
 		{
 			validator: (value) => {
 				const regex = /^[a-zA-Z]+$/;
 				return regex.test(value);
 			},
-			message: `${fieldName} must contain only contain letters, hyphens, or apostrophes.`,
+			message: `{PATH} must contain only contain letters, hyphens, or apostrophes.`,
 		},
 		{
 			validator: (value) => {
 				return value.length > 0;
 			},
-			message: `${fieldName} must be at least 1 character long`,
+			message: `{PATH} must be at least 1 character long`,
 		},
 	];
-};
+}
 
 const validateEmailAddress = (email) => {
 	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -49,115 +49,140 @@ const validateEmailAddress = (email) => {
  * @returns {Object} Validator object with a validator function and a message string.
  */
 function validateUrl() {
+	// Define a regular expression to match a URL.
+	const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*\/?$/;
 
-  // Define a regular expression to match a URL.
-  const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*\/?$/;
-
-  // Return the validator object.
-  return {
-    /**
-     * @description Validates that a URL matches the defined regular expression.
-     * @function
-     * @param {string} url - The URL to validate.
-     * @throws {Error} If the URL does not match the regular expression.
-     */
-    validator: (url) => {
-      if (!(urlRegex.test(url))) {
-        throw new Error(`Invalid URL [ ${url} ]`);
-      }
-    },
-    message: ''
-  };
+	// Return the validator object.
+	return {
+		/**
+		 * @description Validates that a URL matches the defined regular expression.
+		 * @function
+		 * @param {string} url - The URL to validate.
+		 * @throws {Error} If the URL does not match the regular expression.
+		 */
+		validator: (url) => {
+			if (!urlRegex.test(url)) {
+				throw new Error(`Invalid URL [ ${url} ]`);
+			}
+		},
+		message: "",
+	};
 }
 
-const farmerBiodataSchema = new mongoose.Schema(
-	// farmer_last_name,
-	// farmer_first_name,
-	// farmer_middle_name,
-	// farmer_bvn,
-	// farmer_gender,
-	// farmer_dob,
-	// farmer_phone_number,
-	// farmer_email_address,
-	// farmer_photo_base64
-)
+/**
+ * @description Mongoose schema for the biodata of a farmer.
+ * @typedef {Object} FarmerBiodata
+ * @property {string} farmer_last_name - The last name of the farmer.
+ * @property {string} farmer_first_name - The first name of the farmer.
+ * @property {string} [farmer_middle_name] - The middle name of the farmer (optional).
+ * @property {number} farmer_bvn - The Bank Verification Number (BVN) of the farmer.
+ * @property {string} farmer_gender - The gender of the farmer.
+ * @property {Date} farmer_dob - The date of birth of the farmer.
+ * @property {string} farmer_phone_number - The phone number of the farmer.
+ * @property {string} [farmer_email_address] - The email address of the farmer (optional).
+ * @property {string} farmer_photo_base64 - The base64-encoded photo of the farmer.
+ */
+
+/**
+ * @description Mongoose schema for the biodata of a farmer.
+ * @type {import('mongoose').Schema<FarmerBiodata>}
+ */
+const farmerBiodataSchema = new mongoose.Schema({
+	farmer_last_name: {
+		type: String,
+		required: true,
+		validate: nameValidator(),
+	},
+	farmer_first_name: {
+		type: String,
+		required: true,
+		validate: nameValidator(),
+	},
+	farmer_middle_name: {
+		type: String,
+		required: false,
+		// validate: nameValidator(),
+	},
+	farmer_bvn: {
+		type: Number,
+		required: true,
+		validate: {
+			validator: function (bvn) {
+				console.log({ bvn });
+				return /\d{11}/.test(bvn);
+			},
+			message: "The BVN must be an 11-digit number",
+		},
+		unique: [true, `The BVN must be unique`],
+	},
+	farmer_gender: {
+		type: String,
+		required: true,
+		enum: MONGOOSE_MODEL_ENUMS.GENDER,
+	},
+	farmer_dob: {
+		type: Date,
+		required: true,
+	},
+	farmer_phone_number: {
+		type: String,
+		required: true,
+		validate: {
+			validator: function validateNigerianPhoneNumber(phoneNumber) {
+				const phoneNumberRegex = /^\+234\d{10}$/; // regular expression for Nigerian phone numbers
+				return phoneNumberRegex.test(phoneNumber);
+			},
+			message: `The {PATH} must have this format: +2348022242548`,
+		},
+	},
+	farmer_email_address: {
+		type: String,
+		required: false,
+		validate: [validateEmailAddress, `Provide a valid {PATH}`],
+	},
+	farmer_photo_base64: {
+		type: String,
+		required: true,
+		validate: {
+			validator: function (value) {
+				// Check if value is a valid base64 string
+				const base64regex = /^data:image\/(png|jpeg|jpg);base64,([^\s]+)$/;
+				const match = value.match(base64regex);
+				return match !== null && match.length === 3;
+			},
+			message: `The {PATH} field must be a valid base64 string`,
+		},
+	},
+});
+
+/**
+ * @description Represents a timeline of funding for a farmer.
+ * @typedef {Object} FarmerFundedTimeline
+ * @property {Date} date - The date on which the funding was received.
+ * @property {number} amount - The amount of funding received on the given date.
+ */
+
+/**
+ * Mongoose schema for the farmer_funded_timeline field.
+ * @type {import('mongoose').Schema<FarmerFundedTimeline>}
+ */
+const farmerFundedTimelineSchema = new mongoose.Schema({
+	date: { type: Date, required: true },
+	amount: { type: Number, required: true },
+});
 
 const farmerSchema = new mongoose.Schema(
 	{
 		farmer_bio_data: {
 			type: farmerBiodataSchema,
-			// required: true
+			required: true,
 		},
 		farm_program_farmer_id: {
 			type: String,
-			required: [true, `The ${this.path} must be specified`],
-			unique: [true, `The ${this.path} must be unique`],
-			min: [12, `The ${this.path} must have at least 12 characters`],
+			required: true,
+			unique: true,
+			min: 12,
 			validate: alphaNumericValidator(),
-		},
-		farmer_last_name: {
-			type: String,
-			required: [true, `The ${this.path} must be specified`],
-			validate: nameValidator(this.path),
-		},
-		farmer_first_name: {
-			type: String,
-			required: [true, `The ${this.path} must be specified`],
-			validate: nameValidator(this.path),
-		},
-		farmer_bvn: {
-			type: Number,
-			required: [true, `The ${this.path} must be specified`],
-			validate: {
-				validator: function (bvn) {
-					console.log({ bvn });
-					return /\d{11}/.test(bvn);
-				},
-				message: "The farmer's BVN must be an 11-digit number",
-			},
-			unique: [true, `The farmer's BVN must be unique`],
-		},
-		farmer_gender: {
-			type: String,
-			required: [true, `The ${this.path} must be specified`],
-			enum: MONGOOSE_MODEL_ENUMS.GENDER,
-		},
-		farmer_dob: {
-			type: Date,
-			required: [true, `The ${this.path} must be specified`],
-		},
-		farmer_phone_number: {
-			type: String,
-			required: [true, `The ${this.path} must be specified`],
-			validate: {
-				validator: function validateNigerianPhoneNumber(phoneNumber) {
-					const phoneNumberRegex = /^\+234\d{10}$/; // regular expression for Nigerian phone numbers
-					return phoneNumberRegex.test(phoneNumber);
-				},
-				message: `The ${this.path} must have this format: +2348022242548`,
-			},
-		},
-		farmer_email_address: {
-			type: String,
-			required: false,
-			validate: [validateEmailAddress, `Provide a valid ${this.path}`],
-		},
-		farmer_photo_base64: {
-			type: String,
-			required: [true, `The ${this.path} string must be specified`],
-			validate: {
-				validator: function (value) {
-					// Check if value is a valid base64 string
-					try {
-						const base64regex = /^data:image\/(png|jpeg|jpg);base64,([^\s]+)$/;
-						const match = value.match(base64regex);
-						return match !== null && match.length === 3;
-					} catch (err) {
-						return false;
-					}
-				},
-				message: `The ${this.path} field must be a valid base64 string`,
-			},
 		},
 		farmer_farm_details: {
 			general_description: {
@@ -166,8 +191,8 @@ const farmerSchema = new mongoose.Schema(
 			},
 			land_size: {
 				type: Number,
-				required: [true, `The ${this.path} must be specified`],
-				min: [1, `The ${this.path} must be greater than zero`],
+				required: true,
+				min: 1,
 			},
 			/**
 			 * The `land_size_units` field specifies the units of measurement for a piece of land.
@@ -183,25 +208,15 @@ const farmerSchema = new mongoose.Schema(
 			 */
 			land_size_units: {
 				type: String,
-				enum: MONGOOSE_MODEL_ENUMS.LAND_SIZE_UNITS,
-				required: [
-					true,
-					`The ${
-						this.path
-					} must be specified in either: ${MONGOOSE_MODEL_ENUMS.LAND_SIZE_UNITS.join(", ")}`,
-				],
+				required: true,
 				validate: [
 					{
 						validator: function (value) {
-							const landSizeUnits = MONGOOSE_MODEL_ENUMS.LAND_SIZE_UNITS;
-							console.log({ landSizeUnits });
-							if (!(MONGOOSE_MODEL_ENUMS.LAND_SIZE_UNITS.includes(value))) {
+							if (!MONGOOSE_MODEL_ENUMS.LAND_SIZE_UNITS.includes(value)) {
 								return false;
 							}
 						},
-						message: `The ${
-							this.path
-						} must be specified in either: ${MONGOOSE_MODEL_ENUMS.LAND_SIZE_UNITS.join(
+						message: `The {PATH} must be specified in either: ${MONGOOSE_MODEL_ENUMS.LAND_SIZE_UNITS.join(
 							", "
 						)}`,
 					},
@@ -209,7 +224,7 @@ const farmerSchema = new mongoose.Schema(
 			},
 			farm_coordinates: {
 				type: [[Number]],
-				required: [true, `The ${this.path} must be specified`],
+				required: true,
 				validate: {
 					validator: function (arr) {
 						return (
@@ -267,15 +282,30 @@ const farmerSchema = new mongoose.Schema(
 				amount: { type: String, required: false },
 			},
 		},
-		farmer_funded_date: {
-			type: Date,
-			requered: false,
-		},
 		farmer_funded_timeline: {
-			type: Map,
-			of: Number,
+			type: [farmerFundedTimelineSchema],
 			required: false,
-		}
+			validate: [
+				{
+					validator: (value) => {
+						if (value) return value.length > 0;
+					},
+					message: `{PATH} cannot have an empty array`,
+				},
+				{
+					validator: function() {
+						const startDate = this.get("farm_program_start_date");
+						const endDate = this.get("farm_program_end_date");
+						const timeline = this.get("farmer_funded_timeline");
+						console.log({ timeline });
+						for (const [fundingDate, fundingAmount] of timeline.entries()) {
+							return fundingDate > startDate
+						}
+					},
+					message: `This date cannot be before the program's start date`,
+				},
+			],
+		},
 	},
 	{ timestamps: true }
 );
@@ -304,16 +334,6 @@ function validateProgramTitle() {
 function validateProgramDates() {
 	return [
 		{
-			validator: function (value) {
-				const startDate = this.get("farm_program_start_date");
-				if (!startDate) {
-					return false;
-				}
-				return true;
-			},
-			message: `Cannot specify a ${this.path} without a program start date`,
-		},
-		{
 			validator: function (endDate) {
 				const startDate = this.get("farm_program_start_date");
 				// console.log(this);
@@ -322,7 +342,7 @@ function validateProgramDates() {
 				}
 				return endDate > startDate;
 			},
-			message: `Invalid date. The end date must be set after the program's start date`,
+			message: `Invalid date: the end date must be set after the program's start date`,
 		},
 	];
 }
@@ -361,7 +381,7 @@ function validateProgramTimeline() {
 					}
 				}
 			},
-			message: `Invalid years' sequence`,
+			// message: `Invalid years' sequence`,
 		},
 		{
 			validator: function () {
@@ -405,6 +425,32 @@ function validateProgramTimeline() {
 	];
 }
 
+/**
+ * Mongoose schema for a farm program.
+ *
+ * @typedef {Object} Farmer
+ * @property {String} farm_program_id - The ID of the farm program.
+ * @property {String} farm_program_title - The title of the farm program.
+ * @property {String} farm_program_description - The description of the farm program.
+ * @property {Date} farm_program_start_date - The start date of the farm program.
+ * @property {Date} [farm_program_end_date] - The end date of the farm program.
+ * @property {String} farm_program_state - The state where the farm program takes place.
+ * @property {mongoose.Schema.Types.ObjectId} farm_program_manager - The ID of the farm program manager.
+ * @property {Number} [farm_program_budget=0] - The budget of the farm program.
+ * @property {Array.<String>} [farm_program_partners=[]] - The partners of the farm program.
+ * @property {Array.<String>} [farm_program_objectives=[]] - The objectives of the farm program.
+ * @property {Array.<String>} [farm_program_impact_metrics=[]] - The impact metrics of the farm program.
+ * @property {Map.<String, Array.<String>>} [farm_program_timeline] - The timeline of the farm program.
+ * @property {Array.<String>} [farm_program_training_materials=[]] - The training materials of the farm program.
+ * @property {Array.<String>} [farm_program_funding_sources=[]] - The funding sources of the farm program.
+ * @property {String} [farm_program_evaluation_plan] - The evaluation plan of the farm program.
+ * @property {Array.<Farmer>} farm_program_farmers - The farmers participating in the farm program.
+ */
+
+/**
+ * @description Mongoose schema for a farm program.
+ * @type {mongoose.Schema}
+ */
 const farmProgramSchema = new mongoose.Schema(
 	{
 		farm_program_id: {
