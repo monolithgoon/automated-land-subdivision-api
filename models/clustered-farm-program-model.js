@@ -294,12 +294,14 @@ const farmerSchema = new mongoose.Schema(
 				},
 				{
 					validator: function() {
-						const startDate = this.get("farm_program_start_date");
-						const endDate = this.get("farm_program_end_date");
+						const startDate = this.parent().get("farm_program_start_date");
+						const endDate = this.parent().get("farm_program_end_date");
 						const timeline = this.get("farmer_funded_timeline");
-						console.log({ timeline });
-						for (const [fundingDate, fundingAmount] of timeline.entries()) {
-							return fundingDate > startDate
+						console.log({timeline})
+						for (const { date, amount } of timeline) {
+							console.log({ date })
+							console.log({ startDate })
+							return date > startDate
 						}
 					},
 					message: `This date cannot be before the program's start date`,
@@ -590,7 +592,6 @@ farmProgramSchema.pre("save", async function (next) {
 // Check that every land size unit matches the unit of the first farmer's farm
 farmProgramSchema.path("farm_program_farmers").validate(function (farmers) {
 	const units = farmers.map((farmer) => farmer.farmer_farm_details.land_size_units);
-	console.log({ units });
 	return units.every((unit) => unit === units[0]);
 }, `All farms in this farm program document must have land size units that match the units for the first farm}`);
 
