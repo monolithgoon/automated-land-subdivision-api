@@ -8,7 +8,7 @@ router
 	.post(
 		farmProgramController.insertFarmProgram,
 		// farmProgramController.uploadFarmerImagesToCloud,
-		// farmProgramController.storeFarmersBiodata,
+		farmProgramController.getFarmerBiodataUrls,
 		// farmProgramController.appendFarmerUrlsToFarmProgram,
 		farmProgramController.convertFarmProgramToGeoJson,
 		farmProgramController.insertProcessedFarmProgram

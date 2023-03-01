@@ -237,7 +237,7 @@ async function executeCommitPrompts() {
 
 		// Add and commit the changes using the complete commit message
 		commitResponse = await execAsync(`git add -A && git commit -m "${completeCommitMsg}`, rl);
-		console.log({ commitResponse });
+		console.log(`commitResponse:\n ${commitResponse}`);
 
 		// Prompt user to commit to origin / master
 		okCommitOrigin = await askCommitPrompt(

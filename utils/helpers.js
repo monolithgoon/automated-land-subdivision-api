@@ -44,7 +44,7 @@ module.exports = {
 	_validateAllocationsArea,
 };
 
-exports._catchErrorSync = (fn, fnDescr = null) => {
+exports._catchSyncError = (fn, fnDescr = null) => {
 	return function (...params) {
 		try {
 			return fn(...params);

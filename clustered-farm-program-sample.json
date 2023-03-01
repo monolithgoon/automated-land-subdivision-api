@@ -54,7 +54,7 @@
       "farmer_photo_base64": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5QsUEzIF1MpbwAAAD1JREFUOMtj/P//PwM6AFn0IMAAAB2AAJjLZAFIAAAAASUVORK5CYII=",
       "farmer_photo_url": "https://res.cloudinary.com/your-cloud-name/image/upload/v1645436500/farmer-583.jpg",
       "farmer_funded_date": "2020-03-01T00:00:00.000Z",
-      "farmer_funded_timeline": {
+      "farmer_funding_timeline": {
         "2021": 1000000,
         "2022": 1000000
       },

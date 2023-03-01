@@ -31,9 +31,9 @@ function nameValidator() {
 		},
 		{
 			validator: (value) => {
-				return value.length > 0;
+				return value.length > 1;
 			},
-			message: `{PATH} must be at least 1 character long`,
+			message: `{PATH} must be at least 2 characters long`,
 		},
 	];
 }
@@ -43,31 +43,16 @@ const validateEmailAddress = (email) => {
 	return emailRegex.test(email);
 };
 
-/**
- * @description Returns a validator object for validating URLs.
- * @function validateUrl
- * @returns {Object} Validator object with a validator function and a message string.
- */
-function validateUrl() {
-	// Define a regular expression to match a URL.
-	const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*\/?$/;
-
-	// Return the validator object.
+function urlValidator() {
 	return {
-		/**
-		 * @description Validates that a URL matches the defined regular expression.
-		 * @function
-		 * @param {string} url - The URL to validate.
-		 * @throws {Error} If the URL does not match the regular expression.
-		 */
 		validator: (url) => {
-			if (!urlRegex.test(url)) {
-				throw new Error(`Invalid URL [ ${url} ]`);
-			}
+			// Define a regular expression to match a URL.
+			const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*\/?$/;
+			return urlRegex.test(url);
 		},
-		message: "",
+		message: `Invalid {PATH}`
 	};
-}
+};
 
 /**
  * @description Mongoose schema for the biodata of a farmer.
@@ -108,7 +93,6 @@ const farmerBiodataSchema = new mongoose.Schema({
 		required: true,
 		validate: {
 			validator: function (bvn) {
-				console.log({ bvn });
 				return /\d{11}/.test(bvn);
 			},
 			message: "The BVN must be an 11-digit number",
@@ -163,7 +147,7 @@ const farmerBiodataSchema = new mongoose.Schema({
  */
 
 /**
- * Mongoose schema for the farmer_funded_timeline field.
+ * Mongoose schema for the farmer_funding_timeline field.
  * @type {import('mongoose').Schema<FarmerFundedTimeline>}
  */
 const farmerFundedTimelineSchema = new mongoose.Schema({
@@ -256,8 +240,8 @@ const farmerSchema = new mongoose.Schema(
 			field_officer_url: {
 				type: String,
 				required: true,
-				// FIXME!!
-				// validate: validateUrl(),
+				// FIXME
+				// validate: urlValidator(),
 			},
 		},
 		farmer_farm_practice: {
@@ -282,7 +266,7 @@ const farmerSchema = new mongoose.Schema(
 				amount: { type: String, required: false },
 			},
 		},
-		farmer_funded_timeline: {
+		farmer_funding_timeline: {
 			type: [farmerFundedTimelineSchema],
 			required: false,
 			validate: [
@@ -293,15 +277,12 @@ const farmerSchema = new mongoose.Schema(
 					message: `{PATH} cannot have an empty array`,
 				},
 				{
-					validator: function() {
+					validator: function () {
 						const startDate = this.parent().get("farm_program_start_date");
 						const endDate = this.parent().get("farm_program_end_date");
-						const timeline = this.get("farmer_funded_timeline");
-						console.log({timeline})
+						const timeline = this.get("farmer_funding_timeline");
 						for (const { date, amount } of timeline) {
-							console.log({ date })
-							console.log({ startDate })
-							return date > startDate
+							return date > startDate;
 						}
 					},
 					message: `This date cannot be before the program's start date`,
