@@ -65,7 +65,7 @@ function urlValidator() {
  * @property {Date} farmer_dob - The date of birth of the farmer.
  * @property {string} farmer_phone_number - The phone number of the farmer.
  * @property {string} [farmer_email_address] - The email address of the farmer (optional).
- * @property {string} farmer_photo_base64 - The base64-encoded photo of the farmer.
+ * @property {string} farmer_image_base64 - The base64-encoded photo of the farmer.
  */
 
 /**
@@ -73,6 +73,11 @@ function urlValidator() {
  * @type {import('mongoose').Schema<FarmerBiodata>}
  */
 const farmerBiodataSchema = new mongoose.Schema({
+	farmer_global_id: {
+		type: String,
+		required: false,
+		unique: true,
+	},
 	farmer_last_name: {
 		type: String,
 		required: true,
@@ -86,6 +91,8 @@ const farmerBiodataSchema = new mongoose.Schema({
 	farmer_middle_name: {
 		type: String,
 		required: false,
+		// FIXME 
+		// WIP
 		// validate: nameValidator(),
 	},
 	farmer_bvn: {
@@ -124,7 +131,7 @@ const farmerBiodataSchema = new mongoose.Schema({
 		required: false,
 		validate: [validateEmailAddress, `Provide a valid {PATH}`],
 	},
-	farmer_photo_base64: {
+	farmer_image_base64: {
 		type: String,
 		required: true,
 		validate: {

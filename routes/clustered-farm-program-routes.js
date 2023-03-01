@@ -9,7 +9,6 @@ router
 		farmProgramController.insertFarmProgram,
 		// farmProgramController.uploadFarmerImagesToCloud,
 		farmProgramController.getFarmerBiodataUrls,
-		// farmProgramController.appendFarmerUrlsToFarmProgram,
 		farmProgramController.convertFarmProgramToGeoJson,
 		farmProgramController.insertProcessedFarmProgram
 	)

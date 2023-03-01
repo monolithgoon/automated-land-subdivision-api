@@ -55,7 +55,7 @@ exports.getFarmerBiodataUrls = catchAsyncServer(async (req, res, next) => {
 
       const updatedFarmer = {
         ...farmer,
-				// farmer_global_id: farmer.farmer_global_id,
+				farmer_global_id: farmer.farmer_global_id,
 				farm_program_farmer_id: farmer.farm_program_farmer_id,
         farmer_url: farmerUrl,
 				farmer_funding_timeline: farmer.farmer_funding_timeline,
