@@ -70,9 +70,25 @@ function validateUrl() {
   };
 }
 
+const farmerBiodataSchema = new mongoose.Schema(
+	// farmer_last_name,
+	// farmer_first_name,
+	// farmer_middle_name,
+	// farmer_bvn,
+	// farmer_gender,
+	// farmer_dob,
+	// farmer_phone_number,
+	// farmer_email_address,
+	// farmer_photo_base64
+)
+
 const farmerSchema = new mongoose.Schema(
 	{
-		farmer_id: {
+		farmer_bio_data: {
+			type: farmerBiodataSchema,
+			// required: true
+		},
+		farm_program_farmer_id: {
 			type: String,
 			required: [true, `The ${this.path} must be specified`],
 			unique: [true, `The ${this.path} must be unique`],
@@ -225,6 +241,7 @@ const farmerSchema = new mongoose.Schema(
 			field_officer_url: {
 				type: String,
 				required: true,
+				// FIXME!!
 				// validate: validateUrl(),
 			},
 		},
@@ -235,7 +252,6 @@ const farmerSchema = new mongoose.Schema(
 				enum: Array.from(Array(11).keys()),
 				validate: {
 					validator: (value) => {
-						console.log("FUCK YOU DIPSHIP IFEYINWA")
 						return value >= 0 && value <= 10; // Check if the value is within the range of the enum
 					},
 					message: "The farming_experience value must be between 0 and 10.",
@@ -546,7 +562,8 @@ farmProgramSchema.pre("save", function (next) {
 	// Iterate over each farmer in the farm_program_farmers array
 	farmProgram.farm_program_farmers.forEach((farmer) => {
 		// Exclude the farmer_bvn field
-		farmer.farmer_bvn = undefined;
+		// WIP
+		// farmer.farmer_bvn = undefined;
 	});
 
 	next();

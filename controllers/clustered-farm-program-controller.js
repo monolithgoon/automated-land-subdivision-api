@@ -1,59 +1,115 @@
 `use strict`;
 const chalk = require(`../utils/chalk-messages.js`);
+const ServerError = require(`../utils/server-error.js`)
 const CLUSTERED_FARM_PROGRAM_MODEL = require("../models/clustered-farm-program-model");
 const catchAsyncServer = require("../utils/catch-async");
 const { findOneDocument, getAllDocuments } = require("./handler-factory");
+const { _catchErrorSync } = require("../utils/helpers.js");
 
 exports.insertFarmProgram = catchAsyncServer(async (req, res, next) => {
-	console.log(chalk.success(`CALLED THE [ insertFarmProgram ] CONTROLLER FN. `));
+	console.log(chalk.success(`CALLED [ insertFarmProgram ] CONTROLLER FN. `));
 	const programId = req.body.farm_program_id;
 	if (!(await findOneDocument(CLUSTERED_FARM_PROGRAM_MODEL, { "farm_program_id": programId }))) {
     const newFarmProgram = await CLUSTERED_FARM_PROGRAM_MODEL.create(req.body);
-		console.log({ newFarmProgram })
 		if (newFarmProgram) {
 			req.locals.appendedFarmProgram = newFarmProgram;
 			next();
+		} else {
+			return next(new ServerError(`Problem inserting new document in database`, 500))
 		}
 	} else {
-		throw new Error(`A document with this program_id [ ${programId} ] already exists in the database.`)
+		// throw new Error(`A document with this program_id [ ${programId} ] already exists in the database.`)
+		return next(new ServerError(`A document with this program_id [ ${programId} ] already exists in the database.`, 500))
 	}
 }, `inertFarmProgram`);
 
 exports.uploadFarmerImagesToCloud = catchAsyncServer(async (req, res, next) => {
+	console.log(chalk.success(`CALLED [ uploadFarmerImagesToCloud ] CONTROLLER FN. `));
 	next();
 })
 
-exports.storeFarmersData = catchAsyncServer(async (req, res, next) => {
-	next();
-})
-
-exports.convertFarmProgramToGeoJSON = catchAsyncServer(async (req, res, next) => {
+exports.storeFarmersBiodata = catchAsyncServer(async (req, res, next) => {
+	console.log(chalk.success(`CALLED [ storeFarmersBiodata ] CONTROLLER FN. `));
+	const farmProgram = req.locals.appendedFarmProgram;
+	if (!farmProgram) return next(new ServerError(`Something went wrong`, 500))
+	const farmProgramFarmers = farmProgram.farm_program_farmers;
 	next();
 })
 
 exports.appendFarmerUrlsToFarmProgram = catchAsyncServer(async (req, res, next) => {
+	console.log(chalk.success(`CALLED [ storeFarmersBiodata ] CONTROLLER FN. `));
 	next();
-})
 
-exports.convertFarmProgramToGeoJsonFormat = catchAsyncServer(async (req, res, next) => {
+});
+
+function createFeatureCollection(farmProgramJSON) {
+
+	const featureCollection = {
+    "type": "FeatureCollection",
+    // "features": [],
+    "features": farmProgramJSON.farm_program_farmers,
+		"properties": farmProgramJSON,
+  };
+
+  // const feature = {
+  //   "type": "Feature",
+  //   "geometry": {
+  //     "type": "Point",
+  //     "coordinates": [0, 0]
+  //   },
+  //   "properties": properties
+  // };
+
+  // featureCollection.features.push(feature);
+
+  return featureCollection;
+}
+// const createFeatureCollection = _catchErrorSync((farmProgramJSON) => {
+
+// 	const featureCollection = {
+//     "type": "FeatureCollection",
+//     "features": [],
+// 		"properties": farmProgramJSON,
+//   };
+
+//   const feature = {
+//     "type": "Feature",
+//     "geometry": {
+//       "type": "Point",
+//       "coordinates": [0, 0]
+//     },
+//     "properties": properties
+//   };
+
+//   featureCollection.features.push(feature);
+
+//   return featureCollection;
+// }, `createFeatureCollection`)
+
+exports.convertFarmProgramToGeoJson = catchAsyncServer(async (req, res, next) => {
+	console.log(chalk.success(`CALLED [ convertFarmProgramToGeoJson ] CONTROLLER FN. `));
 	const farmProgram = req.locals.appendedFarmProgram;
-	if (!farmProgram) next(new ServerError(`Something went wrong`))
+	if (!farmProgram) return next(new ServerError(`Something went wrong`, 500))
+	const farmProgramGeoJSON = createFeatureCollection(farmProgram);
+	req.locals.appendedFarmProgramGeoJSON = farmProgramGeoJSON
 	next();
 })
 
 exports.insertProcessedFarmProgram = catchAsyncServer(async (req, res, next) => {
-	const farmProgram = req.locals.appendedFarmProgram;
-	if (farmProgram) {
+	console.log(chalk.success(`CALLED [ insertProcessedFarmProgram ] CONTROLLER FN. `));
+	const farmProgramGeoJSON = req.locals.appendedFarmProgramGeoJSON;
+	if (!farmProgramGeoJSON) return next(new ServerError(`Something went wrong`, 500))
+	if (farmProgramGeoJSON) {
 		res.status(201).json({
 			status: `success`,
 			inserted_at: req.requestTime,
-			data: farmProgram,
+			data: farmProgramGeoJSON,
 	 });
 	}
 }, `convertFarmProgramToGeoJSOn`);
 
 exports.getAllFarmPrograms = catchAsyncServer(async (req, res, next) => {
-	console.log(chalk.success(`Called the [ getAllFarmPrograms ] controller fn. `));
+	console.log(chalk.success(`CALLED the [ getAllFarmPrograms ] CONTROLLER FN. `));
 	const clusteredFarmPrograms = await getAllDocuments(req, CLUSTERED_FARM_PROGRAM_MODEL);
 	res.status(200).json({
 		status: `success`,

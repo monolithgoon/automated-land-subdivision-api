@@ -7,11 +7,11 @@ router
 	.route("/")
 	.post(
 		farmProgramController.insertFarmProgram,
-		farmProgramController.uploadFarmerImagesToCloud,
-		farmProgramController.storeFarmersData,
-		farmProgramController.appendFarmerUrlsToFarmProgram,
-		farmProgramController.convertFarmProgramToGeoJsonFormat,
-		farmProgramController.insertProcessedFarmProgram
+		// farmProgramController.uploadFarmerImagesToCloud,
+		// farmProgramController.storeFarmersBiodata,
+		// farmProgramController.appendFarmerUrlsToFarmProgram,
+		// farmProgramController.convertFarmProgramToGeoJson,
+		// farmProgramController.insertProcessedFarmProgram
 	)
 	.get(farmProgramController.getAllFarmPrograms);
 
