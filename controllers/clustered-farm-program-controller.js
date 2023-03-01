@@ -18,15 +18,14 @@ exports.insertFarmProgram = catchAsyncServer(async (req, res, next) => {
 			return next(new ServerError(`Problem inserting new document in database`, 500))
 		}
 	} else {
-		// throw new Error(`A document with this program_id [ ${programId} ] already exists in the database.`)
-		return next(new ServerError(`A document with this program_id [ ${programId} ] already exists in the database.`, 500))
+		return next(new ServerError(`A document with this program_id <${programId}> already exists in the database`, 409))
 	}
 }, `inertFarmProgram`);
 
 exports.uploadFarmerImagesToCloud = catchAsyncServer(async (req, res, next) => {
 	console.log(chalk.success(`CALLED [ uploadFarmerImagesToCloud ] CONTROLLER FN. `));
 	next();
-})
+}, `uploadFarmerImagesToCloud`)
 
 exports.storeFarmersBiodata = catchAsyncServer(async (req, res, next) => {
 	console.log(chalk.success(`CALLED [ storeFarmersBiodata ] CONTROLLER FN. `));
@@ -34,7 +33,7 @@ exports.storeFarmersBiodata = catchAsyncServer(async (req, res, next) => {
 	if (!farmProgram) return next(new ServerError(`Something went wrong`, 500))
 	const farmProgramFarmers = farmProgram.farm_program_farmers;
 	next();
-})
+}, `storeFarmersBiodata`)
 
 exports.appendFarmerUrlsToFarmProgram = catchAsyncServer(async (req, res, next) => {
 	console.log(chalk.success(`CALLED [ storeFarmersBiodata ] CONTROLLER FN. `));
@@ -89,16 +88,16 @@ function createFeatureCollection(farmProgramJSON) {
 exports.convertFarmProgramToGeoJson = catchAsyncServer(async (req, res, next) => {
 	console.log(chalk.success(`CALLED [ convertFarmProgramToGeoJson ] CONTROLLER FN. `));
 	const farmProgram = req.locals.appendedFarmProgram;
-	if (!farmProgram) return next(new ServerError(`Something went wrong`, 500))
+	if (!farmProgram) return next(new ServerError(`Something went wrong: can't find <req.locals.appendedFarmProgram>`, 500))
 	const farmProgramGeoJSON = createFeatureCollection(farmProgram);
 	req.locals.appendedFarmProgramGeoJSON = farmProgramGeoJSON
 	next();
-})
+}, `convertFarmProgramToGeoJSOn`);
 
 exports.insertProcessedFarmProgram = catchAsyncServer(async (req, res, next) => {
 	console.log(chalk.success(`CALLED [ insertProcessedFarmProgram ] CONTROLLER FN. `));
 	const farmProgramGeoJSON = req.locals.appendedFarmProgramGeoJSON;
-	if (!farmProgramGeoJSON) return next(new ServerError(`Something went wrong`, 500))
+	if (!farmProgramGeoJSON) throw new ServerError(`Something went wrong: can't find <req.locals.appendedFarmProgramGeoJSON>`, 500);
 	if (farmProgramGeoJSON) {
 		res.status(201).json({
 			status: `success`,
@@ -106,7 +105,7 @@ exports.insertProcessedFarmProgram = catchAsyncServer(async (req, res, next) => 
 			data: farmProgramGeoJSON,
 	 });
 	}
-}, `convertFarmProgramToGeoJSOn`);
+}, `insertProcessedFarmProgram`);
 
 exports.getAllFarmPrograms = catchAsyncServer(async (req, res, next) => {
 	console.log(chalk.success(`CALLED the [ getAllFarmPrograms ] CONTROLLER FN. `));
@@ -124,11 +123,6 @@ exports.getAllFarmPrograms = catchAsyncServer(async (req, res, next) => {
 }, `getAllFarmPrograms`);
 
 exports.getFarmProgram = catchAsyncServer(async (req, res, next) => {}, `getFarmProgram`);
-
-exports.insertProcessedFarmProgram = catchAsyncServer(async (req, res, next) => {
-	next();
-},
-`insertProcessedFarmProgram`);
 
 exports.getAllProcessedFarmPrograms = catchAsyncServer(async (req, res, next) => {},
 `getAllProcessedFarmPrograms`);
