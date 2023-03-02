@@ -120,12 +120,12 @@ exports.returnOneDocument = async (model, queryObj) => {
 exports.insertDocumentIfNotExists = async (model, queryObj, reqBody, next) => {
 	try {
 		// Check if a matching document already exists
-		const dbDoc = await exports.findOneDocument(model, queryObj);
-		if (dbDoc) {
-			throw new ServerError(
+		const dbDocExists = await exports.findOneDocument(model, queryObj);
+		if (dbDocExists) {
+			return next(new ServerError(
 				`A document matching <${JSON.stringify(queryObj)}> already exists in the database`,
 				409
-			);
+			));
 		}
 		const newDBDoc = await model.create(reqBody);
 		return newDBDoc;

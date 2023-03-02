@@ -38,13 +38,7 @@ function _validateAllocationsArea(geojson, allocationsArray, geofileName) {
 	}
 }
 
-module.exports = {
-	_customHeaders,
-	_getNextPayload,
-	_validateAllocationsArea,
-};
-
-exports._catchSyncError = (fn, fnDescr = null) => {
+_catchSyncError = (fn, fnDescr = null) => {
 	return function (...params) {
 		try {
 			return fn(...params);
@@ -61,13 +55,21 @@ exports._catchSyncError = (fn, fnDescr = null) => {
  * @param {string} fnDescr - A description of the function (optional).
  * @returns {Function} A new function that catches errors and returns a Promise.
  */
-exports._catchAsyncError = (fn, fnDescr = null) => {
-  return async function (...params) {
-    try {
-      return await fn(...params);
-    } catch (err) {
-      console.error(`${fnDescr || fn.name} error:`, err.message);
-      throw err;
-    }
-  };
+_catchAsyncError = (fn, fnDescr = null) => {
+	return async function (...params) {
+		try {
+			return await fn(...params);
+		} catch (err) {
+			console.error(`${fnDescr || fn.name} error:`, err.message);
+			throw err;
+		}
+	};
 }
+
+module.exports = {
+	_customHeaders,
+	_getNextPayload,
+	_validateAllocationsArea,
+	_catchSyncError,
+	_catchAsyncError
+};

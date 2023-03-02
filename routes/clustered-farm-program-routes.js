@@ -7,8 +7,8 @@ router
 	.route("/")
 	.post(
 		farmProgramController.insertFarmProgram,
-		// farmProgramController.uploadFarmerImagesToCloud,
-		farmProgramController.getFarmerBiodataUrls,
+		// farmProgramController.getFarmerBiodataUrls,
+		farmProgramController.updateFarmProgram,
 		farmProgramController.convertFarmProgramToGeoJson,
 		farmProgramController.insertFarmProgramGeoJson
 	)

@@ -1,5 +1,5 @@
 const chalk = require('../utils/chalk-messages');
-const catchAsyncError = require('../utils/catch-async.js')
+const catchAsyncError = require('../utils/catch-async-server.js')
 const fs = require('fs');
 const multerFileUpload = require("../middleware/multer-file-upload.js");
 const { _geofileConverter } = require('../utils/geofile-converter.js');

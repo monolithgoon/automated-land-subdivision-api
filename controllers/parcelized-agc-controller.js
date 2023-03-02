@@ -1,7 +1,7 @@
 // CONTAINS THE ROUTE HANDLING FUNCTIONS USED BY parcelized-agc-routes.js
 
 const chalk = require('../utils/chalk-messages.js')
-const catchAsyncError = require('../utils/catch-async.js')
+const catchAsyncError = require('../utils/catch-async-server.js')
 const { _getNextPayload } = require('../utils/helpers.js');
 const PARCELIZED_AGC_MODEL = require('../models/parcelized-agc-model.js')
 

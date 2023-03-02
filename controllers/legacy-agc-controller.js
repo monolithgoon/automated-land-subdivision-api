@@ -3,7 +3,7 @@ const LEGACY_AGC_MODEL = require("../models/legacy-agc-model.js");
 const LEGACY_AGC_FARMERS_MODEL = require("../models/legacy-agc-farmers-model.js");
 const PROCESSED_LEGACY_AGC_MODEL = require("../models/processed-legacy-agc-model.js");
 const { getAllDocuments, insertOneDocument, findOneDocument, returnOneDocument } = require("./handler-factory");
-const catchAsyncServer = require("../utils/catch-async");
+const catchAsyncServer = require("../utils/catch-async-server");
 
 
 // CHECK THAT THE agc_id IS VALID BEFORE RUNNING getAgc()

@@ -6,8 +6,8 @@ const {
 	getAllDocuments,
 	insertDocumentIfNotExists,
 } = require("./handler-factory");
-const { _catchSyncError } = require("../utils/helpers.js");
-const catchAsyncServer = require("../utils/catch-async");
+const { _catchSyncError, _catchAsyncError } = require("../utils/helpers.js");
+const catchAsyncServer = require("../utils/catch-async-server.js");
 const CLUSTERED_FARM_PROGRAM_FEAT_COLL_MODEL = require("../models/clustered-farm-program-feat-coll-model.js");
 
 exports.insertFarmProgram = catchAsyncServer(async (req, res, next) => {
@@ -15,16 +15,16 @@ exports.insertFarmProgram = catchAsyncServer(async (req, res, next) => {
 
 	// Check if req.body is not null or undefined
 	if (req.body ?? false) {
-		const programId = req.body.farm_program_id;
+		const farmProgramId = req.body.farm_program_id;
 
 		// REMOVE
 		// try {
 		//   // Check if a document with the program_id already exists
-		//   const dbFarmProgramDoc = await findOneDocument(CLUSTERED_FARM_PROGRAM_MODEL, { farm_program_id: programId });
+		//   const dbFarmProgramDoc = await findOneDocument(CLUSTERED_FARM_PROGRAM_MODEL, { farm_program_id: farmProgramId });
 
 		//   if (dbFarmProgramDoc) {
 		//     // A document with the program_id already exists, return an error
-		//     return next(new ServerError(`A document with this program_id <${programId}> already exists in the database`, 409));
+		//     return next(new ServerError(`A document with this program_id <${farmProgramId}> already exists in the database`, 409));
 		//   }
 
 		//   // Insert the new farm program into the database
@@ -45,12 +45,12 @@ exports.insertFarmProgram = catchAsyncServer(async (req, res, next) => {
 
 		const newFarmProgramDoc = await insertDocumentIfNotExists(
 			CLUSTERED_FARM_PROGRAM_MODEL,
-			{ farm_program_id: programId },
+			{ farm_program_id: farmProgramId },
 			req.body,
 			next
 		);
 
-		if (!newFarmProgramDoc) throw new ServerError(`Something went wrong`, 500);
+		if (!newFarmProgramDoc) return next(new ServerError(`Failed to insert the new farm program payload`, 500));
 
 		// Extract the object created by the `model.create()` operation
 		const newFarmProgramObj = newFarmProgramDoc.toObject();
@@ -66,14 +66,111 @@ exports.insertFarmProgram = catchAsyncServer(async (req, res, next) => {
 	}
 }, `inertFarmProgram`);
 
-function getFarmerCloudImageUrl(farmerId, base64Image, cloudService) {
-	const cloudUrl = `https://cloudinary.com/${farmerId}`;
-	return cloudUrl;
-}
-// const getFarmerCloudImageUrl = catchAsyncError(async (farmerId, base64Image, cloudService) => {
+// function getFarmerCloudImageUrl(farmerId, base64Image, cloudService) {
 // 	const cloudUrl = `https://cloudinary.com/${farmerId}`;
 // 	return cloudUrl;
-// }, `getFarmerCloudImageUrl`);
+// }
+const getFarmerCloudImageUrl = _catchAsyncError(async (farmerId, base64Image, cloudService) => {
+	const cloudUrl = `https://cloudinary.com/${farmerId}`;
+	return cloudUrl;
+}, `getFarmerCloudImageUrl`);
+
+// A helper function to update the farmer biodata object with the new image URL
+function updateFarmerBiodata(farmerBiodata, farmerCloudImageUrl) {
+	
+	// // Store the `farmer_bio_data` object in a variable
+	// const farmerBiodata = farmer.farmer_bio_data;	
+	
+	// /**
+	//  * Create a new empty object {} and then use Object.assign() to copy the properties from `farmerBiodata` into the new object.
+	//  * Then add the `farmer_cloud_image_url` field with the value of `farmerCloudImageUrl`.
+	//  */
+	// const updatedFarmerBiodata = Object.assign({}, farmerBiodata, {
+	// 	farmer_cloud_image_url: farmerCloudImageUrl,
+	// });
+
+	// console.log({ updatedFarmerBiodata });
+	
+  return {
+    ...farmerBiodata,
+    farmer_cloud_image_url: farmerCloudImageUrl,
+  };
+}
+
+// A helper function to update the farmer object with the new image URL and other fields
+function updateProgramFarmer(farmer, updatedFarmerBiodata, farmerCloudImageUrl) {
+
+	// console.log({ updatedFarmerBiodata })
+	
+	// TODO
+	// Insert in farmer bio data database
+	const globalFarmerUrl = `https://geoclusters.com/farmers/farmer/${updatedFarmerBiodata.farmer_global_id}`;
+
+  return {
+    ...farmer,
+    farmer_global_id: farmer.farmer_global_id,
+    farm_program_farmer_id: farmer.farm_program_farmer_id,
+    farmer_url: globalFarmerUrl,
+    farmer_funding_timeline: farmer.farmer_funding_timeline,
+    farmer_farm_details: farmer.farmer_farm_details,
+    farmer_farm_practice: farmer.farmer_farm_practice,
+    farmer_cloud_image_url: farmerCloudImageUrl,
+  };
+};
+
+async function updateFarmProgram (farmProgram) {
+
+  const updatedFarmers = [];
+
+  if (farmProgram.farm_program_farmers) {
+
+    // Loop through each farmer in the program and update their biodata and image URL
+    for (const farmer of farmProgram.farm_program_farmers) {
+      
+			// const globalFarmerId = farmer["farmer_bio_data"]["farmer_global_id"];
+      const { farmer_global_id: globalFarmerId } = farmer.farmer_bio_data;
+
+			const farmerBase64Image = farmer["farmer_bio_data"]["farmer_image_base64"];
+			// const { farmer_image_base64: farmerBase64Image } = farmer.farmer_bio_data;
+
+      // const farmerCloudImageUrl = getFarmerCloudImageUrl(globalFarmerId, farmerBase64Image, {});
+      const farmerCloudImageUrl = await getFarmerCloudImageUrl(globalFarmerId, farmerBase64Image, {});
+
+      const updatedFarmerBiodata = updateFarmerBiodata(farmer.farmer_bio_data, farmerCloudImageUrl);
+
+      const updatedProgramFarmer = updateProgramFarmer(farmer, updatedFarmerBiodata, farmerCloudImageUrl);
+
+      updatedFarmers.push(updatedProgramFarmer);
+    }
+  }
+
+  const updatedFarmProgram = {
+    ...farmProgram,
+    farm_program_farmers: updatedFarmers,
+  };
+
+	return updatedFarmProgram;
+}
+
+exports.updateFarmProgram = catchAsyncServer(async (req, res, next) => {
+
+	console.log(chalk.success(`CALLED [ storeFarmersBiodata ] CONTROLLER FN. `));
+
+	const farmProgram = req.locals.appendedFarmProgram;
+
+	if (!farmProgram) {
+		return next(new ServerError(`Something went wrong: could not get <req.locals.appendedFarmProgram>`, 500));
+	}
+
+	const updatedFarmProgram = await updateFarmProgram(farmProgram);
+
+	req.locals.updatedFarmProgram = updatedFarmProgram;
+
+	// Pass control to the next middleware or controller
+	next();
+
+}, `updateFarmProgram`);
+
 
 exports.getFarmerBiodataUrls = catchAsyncServer(async (req, res, next) => {
 	console.log(chalk.success(`CALLED [ storeFarmersBiodata ] CONTROLLER FN. `));
@@ -195,7 +292,7 @@ exports.convertFarmProgramToGeoJson = catchAsyncServer(async (req, res, next) =>
 
 	if (!farmProgram)
 		return next(
-			new ServerError(`Something went wrong: can't find <req.locals.appendedFarmProgram>`, 500)
+			new ServerError(`Something went wrong: can't find <req.locals.updatedFarmProgram>`, 500)
 		);
 
 	const farmProgramFeatColl = createFeatureCollection(farmProgram);
@@ -212,21 +309,18 @@ exports.insertFarmProgramGeoJson = catchAsyncServer(async (req, res, next) => {
 	const farmProgramFeatColl = req.locals.appendedFarmProgramFeatColl;
 
 	if (!farmProgramFeatColl)
-		throw new ServerError(
+		return next(new ServerError(
 			`Something went wrong: can't find <req.locals.appendedFarmProgramFeatColl>`,
 			500
-		);
+		));
 
 	if (farmProgramFeatColl ?? false) {
-		const programId = farmProgramFeatColl.properties["farm_program_id"];
-		// res.status(201).json({
-		// 	status: `success`,
-		// 	inserted_at: req.requestTime,
-		// 	data: farmProgramFeatColl,
-		// });
-		const newFarmProgramFeatCollDoc = await insertDocumentIfNotExists(CLUSTERED_FARM_PROGRAM_FEAT_COLL_MODEL, { "properties.farm_program_id": programId }, farmProgramFeatColl, next);
 
-		if (!newFarmProgramFeatCollDoc) throw new ServerError(`Something went wrong`, 500);
+		const farmProgramId = farmProgramFeatColl.properties["farm_program_id"];
+
+		const newFarmProgramFeatCollDoc = await insertDocumentIfNotExists(CLUSTERED_FARM_PROGRAM_FEAT_COLL_MODEL, { "properties.farm_program_id": farmProgramId }, farmProgramFeatColl, next);
+
+		if (!newFarmProgramFeatCollDoc) return next(new ServerError(`Failed to insert the new farm program FeatureCollection`, 500));
 
 		// Extract the object created by the `model.create()` operation
 		const newFarmProgramFeatColl = newFarmProgramFeatCollDoc.toObject();

@@ -1,5 +1,5 @@
 const PARCELIZED_AGC_MODEL = require('../models/parcelized-agc-model.js')
-const catchAsync = require('../utils/catch-async.js')
+const catchAsync = require('../utils/catch-async-server.js')
 const chalk = require('../utils/chalk-messages.js')
 
 
