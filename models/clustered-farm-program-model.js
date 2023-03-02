@@ -51,9 +51,9 @@ function urlValidator() {
 			const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*\/?$/;
 			return urlRegex.test(url);
 		},
-		message: `Invalid {PATH}`
+		message: `Invalid {PATH}`,
 	};
-};
+}
 
 /**
  * @description Mongoose schema for the biodata of a farmer.
@@ -94,7 +94,7 @@ const farmerBiodataSchema = new mongoose.Schema({
 	farmer_middle_name: {
 		type: String,
 		required: false,
-		// FIXME 
+		// FIXME
 		// WIP
 		// validate: nameValidator(),
 	},
@@ -112,7 +112,14 @@ const farmerBiodataSchema = new mongoose.Schema({
 	farmer_gender: {
 		type: String,
 		required: true,
-		enum: MONGOOSE_MODEL_ENUMS.GENDER,
+		validate: {
+			validator: function (value) {
+				return MONGOOSE_MODEL_ENUMS.GENDER.includes(value);
+			},
+			message: `The {PATH} must be specified as either: ${MONGOOSE_MODEL_ENUMS.GENDER.join(
+				", "
+			)}`,
+		},
 	},
 	farmer_dob: {
 		type: Date,
@@ -258,12 +265,12 @@ const farmerSchema = new mongoose.Schema(
 			farming_experience: {
 				type: Number,
 				required: false,
-				enum: Array.from(Array(11).keys()),
+				// enum: Array.from(Array(11).keys()),
 				validate: {
 					validator: (value) => {
 						return value >= 0 && value <= 10; // Check if the value is within the range of the enum
 					},
-					message: "The farming_experience value must be between 0 and 10.",
+					message: "The {PATH} value must be between 0 and 10.",
 				},
 			},
 			crop_rotation_crops: { type: [String], required: false },
@@ -475,7 +482,13 @@ const farmProgramSchema = new mongoose.Schema(
 		farm_program_state: {
 			type: String,
 			required: true,
-			enum: NGA_STATES_NAMES,
+			// enum: NGA_STATES_NAMES,
+			validate: {
+				validator: function (value) {
+					return NGA_STATES_NAMES.includes(value);
+				},
+				message: `The {PATH} can only be any one of these: ${NGA_STATES_NAMES.join(", ")}`,
+			},
 		},
 		farm_program_manager: {
 			type: mongoose.Schema.Types.ObjectId,
