@@ -2,6 +2,7 @@
 const mongoose = require(`mongoose`);
 const MONGOOSE_MODEL_ENUMS = require("../constants/mongoose-model-enums");
 const NGA_STATES_NAMES = require("../constants/nga-states-names");
+const { v4: uuidv4 } = require("uuid");
 
 /** PROGRAM FARMER SCHEMA VALIDATORS */
 
@@ -57,6 +58,7 @@ function urlValidator() {
 /**
  * @description Mongoose schema for the biodata of a farmer.
  * @typedef {Object} FarmerBiodata
+ * @property {string} farmer_global_id - The unique global Id of the farmer.
  * @property {string} farmer_last_name - The last name of the farmer.
  * @property {string} farmer_first_name - The first name of the farmer.
  * @property {string} [farmer_middle_name] - The middle name of the farmer (optional).
@@ -77,6 +79,7 @@ const farmerBiodataSchema = new mongoose.Schema({
 		type: String,
 		required: false,
 		unique: true,
+		default: uuidv4(),
 	},
 	farmer_last_name: {
 		type: String,
