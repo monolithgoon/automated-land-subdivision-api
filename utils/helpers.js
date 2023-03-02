@@ -53,3 +53,21 @@ exports._catchSyncError = (fn, fnDescr = null) => {
 		}
 	};
 };
+
+/**
+ * Wraps an asynchronous function and catches any errors that occur during its execution.
+ *
+ * @param {Function} fn - The asynchronous function to wrap.
+ * @param {string} fnDescr - A description of the function (optional).
+ * @returns {Function} A new function that catches errors and returns a Promise.
+ */
+exports._catchAsyncError = (fn, fnDescr = null) => {
+  return async function (...params) {
+    try {
+      return await fn(...params);
+    } catch (err) {
+      console.error(`${fnDescr || fn.name} error:`, err.message);
+      throw err;
+    }
+  };
+}

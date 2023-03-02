@@ -10,7 +10,7 @@ router
 		// farmProgramController.uploadFarmerImagesToCloud,
 		farmProgramController.getFarmerBiodataUrls,
 		farmProgramController.convertFarmProgramToGeoJson,
-		farmProgramController.insertProcessedFarmProgram
+		farmProgramController.insertFarmProgramGeoJson
 	)
 	.get(farmProgramController.getAllFarmPrograms);
 
@@ -18,7 +18,6 @@ router.route("/farm-program/").get(farmProgramController.getFarmProgram);
 
 router
 	.route("/processed/")
-	// .post(farmProgramController.insertProcessedFarmProgram)
 	.get(farmProgramController.getAllProcessedFarmPrograms);
 
 router.route("/processed/farm-program/:id").get(farmProgramController.getProcessedFarmProgram);
