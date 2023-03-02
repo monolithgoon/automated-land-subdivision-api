@@ -8,7 +8,7 @@ router
 	.post(
 		farmProgramController.insertFarmProgram,
 		// farmProgramController.getFarmerBiodataUrls,
-		farmProgramController.updateFarmProgram,
+		farmProgramController.updateFarmersInProgram,
 		farmProgramController.convertFarmProgramToGeoJson,
 		farmProgramController.insertFarmProgramGeoJson
 	)

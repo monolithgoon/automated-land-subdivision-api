@@ -79,7 +79,17 @@ const farmerBiodataSchema = new mongoose.Schema({
 		type: String,
 		required: false,
 		unique: true,
-		default: uuidv4(),
+		// default: uuidv4(),
+		/**
+		 * `uuidv4()` is called only once when the schema is defined. 
+		 * So every time a new farmer object is created, it will have the same uuid
+		 * value as all the other farmer objects created before it. 
+		 * To fix this, the default value of farmer_global_id should be a fn. 
+		 * that is called every time a new farmer object is created
+		 */
+		default: function() {
+			return uuidv4();
+		}
 	},
 	farmer_last_name: {
 		type: String,

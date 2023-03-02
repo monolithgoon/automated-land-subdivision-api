@@ -9,12 +9,14 @@ const {
 const { _catchSyncError, _catchAsyncError } = require("../utils/helpers.js");
 const catchAsyncServer = require("../utils/catch-async-server.js");
 const CLUSTERED_FARM_PROGRAM_FEAT_COLL_MODEL = require("../models/clustered-farm-program-feat-coll-model.js");
+const FARMER_BIODATA_MODEL = require("../models/farmer-biodata-model.js");
 
 exports.insertFarmProgram = catchAsyncServer(async (req, res, next) => {
 	console.log(chalk.success(`CALLED [ insertFarmProgram ] CONTROLLER FN.`));
 
 	// Check if req.body is not null or undefined
 	if (req.body ?? false) {
+
 		const farmProgramId = req.body.farm_program_id;
 
 		// REMOVE
@@ -66,10 +68,6 @@ exports.insertFarmProgram = catchAsyncServer(async (req, res, next) => {
 	}
 }, `inertFarmProgram`);
 
-// function getFarmerCloudImageUrl(farmerId, base64Image, cloudService) {
-// 	const cloudUrl = `https://cloudinary.com/${farmerId}`;
-// 	return cloudUrl;
-// }
 const getFarmerCloudImageUrl = _catchAsyncError(async (farmerId, base64Image, cloudService) => {
 	const cloudUrl = `https://cloudinary.com/${farmerId}`;
 	return cloudUrl;
@@ -88,8 +86,6 @@ function updateFarmerBiodata(farmerBiodata, farmerCloudImageUrl) {
 	// const updatedFarmerBiodata = Object.assign({}, farmerBiodata, {
 	// 	farmer_cloud_image_url: farmerCloudImageUrl,
 	// });
-
-	// console.log({ updatedFarmerBiodata });
 	
   return {
     ...farmerBiodata,
@@ -97,20 +93,86 @@ function updateFarmerBiodata(farmerBiodata, farmerCloudImageUrl) {
   };
 }
 
-// A helper function to update the farmer object with the new image URL and other fields
-function updateProgramFarmer(farmer, updatedFarmerBiodata, farmerCloudImageUrl) {
+// REMOVE > DEPRECATED
+// async function uploadFarmerBiodata(updatedFarmerBiodata, nextFn) {
 
-	// console.log({ updatedFarmerBiodata })
-	
-	// TODO
-	// Insert in farmer bio data database
-	const globalFarmerUrl = `https://geoclusters.com/farmers/farmer/${updatedFarmerBiodata.farmer_global_id}`;
+// 	console.log({ updatedFarmerBiodata })
+
+// 	if (updatedFarmerBiodata ?? false) {
+
+// 		const globalFarmerId = updatedFarmerBiodata.farmer_global_id;
+		
+// 		// Insert farmer biodata into database
+// 		const newFarmerDoc = await insertDocumentIfNotExists(FARMER_BIODATA_MODEL, { farmer_global_id: globalFarmerId }, updatedFarmerBiodata, nextFn);
+
+// 		if (!newFarmerDoc) return nextFn(new ServerError(`Failed to insert the new farmer`, 500));
+
+// 		// Extract the object created by the `model.create()` operation
+// 		const newFarmerObj = newFarmerDoc.toObject();
+
+// 		console.log({ newFarmerObj })
+
+// 		// // Send server response
+// 		// res.status(201).json({
+// 		// 	status: `success`,
+// 		// 	inserted_at: req.requestTime,
+// 		// 	data: newFarmerObj,
+// 		// });		
+
+// 	} else {
+// 		// updatedFarmerBiodata is null or undefined; inform the user
+// 		// res.status(400).json({
+// 		// 	status: `fail`,
+// 		// 	message: `The insert operation failed`
+// 		// });		
+// 		return nextFn(new ServerError(`Something went wrong: <updatedFarmerBiodata> is "null" or "undefined"`))
+// 	}
+
+// 	// If all is successful w/out errors, construct a URL to retreive farmer's biodata
+// 	const farmerGlobalUrl = `https://geoclusters.com/farmers/farmer/${updatedFarmerBiodata.farmer_global_id}`;
+
+// 	return farmerGlobalUrl;	
+// }
+
+const uploadFarmerBiodata = _catchAsyncError(async(updatedFarmerBiodata, nextFn) => {
+
+		if (!updatedFarmerBiodata) {
+			throw new ServerError(`Something went wrong: <updatedFarmerBiodata> is "null" or "undefined"`);
+		}
+
+		console.log({ updatedFarmerBiodata })
+
+		const globalFarmerId = updatedFarmerBiodata.farmer_global_id;
+
+		// Insert farmer biodata into database
+		const newFarmerDoc = await insertDocumentIfNotExists(FARMER_BIODATA_MODEL, { farmer_global_id: globalFarmerId }, updatedFarmerBiodata, nextFn);
+
+		if (!newFarmerDoc) {
+			throw new ServerError(`Failed to insert the new farmer biodata payload`, 500);
+		}
+
+		// Extract the object created by the `model.create()` operation
+		const newFarmerObj = newFarmerDoc.toObject();
+
+		// If all is successful without errors, construct a URL to retrieve the farmer's biodata
+		const newFarmerGlobalUrl = `https://geoclusters.com/farmers/farmer/${updatedFarmerBiodata.farmer_global_id}`;
+
+		return {
+			status: "success",
+			inserted_at: new Date(),
+			data: { new_farmer: newFarmerObj, new_farmer_global_url: newFarmerGlobalUrl },
+		};
+
+	}, `uploadFarmerBiodata`)
+
+// A helper function to update the farmer object with the new image URL and other fields
+function updateProgramFarmer(farmer, farmerGlobalUrl, farmerCloudImageUrl) {
 
   return {
     ...farmer,
     farmer_global_id: farmer.farmer_global_id,
     farm_program_farmer_id: farmer.farm_program_farmer_id,
-    farmer_url: globalFarmerUrl,
+    farmer_url: farmerGlobalUrl,
     farmer_funding_timeline: farmer.farmer_funding_timeline,
     farmer_farm_details: farmer.farmer_farm_details,
     farmer_farm_practice: farmer.farmer_farm_practice,
@@ -118,7 +180,7 @@ function updateProgramFarmer(farmer, updatedFarmerBiodata, farmerCloudImageUrl) 
   };
 };
 
-async function updateFarmProgram (farmProgram) {
+async function updateFarmProgram (farmProgram, nextFn) {
 
   const updatedFarmers = [];
 
@@ -138,7 +200,9 @@ async function updateFarmProgram (farmProgram) {
 
       const updatedFarmerBiodata = updateFarmerBiodata(farmer.farmer_bio_data, farmerCloudImageUrl);
 
-      const updatedProgramFarmer = updateProgramFarmer(farmer, updatedFarmerBiodata, farmerCloudImageUrl);
+			const { data: { new_farmer_global_url: newFarmerGlobalUrl }} = await uploadFarmerBiodata(updatedFarmerBiodata, nextFn)
+
+      const updatedProgramFarmer = updateProgramFarmer(farmer, newFarmerGlobalUrl, farmerCloudImageUrl);
 
       updatedFarmers.push(updatedProgramFarmer);
     }
@@ -152,9 +216,9 @@ async function updateFarmProgram (farmProgram) {
 	return updatedFarmProgram;
 }
 
-exports.updateFarmProgram = catchAsyncServer(async (req, res, next) => {
+exports.updateFarmersInProgram = catchAsyncServer(async (req, res, next) => {
 
-	console.log(chalk.success(`CALLED [ storeFarmersBiodata ] CONTROLLER FN. `));
+	console.log(chalk.success(`CALLED [ updateFarmersInProgram ] CONTROLLER FN. `));
 
 	const farmProgram = req.locals.appendedFarmProgram;
 
@@ -162,7 +226,7 @@ exports.updateFarmProgram = catchAsyncServer(async (req, res, next) => {
 		return next(new ServerError(`Something went wrong: could not get <req.locals.appendedFarmProgram>`, 500));
 	}
 
-	const updatedFarmProgram = await updateFarmProgram(farmProgram);
+	const updatedFarmProgram = await updateFarmProgram(farmProgram, next);
 
 	req.locals.updatedFarmProgram = updatedFarmProgram;
 
@@ -171,7 +235,7 @@ exports.updateFarmProgram = catchAsyncServer(async (req, res, next) => {
 
 }, `updateFarmProgram`);
 
-
+// REMOVE > DEPRECATED FOR `updateFarmProgram
 exports.getFarmerBiodataUrls = catchAsyncServer(async (req, res, next) => {
 	console.log(chalk.success(`CALLED [ storeFarmersBiodata ] CONTROLLER FN. `));
 
@@ -209,13 +273,13 @@ exports.getFarmerBiodataUrls = catchAsyncServer(async (req, res, next) => {
 
 			// TODO
 			// Insert in farmer bio data database
-			const globalFarmerUrl = `https://geoclusters.com/farmers/farmer/${globalFarmerId}`;
+			const farmerGlobalUrl = `https://geoclusters.com/farmers/farmer/${globalFarmerId}`;
 
 			const updatedProgramFarmer = {
 				...farmer,
 				farmer_global_id: farmer.farmer_global_id,
 				farm_program_farmer_id: farmer.farm_program_farmer_id,
-				farmer_url: globalFarmerUrl,
+				farmer_url: farmerGlobalUrl,
 				farmer_funding_timeline: farmer.farmer_funding_timeline,
 				farmer_farm_details: farmer.farmer_farm_details,
 				farmer_farm_practice: farmer.farmer_farm_practice,

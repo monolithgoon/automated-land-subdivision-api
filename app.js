@@ -113,6 +113,7 @@ const geofilesRouter = require('./routes/geofile-routes.js');
 const legacyAgcsRouter = require('./routes/legacy-agc-routes.js');
 const pmroRouter = require('./routes/pmro-routes.js');
 const farmProgramRouter = require(`./routes/clustered-farm-program-routes.js`);
+const farmersRouter = require(`./routes/farmer-routes.js`);
 
 
 
@@ -127,10 +128,11 @@ EXPRESS_APP.use('/api/v2/geofiles/', geofilesRouter);
 EXPRESS_APP.use('/api/v2/legacy-agcs/', legacyAgcsRouter);
 EXPRESS_APP.use(`/api/v2/pmros/`, pmroRouter);
 EXPRESS_APP.use(`/api/v3/clustered-farm-programs/`, farmProgramRouter)
+EXPRESS_APP.use(`/api/v3/farmers/`, farmersRouter)
 
 
 
-// HANDLE ALL NON-EXISTING ROUTES
+// HANDLE ALL NON PRE-DEFINED ROUTES
 EXPRESS_APP.use('*', (req, res, next) => {
 
    res.status(404).json({
