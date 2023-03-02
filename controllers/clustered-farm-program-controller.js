@@ -3,7 +3,6 @@ const chalk = require(`../utils/chalk-messages.js`);
 const ServerError = require(`../utils/server-error.js`);
 const CLUSTERED_FARM_PROGRAM_MODEL = require("../models/clustered-farm-program-model");
 const {
-	findOneDocument,
 	getAllDocuments,
 	insertDocumentIfNotExists,
 } = require("./handler-factory");
@@ -18,6 +17,7 @@ exports.insertFarmProgram = catchAsyncServer(async (req, res, next) => {
 	if (req.body ?? false) {
 		const programId = req.body.farm_program_id;
 
+		// REMOVE
 		// try {
 		//   // Check if a document with the program_id already exists
 		//   const dbFarmProgramDoc = await findOneDocument(CLUSTERED_FARM_PROGRAM_MODEL, { farm_program_id: programId });
@@ -87,12 +87,14 @@ exports.getFarmerBiodataUrls = catchAsyncServer(async (req, res, next) => {
 	const updatedFarmers = [];
 
 	if (farmProgram.farm_program_farmers) {
+		
 		farmProgram.farm_program_farmers.forEach((farmer) => {
+
 			// Get farmer cloud photo URL
 			// const globalFarmerId = farmer["farmer_bio_data"]["farmer_global_id"];
 			const { farmer_global_id: globalFarmerId } = farmer.farmer_bio_data;
-			console.log({ globalFarmerId });
-			const farmerBase64Image = farmer["farmer_bio_data"]["farmer_image_base64"];
+			// const farmerBase64Image = farmer["farmer_bio_data"]["farmer_image_base64"];
+			const { farmer_image_base64: farmerBase64Image } = farmer.farmer_bio_data;
 			const farmerCloudImageUrl = getFarmerCloudImageUrl(globalFarmerId, farmerBase64Image, {});
 
 			// Store the `farmer_bio_data` object in a variable
@@ -110,7 +112,7 @@ exports.getFarmerBiodataUrls = catchAsyncServer(async (req, res, next) => {
 
 			// TODO
 			// Insert in farmer bio data database
-			const globalFarmerUrl = `https://geoclusters.com/farmers/farmer/1234567`;
+			const globalFarmerUrl = `https://geoclusters.com/farmers/farmer/${globalFarmerId}`;
 
 			const updatedProgramFarmer = {
 				...farmer,
@@ -196,27 +198,52 @@ exports.convertFarmProgramToGeoJson = catchAsyncServer(async (req, res, next) =>
 			new ServerError(`Something went wrong: can't find <req.locals.appendedFarmProgram>`, 500)
 		);
 
-	const farmProgramGeoJSON = createFeatureCollection(farmProgram);
+	const farmProgramFeatColl = createFeatureCollection(farmProgram);
 
-	req.locals.appendedFarmProgramGeoJSON = farmProgramGeoJSON;
+	req.locals.appendedFarmProgramFeatColl = farmProgramFeatColl;
 
 	next();
 }, `convertFarmProgramToGeoJson`);
 
 exports.insertFarmProgramGeoJson = catchAsyncServer(async (req, res, next) => {
+
 	console.log(chalk.success(`CALLED [ insertFarmProgramGeoJson ] CONTROLLER FN. `));
-	const farmProgramGeoJSON = req.locals.appendedFarmProgramGeoJSON;
-	if (!farmProgramGeoJSON)
+
+	const farmProgramFeatColl = req.locals.appendedFarmProgramFeatColl;
+
+	if (!farmProgramFeatColl)
 		throw new ServerError(
-			`Something went wrong: can't find <req.locals.appendedFarmProgramGeoJSON>`,
+			`Something went wrong: can't find <req.locals.appendedFarmProgramFeatColl>`,
 			500
 		);
-	if (farmProgramGeoJSON ?? false) {
+
+	if (farmProgramFeatColl ?? false) {
+		const programId = farmProgramFeatColl.properties["farm_program_id"];
+		// res.status(201).json({
+		// 	status: `success`,
+		// 	inserted_at: req.requestTime,
+		// 	data: farmProgramFeatColl,
+		// });
+		const newFarmProgramFeatCollDoc = await insertDocumentIfNotExists(CLUSTERED_FARM_PROGRAM_FEAT_COLL_MODEL, { "properties.farm_program_id": programId }, farmProgramFeatColl, next);
+
+		if (!newFarmProgramFeatCollDoc) throw new ServerError(`Something went wrong`, 500);
+
+		// Extract the object created by the `model.create()` operation
+		const newFarmProgramFeatColl = newFarmProgramFeatCollDoc.toObject();
+
+		// 
 		res.status(201).json({
 			status: `success`,
 			inserted_at: req.requestTime,
-			data: farmProgramGeoJSON,
-		});
+			data: newFarmProgramFeatColl,
+		});		
+
+	} else {
+		// farmProgramFeatColl is null or undefined; inform the user
+		res.status(400).json({
+			status: `fail`,
+			message: `The insert operation failed`
+		});		
 	}
 }, `insertFarmProgramGeoJson`);
 
@@ -237,7 +264,20 @@ exports.getAllFarmPrograms = catchAsyncServer(async (req, res, next) => {
 
 exports.getFarmProgram = catchAsyncServer(async (req, res, next) => {}, `getFarmProgram`);
 
-exports.getAllProcessedFarmPrograms = catchAsyncServer(async (req, res, next) => {},
+exports.getAllProcessedFarmPrograms = catchAsyncServer(async (req, res, next) => {
+	console.log(chalk.success(`CALLED the [ getAllFarmPrograms ] CONTROLLER FN. `));
+	const clusteredFarmProgramFeatureCollections  = await getAllDocuments(req, CLUSTERED_FARM_PROGRAM_FEAT_COLL_MODEL);
+	res.status(200).json({
+		status: `success`,
+		requested_at: req.requestTime,
+		num_docs: clusteredFarmProgramFeatureCollections.length,
+		data: {
+			collection_name: `clustered-farm-programs`,
+			collection_docs: clusteredFarmProgramFeatureCollections ,
+			docs_count: clusteredFarmProgramFeatureCollections.length,
+		},
+	});
+},
 `getAllProcessedFarmPrograms`);
 
 exports.getProcessedFarmProgram = catchAsyncServer(async (req, res, next) => {},
