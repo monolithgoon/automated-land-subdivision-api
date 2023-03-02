@@ -140,7 +140,7 @@ const uploadFarmerBiodata = _catchAsyncError(async(updatedFarmerBiodata, nextFn)
 			throw new ServerError(`Something went wrong: <updatedFarmerBiodata> is "null" or "undefined"`);
 		}
 
-		console.log({ updatedFarmerBiodata })
+		// console.log({ updatedFarmerBiodata })
 
 		const globalFarmerId = updatedFarmerBiodata.farmer_global_id;
 
@@ -155,7 +155,7 @@ const uploadFarmerBiodata = _catchAsyncError(async(updatedFarmerBiodata, nextFn)
 		const newFarmerObj = newFarmerDoc.toObject();
 
 		// If all is successful without errors, construct a URL to retrieve the farmer's biodata
-		const newFarmerGlobalUrl = `https://geoclusters.com/farmers/farmer/${updatedFarmerBiodata.farmer_global_id}`;
+		const newFarmerGlobalUrl = `/api/v3/farmers/farmer/${updatedFarmerBiodata.farmer_global_id}`;
 
 		return {
 			status: "success",
@@ -170,9 +170,9 @@ function updateProgramFarmer(farmer, farmerGlobalUrl, farmerCloudImageUrl) {
 
   return {
     ...farmer,
-    farmer_global_id: farmer.farmer_global_id,
+    farmer_global_url: farmerGlobalUrl,
+    farmer_global_id: farmer.farmer_bio_data.farmer_global_id,
     farm_program_farmer_id: farmer.farm_program_farmer_id,
-    farmer_url: farmerGlobalUrl,
     farmer_funding_timeline: farmer.farmer_funding_timeline,
     farmer_farm_details: farmer.farmer_farm_details,
     farmer_farm_practice: farmer.farmer_farm_practice,
@@ -203,6 +203,8 @@ async function updateFarmProgram (farmProgram, nextFn) {
 			const { data: { new_farmer_global_url: newFarmerGlobalUrl }} = await uploadFarmerBiodata(updatedFarmerBiodata, nextFn)
 
       const updatedProgramFarmer = updateProgramFarmer(farmer, newFarmerGlobalUrl, farmerCloudImageUrl);
+
+			console.log({ updatedProgramFarmer })
 
       updatedFarmers.push(updatedProgramFarmer);
     }
@@ -279,7 +281,7 @@ exports.getFarmerBiodataUrls = catchAsyncServer(async (req, res, next) => {
 				...farmer,
 				farmer_global_id: farmer.farmer_global_id,
 				farm_program_farmer_id: farmer.farm_program_farmer_id,
-				farmer_url: farmerGlobalUrl,
+				farmer_global_url: farmerGlobalUrl,
 				farmer_funding_timeline: farmer.farmer_funding_timeline,
 				farmer_farm_details: farmer.farmer_farm_details,
 				farmer_farm_practice: farmer.farmer_farm_practice,
@@ -300,53 +302,110 @@ exports.getFarmerBiodataUrls = catchAsyncServer(async (req, res, next) => {
 	next();
 }, `getFarmerBiodataUrls`);
 
+// REMOVE > DEPRECATED
+// function createFeatureCollection(farmProgramJSON) {
+
+// 	// Eliminate the `farm_project_farmers` field
+// 	const filteredFarmProgramJSON = Object.fromEntries(
+// 		Object.entries(farmProgramJSON).filter(([key, value]) => key !== "farm_program_farmers")
+// 	);
+
+// 	// Init. a FeatureCollection for the farm program
+// 	const featureCollection = {
+// 		type: "FeatureCollection",
+// 		// "features": [],
+// 		features: [],
+// 		properties: filteredFarmProgramJSON,
+// 	};
+
+// 	// Create a MultiPoint GeoJSON Feature based on each farmer's `farmer_farm_details
+// 	farmProgramJSON.farm_program_farmers.forEach((farmer) => {
+
+// 		const feature = {
+// 			type: "Feature",
+// 			geometry: {
+// 				type: "MultiPoint",
+// 				coordinates: farmer["farmer_farm_details"].farm_coordinates,
+// 			},
+// 			properties: farmer,
+// 		};
+
+// 		const updatedFeature = {
+// 			...feature,
+// 			// Strip the Feature `properties` of confidential farmer info.
+// 			properties: {
+// 				farmer_global_url: farmer["farmer_global_url"],
+// 				farm_program_farmer_id: farmer["farm_program_farmer_id"],
+// 				farmer_farm_details: Object.fromEntries(
+// 					Object.entries(farmer["farmer_farm_details"]).filter(
+// 						([key, value]) => key !== "farm_coordinates"
+// 					)
+// 				),
+// 				farmer_farm_practice: farmer["farmer_farm_practice"],
+// 				farmer_funding_timeline: farmer["farmer_funding_timeline"],
+// 			},
+// 		};
+
+// 		//
+// 		featureCollection.features.push(updatedFeature);
+// 	});
+
+// 	return featureCollection;
+// }
+
+/**
+ * @function createFeatureCollection
+ * @description Create a GeoJSON FeatureCollection from a farm program JSON object.
+ * @param {Object} farmProgramJSON - A farm program JSON object.
+ * @returns {Object} A GeoJSON FeatureCollection object.
+ */
 function createFeatureCollection(farmProgramJSON) {
-	// Eliminate the `farm_project_farmers` field
-	const filteredFarmProgramJSON = Object.fromEntries(
-		Object.entries(farmProgramJSON).filter(([key, value]) => key !== "farm_program_farmers")
-	);
 
-	// Init a FeatureCollection for the farm program
-	const featureCollection = {
-		type: "FeatureCollection",
-		// "features": [],
-		features: [],
-		properties: filteredFarmProgramJSON,
-	};
+  // Eliminate the `farm_project_farmers` field
+  const filteredFarmProgramJSON = Object.fromEntries(
+    Object.entries(farmProgramJSON).filter(([key, value]) => key !== "farm_program_farmers")
+  );
 
-	// Create a MultiPoint feature based on each farmer
-	farmProgramJSON.farm_program_farmers.forEach((farmer) => {
-		const feature = {
-			type: "Feature",
-			geometry: {
-				type: "MultiPoint",
-				coordinates: farmer["farmer_farm_details"].farm_coordinates,
-			},
-			properties: farmer,
-			// properties: Object.entries(farmer["farmer_farm_details"]).filter(([key, value]) => key !== "farm_coordinates"),
-		};
+  // Init. a FeatureCollection for the farm program
+  const featureCollection = {
+    type: "FeatureCollection",
+    features: [], // Initialize an empty array of features
+    properties: filteredFarmProgramJSON,
+  };
 
-		const updatedFeature = {
-			...feature,
-			properties: {
-				farm_program_farmer_id: farmer["farm_program_farmer_id"],
-				farmer_url: farmer["farmer_url"],
-				farmer_farm_details: Object.fromEntries(
-					Object.entries(farmer["farmer_farm_details"]).filter(
-						([key, value]) => key !== "farm_coordinates"
-					)
-				),
-				farmer_farm_practice: farmer["farmer_farm_practice"],
-				farmer_funding_timeline: farmer["farmer_funding_timeline"],
-			},
-		};
+  // Create a MultiPoint GeoJSON Feature based on each farmer's `farmer_farm_details`
+  const features = farmProgramJSON.farm_program_farmers.map((farmer) => {
 
-		//
-		featureCollection.features.push(updatedFeature);
-	});
+    // Extract the `farmer_farm_details` property from the farmer object
+    const { farmer_farm_details } = farmer;
 
-	return featureCollection;
-}
+    // Strip the `farm_coordinates` property from `farmer_farm_details`
+    const { farm_coordinates, ...otherFarmDetails } = farmer_farm_details;
+
+    // Create a new GeoJSON Feature object with the stripped `farmer_farm_details`
+    const feature = {
+      type: "Feature",
+      geometry: {
+        type: "MultiPoint",
+        coordinates: farm_coordinates,
+      },
+      properties: {
+        farmer_global_url: farmer["farmer_global_url"],
+        farm_program_farmer_id: farmer["farm_program_farmer_id"],
+        farmer_farm_details: otherFarmDetails,
+        farmer_farm_practice: farmer["farmer_farm_practice"],
+        farmer_funding_timeline: farmer["farmer_funding_timeline"],
+      },
+    };
+
+    return feature;
+  });
+
+  // Add the features to the FeatureCollection
+  featureCollection.features = features;
+
+  return featureCollection;
+};
 
 exports.convertFarmProgramToGeoJson = catchAsyncServer(async (req, res, next) => {
 	console.log(chalk.success(`CALLED [ convertFarmProgramToGeoJson ] CONTROLLER FN. `));
