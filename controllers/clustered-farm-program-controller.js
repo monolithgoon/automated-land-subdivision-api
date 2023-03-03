@@ -180,64 +180,7 @@ function updateProgramFarmer(farmer, farmerGlobalUrl, farmerCloudImageUrl) {
   };
 };
 
-async function updateFarmProgram (farmProgram, nextFn) {
-
-  const updatedFarmers = [];
-
-  if (farmProgram.farm_program_farmers) {
-
-    // Loop through each farmer in the program and update their biodata and image URL
-    for (const farmer of farmProgram.farm_program_farmers) {
-      
-			// const globalFarmerId = farmer["farmer_bio_data"]["farmer_global_id"];
-      const { farmer_global_id: globalFarmerId } = farmer.farmer_bio_data;
-
-			const farmerBase64Image = farmer["farmer_bio_data"]["farmer_image_base64"];
-			// const { farmer_image_base64: farmerBase64Image } = farmer.farmer_bio_data;
-
-      // const farmerCloudImageUrl = getFarmerCloudImageUrl(globalFarmerId, farmerBase64Image, {});
-      const farmerCloudImageUrl = await getFarmerCloudImageUrl(globalFarmerId, farmerBase64Image, {});
-
-      const updatedFarmerBiodata = updateFarmerBiodata(farmer.farmer_bio_data, farmerCloudImageUrl);
-
-			const { data: { new_farmer_global_url: newFarmerGlobalUrl }} = await uploadFarmerBiodata(updatedFarmerBiodata, nextFn)
-
-      const updatedProgramFarmer = updateProgramFarmer(farmer, newFarmerGlobalUrl, farmerCloudImageUrl);
-
-			console.log({ updatedProgramFarmer })
-
-      updatedFarmers.push(updatedProgramFarmer);
-    }
-  }
-
-  const updatedFarmProgram = {
-    ...farmProgram,
-    farm_program_farmers: updatedFarmers,
-  };
-
-	return updatedFarmProgram;
-}
-
-exports.updateFarmersInProgram = catchAsyncServer(async (req, res, next) => {
-
-	console.log(chalk.success(`CALLED [ updateFarmersInProgram ] CONTROLLER FN. `));
-
-	const farmProgram = req.locals.appendedFarmProgram;
-
-	if (!farmProgram) {
-		return next(new ServerError(`Something went wrong: could not get <req.locals.appendedFarmProgram>`, 500));
-	}
-
-	const updatedFarmProgram = await updateFarmProgram(farmProgram, next);
-
-	req.locals.updatedFarmProgram = updatedFarmProgram;
-
-	// Pass control to the next middleware or controller
-	next();
-
-}, `updateFarmProgram`);
-
-// REMOVE > DEPRECATED FOR `updateFarmProgram
+// REMOVE -> DEPRECATED FOR `updateFarmProgram`
 exports.getFarmerBiodataUrls = catchAsyncServer(async (req, res, next) => {
 	console.log(chalk.success(`CALLED [ storeFarmersBiodata ] CONTROLLER FN. `));
 
@@ -302,10 +245,111 @@ exports.getFarmerBiodataUrls = catchAsyncServer(async (req, res, next) => {
 	next();
 }, `getFarmerBiodataUrls`);
 
+// REMOVE -> DEPRECATED
+// async function updateFarmProgram (farmProgram, nextFn) {
+
+//   const updatedFarmers = [];
+
+//   if (farmProgram.farm_program_farmers) {
+
+//     // Loop through each farmer in the program and update their biodata and image URL
+//     for (const farmer of farmProgram.farm_program_farmers) {
+      
+// 			// const globalFarmerId = farmer["farmer_bio_data"]["farmer_global_id"];
+//       const { farmer_global_id: globalFarmerId } = farmer.farmer_bio_data;
+
+// 			const farmerBase64Image = farmer["farmer_bio_data"]["farmer_image_base64"];
+// 			// const { farmer_image_base64: farmerBase64Image } = farmer.farmer_bio_data;
+
+//       // const farmerCloudImageUrl = getFarmerCloudImageUrl(globalFarmerId, farmerBase64Image, {});
+//       const farmerCloudImageUrl = await getFarmerCloudImageUrl(globalFarmerId, farmerBase64Image, {});
+
+//       const updatedFarmerBiodata = updateFarmerBiodata(farmer.farmer_bio_data, farmerCloudImageUrl);
+
+// 			const { data: { new_farmer_global_url: newFarmerGlobalUrl }} = await uploadFarmerBiodata(updatedFarmerBiodata, nextFn)
+
+//       const updatedProgramFarmer = updateProgramFarmer(farmer, newFarmerGlobalUrl, farmerCloudImageUrl);
+
+// 			console.log({ updatedProgramFarmer })
+
+//       updatedFarmers.push(updatedProgramFarmer);
+//     }
+//   }
+
+//   const updatedFarmProgram = {
+//     ...farmProgram,
+//     farm_program_farmers: updatedFarmers,
+//   };
+
+// 	return updatedFarmProgram;
+// }
+
+/**
+ * Update the biodata and image URL for each farmer in a farm program.
+ * @param {object} farmProgram - The farm program to update.
+ * @param {function} nextFn - A function to call for the next step in the process.
+ * @returns {object} - The updated farm program.
+ */
+async function updateFarmProgram(farmProgram, nextFn) {
+
+  const updatedFarmers = [];
+
+  if (farmProgram.farm_program_farmers) {
+
+    // Loop through each farmer in the program and update their biodata and image URL
+    for (const farmer of farmProgram.farm_program_farmers) {
+      
+      // Extract `farmer_global_id` & `farmer_image_base64` props. from the farmer object using destructuring
+      const { farmer_bio_data: { farmer_global_id, farmer_image_base64 } } = farmer;
+
+      // Get the farmer's cloud image URL
+      const farmerCloudImageUrl = await getFarmerCloudImageUrl(farmer_global_id, farmer_image_base64, {});
+
+      // Update the farmer's biodata with the new image URL
+      const updatedFarmerBiodata = updateFarmerBiodata(farmer.farmer_bio_data, farmerCloudImageUrl);
+
+      // Upload the updated farmer's biodata and get the new global URL
+      const { data: { new_farmer_global_url: newFarmerGlobalUrl }} = await uploadFarmerBiodata(updatedFarmerBiodata, nextFn);
+
+      // Update the farmer's program details with the new global URL and cloud image URL
+      const updatedProgramFarmer = updateProgramFarmer(farmer, newFarmerGlobalUrl, farmerCloudImageUrl);
+
+      // Add the updated farmer to the list of updated farmers
+      updatedFarmers.push(updatedProgramFarmer);
+    }
+  }
+
+  // Return the updated farm program with the updated farmers array
+  return {
+    ...farmProgram,
+    farm_program_farmers: updatedFarmers,
+  };
+}
+
+
+exports.updateFarmersInProgram = catchAsyncServer(async (req, res, next) => {
+
+	console.log(chalk.success(`CALLED [ updateFarmersInProgram ] CONTROLLER FN. `));
+
+	const farmProgram = req.locals.appendedFarmProgram;
+
+	if (!farmProgram) {
+		return next(new ServerError(`Something went wrong: could not get <req.locals.appendedFarmProgram>`, 500));
+	}
+
+	const updatedFarmProgram = await updateFarmProgram(farmProgram, next);
+
+	req.locals.updatedFarmProgram = updatedFarmProgram;
+
+	// Pass control to the next middleware or controller
+	next();
+
+}, `updateFarmProgram`);
+
 // REMOVE > DEPRECATED
 // function createFeatureCollection(farmProgramJSON) {
 
-// 	// Eliminate the `farm_project_farmers` field
+// 	// Eliminate the `farm_program_farmers` field
 // 	const filteredFarmProgramJSON = Object.fromEntries(
 // 		Object.entries(farmProgramJSON).filter(([key, value]) => key !== "farm_program_farmers")
 // 	);
@@ -361,7 +405,7 @@ exports.getFarmerBiodataUrls = catchAsyncServer(async (req, res, next) => {
  */
 function createFeatureCollection(farmProgramJSON) {
 
-  // Eliminate the `farm_project_farmers` field
+  // Eliminate the `farm_program_farmers` field
   const filteredFarmProgramJSON = Object.fromEntries(
     Object.entries(farmProgramJSON).filter(([key, value]) => key !== "farm_program_farmers")
   );
@@ -379,7 +423,7 @@ function createFeatureCollection(farmProgramJSON) {
     // Extract the `farmer_farm_details` property from the farmer object
     const { farmer_farm_details } = farmer;
 
-    // Strip the `farm_coordinates` property from `farmer_farm_details`
+    // Separate the `farm_coordinates` property from `farmer_farm_details`
     const { farm_coordinates, ...otherFarmDetails } = farmer_farm_details;
 
     // Create a new GeoJSON Feature object with the stripped `farmer_farm_details`
@@ -389,6 +433,7 @@ function createFeatureCollection(farmProgramJSON) {
         type: "MultiPoint",
         coordinates: farm_coordinates,
       },
+			// Append only relevant, non-confidential farmer info to the Feature properties
       properties: {
         farmer_global_url: farmer["farmer_global_url"],
         farm_program_farmer_id: farmer["farm_program_farmer_id"],
