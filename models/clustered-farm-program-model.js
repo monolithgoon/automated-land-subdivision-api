@@ -256,11 +256,11 @@ const farmerSchema = new mongoose.Schema(
 								const latDecimalPlaces = latStr.includes(".")
 									? latStr.split(".")[1].length
 									: 0;
-								return lonDecimalPlaces >= 6 && latDecimalPlaces >= 6;
+								return lonDecimalPlaces >= 4 && latDecimalPlaces >= 4;
 							})
 						);
 					},
-					message: `The land coordinates must be an array of at least 5 sub-arrays of 2 numbers each, with a minimum of 6 decimal places`,
+					message: `The land coordinates must be an 'MultiPoint array of at least 5 'Point' sub-arrays, each having 2 [lat, lng] numbers, with a minimum of 6 decimal places`,
 				},
 			},
 			soil_type: { type: [String], required: false },
@@ -445,7 +445,7 @@ function validateProgramTimeline() {
  * @property {Date} farm_program_start_date - The start date of the farm program.
  * @property {Date} [farm_program_end_date] - The end date of the farm program.
  * @property {String} farm_program_state - The state where the farm program takes place.
- * @property {mongoose.Schema.Types.ObjectId} farm_program_manager - The ID of the farm program manager.
+ * @property {String} farm_program_manager_url - The resource URL of farm program manager.
  * @property {Number} [farm_program_budget=0] - The budget of the farm program.
  * @property {Array.<String>} [farm_program_partners=[]] - The partners of the farm program.
  * @property {Array.<String>} [farm_program_objectives=[]] - The objectives of the farm program.
@@ -500,10 +500,11 @@ const farmProgramSchema = new mongoose.Schema(
 				message: `The {PATH} can only be any one of these: ${NGA_STATES_NAMES.join(", ")}`,
 			},
 		},
-		farm_program_manager: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "FarmProgramManager",
+		farm_program_manager_url: {
+			type: String,
 			required: true,
+			// FIXME
+			// validate: urlValidator(),
 		},
 		farm_program_budget: {
 			type: Number,

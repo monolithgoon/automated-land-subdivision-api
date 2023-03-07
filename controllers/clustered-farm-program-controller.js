@@ -5,68 +5,111 @@ const CLUSTERED_FARM_PROGRAM_MODEL = require("../models/clustered-farm-program-m
 const {
 	getAllDocuments,
 	insertDocumentIfNotExists,
-} = require("./handler-factory");
+} = require("./handler-factory/handler-factory.js");
 const { _catchSyncError, _catchAsyncError } = require("../utils/helpers.js");
 const catchAsyncServer = require("../utils/catch-async-server.js");
 const CLUSTERED_FARM_PROGRAM_FEAT_COLL_MODEL = require("../models/clustered-farm-program-feat-coll-model.js");
 const FARMER_BIODATA_MODEL = require("../models/farmer-biodata-model.js");
 
+// REMOVE
+// exports.insertFarmProgram = catchAsyncServer(async (req, res, next) => {
+// 	console.log(chalk.success(`CALLED [ insertFarmProgram ] CONTROLLER FN.`));
+
+// 	// Check if req.body is not null or undefined
+// 	if (req.body ?? false) {
+
+// 		const farmProgramId = req.body.farm_program_id;
+
+// 		// REMOVE
+// 		// try {
+// 		//   // Check if a document with the program_id already exists
+// 		//   const dbFarmProgramDoc = await findOneDocument(CLUSTERED_FARM_PROGRAM_MODEL, { farm_program_id: farmProgramId });
+
+// 		//   if (dbFarmProgramDoc) {
+// 		//     // A document with the program_id already exists, return an error
+// 		//     return next(new ServerError(`A document with this program_id <${farmProgramId}> already exists in the database`, 409));
+// 		//   }
+
+// 		//   // Insert the new farm program into the database
+// 		//   const newFarmProgramDoc = await CLUSTERED_FARM_PROGRAM_MODEL.create(req.body);
+
+// 		// 	// Extract the object created by the `model.create()` operation
+// 		// 	const newFarmProgramObj = newFarmProgramDoc.toObject();
+
+// 		// 	// Append it to the the `req.locals` obj
+// 		// 	req.locals.appendedFarmProgram = newFarmProgramObj;
+
+// 		//   next();
+
+// 		// } catch (error) {
+// 		//   // Handle any errors thrown by findOneDocument or CLUSTERED_FARM_PROGRAM_MODEL.create
+// 		//   return next(new ServerError(`Problem inserting new document in database: ${error.message}`, 500));
+// 		// }
+
+// 		const newFarmProgramDoc = await insertDocumentIfNotExists(
+// 			CLUSTERED_FARM_PROGRAM_MODEL,
+// 			{ farm_program_id: farmProgramId },
+// 			req.body,
+// 			next
+// 		);
+
+// 		if (!newFarmProgramDoc) return next(new ServerError(`Failed to insert the new farm program payload`, 500));
+
+// 		// Extract the object created by the `model.create()` operation
+// 		const newFarmProgramObj = newFarmProgramDoc.toObject();
+
+// 		// Append it to the the `req.locals` obj
+// 		req.locals.appendedFarmProgram = newFarmProgramObj;
+
+// 		next();
+
+// 	} else {
+// 		// req.body is null or undefined, do nothing
+// 		next();
+// 	}
+// }, `inertFarmProgram`);
+
+/**
+ * @async
+ * @function insertFarmProgram
+ * @description Inserts a new farm program into the database if it doesn't already exist.
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ * @returns {void}
+ */
 exports.insertFarmProgram = catchAsyncServer(async (req, res, next) => {
-	console.log(chalk.success(`CALLED [ insertFarmProgram ] CONTROLLER FN.`));
+  console.log(chalk.success(`CALLED [ insertFarmProgram ] CONTROLLER FN.`));
 
-	// Check if req.body is not null or undefined
-	if (req.body ?? false) {
+  // Check if req.body is not null or undefined
+  if (req.body ?? false) {
 
-		const farmProgramId = req.body.farm_program_id;
+    const farmProgramId = req.body.farm_program_id;
 
-		// REMOVE
-		// try {
-		//   // Check if a document with the program_id already exists
-		//   const dbFarmProgramDoc = await findOneDocument(CLUSTERED_FARM_PROGRAM_MODEL, { farm_program_id: farmProgramId });
+    // Call insertDocumentIfNotExists to add new farm program to the database
+    const newFarmProgramDoc = await insertDocumentIfNotExists(
+      CLUSTERED_FARM_PROGRAM_MODEL,
+      { farm_program_id: farmProgramId },
+      req.body,
+      next
+    );
 
-		//   if (dbFarmProgramDoc) {
-		//     // A document with the program_id already exists, return an error
-		//     return next(new ServerError(`A document with this program_id <${farmProgramId}> already exists in the database`, 409));
-		//   }
+    // Handle error if the document failed to insert
+    if (!newFarmProgramDoc) return next(new ServerError(`Failed to insert the new farm program payload`, 500));
 
-		//   // Insert the new farm program into the database
-		//   const newFarmProgramDoc = await CLUSTERED_FARM_PROGRAM_MODEL.create(req.body);
+    // Extract the object created by the `model.create()` operation
+    const newFarmProgramObj = newFarmProgramDoc.toObject();
 
-		// 	// Extract the object created by the `model.create()` operation
-		// 	const newFarmProgramObj = newFarmProgramDoc.toObject();
+    // Append the new farm program object to the `req.locals` object
+    req.locals.appendedFarmProgram = newFarmProgramObj;
 
-		// 	// Append it to the the `req.locals` obj
-		// 	req.locals.appendedFarmProgram = newFarmProgramObj;
+    next();
 
-		//   next();
-
-		// } catch (error) {
-		//   // Handle any errors thrown by findOneDocument or CLUSTERED_FARM_PROGRAM_MODEL.create
-		//   return next(new ServerError(`Problem inserting new document in database: ${error.message}`, 500));
-		// }
-
-		const newFarmProgramDoc = await insertDocumentIfNotExists(
-			CLUSTERED_FARM_PROGRAM_MODEL,
-			{ farm_program_id: farmProgramId },
-			req.body,
-			next
-		);
-
-		if (!newFarmProgramDoc) return next(new ServerError(`Failed to insert the new farm program payload`, 500));
-
-		// Extract the object created by the `model.create()` operation
-		const newFarmProgramObj = newFarmProgramDoc.toObject();
-
-		// Append it to the the `req.locals` obj
-		req.locals.appendedFarmProgram = newFarmProgramObj;
-
-		next();
-
-	} else {
-		// req.body is null or undefined, do nothing
-		next();
-	}
-}, `inertFarmProgram`);
+  } else {
+    // If req.body is null or undefined, do nothing
+    next();
+  }
+}, `insertFarmProgram`);
 
 const getFarmerCloudImageUrl = _catchAsyncError(async (farmerId, base64Image, cloudService) => {
 	const cloudUrl = `https://cloudinary.com/${farmerId}`;
@@ -75,10 +118,7 @@ const getFarmerCloudImageUrl = _catchAsyncError(async (farmerId, base64Image, cl
 
 // A helper function to update the farmer biodata object with the new image URL
 function updateFarmerBiodata(farmerBiodata, farmerCloudImageUrl) {
-	
-	// // Store the `farmer_bio_data` object in a variable
-	// const farmerBiodata = farmer.farmer_bio_data;	
-	
+		
 	// /**
 	//  * Create a new empty object {} and then use Object.assign() to copy the properties from `farmerBiodata` into the new object.
 	//  * Then add the `farmer_cloud_image_url` field with the value of `farmerCloudImageUrl`.
@@ -94,7 +134,7 @@ function updateFarmerBiodata(farmerBiodata, farmerCloudImageUrl) {
 }
 
 // REMOVE > DEPRECATED
-// async function uploadFarmerBiodata(updatedFarmerBiodata, nextFn) {
+// async function saveFarmerBiodataToDatabase(updatedFarmerBiodata, nextFn) {
 
 // 	console.log({ updatedFarmerBiodata })
 
@@ -134,36 +174,82 @@ function updateFarmerBiodata(farmerBiodata, farmerCloudImageUrl) {
 // 	return farmerGlobalUrl;	
 // }
 
-const uploadFarmerBiodata = _catchAsyncError(async(updatedFarmerBiodata, nextFn) => {
+// REMOVE
+// const saveFarmerBiodataToDatabase = _catchAsyncError(async(updatedFarmerBiodata, nextFn) => {
 
-		if (!updatedFarmerBiodata) {
-			throw new ServerError(`Something went wrong: <updatedFarmerBiodata> is "null" or "undefined"`);
-		}
+// 	if (!updatedFarmerBiodata) {
+// 		throw new ServerError(`Something went wrong: <updatedFarmerBiodata> is "null" or "undefined"`);
+// 	}
 
-		// console.log({ updatedFarmerBiodata })
+// 	// console.log({ updatedFarmerBiodata })
 
-		const globalFarmerId = updatedFarmerBiodata.farmer_global_id;
+// 	const globalFarmerId = updatedFarmerBiodata.farmer_global_id;
 
-		// Insert farmer biodata into database
-		const newFarmerDoc = await insertDocumentIfNotExists(FARMER_BIODATA_MODEL, { farmer_global_id: globalFarmerId }, updatedFarmerBiodata, nextFn);
+// 	// Insert farmer biodata into database
+// 	const newFarmerDoc = await insertDocumentIfNotExists(FARMER_BIODATA_MODEL, { farmer_global_id: globalFarmerId }, updatedFarmerBiodata, nextFn);
 
-		if (!newFarmerDoc) {
-			throw new ServerError(`Failed to insert the new farmer biodata payload`, 500);
-		}
+// 	if (!newFarmerDoc) {
+// 		throw new ServerError(`Failed to insert the new farmer biodata payload`, 500);
+// 	}
 
-		// Extract the object created by the `model.create()` operation
-		const newFarmerObj = newFarmerDoc.toObject();
+// 	// Extract the object created by the `model.create()` operation
+// 	const newFarmerObj = newFarmerDoc.toObject();
 
-		// If all is successful without errors, construct a URL to retrieve the farmer's biodata
-		const newFarmerGlobalUrl = `/api/v3/farmers/farmer/${updatedFarmerBiodata.farmer_global_id}`;
+// 	// If all is successful without errors, construct a URL for retrieving the farmer's biodata
+// 	const newFarmerGlobalUrl = `api/v3/farmers/farmer/${updatedFarmerBiodata.farmer_global_id}`;
 
-		return {
-			status: "success",
-			inserted_at: new Date(),
-			data: { new_farmer: newFarmerObj, new_farmer_global_url: newFarmerGlobalUrl },
-		};
+// 	return {
+// 		status: "success",
+// 		inserted_at: new Date(),
+// 		data: { new_farmer: newFarmerObj, new_farmer_global_url: newFarmerGlobalUrl },
+// 	};
 
-	}, `uploadFarmerBiodata`)
+// }, `saveFarmerBiodataToDatabase`)
+
+/**
+ * @async
+ * @function saveFarmerBiodataToDatabase
+ * @description Asynchronous function for saving a farmer's biodata to the database.
+ * @param {object} updatedFarmerBiodata - An object containing the updated farmer biodata to be saved to the database.
+ * @param {function} nextFn - The next function to be called in the Express middleware chain.
+ * @returns {Promise<object>} Returns a promise that resolves to an object containing information about the inserted farmer biodata.
+ * @throws {ServerError} If there is an error during the database insertion operation.
+ */
+const saveFarmerBiodataToDatabase = _catchAsyncError(async(updatedFarmerBiodata, nextFn) => {
+
+	// Throw an error if the updated farmer biodata object is null or undefined
+	if (!updatedFarmerBiodata) {
+		throw new ServerError(`Something went wrong: <updatedFarmerBiodata> is "null" or "undefined"`);
+	}
+
+	// console.log({ updatedFarmerBiodata })
+
+	// Get the global farmer ID from the updated farmer biodata object
+	const globalFarmerId = updatedFarmerBiodata.farmer_global_id;
+
+	// Insert the farmer biodata into the database if it doesn't already exist
+	const newFarmerDoc = await insertDocumentIfNotExists(FARMER_BIODATA_MODEL, { farmer_global_id: globalFarmerId }, updatedFarmerBiodata, nextFn);
+
+	// Throw an error if the insertion operation failed
+	if (!newFarmerDoc) {
+		throw new ServerError(`Failed to insert the new farmer biodata payload`, 500);
+	}
+
+	// Extract the object created by the `model.create()` operation
+	const newFarmerObj = newFarmerDoc.toObject();
+
+	// If all is successful without errors, construct a URL for retrieving the farmer's biodata
+	const newFarmerGlobalUrl = `api/v3/farmers/farmer/${updatedFarmerBiodata.farmer_global_id}`;
+
+	// Return an object containing information about the inserted farmer biodata
+	return {
+		status: "success",
+		inserted_at: new Date(),
+		data: { new_farmer: newFarmerObj, new_farmer_global_url: newFarmerGlobalUrl },
+	};
+
+}, `saveFarmerBiodataToDatabase`);
+
 
 // A helper function to update the farmer object with the new image URL and other fields
 function updateProgramFarmer(farmer, farmerGlobalUrl, farmerCloudImageUrl) {
@@ -266,7 +352,7 @@ exports.getFarmerBiodataUrls = catchAsyncServer(async (req, res, next) => {
 
 //       const updatedFarmerBiodata = updateFarmerBiodata(farmer.farmer_bio_data, farmerCloudImageUrl);
 
-// 			const { data: { new_farmer_global_url: newFarmerGlobalUrl }} = await uploadFarmerBiodata(updatedFarmerBiodata, nextFn)
+// 			const { data: { new_farmer_global_url: newFarmerGlobalUrl }} = await saveFarmerBiodataToDatabase(updatedFarmerBiodata, nextFn)
 
 //       const updatedProgramFarmer = updateProgramFarmer(farmer, newFarmerGlobalUrl, farmerCloudImageUrl);
 
@@ -309,7 +395,7 @@ async function updateFarmProgram(farmProgram, nextFn) {
       const updatedFarmerBiodata = updateFarmerBiodata(farmer.farmer_bio_data, farmerCloudImageUrl);
 
       // Upload the updated farmer's biodata and get the new global URL
-      const { data: { new_farmer_global_url: newFarmerGlobalUrl }} = await uploadFarmerBiodata(updatedFarmerBiodata, nextFn);
+      const { data: { new_farmer_global_url: newFarmerGlobalUrl }} = await saveFarmerBiodataToDatabase(updatedFarmerBiodata, nextFn);
 
       // Update the farmer's program details with the new global URL and cloud image URL
       const updatedProgramFarmer = updateProgramFarmer(farmer, newFarmerGlobalUrl, farmerCloudImageUrl);
@@ -327,18 +413,32 @@ async function updateFarmProgram(farmProgram, nextFn) {
 }
 
 
+/**
+ * @async
+ * @function updateFarmersInProgram
+ * @description Updates the farmers in a given farm program and appends the updated program to the `req.locals` object
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ * @param {function} next - Express next middleware function
+ * @returns {Promise<void>}
+ */
 exports.updateFarmersInProgram = catchAsyncServer(async (req, res, next) => {
 
+	// Log that the controller function was called
 	console.log(chalk.success(`CALLED [ updateFarmersInProgram ] CONTROLLER FN. `));
 
+	// Get the appended farm program from `req.locals`
 	const farmProgram = req.locals.appendedFarmProgram;
 
+	// Check that the farmProgram exists
 	if (!farmProgram) {
 		return next(new ServerError(`Something went wrong: could not get <req.locals.appendedFarmProgram>`, 500));
 	}
 
+	// Call the updateFarmProgram function with the `farmProgram` object and pass the `next` function for error handling
 	const updatedFarmProgram = await updateFarmProgram(farmProgram, next);
 
+	// Set the updated farm program object to the `req.locals` object
 	req.locals.updatedFarmProgram = updatedFarmProgram;
 
 	// Pass control to the next middleware or controller

@@ -2,7 +2,7 @@
 const chalk = require('../utils/chalk-messages');
 const AGC_MODEL = require('../models/agc-model.js');
 const GEO_CLUSTER_DETAILS_MODEL = require('../models/geo-cluster-details-model.js');
-const { findOneDocument } = require('./handler-factory.js');
+const { findOneDocument } = require('./handler-factory//handler-factory.js');
 
 
 

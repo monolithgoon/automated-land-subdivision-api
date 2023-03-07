@@ -1,9 +1,11 @@
 `use strict`;
-const chalk = require(`../utils/chalk-messages.js`);
-const { _catchAsyncError } = require("../utils/helpers.js");
-const ServerError = require("../utils/server-error.js");
+const chalk = require(`../../utils/chalk-messages.js`);
+const { _catchAsyncError } = require("../../utils/helpers.js");
+const ServerError = require("../../utils/server-error.js");
+const QueryHandler = require("./QueryHandler.js");
 
 exports.getAllDocuments = async function (request, model) {
+
 	// extract only db filters from the request query string object
 	const queryObj = { ...request.query }; // make a copy of the request query string object
 	const excludedFields = ["page", "sort", "limit", "fields"];
@@ -71,6 +73,25 @@ exports.getAllDocuments = async function (request, model) {
 	return retreivedDocs;
 };
 
+// WIP
+// Function to get all documents with query parameters
+exports.getAllDocuments2 = async (model, queryString) => {
+	try {
+		// Create a new query handler instance
+		const queryHandler = new QueryHandler(model.find(), queryString);
+
+		// Apply filters, sorts, and limits to the query
+		queryHandler.filter().sort().limitFields().paginate();
+
+		// Execute the query and return the results
+		const docs = await queryHandler.query;
+		return docs;
+	} catch (error) {
+		console.log(chalk.fail(`getAllDocuments error: ${error.message}`));
+	}
+};
+
+
 exports.insertOneDocument = async function (request, response, model) {
 	const payload = request.body;
 
@@ -107,15 +128,40 @@ exports.findOneDocument = async (model, queryObj) => {
 	}
 };
 
+// REMOVE > DEPRECATED
+// Function to get a single with query parameters
 exports.returnOneDocument = async (model, queryObj) => {
+
 	try {
-		const dbQuery = model.find(queryObj);
+
+		console.log({ queryObj })
+
+		let dbQuery = model.find(queryObj);
+		
 		const doc = await dbQuery;
+
+		console.log({ doc })
 		return doc;
 	} catch (returnDocErr) {
-		console.log(chalk.fail(`returnDocErr: ${returnDocErr.message}`));
+		console.log(chalk.fail(`returnOneDocument: ${returnDocErr.message}`));
 	}
 };
+
+// Function to get a single with query parameters
+exports.returnOneDocument2 = _catchAsyncError(async (model, parsedQuery, queryObj={}) => {
+
+	// Create a new query handler instance
+	const queryHandler = new QueryHandler(model.find(queryObj), parsedQuery);
+
+	// Apply filters, sorts, and limits to the query
+	queryHandler.filter().sort().limitFields().paginate();
+
+	// Execute the query and return the results
+	const docs = await queryHandler.query;
+
+	return docs;
+		
+}, `returnOneDocument2`);
 
 exports.insertDocumentIfNotExists = async (model, queryObj, reqBody, next) => {
 	try {
