@@ -60,7 +60,7 @@ _catchAsyncError = (fn, fnDescr = null) => {
 		try {
 			return await fn(...params);
 		} catch (err) {
-			console.error(`${fnDescr || fn.name} error:`, err.message);
+			console.error(chalk.fail(`${fnDescr || fn.name} error:`, err.message));
 			throw err;
 		}
 	};

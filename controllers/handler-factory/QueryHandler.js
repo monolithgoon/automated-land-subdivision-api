@@ -1,63 +1,91 @@
 // Define a class for handling queries
 class QueryHandler {
-	constructor(query, queryString) {
+	constructor(query, parsedQueryParams) {
 		this.query = query;
-		this.queryString = queryString;
+		this.parsedQueryParams = parsedQueryParams;
 	}
 
-// This method filters the query based on the queryString parameters
-filter() {
+	// This method filters the query based on the parsedQueryParams parameters
+	filter() {
+		
+		// create a copy of the query string
+		const queryObj = { ...this.parsedQueryParams };
 
-  // create a copy of the query string
-  const queryObj = { ...this.queryString };
+		// array of fields to exclude from filtering
+		const excludedFields = ["page", "sort", "limit", "fields"];
 
-  // array of fields to exclude from filtering
-  const excludedFields = ['page', 'sort', 'limit', 'fields'];
+		// remove the excluded fields from the query object
+		excludedFields.forEach((el) => delete queryObj[el]);
 
-  // remove the excluded fields from the query object
-  excludedFields.forEach(el => delete queryObj[el]);
+		// convert query object to a string and replace any comparison operators with their MongoDB equivalent
+		let queryStr = JSON.stringify(queryObj);
+		queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
-  // convert query object to a string and replace any comparison operators with their MongoDB equivalent
-  let queryStr = JSON.stringify(queryObj);
-  queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
+		// log the resulting query string to the console
+		console.log({ queryStr });
 
-  // log the resulting query string to the console
-  console.log({ queryStr })
-
-  // apply the modified query object to the query and return the modified object
-  this.query = this.query.find(JSON.parse(queryStr));
-  return this;
-}
+		// apply the modified query object to the query and return the modified object
+		this.query = this.query.find(JSON.parse(queryStr));
+		return this;
+	}
 
 	// Method to sort results based on query parameters
 	sort() {
-		if (this.queryString.sort) {
-			const sortBy = this.queryString.sort.split(',').join(' ');
+
+		// Check if the 'sort' property exists in the parsedQueryParams object
+		if (this.parsedQueryParams.sort) {
+
+			// If it exists, split the comma-separated values and join them with a space to form a single string.
+			const sortBy = this.parsedQueryParams.sort.split(",").join(" ");
+
+			// Sort the query object by the 'sortBy' string
 			this.query = this.query.sort(sortBy);
 		} else {
-			this.query = this.query.sort('-createdAt');
+			// If the 'sort' property is not in the parsedQueryParams object, sort the query object by the 'createdAt' property in descending order.
+			this.query = this.query.sort("-createdAt");
 		}
+		// Return the updated query object
 		return this;
 	}
 
-	// Method to limit fields in each result
+	/**
+	 * Selects a subset of fields to return in the query results based on query parameters.
+	 * @returns {Object} Returns the updated query object.
+	 */
 	limitFields() {
-		if (this.queryString.fields) {
-			const fields = this.queryString.fields.split(',').join(' ');
-			console.log({ fields })
+		// Check if fields parameter exists in the parsedQueryParams
+		
+		if (this.parsedQueryParams.fields) {
+
+			// Convert the comma-separated string of fields to a space-separated string
+			const fields = this.parsedQueryParams.fields.split(",").join(" ");
+
+			// Select only the fields specified in the fields parameter
 			this.query = this.query.select(fields);
+
 		} else {
-			this.query = this.query.select('-__v');
+			// If fields parameter does not exist, exclude the __v field
+			this.query = this.query.select("-__v");
 		}
+		// Return the updated query object
 		return this;
 	}
 
-	// Method to paginate results
+	/**
+	 * Paginates the results based on query parameters.
+	 * @returns {Object} Returns the updated query object.
+	 */
 	paginate() {
-		const page = this.queryString.page * 1 || 1;
-		const limit = this.queryString.limit * 1 || 100;
+		// Get the page and limit from parsed query params or set default values
+		const page = this.parsedQueryParams.page * 1 || 1;
+		const limit = this.parsedQueryParams.limit * 1 || 100;
+
+		// Calculate the number of documents to skip
 		const skip = (page - 1) * limit;
+
+		// Update the query with the skip and limit values
 		this.query = this.query.skip(skip).limit(limit);
+
 		return this;
 	}
 }
