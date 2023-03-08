@@ -203,7 +203,7 @@ const farmerSchema = new mongoose.Schema(
 			land_size: {
 				type: Number,
 				required: true,
-				min: 1,
+				min: 0.,
 			},
 			/**
 			 * The `land_size_units` field specifies the units of measurement for a piece of land.
@@ -230,6 +230,29 @@ const farmerSchema = new mongoose.Schema(
 						message: `The {PATH} must be specified in either: ${MONGOOSE_MODEL_ENUMS.LAND_SIZE_UNITS.join(
 							", "
 						)}`,
+					},
+					{
+						validator: function (value) {
+							const landSize = this.get("farmer_farm_details.land_size");
+							switch (value) {
+								case `sqm`:
+									if (landSize < 100) throw new Error(`Land size must be greater than 100 square meters`);
+									break;
+								case `sqkm`:
+									if (landSize < 0.5) throw new Error(`Land size must be greater than 0.5 square kilometers`);
+									break
+								case `acres`:
+									if (landSize < 0.5) throw new Error(`Land size must be greater than 0.5 acres`);
+									break;
+								case `hectares`:
+									if (landSize < 0.01) throw new Error(`Land size must be greater than 0.01 hectares`);
+									break;
+							
+								default:
+									break;
+							}
+						},
+						message: ``
 					},
 				],
 			},
@@ -266,7 +289,7 @@ const farmerSchema = new mongoose.Schema(
 			soil_type: { type: [String], required: false },
 			field_officer_url: {
 				type: String,
-				required: true,
+				required: false,
 				// FIXME
 				// validate: urlValidator(),
 			},
