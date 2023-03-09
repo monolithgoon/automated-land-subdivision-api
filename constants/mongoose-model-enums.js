@@ -11,8 +11,14 @@
  * @readonly
  */
 const MONGOOSE_MODEL_ENUMS = {
-  LAND_SIZE_UNITS: Object.freeze(['sqm', 'sqkm', 'acres', 'hectares']),
-  GENDER: Object.freeze(['M', 'F']),
+	LAND_SIZE_UNITS: Object.freeze(["sqm", "sqkm", "acres", "hectares"]),
+	LAND_SIZE_UNIT_MINIMUMS: Object.freeze({
+    sqm: 100,
+    sqkm: 0.0001,
+    acres: 0.0247,
+    hectares: 0.01
+  }),
+	GENDER: Object.freeze(["M", "F"]),
 };
 
 /**

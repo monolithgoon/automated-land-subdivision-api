@@ -223,37 +223,74 @@ const farmerSchema = new mongoose.Schema(
 				validate: [
 					{
 						validator: function (value) {
-							if (!MONGOOSE_MODEL_ENUMS.LAND_SIZE_UNITS.includes(value)) {
+							if (!Object.keys(MONGOOSE_MODEL_ENUMS.LAND_SIZE_UNIT_MINIMUMS).includes(value)) {
 								return false;
 							}
 						},
-						message: `The {PATH} must be specified in either: ${MONGOOSE_MODEL_ENUMS.LAND_SIZE_UNITS.join(
+						message: `The {PATH} must be specified in either: ${Object.keys(MONGOOSE_MODEL_ENUMS.LAND_SIZE_UNIT_MINIMUMS).join(
 							", "
 						)}`,
 					},
+					// REMOVE > DEPRECATED
+					// {
+					// 	validator: function (value) {
+					// 		const landSize = this.get("farmer_farm_details.land_size");
+					// 		switch (value) {
+					// 			case `sqm`:
+					// 				if (landSize < 100) throw new Error(`Land size must be greater than 100 square meters`);
+					// 				break;
+					// 			case `sqkm`:
+					// 				if (landSize < 0.0001) throw new Error(`Land size must be greater than 0.0001 square kilometers`);
+					// 				break
+					// 			case `acres`:
+					// 				if (landSize < 0.0247) throw new Error(`Land size must be greater than 0.0247 acres`);
+					// 				break;
+					// 			case `hectares`:
+					// 				if (landSize < 0.01) throw new Error(`Land size must be greater than 0.01 hectares`);
+					// 				break;
+							
+					// 			default:
+					// 				break;
+					// 		}
+					// 	},
+					// 	message: ``
+					// },
+					// REMOVE > DEPRECATED
+					// {
+					// 	validator: function (value) {
+					// 		const landSize = this.get("farmer_farm_details.land_size");
+					// 		Object.keys(MONGOOSE_MODEL_ENUMS.LAND_SIZE_UNIT_MINIMUMS).forEach((key) => {
+					// 			const minValue = MONGOOSE_MODEL_ENUMS.LAND_SIZE_UNIT_MINIMUMS[value];
+					// 			switch (value) {
+					// 				// case 'sqm':
+					// 				// case 'sqkm':
+					// 				// case 'acres':
+					// 				// case 'hectares': {
+					// 				case key: {
+					// 					const unitName = value.toUpperCase();
+					// 					if (landSize < minValue) {
+					// 						throw new Error(`Land size must be greater than ${minValue} ${unitName}`);
+					// 					}
+					// 					break;
+					// 				}
+					// 				default:
+					// 					break;
+					// 			}
+					// 		});
+					// 	},
+					// 	message: ``
+					// },
 					{
 						validator: function (value) {
 							const landSize = this.get("farmer_farm_details.land_size");
-							switch (value) {
-								case `sqm`:
-									if (landSize < 100) throw new Error(`Land size must be greater than 100 square meters`);
-									break;
-								case `sqkm`:
-									if (landSize < 0.5) throw new Error(`Land size must be greater than 0.5 square kilometers`);
-									break
-								case `acres`:
-									if (landSize < 0.5) throw new Error(`Land size must be greater than 0.5 acres`);
-									break;
-								case `hectares`:
-									if (landSize < 0.01) throw new Error(`Land size must be greater than 0.01 hectares`);
-									break;
-							
-								default:
-									break;
+							const minValue = MONGOOSE_MODEL_ENUMS.LAND_SIZE_UNIT_MINIMUMS[value];
+							const unitName = value.toUpperCase();
+							if (minValue && landSize < minValue) {
+								throw new Error(`Land size must be greater than ${minValue} ${unitName}`);
 							}
 						},
-						message: ``
-					},
+						message: ``,						
+					}
 				],
 			},
 			farm_coordinates: {
