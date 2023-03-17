@@ -7,7 +7,7 @@ class QueryHandler {
 
 	// This method filters the query based on the parsedQueryParams parameters
 	filter() {
-		
+
 		// create a copy of the query string
 		const queryObj = { ...this.parsedQueryParams };
 
@@ -52,25 +52,29 @@ class QueryHandler {
 	 * Selects a subset of fields to return in the query results based on query parameters.
 	 * @returns {Object} Returns the updated query object.
 	 */
-	limitFields() {
-		// Check if fields parameter exists in the parsedQueryParams
-		
-		if (this.parsedQueryParams.fields) {
+		limitFields() {
 
-			// Convert the comma-separated string of fields to a space-separated string
-			const fields = this.parsedQueryParams.fields.split(",").join(" ");
-
-			// Select only the fields specified in the fields parameter
-			this.query = this.query.select(fields);
-
-		} else {
-			// If fields parameter does not exist, exclude the __v field
+			// Always exclude the __v field
+			// The __v field is a version key. 
+			// Each time a document is updated, the value of the __v field is incremented by one. 
 			this.query = this.query.select("-__v");
-		}
-		// Return the updated query object
-		return this;
-	}
+			
+			// Check if the `fields` parameter exists in the parsedQueryParams
+			if (this.parsedQueryParams.fields) {
+				
+				// Convert the comma-separated string of fields to a space-separated string
+				// const users = await User.find().limitFields("name,email");
+				// Above code is equivalent to:
+				// const users = await User.find().select("name email");
+				const fields = this.parsedQueryParams.fields.split(",").join(" ");
 
+				// Select only the fields specified in the fields parameter
+				this.query = this.query.select(fields);
+			}
+			// Return the updated query object
+			return this;
+		}
+	
 	/**
 	 * Paginates the results based on query parameters.
 	 * @returns {Object} Returns the updated query object.

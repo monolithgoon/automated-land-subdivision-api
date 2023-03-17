@@ -412,7 +412,6 @@ async function updateFarmProgram(farmProgram, nextFn) {
   };
 }
 
-
 /**
  * @async
  * @function updateFarmersInProgram
@@ -445,6 +444,32 @@ exports.updateFarmersInProgram = catchAsyncServer(async (req, res, next) => {
 	next();
 
 }, `updateFarmProgram`);
+
+/**
+ * @function convertMultiPointToPolygon
+ * @description Convert a MultiPoint feature to a Polygon feature by joining the coordinates of the MultiPoint feature.
+ * @param {Object} feature - The MultiPoint feature to convert to a Polygon feature.
+ * @return {Object} - The Polygon feature with the joined coordinates.
+ */
+function convertMultiPointToPolygon(feature) {
+  // Extract the coordinates from the MultiPoint feature
+  const coordinates = feature.geometry.coordinates;
+
+  // Create the polygon coordinates by adding the first coordinate to the end of the array to close the polygon
+  const polygonCoordinates = [...coordinates, coordinates[0]];
+
+  // Create the Polygon feature using the same properties as the MultiPoint feature
+  const polygonFeature = {
+    type: "Feature",
+    properties: feature.properties,
+    geometry: {
+      type: "Polygon",
+      coordinates: [polygonCoordinates],
+    },
+  };
+
+  return polygonFeature;
+};
 
 // REMOVE > DEPRECATED
 // function createFeatureCollection(farmProgramJSON) {
@@ -527,7 +552,7 @@ function createFeatureCollection(farmProgramJSON) {
     const { farm_coordinates, ...otherFarmDetails } = farmer_farm_details;
 
     // Create a new GeoJSON Feature object with the stripped `farmer_farm_details`
-    const feature = {
+    const multiPointFeature = {
       type: "Feature",
       geometry: {
         type: "MultiPoint",
@@ -543,7 +568,11 @@ function createFeatureCollection(farmProgramJSON) {
       },
     };
 
-    return feature;
+		const polygonFeature = convertMultiPointToPolygon(multiPointFeature);
+
+		// WIP
+		return polygonFeature;
+    return multiPointFeature;
   });
 
   // Add the features to the FeatureCollection
@@ -574,11 +603,21 @@ exports.insertFarmProgramGeoJson = catchAsyncServer(async (req, res, next) => {
 
 	console.log(chalk.success(`CALLED [ insertFarmProgramGeoJson ] CONTROLLER FN. `));
 
+	const farmProgramPolygon = req.locals.farmProgramPolygon;
+
+	// 
+	delete farmProgramPolygon.properties;
+
+	console.log({ farmProgramPolygon })
+
 	const farmProgramFeatColl = req.locals.appendedFarmProgramFeatColl;
+
+	// 
+	farmProgramFeatColl.properties["feat_coll_polygon_feature"] = farmProgramPolygon;
 
 	if (!farmProgramFeatColl)
 		return next(new ServerError(
-			`Something went wrong: can't find <req.locals.appendedFarmProgramFeatColl>`,
+			`Something went wrong: can't find <req.locals.processedFarmProgramFeatColl>`,
 			500
 		));
 
@@ -627,7 +666,7 @@ exports.getAllFarmPrograms = catchAsyncServer(async (req, res, next) => {
 exports.getFarmProgram = catchAsyncServer(async (req, res, next) => {}, `getFarmProgram`);
 
 exports.getAllProcessedFarmPrograms = catchAsyncServer(async (req, res, next) => {
-	console.log(chalk.success(`CALLED the [ getAllFarmPrograms ] CONTROLLER FN. `));
+	console.log(chalk.success(`CALLED the [ getAllProcessedFarmPrograms ] CONTROLLER FN. `));
 	const clusteredFarmProgramFeatureCollections  = await getAllDocuments(req, CLUSTERED_FARM_PROGRAM_FEAT_COLL_MODEL);
 	res.status(200).json({
 		status: `success`,

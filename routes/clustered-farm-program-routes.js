@@ -2,6 +2,7 @@
 const express = require(`express`);
 const router = express.Router();
 const farmProgramController = require(`../controllers/clustered-farm-program-controller.js`);
+const geoJSONMiddleware = require(`../middleware/geojson-middleware.js`)
 
 router
 	.route("/")
@@ -10,6 +11,7 @@ router
 		// farmProgramController.getFarmerBiodataUrls,
 		farmProgramController.updateFarmersInProgram,
 		farmProgramController.convertFarmProgramToGeoJson,
+		geoJSONMiddleware.getFarmProgramPolygon,
 		farmProgramController.insertFarmProgramGeoJson
 	)
 	.get(farmProgramController.getAllFarmPrograms);

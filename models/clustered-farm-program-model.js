@@ -434,11 +434,11 @@ const parseYearRange = (yearRange) => {
 	return [yearRangeStart, yearRangeEnd];
 };
 
-function validateProgramTimeline() {
+function validateProgramEventsTimeline() {
 	return [
 		{
 			validator: function () {
-				const timeline = this.get("farm_program_timeline");
+				const timeline = this.get("farm_program_events_timeline");
 
 				for (const [yearRange, events] of timeline.entries()) {
 					// Parse the year range string into its start and end years
@@ -462,7 +462,7 @@ function validateProgramTimeline() {
 				// Get the start date, end date, and timeline of the farm program
 				const startDate = this.get("farm_program_start_date");
 				const endDate = this.get("farm_program_end_date");
-				const timeline = this.get("farm_program_timeline");
+				const timeline = this.get("farm_program_events_timeline");
 
 				// Get the start and end year of the farm program
 				const progStartYear = new Date(startDate).getFullYear();
@@ -490,7 +490,7 @@ function validateProgramTimeline() {
 				// All year ranges are valid, return true
 				return true;
 			},
-			message: `Invalid timeline year range: the range must fall between the program's start and end dates`,
+			// message: `Invalid timeline year range: the range must fall between the program's start and end dates`,
 		},
 	];
 }
@@ -510,7 +510,7 @@ function validateProgramTimeline() {
  * @property {Array.<String>} [farm_program_partners=[]] - The partners of the farm program.
  * @property {Array.<String>} [farm_program_objectives=[]] - The objectives of the farm program.
  * @property {Array.<String>} [farm_program_impact_metrics=[]] - The impact metrics of the farm program.
- * @property {Map.<String, Array.<String>>} [farm_program_timeline] - The timeline of the farm program.
+ * @property {Map.<String, Array.<String>>} [farm_program_events_timeline] - The timeline of the farm program.
  * @property {Array.<String>} [farm_program_training_materials=[]] - The training materials of the farm program.
  * @property {Array.<String>} [farm_program_funding_sources=[]] - The funding sources of the farm program.
  * @property {String} [farm_program_evaluation_plan] - The evaluation plan of the farm program.
@@ -592,14 +592,14 @@ const farmProgramSchema = new mongoose.Schema(
 			required: false,
 			default: [],
 		},
-		farm_program_timeline: {
+		farm_program_events_timeline: {
 			type: Map,
 			of: [
 				{
 					type: String,
 				},
 			],
-			validate: validateProgramTimeline(),
+			validate: validateProgramEventsTimeline(),
 			required: false,
 		},
 		farm_program_training_materials: {
