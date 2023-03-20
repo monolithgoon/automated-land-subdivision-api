@@ -299,7 +299,7 @@ const farmerSchema = new mongoose.Schema(
 				validate: {
 					validator: function (arr) {
 						return (
-							arr.length >= 5 &&
+							arr.length >= 4 &&
 							arr.every((subArr) => {
 								if (!Array.isArray(subArr) || subArr.length !== 2) {
 									return false;

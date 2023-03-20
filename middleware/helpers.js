@@ -1,4 +1,6 @@
+`use strict`
 const turf = require('@turf/turf')
+const chalk = require('../utils/chalk-messages.js')
 
 const TurfHelpers = (() => {
 	return {
@@ -327,7 +329,7 @@ exports.ProcessGeoJSON = (() => {
 
 			} catch (getFeatCollPolyErr) {
 				// If there is an error, log it and return null
-				console.error(`getFeatCollPolyErr: ${getFeatCollPolyErr.message}`);
+				console.error(chalk.fail(`getFeatCollPolyErr: ${getFeatCollPolyErr.message}`));
 				return null;
 			}
 		},

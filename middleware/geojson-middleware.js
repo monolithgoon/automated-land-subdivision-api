@@ -45,8 +45,8 @@ exports.addFarmProgramPolygonFeature = catchAsyncServer(async (req, res, next) =
 
   console.log(chalk.success(`Called [ addFarmProgramPolygonFeature ] middleware fn.`));
 
-  // Get GeoJSON FeatureCollection from req.body
-  const clusterFeatColl = req.body;
+  // Get GeoJSON FeatureCollection from req.locals.appendedFarmProgramFeatColl
+  const clusterFeatColl = req.locals.appendedFarmProgramFeatColl;
 
   if (!clusterFeatColl) {
     // If not, throw a ServerError with a descriptive error message
