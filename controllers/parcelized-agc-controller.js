@@ -1,10 +1,8 @@
-// CONTAINS THE ROUTE HANDLING FUNCTIONS USED BY parcelized-agc-routes.js
-
+// Contains the route handling functions used by `parcelized-agc-routes`
+`use strict`
 const chalk = require('../utils/chalk-messages.js')
 const catchAsyncError = require('../utils/catch-async-server.js')
-const { _getNextPayload } = require('../utils/helpers.js');
 const PARCELIZED_AGC_MODEL = require('../models/parcelized-agc-model.js')
-
 
 
 // PARAM. MIDDLEWARE > VALIDATES THE ID FROM parcelized-agc-routes.js
@@ -33,8 +31,6 @@ exports.checkID = async (req, res, next, paramValue) => {
 }
 
 
-
-
 // REMOVE > REQUEST BODY VALIDATION MIDDLEWARE < VALIDATION CURRENTLY HAPPENING IN THE MODEL .. 
 exports.checkBody = (req, res, next) => {
 
@@ -50,7 +46,6 @@ exports.checkBody = (req, res, next) => {
 }
 
 
-
 // VALIDATE THE RESULT OF THE DATABASE QUERY
 function validateQuery(queryResult, response) {
    // ensure the query is valid
@@ -61,7 +56,6 @@ function validateQuery(queryResult, response) {
       })
    };
 };
-
 
 
 // GET ALL PARCELIZED AGCS ROUTE HANDLER FN.
@@ -190,7 +184,6 @@ exports.getAllParcelizedAgcs = async (request, response) => {
 };
 
 
-
 // GET ONLY THE METADATA FOR THE PARCELIZED AGCS
 exports.getParcelizedAgcsMetadata = async (request, response) => {
 
@@ -234,7 +227,6 @@ exports.getParcelizedAgcsMetadata = async (request, response) => {
 };
 
 
-
 // GET A SINGLE FARM PARCEL - ROUTE HANDLER FN.
 // GET request: 127.0.0.1:9443/api/v1/parcelized-agcs/5ef5d303f3aea23050903c56
 exports.renderParcelizedAgcByID = async (request, response) => {
@@ -264,7 +256,6 @@ exports.renderParcelizedAgcByID = async (request, response) => {
       })
    }
 }
-
 
 
 // DB QUERY USING QUERY OBJECT
@@ -332,7 +323,6 @@ exports.getParcelizedAgc = async (req, res, next) => {
 }
 
 
-
 // CREATE/INSERT A NEW PARCELIZED AGC (POST REQUEST) HANDLER FN.
 exports.insertParcelizedGeofile = async (req, res) => {
 
@@ -369,22 +359,28 @@ exports.insertParcelizedGeofile = async (req, res) => {
 };
 
 
-
 // CREATE/INSERT A NEW PARCELIZED AGC (POST REQUEST) HANDLER FN.
 exports.insertParcelizedGeoCluster = async (req, res) => {
+   
+   console.log(chalk.success("Called [ insertParcelizedGeoCluster ] controller fn."));
 
    try {
 
-      // SELECT A PAYLOAD > GET THE CLUSTER GEOJSON
+      // SELECT A PAYLOAD > GET THE PARCELIZED CLUSTER GEOJSON
       // ... EITHER FROM PREV. M.WARE. > auto-subdivide-controller > subdivideGeoClusterGJ fn.
       // ... DIRECTRLY FROM req.body (OFFLINE/MANUAL PARCELIZATION)
-      const parcelizedAgcPayload = _getNextPayload(res.locals.parcelizedGeoCluster, req.body);
+      const parcelizedAgcPayload = res.locals.parcelizedGeoCluster || req.body;
+
+      // console.log({ parcelizedAgcPayload })
       
-      const newParcelizedAgc = await PARCELIZED_AGC_MODEL.create(parcelizedAgcPayload) // "model.create" returns a promise > resolve with "await"
+      // "model.create" returns a promise > resolve with "await"
+      const newParcelizedAgc = await PARCELIZED_AGC_MODEL.create(parcelizedAgcPayload) 
+
+      console.log({ newParcelizedAgc })
 
       res.status(201).json({
          status: 'success',
-         message: `[ The Geo-cluster was successfully uploaded, sub-divided, and inserted into the database.`,
+         message: `[ The sub-divided geo-cluster was successfully inserted into the database.`,
          inserted_at: req.requestTime,
          data: {
             parcelizedAgc: newParcelizedAgc
@@ -395,8 +391,8 @@ exports.insertParcelizedGeoCluster = async (req, res) => {
       res.status(400).json({ // 400 => bad request
          status: 'fail',
          // message: 'That POST request failed.',
-         message: `[ The Geo-cluster was successfully uploaded and sub-divided.`,
-         error_msg: `Failed to insert the GeoJSON of the sub-divided Geo-cluster into the database. ${err.message}`,
+         error_msg: `Failed to insert the GeoJSON of the sub-divided geo-cluster into the database. ${err.message}`,
       })
+      console.error(chalk.fail(err))
    };
 };

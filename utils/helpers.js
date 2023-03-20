@@ -10,15 +10,6 @@ const _customHeaders = (app, req, res, next) => {
 	next();
 };
 
-const _getNextPayload = (prevMiddlewareParam, apiReqBodyParam) => {
-	let nextPayload;
-	if (prevMiddlewareParam) {
-		return (nextPayload = prevMiddlewareParam);
-	} else if (apiReqBodyParam) {
-		return (nextPayload = apiReqBodyParam);
-	}
-};
-
 // COMPARE THE LAND AREA TO THE SUM OF THE ALLOCATIONS
 function _validateAllocationsArea(geojson, allocationsArray, geofileName) {
 	const landArea = turf.area(geojson) / 10000;
@@ -68,7 +59,6 @@ _catchAsyncError = (fn, fnDescr = null) => {
 
 module.exports = {
 	_customHeaders,
-	_getNextPayload,
 	_validateAllocationsArea,
 	_catchSyncError,
 	_catchAsyncError

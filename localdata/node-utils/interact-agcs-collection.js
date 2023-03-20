@@ -1,20 +1,18 @@
-const chalk = require("../../utils/chalk-messages");
-const dbConnect = require("../../utils/db-connect.js");
-
+`use strict`
 const fs = require("fs");
 const axios = require("axios");
 const dotenv = require("dotenv"); // read the data from the config file. and use them as env. variables in NODE
 dotenv.config({ path: "../../default.env" }); // CONFIGURE ENV. VARIABLES BEFORE CALL THE APP
-
 const AGC_MODEL = require("../../models/agc-model.js");
 const PARCELIZED_AGC_MODEL = require("../../models/parcelized-agc-model.js");
 const LEGACY_AGC_MODEL = require("../../models/legacy-agc-model.js");
 const PROCESSED_LEGACY_AGC_MODEL = require("../../models/processed-legacy-agc-model.js");
-
-const { findOneDocument } = require("../../controllers/handler-factory.js");
+const chalk = require("../../utils/chalk-messages.js");
+const dbConnect = require("../../utils/db-connect.js");
+const { findOneDocument } = require("../../controllers/handler-factory/handler-factory.js");
 
 // DELETE ALL DATA FROM PARCELIZED AGCS COLLECTION
-const wipeParcelizedAgcCollection = async () => {
+const wipeParcelizedClustersCollection = async () => {
 	try {
 		// close the user prompt & end the process
 		const endInteraction = () => {
@@ -62,33 +60,72 @@ const wipeParcelizedAgcCollection = async () => {
 	}
 };
 
-// READ THE JSON FILE
-const exportAgcs = async () => {
+/**
+ * 
+ */
+async function axiosRequest(method, url, data={}) {
 	try {
-		const parcelizedAgcs = JSON.parse(
-			fs.readFileSync("../parcelized-agcs/bulk-import-data/parcelized-agcs.geojson", "utf-8")
+		const response = await axios({
+			method,
+			url,
+			crossDomain: true,
+			headers: {
+				"Content-Type": "application/json",
+			},
+		data,
+		})
+		console.log(chalk.success(`axiosRequest: ${response.statusText}`))
+	} catch (error) {
+		console.error(chalk.fail(`axiosRequest: ${error}`))
+	}
+};
+
+// Upload many parcelized clusters from file to database
+const saveParcelizedAgcsToDatabase = async (uploader) => {
+
+	try {
+
+		// let parcelizedAgcs = JSON.parse(
+		// 	fs.readFileSync("../parcelized-agcs/uploads/parcelized-agcs.geojson", "utf-8")
+		// );
+		
+		const fileData = JSON.parse(
+			fs.readFileSync("../parcelized-agcs/bulk-import-data/parcelized-agcs-2023-03-19-T08.02.01.296Z.json", "utf-8")
 		);
 
-		await dbConnect();
+		let parcelizedAgcs = fileData.data.parcelized_agcs;
 
-		// SAVE EACH PARCELIZED AGC TO DB
-		parcelizedAgcs.forEach(async (agc, index) => {
-			try {
-				// await PARCELIZED_AGC_MODEL.create(agc)
-				await AGC_MODEL.create(agc);
-				console.log(
-					chalk.success(
-						"The parcelized AGC data was successfully written to the ATLAS database"
-					)
-				);
-			} catch (err) {
-				console.error(chalk.fail(err.message));
+		switch (uploader) {
 
-				if (index == parcelizedAgcs.length - 1) {
-					process.exit();
+			case "axios":
+				for (cluster of parcelizedAgcs) {
+					axiosRequest("POST", "http://127.0.0.1:9443/api/v1/parcelized-agcs/", JSON.stringify(cluster))
 				}
-			}
-		});
+				// axiosRequest("POST", "http://127.0.0.1:9443/api/v1/parcelized-agcs/", JSON.stringify(parcelizedAgcs[0]))
+				break;
+
+			case "mongoose":
+				await dbConnect();
+				parcelizedAgcs.forEach(async (agc, index) => {
+					try {
+						await PARCELIZED_AGC_MODEL.create(agc);
+						console.log(
+							chalk.success(
+								"The parcelized AGC data was successfully written to the ATLAS database"
+							)
+						);
+					} catch (err) {
+						console.error(chalk.fail(err.message));
+						if (index == parcelizedAgcs.length - 1) {
+							process.exit();
+						}
+					}
+				});
+				break;
+			default:
+				console.error(chalk.fail("Unsupported uploader specified"));
+				break;
+		}
 	} catch (_err) {
 		console.error(chalk.fail(_err.message));
 	}
@@ -96,7 +133,8 @@ const exportAgcs = async () => {
 
 // TODO
 // WIP
-const exportAgc = async (agcFileName) => {
+const saveAgcsToDatabase = async (agcFileName) => {
+
 	// READ THE JSON FILE
 	const agcs = JSON.parse(fs.readFileSync("../agcs/batch-imports/kuje-fct-agcs.geojson", "utf-8"));
 	// const agcs = JSON.parse(fs.readFileSync(`../agcs/${agcFileName}.geojson', 'utf-8`));
@@ -214,8 +252,7 @@ const deleteOneAGC = async (docId) => {
 };
 
 // EXPLORE THE DATA IN THE PARCELIZED AGC COLLECTION
-// EXPLORE THE DATA IN THE PARCELIZED AGC COLLECTION
-const exploreData = async () => {
+const exploreParcelizedClustersCollection = async () => {
 	try {
 		await dbConnect();
 		const parcelizedGeoClusters = await PARCELIZED_AGC_MODEL.find();
@@ -256,11 +293,12 @@ const exploreData = async () => {
 };
 
 // RETURN & SAVE ALL THE PARCELIZED AGCS FROM THE DATABASE
-async function returnAllParcelizedAgcs() {
+async function returnAllParcelizedClusters() {
 	try {
 		const axiosRequest = axios({
 			method: "get",
-			url: `https://geoclusters.herokuapp.com/api/v1/parcelized-agcs/`,
+			// url: `https://geoclusters.herokuapp.com/api/v1/parcelized-agcs/`,
+			url: `http://127.0.0.1:9443/api/v1/parcelized-agcs/`,
 			crossDomain: true,
 			responseType: "application/json",
 			headers: {
@@ -273,8 +311,9 @@ async function returnAllParcelizedAgcs() {
 
 		// GET RESPONSE FROM API CALL
 		const apiResponse = await axiosRequest;
-		const parcelizedAgcsData = JSON.stringify(apiResponse.data);
-		const numAgcs = apiResponse.data.num_parcelized_agcs;
+		const dbCollectionData = JSON.stringify(apiResponse.data);
+		const parcelizedClusters = JSON.stringify(apiResponse.data.data.parcelized_agcs);
+		const numDocs = apiResponse.data.num_parcelized_agcs;
 
 		// CREATE A TIME STAMP STRING TO APPEND TO THE FILE NAME
 		let requestTimeStr = new Date(Date.parse(apiResponse.data.requested_at)).toISOString();
@@ -283,8 +322,8 @@ async function returnAllParcelizedAgcs() {
 
 		// WRITE RESULT TO NEW FILE
 		fs.writeFile(
-			`../parcelized-agcs/bulk-import-data/parcelized-agcs-${requestTimeStr}.geojson`,
-			parcelizedAgcsData,
+			`../parcelized-agcs/bulk-import-data/parcelized-agcs-${requestTimeStr}.json`,
+			dbCollectionData,
 			(err, data) => {
 				if (err) {
 					console.log(chalk.fail(err.message));
@@ -292,7 +331,7 @@ async function returnAllParcelizedAgcs() {
 				} else {
 					console.log(
 						chalk.success(
-							`All the returned parcelized AGCs (${numAgcs}) were saved to file.. `
+							`All the returned parcelized AGCs (${numDocs}) were saved to file.. `
 						)
 					);
 					process.exit();
@@ -312,19 +351,19 @@ async function returnAllParcelizedAgcs() {
 if (!process.argv[2]) {
 	console.log(
 		chalk.consoleYlow(
-			`usage: [--explore] [--export] [--export <agc_id>] [--wipe] [--delete <agc_id>] [--import--all]`
+			`usage: [--explore] [--upload-many] [--upload-one <agc_id>] [--wipe] [--delete <agc_id>] [--import--all]`
 		)
 	);
-} else if (process.argv[2] === "--export") {
-	exportAgcs();
-} else if (process.argv[2] === "--export" && process.argv[3]) {
-	exportAgc(process.argv[3]);
+} else if (process.argv[2] === "--upload-many") {
+	saveParcelizedAgcsToDatabase(process.argv[3]);
+} else if (process.argv[2] === "--upload-one" && process.argv[3]) {
+	saveAgcsToDatabase(process.argv[3]);
 } else if (process.argv[2] === "--explore") {
-	exploreData();
+	exploreParcelizedClustersCollection();
 } else if (process.argv[2] === "--wipe") {
-	wipeParcelizedAgcCollection();
+	wipeParcelizedClustersCollection();
 } else if (process.argv[2] === "--delete" && process.argv[3]) {
 	deleteOneAGC(process.argv[3]); // agcId
-} else if (process.argv[2] === "--import--all") {
-	returnAllParcelizedAgcs();
+} else if (process.argv[2] === "--import-all") {
+	returnAllParcelizedClusters();
 }

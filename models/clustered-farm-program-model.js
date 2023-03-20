@@ -562,7 +562,7 @@ const farmProgramSchema = new mongoose.Schema(
 		},
 		farm_program_manager_url: {
 			type: String,
-			required: true,
+			required: false,
 			// FIXME
 			// validate: urlValidator(),
 		},

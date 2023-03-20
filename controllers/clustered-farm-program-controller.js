@@ -603,17 +603,7 @@ exports.insertFarmProgramGeoJson = catchAsyncServer(async (req, res, next) => {
 
 	console.log(chalk.success(`CALLED [ insertFarmProgramGeoJson ] CONTROLLER FN. `));
 
-	const farmProgramPolygon = req.locals.farmProgramPolygon;
-
-	// 
-	delete farmProgramPolygon.properties;
-
-	console.log({ farmProgramPolygon })
-
 	const farmProgramFeatColl = req.locals.appendedFarmProgramFeatColl;
-
-	// 
-	farmProgramFeatColl.properties["feat_coll_polygon_feature"] = farmProgramPolygon;
 
 	if (!farmProgramFeatColl)
 		return next(new ServerError(

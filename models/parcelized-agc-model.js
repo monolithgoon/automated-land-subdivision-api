@@ -166,6 +166,10 @@ const parcelizedAgcSchema = new mongoose.Schema({
          type: String,
          required: true,
          unique: true
+      },
+      feat_coll_polygon_feature: {
+         type: Object,
+         required: true,
       }
    }
 })
