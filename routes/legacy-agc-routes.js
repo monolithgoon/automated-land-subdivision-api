@@ -1,6 +1,7 @@
 const express = require("express");
 const ROUTER = express.Router();
 const legacyAgcController = require('../controllers/legacy-agc-controller.js');
+const geoJSONMiddleware = require(`../middleware/geojson-middleware.js`);
 
 
 ROUTER.route('/')
@@ -24,7 +25,14 @@ ROUTER.route('/processed-farmers/')
    
    
 ROUTER.route('/legacy-agc/processed/')
-   .post(legacyAgcController.insertProcessedLegacyAgc);
+   // .post(
+   //    legacyAgcController.insertProcessedLegacyAgc
+   //    );
+   .post(
+      geoJSONMiddleware.validateGeoJSONBody,
+      geoJSONMiddleware.addParcelizedClusterPolygonFeature,
+      legacyAgcController.insertProcessedLegacyAgc
+   );
 
 
 ROUTER.route('/processed/')

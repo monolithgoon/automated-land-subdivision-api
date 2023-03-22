@@ -28,8 +28,6 @@ function addPolygonFeatureToFeatureColl(featureColl) {
   // Add a new property to the FeatureCollection object with the key "feat_coll_polygon_feature" and value set to polygonFeature
   featureColl.properties["feat_coll_polygon_feature"] = polygonFeature;
 
-  console.log({ featureColl })
-
   // Return the updated FeatureCollection object
   return featureColl;
 }
@@ -41,9 +39,9 @@ function addPolygonFeatureToFeatureColl(featureColl) {
  * @param {Object} res - Express response object
  * @param {Function} next - Express next middleware function
  */
-exports.addFarmProgramPolygonFeature = catchAsyncServer(async (req, res, next) => {
+exports.addFarmProgramClusterPolygonFeature = catchAsyncServer(async (req, res, next) => {
 
-  console.log(chalk.success(`Called [ addFarmProgramPolygonFeature ] middleware fn.`));
+  console.log(chalk.success(`Called [ addFarmProgramClusterPolygonFeature ] middleware fn.`));
 
   // Get GeoJSON FeatureCollection from req.locals.appendedFarmProgramFeatColl
   const clusterFeatColl = req.locals.appendedFarmProgramFeatColl;
@@ -64,7 +62,7 @@ exports.addFarmProgramPolygonFeature = catchAsyncServer(async (req, res, next) =
 
   next();
 
-}, `addFarmProgramPolygonFeature`);
+}, `addFarmProgramClusterPolygonFeature`);
 
 /**
  * 

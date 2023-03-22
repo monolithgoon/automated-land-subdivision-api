@@ -11,7 +11,7 @@ router
 		// farmProgramController.getFarmerBiodataUrls,
 		farmProgramController.updateFarmersInProgram,
 		farmProgramController.convertFarmProgramToGeoJson,
-		geoJSONMiddleware.addFarmProgramPolygonFeature,
+		geoJSONMiddleware.addFarmProgramClusterPolygonFeature,
 		farmProgramController.insertFarmProgramGeoJson
 	)
 	.get(farmProgramController.getAllFarmPrograms);

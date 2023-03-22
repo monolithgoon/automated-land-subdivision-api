@@ -1,4 +1,5 @@
 `use strict`;
+const { v4: uuidv4 } = require("uuid");
 const chalk = require(`../utils/chalk-messages.js`);
 const ServerError = require(`../utils/server-error.js`);
 const CLUSTERED_FARM_PROGRAM_MODEL = require("../models/clustered-farm-program-model");
@@ -452,6 +453,7 @@ exports.updateFarmersInProgram = catchAsyncServer(async (req, res, next) => {
  * @return {Object} - The Polygon feature with the joined coordinates.
  */
 function convertMultiPointToPolygon(feature) {
+
   // Extract the coordinates from the MultiPoint feature
   const coordinates = feature.geometry.coordinates;
 
@@ -461,12 +463,16 @@ function convertMultiPointToPolygon(feature) {
   // Create the Polygon feature using the same properties as the MultiPoint feature
   const polygonFeature = {
     type: "Feature",
+		_id: uuidv4(),
     properties: feature.properties,
     geometry: {
       type: "Polygon",
       coordinates: [polygonCoordinates],
     },
   };
+
+	console.log({ polygonFeature })
+	// throw new Error (`FUCK HER`)
 
   return polygonFeature;
 };
@@ -540,6 +546,7 @@ function createFeatureCollection(farmProgramJSON) {
     type: "FeatureCollection",
     features: [], // Initialize an empty array of features
     properties: filteredFarmProgramJSON,
+		// _id: 
   };
 
   // Create a MultiPoint GeoJSON Feature based on each farmer's `farmer_farm_details`
@@ -557,6 +564,7 @@ function createFeatureCollection(farmProgramJSON) {
       geometry: {
         type: "MultiPoint",
         coordinates: farm_coordinates,
+				// _id: 
       },
 			// Append only relevant, non-confidential farmer info to the Feature properties
       properties: {
