@@ -9,7 +9,7 @@ Helps smallholder farmer geo-coops digitize their fam locations at very low cost
 
 ## Resources
 
-*[Frontend demo app](https://farmplots.web.app)*
+*[Sandboxed demo app](https://farmplots.web.app) that is available to try out*
 
 *[Video demo (2min 23s)](https://www.loom.com/share/44a371170c8f46fe9bf30ed946f44604)*
 
