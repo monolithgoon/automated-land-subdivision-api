@@ -7,4 +7,4 @@ Automatically divide up a contiguous land expanse into pre-specified chunk sizes
 
 Helps smallholder farmer geo-coops digitize their fam locations at very low cost.
 
-Auto land subdivision [demo](https://farmplots.web.app)
+*Auto land subdivision [demo](https://farmplots.web.app)*
