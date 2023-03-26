@@ -108,13 +108,13 @@ const TurfHelpers = (() => {
 	};
 })();
 
+// REMOVE > DEPRC.
 /**
- * @function getGeomCollPolyFeats 
+ * @function getGeomCollPolygons 
  * @description Extracts the polygon features from a GeoJSON object that contains a geometry collection.
  * @param {Object} geojson - The GeoJSON object to extract polygon features from.
  * @returns {Array|null} An array of polygon features, or null if no polygon features were found.
  */
-// REMOVE > DEPRC.
 function getGeomCollPolyFeats_v1(geojson) {
 	// Initialize the variable to store the polygon features
 	let polygonFeats = [];
@@ -137,9 +137,16 @@ function getGeomCollPolyFeats_v1(geojson) {
 	
 	return polygonFeats;
 }
-function getGeomCollPolyFeats(geojson) {
+/**
+ * @function getGeomCollPolygons 
+ * @description Extracts the polygon geometries from a GeoJSON object that contains a geometry collection.
+ * @param {Object} geojson - The GeoJSON object to extract polygons from.
+ * @returns {Array|null} An array of polygon geometries, or null if no polygons were found.
+ */
+function getGeomCollPolygons(geojson) {
+
   // Initialize the variable to store the polygon features
-  let polygonFeats = [];
+  let polygonGeometries = [];
 
   // Check if the geojson exists and has geometries
   if (geojson && geojson.geometry && geojson.geometry.geometries) {
@@ -147,13 +154,17 @@ function getGeomCollPolyFeats(geojson) {
     const polygons = geojson.geometry.geometries.filter((geom) => {
       return turf.getType(geom) === "Polygon";
     })
+		// REMOVE
+			// .map((geom) => {
+			//   return turf.feature(geom);
+			// });
     // Check if there are any polygon features
     if (polygons.length > 0) {
-      polygonFeats = polygons;
+      polygonGeometries = polygons;
     }
   }
 
-  return polygonFeats;
+  return polygonGeometries;
 };
 
 /**
@@ -203,7 +214,7 @@ function getUsablePolygonGeometry(geoJSON) {
 
 		case "GeometryCollection":
 			// Get polygon features from GeometryCollection
-			polygonFeats = getGeomCollPolyFeats(geoJSON);
+			polygonFeats = getGeomCollPolygons(geoJSON);
 			break;
 
 		default:
@@ -512,7 +523,7 @@ ProcessGeoJSON = (() => {
 
 module.exports = {
 	TurfHelpers,
-	getGeomCollPolyFeats,
+	getGeomCollPolygons,
 	getUsablePolygonGeometry,
 	ProcessGeoJSON,
 }

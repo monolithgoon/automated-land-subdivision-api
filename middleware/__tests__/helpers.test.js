@@ -1,27 +1,43 @@
 `uee strict`;
 const turf = require("@turf/turf");
-const { getGeomCollPolyFeats, getUsablePolygonGeometry } = require("../helpers.js");
+const { getGeomCollPolygons, getUsablePolygonGeometry } = require("../helpers.js");
 
-// describe('getGeomCollPolyFeats', () => {
-//   test('should extract polygon features from a GeoJSON GeometryCollection', () => {
-//     const geojson = turf.geometryCollection([
-//       turf.polygon([[[0,0],[0,1],[1,1],[1,0],[0,0]]]),
-//       turf.lineString([[2,0],[2,1]]),
-//       turf.point([3,0])
-//     ]);
-//     const expected = [turf.feature(geojson.geometry.geometries[0])];
-//     expect(getGeomCollPolyFeats(geojson)).toEqual(expected);
-//   });
+describe("getGeomCollPolygons", () => {
+	test("should extract polygon features from a GeoJSON GeometryCollection", () => {
+		const geojson = turf.geometryCollection([
+			turf.polygon([
+				[
+					[0, 0],
+					[0, 1],
+					[1, 1],
+					[1, 0],
+					[0, 0],
+				],
+			]),
+			turf.lineString([
+				[2, 0],
+				[2, 1],
+			]),
+			turf.point([3, 0]),
+		]);
+		const expected = [turf.feature(geojson.geometry.geometries[0].geometry)];
+		// console.log(expected[0].geometry)
+		const result = getGeomCollPolygons(geojson);
+		// console.log(result[0].geometry)
+		expect(result).toEqual(expected);
+	});
 
-//   test('should return null if there are no polygons in the GeoJSON GeometryCollection', () => {
-//     const geojson = turf.geometryCollection([
-//       turf.lineString([[0,0],[0,1]]),
-//       turf.point([1,0])
-//     ]);
-//     const expected = null;
-//     expect(getGeomCollPolyFeats(geojson)).toEqual(expected);
-//   });
-// });
+	test("should return [] if there are no polygons in the GeoJSON GeometryCollection", () => {
+		const geojson = turf.geometryCollection([
+			turf.lineString([
+				[0, 0],
+				[0, 1],
+			]),
+			turf.point([1, 0]),
+		]);
+		expect(getGeomCollPolygons(geojson)).toEqual([]);
+	});
+});
 
 describe("getUsablePolygonGeometry", () => {
 	test("throws an error for invalid input geometry", () => {
