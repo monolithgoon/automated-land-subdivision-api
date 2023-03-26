@@ -237,7 +237,7 @@ async function executeCommitPrompts() {
 
 		// Add and commit the changes using the complete commit message
 		commitResponse = await execAsync(`git add -A && git commit -m "${completeCommitMsg}`, rl);
-		console.log(`commitResponse:\n ${commitResponse}`);
+		console.log({ commitResponse });
 
 		// Prompt user to commit to origin / master
 		okCommitOrigin = await askCommitPrompt(
@@ -257,7 +257,7 @@ async function executeCommitPrompts() {
 		if (error.message.toLowerCase().includes("command failed")) {
 			okForceCommitOrigin = await askCommitPrompt("Force push commit to remote origin? ( Y / N )", rl, "ORIGIN");
 			if (["yes", "y"].includes(okForceCommitOrigin.toLowerCase())) {
-				pushOriginResponse = await execAsync(`git push origin master --force`, rl);
+				pushOriginResponse = await execAsync(`git push --force`, rl);
 				console.log({ pushOriginResponse });
 			}
 		}

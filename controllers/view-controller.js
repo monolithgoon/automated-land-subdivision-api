@@ -43,7 +43,7 @@ exports.renderAPIGuide = async (req, res) => {
       // 2 BUILD TEMPLATE
 
       // 3. RENDER THAT TEMPLATE USING DATA FROM 1.)
-      console.log(chalk.running('VIEW CONTROLLER renderAPIGuide WORKING OK '));
+      console.log(chalk.success('VIEW CONTROLLER renderAPIGuide WORKING OK '));
       res.status(200).render('api-guide', {
          // THIS DATA IS PASSED TO THE .pug TEMPLATE
          // THESE VARIABLES ARE CALLED "LOCALS" WHEN USED IN THE .pug FILE
@@ -69,7 +69,7 @@ exports.renderLandingPage = catchAsync(async (req, res, next) => {
    // 2 BUILD TEMPLATE
 
    // 3. RENDER THAT TEMPLATE USING DATA FROM 1.)
-   console.log(chalk.running('VIEW CONTROLLER renderAllParcelizedAgcs WORKING OK '));
+   console.log(chalk.success('VIEW CONTROLLER renderAllParcelizedAgcs WORKING OK '));
    res.status(200).render('landing-page', {
       // THIS DATA IS PASSED TO THE .pug TEMPLATE
       // THESE VARIABLES ARE CALLED "LOCALS" WHEN USED IN THE .pug FILE
@@ -91,7 +91,7 @@ exports.renderOnlyAgcs = catchAsync(async (req, res, next) => {
    // 2 BUILD TEMPLATE
 
    // 3. RENDER THAT TEMPLATE USING DATA FROM 1.)
-   console.log(chalk.running('VIEW CONTROLLER renderAllParcelizedAgcs WORKING OK '));
+   console.log(chalk.success('VIEW CONTROLLER renderAllParcelizedAgcs WORKING OK '));
    res.status(200).render('parcelized-agcs-overview', {
       // THIS DATA IS PASSED TO THE .pug TEMPLATE
       // THESE VARIABLES ARE CALLED "LOCALS" WHEN USED IN THE .pug FILE

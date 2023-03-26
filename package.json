@@ -1,10 +1,12 @@
 {
-  "name": "parcelized-agcs-api",
-  "version": "1.0.0",
+  "name": "automated-land-subdivision-api",
+  "version": "1.1.0",
   "description": "NIRSAL Parcelized Agcs API",
   "main": "app.js",
   "scripts": {
-    "deploy": "git push && git push heroku master",
+    "test": "jest",
+    "deploy:firebase": "firebase deploy --only functions:geoclusters_api",
+    "deploy:heroku": "git push && git push heroku master",
     "deploy:open": "git push && git push heroku master && heroku open",
     "stable:deploy": "git add --all && git commit -m `stable-commit` && git push && git push heroku master && heroku open",
     "start": "node server.js",
@@ -39,6 +41,7 @@
     "validator": "^13.1.1"
   },
   "devDependencies": {
+    "jest": "^29.5.0",
     "nodemon": "^2.0.7",
     "uuid": "^9.0.0"
   },
