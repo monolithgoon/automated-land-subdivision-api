@@ -144,14 +144,12 @@ function getGeomCollPolyFeats(geojson) {
   // Check if the geojson exists and has geometries
   if (geojson && geojson.geometry && geojson.geometry.geometries) {
     // Loop through the geometries and extract the polygons
-    const geomCollPolyFeatures = geojson.geometry.geometries.filter((geom) => {
+    const polygons = geojson.geometry.geometries.filter((geom) => {
       return turf.getType(geom) === "Polygon";
-    }).map((geom) => {
-      return turf.feature(geom);
-    });
+    })
     // Check if there are any polygon features
-    if (geomCollPolyFeatures.length > 0) {
-      polygonFeats = geomCollPolyFeatures;
+    if (polygons.length > 0) {
+      polygonFeats = polygons;
     }
   }
 

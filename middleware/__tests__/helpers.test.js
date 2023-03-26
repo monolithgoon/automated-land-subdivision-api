@@ -96,12 +96,23 @@ describe("getUsablePolygonGeometry", () => {
 					[0, 0],
 				],
 			]),
+			// turf.polygon([
+			// 	[
+			// 		[2, 0],
+			// 		[2, 1],
+			// 		[3, 1],
+			// 		[3, 0],
+			// 		[2, 0],
+			// 	],
+			// ]),
 		]);
 
 		const result = getUsablePolygonGeometry(geometryCollection);
 
 		if (result) {
 			if (result.refinedGeoJSON) {
+				// console.log({ result });
+				// console.log(result.refinedGeoJSON);
 				expect(result.refinedGeoJSON.geometry.type).toEqual("Polygon");
 			}
 			expect(result.discardedMultipolyParts).not.toBeNull();
