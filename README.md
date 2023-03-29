@@ -9,7 +9,7 @@ Helps smallholder farmer geo-coops digitize their fam locations at very low cost
 
 ## Resources
 
-### [Farmland auto subdivision website](https://geoclusters.herokuapp.com)
+### [Farmland Auto Subdivision Website](https://geoclusters.herokuapp.com)
 
 *[Frontend demo app](https://farmplots.web.app)*
 
