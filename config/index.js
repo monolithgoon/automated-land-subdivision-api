@@ -7,4 +7,5 @@ module.exports = Object.freeze({
 	port: parseInt(process.env.PORT, 10) || 9443,
 	cloudinaryUrl: process.env.CLOUDINARY_URL,
 	turfPolygonBufferUnits: process.env.TURF_POLYGON_BUFFER_UNITS,
+  minimumBufferArea: process.env.TURF_POLYGON_MINIMUM_BUFFER_AREA,
 });

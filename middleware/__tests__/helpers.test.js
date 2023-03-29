@@ -1,6 +1,6 @@
 `uee strict`;
 const turf = require("@turf/turf");
-const { getGeomCollPolygons, getUsablePolygonGeometry } = require("../helpers.js");
+const { getGeomCollPolygons, getUsablePolygonGeometry, getBufferedPolygon } = require("../helpers.js");
 
 describe("getGeomCollPolygons", () => {
 	test("should extract polygon features from a GeoJSON GeometryCollection", () => {
@@ -136,4 +136,40 @@ describe("getUsablePolygonGeometry", () => {
 			expect(result).toBeNull();
 		}
 	});
+});
+
+describe('getBufferedPolygon', () => {
+
+  const gjPolygon = turf.polygon([[[0, 0], [0, 1], [1, 1], [1, 0], [0, 0]]]);
+
+  // test('returns null if gjPolygon is null or undefined', () => {
+  //   expect(getBufferedPolygon(null, 1)).toBeNull();
+  //   expect(getBufferedPolygon(undefined, 1)).toBeNull();
+  // });
+
+  // test('returns original polygon if bufferAmt is 0', () => {
+  //   expect(getBufferedPolygon(gjPolygon, 0)).toBe(gjPolygon);
+  // });
+
+  // test('returns original polygon if originalArea is less than 0.5', () => {
+  //   const smallPolygon = turf.polygon([[[0, 0], [0, 0.1], [0.1, 0.1], [0.1, 0], [0, 0]]]);
+  //   console.log(getBufferedPolygon(smallPolygon, 1).geometry.coordinates)
+  //   // expect(getBufferedPolygon(smallPolygon, 1)).toBe(gjPolygon);
+  // });
+
+  // test('returns original polygon if types are different', () => {
+  //   const gjLineString = turf.lineString([[0, 0], [1, 1]]);
+  //   expect(getBufferedPolygon(gjLineString, 1)).toBe(gjLineString);
+  // });
+
+  test('returns original polygon if bufferAmt caused deformation', () => {
+    const gjRectangle = turf.polygon([[[0, 0], [0, 1], [2, 1], [2, 0], [0, 0]]]);
+    expect(getBufferedPolygon(gjRectangle, 1)).toBe(gjRectangle);
+  });
+
+  // test('returns buffered polygon if all conditions are met', () => {
+  //   const gjRectangle = turf.polygon([[[0, 0], [0, 1], [2, 1], [2, 0], [0, 0]]]);
+  //   const bufferedPolygon = turf.buffer(gjRectangle, 1);
+  //   expect(getBufferedPolygon(gjRectangle, 1)).toEqual(bufferedPolygon);
+  // });
 });

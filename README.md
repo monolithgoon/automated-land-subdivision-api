@@ -3,11 +3,13 @@
 
 ![FieldDev Group Cover](https://user-images.githubusercontent.com/60096838/227154345-fd5e8a8f-c7b4-4cd2-85b7-4a0a81213c17.jpg)
 
-Automatically divide up a contiguous land expanse into pre-specified chunk sizes. Instantly reports back precise, high-resolution plot boundary coordinates that enables precision agriculture. The tool works regardless of the size of the initial land expanse. 
+Automatically divide up a single, contiguous land expanse into pre-specified chunk sizes. Instantly reports back precise, high-resolution plot boundary coordinates that enables precision agriculture. The tool works regardless of the size of the initial land expanse. 
 
 Helps smallholder farmer geo-coops digitize their fam locations at very low cost.
 
 ## Resources
+
+*[Geoclusters API website](https://geoclusters.herokuapp.com)*
 
 *[Frontend demo app](https://farmplots.web.app)*
 
@@ -17,7 +19,7 @@ Helps smallholder farmer geo-coops digitize their fam locations at very low cost
 
 ## Usage
 
-### [Detailed API Documentation](https://geoclusters.web.app)
+### [Detailed API Documentation](https://geoclusters.herokuapp.com/api-guide)
 
 ### Process Flow
 
@@ -30,3 +32,10 @@ Helps smallholder farmer geo-coops digitize their fam locations at very low cost
 4. Query this endpoint `/api/v1/parcelized-agcs/?<rpeview_map_url_hash>` for a preview map of the subdivided plots.
 
 ![Auto-Parcelization Process Flow](https://user-images.githubusercontent.com/60096838/227159621-6dfccf1a-f4b4-4c76-9946-ed7512e18235.png)
+
+### API Results
+
+![responsive-cluster-1](https://user-images.githubusercontent.com/60096838/161726087-398efd30-1ff3-4535-877b-23a95393ba33.jpg)
+
+![sat-map-closeup-1 (2)](https://user-images.githubusercontent.com/60096838/161726116-60a1771b-54c9-4ac0-bddb-7d58bf4d4b7f.png)
+

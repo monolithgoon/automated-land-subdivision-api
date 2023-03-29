@@ -298,6 +298,9 @@ function getBufferedPolygon(gjPolygon, bufferAmt, { bufferUnits = APP_CONFIG.tur
 	// Check if gjPolygon exists
 	if (gjPolygon) {
 
+		// Return original if `bufferAmt` == 0
+		if (bufferAmt === 0) return gjPolygon;
+
 		// Buffer the polygon using Turf.js
 		let bufferedPolygonFeat = TurfHelpers.buffer(gjPolygon, bufferAmt, { units: bufferUnits });
 
@@ -312,20 +315,23 @@ function getBufferedPolygon(gjPolygon, bufferAmt, { bufferUnits = APP_CONFIG.tur
 
 			// Calculate area of original and buffered polygons
 			const originalArea = TurfHelpers.calcPolyArea(gjPolygon);
+			// console.log({originalArea})
 			const bufferedArea = TurfHelpers.calcPolyArea(bufferedPolygonFeat);
+			// console.log({bufferedArea})
+			console.log(chalk.highlight(originalArea > bufferedArea))
 
 			// Decide whether to return original or buffered polygon
-			if (originalArea < 0.5) {
+			if (originalArea < APP_CONFIG.minimumBufferArea) {
 				// Return original polygon if area is too small
 				return gjPolygon;
 			} else if (TurfHelpers.getType(gjPolygon) !== TurfHelpers.getType(bufferedPolygonFeat)) {
 				// Return original polygon if types are different
 				return gjPolygon;
 			} else if (bufferAmt > 0 && bufferedArea < originalArea) {
-				// Return original polygon if buffer caused deformation
+				// Return original polygon if buffer caused -ve deformation
 				return gjPolygon;
 			} else if (bufferAmt < 0 && bufferedArea > originalArea) {
-				// Return original polygon if negative buffer caused deformation
+				// Return original polygon if negative buffer caused +ve deformation
 				return gjPolygon;
 			} else {
 				// Return buffered polygon
@@ -339,7 +345,7 @@ function getBufferedPolygon(gjPolygon, bufferAmt, { bufferUnits = APP_CONFIG.tur
 		// Return null if gjPolygon is null or undefined
 		return null;
 	}
-}
+};
 
 ProcessGeoJSON = (() => {
 
@@ -525,5 +531,6 @@ module.exports = {
 	TurfHelpers,
 	getGeomCollPolygons,
 	getUsablePolygonGeometry,
+	getBufferedPolygon,
 	ProcessGeoJSON,
 }
