@@ -1,14 +1,19 @@
-API Deployment Checklist
+Geoclusters API Deployment Checklist
 
 
 
 [x] Create the following in the root dir >
    [ ] Create server.js
+
    [ ] Create app.js <= this calls the "routes"
+
       [ ] Load the routes => eg., const PARCELIZED_AGC_ROUTES = require('./routes/parcelized-agc-routes.js');
       [ ] Mount the router => eg., EXPRESS_APP.use('/api/v1/parcelized-agcs', PARCELIZED_AGC_ROUTES);
+
    [ ] Create "routes/routers" folder <= this calls the "controllers"
+
    [ ] Create "controllers" folder <= this calls the "models"
+
    [ ] Create "models" folder
       [ ] Install npm VALIDATOR package to validate email addresses in user-model.js
 
@@ -25,7 +30,6 @@ API Deployment Checklist
          [ ] Import the render functions from view-controller.js
          [ ] Export the ROUTER as viewsRouter
          [ ] Mount the viewRouter on the base url in app.js
-
 
 [ ] Upload data from local .geojson file to Atlas DB
    [ ] Update and save the "parcelized-agcs.geojson" file
@@ -60,15 +64,21 @@ API Deployment Checklist
 
 
 IMPORTANT > DEPLOY NODE JS APP TO HEROKU
+
    [ ] Create a 'start' script in packgage.json > "start": "node server.js"
+
    [ ] If app entry-point (server.js) is not in root dir, create a Procfile at app root dir. containing:
       [ ] web: node server/server.js
+
    [x] Create a new Heroku project > RUN: "heroku create [app name]"
       [..] To change default name of Heroku app > RUN: heroku apps:rename [newname]
+
    [x] Connect to GitHub repo > On Heroku dashboard, select "Deploy" && click on "Connect to GitHub"
+
    [x] Upload files from "master" repository to Heroku > 
       [x] RUN: "git push heroku master"
       [x] Verify this works, and confirm the remote repos > RUN: git remote -v
+
    [x] ******Set environment variables on Heroku (needed b/cos default.env  is excluded from git commits) > 
       [x] RUN: heroku config:set NODE_ENV=production
       [x] RUN: heroku config:set ATLAS_DB_STRING="mongodb+srv://monkey-paw:<PASSWORD>@monkey-paw-cluster-cwcff.gcp.mongodb.net/nirsal_agcs?retryWrites=true&w=majority"
