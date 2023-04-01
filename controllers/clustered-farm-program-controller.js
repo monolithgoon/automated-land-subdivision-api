@@ -17,7 +17,7 @@ const FARMER_BIODATA_MODEL = require("../models/farmer-biodata-model.js");
 // 	console.log(chalk.success(`CALLED [ insertFarmProgram ] CONTROLLER FN.`));
 
 // 	// Check if req.body is not null or undefined
-// 	if (req.body ?? false) {
+// 	if (req.body) {
 
 // 		const farmProgramId = req.body.farm_program_id;
 
@@ -83,7 +83,7 @@ exports.insertFarmProgram = catchAsyncServer(async (req, res, next) => {
   console.log(chalk.success(`CALLED [ insertFarmProgram ] CONTROLLER FN.`));
 
   // Check if req.body is not null or undefined
-  if (req.body ?? false) {
+  if (req.body) {
 
     const farmProgramId = req.body.farm_program_id;
 
@@ -139,7 +139,7 @@ function updateFarmerBiodata(farmerBiodata, farmerCloudImageUrl) {
 
 // 	console.log({ updatedFarmerBiodata })
 
-// 	if (updatedFarmerBiodata ?? false) {
+// 	if (updatedFarmerBiodata) {
 
 // 		const globalFarmerId = updatedFarmerBiodata.farmer_global_id;
 		
@@ -619,7 +619,7 @@ exports.insertFarmProgramGeoJson = catchAsyncServer(async (req, res, next) => {
 			500
 		));
 
-	if (farmProgramFeatColl ?? false) {
+	if (farmProgramFeatColl) {
 
 		const farmProgramId = farmProgramFeatColl.properties["farm_program_id"];
 

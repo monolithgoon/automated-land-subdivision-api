@@ -37,12 +37,12 @@
     "pug": "^3.0.2",
     "request": "^2.88.2",
     "shapefile": "^0.6.6",
-    "validator": "^13.1.1"
+    "validator": "^13.1.1",
+ "uuid": "^9.0.0"
   },
   "devDependencies": {
     "jest": "^29.5.0",
-    "nodemon": "^2.0.7",
-    "uuid": "^9.0.0"
+    "nodemon": "^2.0.7"
   },
   "engines": {
     "node": "^12"

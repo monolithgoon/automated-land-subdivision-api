@@ -28,18 +28,18 @@ function readlineQuestionAsync(question, rl) {
 }
 
 const COMMIT_TYPES = Object.freeze({
-	1: "TEST",
-	2: "FEAT",
-	3: "REFACTOR",
-	4: "STYLE",
-	5: "FIX",
-	6: "CHORE",
-	7: "DOCS",
-	8: "BUILD",
-	9: "PERF",
-	10: "CI",
-	11: "REVERT",
-	12: "DELETE",
+	1: "test",
+	2: "feat",
+	3: "refactor",
+	4: "style",
+	5: "fix",
+	6: "chore",
+	7: "docs",
+	8: "build",
+	9: "perf",
+	10: "ci",
+	11: "revert",
+	12: "delete",
 });
 
 /**
@@ -80,7 +80,7 @@ async function askCommitPrompt(prompt, rl, promptFlag) {
 				}
 
 				// Check if the input is a valid commit type
-					if (!Object.values(COMMIT_TYPES).includes(promptResponse.toUpperCase())) {
+					if (!Object.values(COMMIT_TYPES).includes(promptResponse.toLowerCase())) {
 						console.log(chalk.consoleYlow(`Invalid input. Please enter a correct type:`));
 						console.log(COMMIT_TYPES);
 						promptResponse = await askCommitPrompt(prompt, rl, promptFlag);
@@ -205,7 +205,7 @@ async function executeCommitPrompts() {
 			}
 
 			// Combine the commit information into a single message
-			completeCommitMsg = `${commitType.toUpperCase()} (${commitDomain}): ${commitMsg}"`;
+			completeCommitMsg = `${commitType} (${commitDomain}): ${commitMsg}"`;
 
 			console.log({ completeCommitMsg });
 
