@@ -9,7 +9,7 @@ Helps smallholder farmer geo-coops digitize their fam locations at very low cost
 
 ## Resources
 
-### [Geoclusters API website](https://geoclusters.herokuapp.com)
+### [Farmland Auto Parcelization](https://geoclusters.herokuapp.com)
 
 *[Frontend demo app](https://farmplots.web.app)*
 
