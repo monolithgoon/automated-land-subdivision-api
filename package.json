@@ -38,7 +38,7 @@
     "request": "^2.88.2",
     "shapefile": "^0.6.6",
     "validator": "^13.1.1",
- "uuid": "^9.0.0"
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "jest": "^29.5.0",

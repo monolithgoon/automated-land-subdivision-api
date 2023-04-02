@@ -2,3 +2,4 @@ node_modules/
 *.env
 request.http
 geoclusters-firebase-service-account-key.json
+index.js
