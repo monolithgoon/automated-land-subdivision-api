@@ -5,7 +5,6 @@
   "main": "app.js",
   "scripts": {
     "test": "jest",
-    "deploy:firebase": "firebase deploy --only functions:geoclusters_api",
     "deploy:heroku": "git push && git push heroku master",
     "deploy:open": "git push && git push heroku master && heroku open",
     "stable:deploy": "git add --all && git commit -m `stable-commit` && git push && git push heroku master && heroku open",
