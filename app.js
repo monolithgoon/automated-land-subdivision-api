@@ -9,14 +9,6 @@ const cors = require('cors'); // this will allow other websites access the api
 const ServerError = require('./utils/server-error.js');
 const globalErrorHandler = require('./controllers/error-controller.js');
 const { _customHeaders } = require('./utils/helpers.js');
-// Firebase config
-// const admin = require('firebase-admin');
-// const serviceAccount = require(`./geoclusters-firebase-service-account-key.json`);
-// admin.initializeApp({
-//  credential: admin.credential.cert(serviceAccount)
-// });
-// const cred = require("./geoclusters-firebase-service-account-key")
-// console.log({cred})
 
 
 // APPEND THE APP BASE DIR. TO THE GLOBAL OBJ.
