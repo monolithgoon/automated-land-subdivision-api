@@ -115,6 +115,26 @@ IMPORTANT > DEPLOY NODE.JS / REACT APP TO HEROKU
 [ ] Open Heroku project > RUN: "heroku open"
 
 
+IMPORTANT > DEPLOY NODE.JS APP TO VERCEL
+
+   [ ] Add the following to a config file called "vercel.json" at the root of the project
+      {
+      "version": 2,
+      "name": "automated-land-subdivision-api",
+      "builds": [
+         {
+            "src": "server.js",
+            "use": "@vercel/node"
+         }
+      ],
+      "routes": [
+         {
+            "src": "/(.*)",
+            "dest": "/server.js"
+         }
+      ]
+      }
+
 **GIT COMMANDS
 - REMOVE LOCAL GIT REPO AUTOMATICALLY CREATED BY REACT - rm -rf .git
 
