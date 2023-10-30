@@ -9,7 +9,7 @@ Helps smallholder farmer geo-coops digitize their fam locations at very low cost
 
 ## Resources
 
-### [Farmland Auto Parcelization](https://automated-land-subdivision-api.vercel.app)
+### [Farmland Auto Parcelization](http://51.20.26.23:9443/)
 
 *[Frontend demo app](https://farmplots.web.app)*
 
@@ -19,7 +19,7 @@ Helps smallholder farmer geo-coops digitize their fam locations at very low cost
 
 ## Usage
 
-### [Detailed API Documentation](https://geoclusters.herokuapp.com/api-guide)
+### [Detailed API Documentation](http://51.20.26.23:9443/api-guide)
 
 ### Process Flow
 
