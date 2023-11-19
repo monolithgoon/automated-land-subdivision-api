@@ -15,6 +15,8 @@ Helps smallholder farmer geo-coops digitize their fam locations at very low cost
 
 *[Video demo (2min 23s)](https://www.loom.com/share/44a371170c8f46fe9bf30ed946f44604)*
 
+![Automated Farm Cluster Parcelization Demo](https://github.com/monolithgoon/automated-land-subdivision-api/assets/60096838/3f884963-02a1-4455-b7d9-a281fc114ef7)
+
 *[Video pitch (3min 46s)](https://www.loom.com/share/c5ae871e21c1405e84ca1e573a9a7c99)*
 
 ## Usage
