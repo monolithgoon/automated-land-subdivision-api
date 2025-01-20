@@ -19,14 +19,14 @@ async function dbConnect() {
       
       console.log(chalk.working('Connecting to the remote MongoDB Atlas DB...'));
 
-      const database = process.env.ATLAS_DB_STRING.replace('<PASSWORD>', process.env.ATLAS_DB_PASSOWRD) // REPLACE THE PLACEHOLDER TEXT IN THE CONNECTION STRING
+      const database = process.env.ATLAS_DB_STRING.replace('<PASSWORD>', process.env.ATLAS_DB_PASSWORD) // REPLACE THE PLACEHOLDER TEXT IN THE CONNECTION STRING
    
       mongoose.connect(database, {
          // handle mongoDB deprecation warnings
-         useNewUrlParser: true,
-         useCreateIndex: true,
-         useFindAndModify: false,
-         useUnifiedTopology: true
+         // useNewUrlParser: true,
+         // useCreateIndex: true,
+         // useFindAndModify: false,
+         // useUnifiedTopology: true
       })
       .then(connectionObject => {
          // console.log((connectionObject))
