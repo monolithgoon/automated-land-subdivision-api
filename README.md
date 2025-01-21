@@ -9,7 +9,7 @@ Helps smallholder farmer geo-coops digitize their fam locations at very low cost
 
 ## 🌐 *Resources*
 
-### [API Landing Page](http://13.61.173.110/)
+### [_API Landing Page_](http://13.61.173.110/)
 
 *[Frontend demo app](https://farmplots.web.app)*
 
@@ -21,7 +21,7 @@ Helps smallholder farmer geo-coops digitize their fam locations at very low cost
 
 ## 🛠️ *Usage*
 
-### [Detailed API Documentation](http://13.61.173.110/api-guide)
+### [_Detailed API Documentation_](http://13.61.173.110/api-guide)
 
 ### 🔄 *Process Flow*
 
