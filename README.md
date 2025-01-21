@@ -9,7 +9,7 @@ Helps smallholder farmer geo-coops digitize their fam locations at very low cost
 
 ## 🌐 *Resources*
 
-### [Farmland Auto Parcelization](http://51.20.26.23:9443/)
+### [API Landing Page](http://13.61.173.110/)
 
 *[Frontend demo app](https://farmplots.web.app)*
 
@@ -21,7 +21,7 @@ Helps smallholder farmer geo-coops digitize their fam locations at very low cost
 
 ## 🛠️ *Usage*
 
-### [Detailed API Documentation](http://51.20.26.23:9443/api-guide)
+### [Detailed API Documentation](http://13.61.173.110/api-guide)
 
 ### 🔄 *Process Flow*
 
