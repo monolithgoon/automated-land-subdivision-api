@@ -7,19 +7,19 @@ Automatically divide up a single, contiguous land expanse into pre-specified chu
 
 Helps smallholder farmer geo-coops digitize their fam locations at very low cost.
 
-## 🌐 *Resources*
+## 🌐 *_Resources_*
 
-### [_API Landing Page_](http://13.61.173.110/)
+### [_Auto Land-Subdivision API Landing Page_](http://13.61.173.110/)
 
 *[Frontend demo app](https://farmplots.web.app)*
 
 *[Video demo (2min 23s)](https://www.loom.com/share/44a371170c8f46fe9bf30ed946f44604)*
 
-![Automated Farm Cluster Parcelization Demo](https://github.com/monolithgoon/automated-land-subdivision-api/assets/60096838/3f884963-02a1-4455-b7d9-a281fc114ef7)
-
 *[Video pitch (3min 46s)](https://www.loom.com/share/c5ae871e21c1405e84ca1e573a9a7c99)*
 
-## 🛠️ *Usage*
+![Automated Farm Cluster Parcelization Demo](https://github.com/monolithgoon/automated-land-subdivision-api/assets/60096838/3f884963-02a1-4455-b7d9-a281fc114ef7)
+
+## 🛠️ *_Usage_*
 
 ### [_Detailed API Documentation_](http://13.61.173.110/api-guide)
 
@@ -38,39 +38,64 @@ Helps smallholder farmer geo-coops digitize their fam locations at very low cost
 
 ![sat-map-closeup-1 (2)](https://user-images.githubusercontent.com/60096838/161726116-60a1771b-54c9-4ac0-bddb-7d58bf4d4b7f.png)
 
-### 📝 *_NGINX Config_*
+## 📝 *_NGINX Configuration_*
 
-```bash
-server {
-   listen 80;
-   server_name 13.61.173.110;
+  ### *_Config File_*
+  
+   Add the following block to your NGINX configuration file (`/etc/nginx/sites-available/land_subdivision_api`):
 
-   root /var/www/land_subdivision_api;
-   index index.html;
-
-   proxy_set_header Upgrade $http_upgrade;
-   proxy_set_header Connection 'upgrade';
-   proxy_set_header Host $host;
-   proxy_cache_bypass $http_upgrade;
-
-   location / {
-       proxy_pass http://localhost:9443;
-       proxy_http_version 1.1;
-   }
-
-   location /api/ {
-        proxy_pass http://localhost:9443/api/;
-        proxy_http_version 1.1;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
-
-   error_page 404 /404.html;
-   location = /404.html {
-       root /var/www/land_subdivision_api;
-   }
-
-   access_log /var/log/nginx/land_subdivision_api_access.log;
-   error_log /var/log/nginx/land_subdivision_api_error.log;
-}
-```
+   ```bash
+       server {
+            listen 80;
+            server_name 13.61.173.110;
+     
+            root /var/www/land_subdivision_api;
+            index index.html;
+     
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
+     
+            location / {
+                proxy_pass http://localhost:9443;
+                proxy_http_version 1.1;
+            }
+     
+            location /api/ {
+                proxy_pass http://localhost:9443/api/;
+                proxy_http_version 1.1;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            }
+     
+            error_page 404 /404.html;
+            location = /404.html {
+                root /var/www/land_subdivision_api;
+            }
+        }
+   ```
+  
+  ### 🌠 *_Enable the Site_*  
+     Create a symbolic link in the `sites-enabled` directory:  
+     ```bash
+     sudo ln -s /etc/nginx/sites-available/land_subdivision_api /etc/nginx/sites-enabled/
+     ```
+  
+  ### 🌠 *_Test the Configuration_*  
+     Before applying changes, verify the syntax and configuration:  
+     ```bash
+     sudo nginx -t
+     ```
+  
+     Ensure the output confirms a successful test.  
+  
+  ### 🌠 *_Restart NGINX_*  
+     If the configuration test passes, restart NGINX to apply the changes:  
+     ```bash
+     sudo systemctl restart nginx
+     ```
+  
+  ### 🌠 *_Verify System Functionality_*  
+     - Access the application in your browser via `http://13.61.173.110` to confirm it loads correctly.  
+     - Check the API endpoints (e.g., `http://13.61.173.110/api/`) to ensure proper proxying.
