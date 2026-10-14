@@ -1,4 +1,4 @@
-# [_Automated Land-Subdivision API_](http://13.61.173.110/)
+# [_Automated Land-Subdivision API_]([http://13.61.173.110/](https://automated-land-subdivision-api.vercel.app/))
 
 > Helping put smallholder farmers on the map
 
