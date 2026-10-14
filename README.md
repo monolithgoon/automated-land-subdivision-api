@@ -1,4 +1,4 @@
-# [_Automated Land-Subdivision API_](http://13.61.173.110/](https://automated-land-subdivision-api.vercel.app/)
+# [_Automated Land-Subdivision API_](https://automated-land-subdivision-api.vercel.app/)
 
 > Helping put smallholder farmers on the map
 
@@ -10,7 +10,7 @@ Helps smallholder farmer geo-coops digitize their fam locations at very low cost
 
 ## 🌐 *_Resources_*
 
-### [_Auto Land-Subdivision API Landing Page_](http://13.61.173.110/](http://13.61.173.110/](https://automated-land-subdivision-api.vercel.app/)
+### [_Auto Land-Subdivision API Landing Page_](http://13.61.173.110/](https://automated-land-subdivision-api.vercel.app/)
 
 *[Frontend demo app](https://farmplots.web.app)*
 
